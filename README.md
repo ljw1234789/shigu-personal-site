@@ -1,4 +1,4 @@
-# 刘俊威 · 个人主页
+# 刘俊威的个人网站
 
 A small, responsive Chinese-language personal homepage built with plain HTML, CSS, and JavaScript.
 
