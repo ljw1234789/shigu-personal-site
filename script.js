@@ -32,3 +32,22 @@ window.addEventListener('scroll', () => {
   if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateProgress);
 }, { passive: true });
 updateProgress();
+
+const playerWrappers = [...document.querySelectorAll('.case-media')];
+
+function scalePlayer(wrapper) {
+  const frame = wrapper.querySelector('iframe');
+  if (!frame) return;
+  frame.style.setProperty('--player-scale', String(wrapper.clientWidth / 720));
+}
+
+if ('ResizeObserver' in window) {
+  const playerObserver = new ResizeObserver((entries) => {
+    entries.forEach(({ target }) => scalePlayer(target));
+  });
+  playerWrappers.forEach((wrapper) => playerObserver.observe(wrapper));
+} else {
+  const updatePlayers = () => playerWrappers.forEach(scalePlayer);
+  window.addEventListener('resize', updatePlayers, { passive: true });
+  updatePlayers();
+}

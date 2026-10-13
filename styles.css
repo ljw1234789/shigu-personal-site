@@ -83,7 +83,7 @@ img { display: block; max-width: 100%; }
 .case-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; align-items: start; }
 .case-card { min-width: 0; }
 .case-media { position: relative; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; background: #111; border: 1px solid #ffffff1b; }
-.case-media iframe { display: block; width: 100%; height: 100%; border: 0; background: #111; }
+.case-media iframe { position: absolute; inset: 0 auto auto 0; display: block; width: 720px; height: 1280px; transform: scale(var(--player-scale, .5)); transform-origin: top left; border: 0; background: #111; }
 .case-copy { padding-top: 18px; }
 .case-meta { display: flex; gap: 14px; align-items: center; margin: 0 0 9px; color: #d5a594; font-size: 12px; font-weight: 700; letter-spacing: .03em; }
 .case-meta span { display: inline-flex; align-items: center; gap: 8px; }
@@ -183,13 +183,15 @@ img { display: block; max-width: 100%; }
   .case-heading-main { display: block; }
   .case-heading h2 { font-size: clamp(39px, 11vw, 53px); line-height: 1.25; }
   .case-heading-main>p { margin: 17px 0 0; font-size: 13px; line-height: 1.85; }
-  .case-grid { grid-template-columns: 1fr; gap: 36px; }
-  .case-card { grid-column: 1; width: min(100%, 330px); }
+  .case-grid { grid-auto-flow: column; grid-auto-columns: min(84vw, 330px); grid-template-columns: none; gap: 18px; margin-inline: -19px; padding: 0 19px 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain; scrollbar-width: thin; scrollbar-color: #748078 transparent; }
+  .case-grid::-webkit-scrollbar { height: 3px; }
+  .case-grid::-webkit-scrollbar-thumb { background: #748078; }
+  .case-card { grid-column: auto; width: 100%; max-width: 330px; scroll-snap-align: start; }
   .case-copy { padding-top: 14px; }
   .case-meta { font-size: 11px; margin-bottom: 7px; }
   .case-copy h3 { font-size: 21px; margin-bottom: 7px; }
   .case-copy>p:not(.case-meta) { font-size: 13px; line-height: 1.8; }
-  .case-credit { margin-top: 22px; font-size: 12px; line-height: 1.7; }
+  .case-credit { display: none; }
   .about-method { padding: 72px 0 74px; }
   .method-heading { display: block; margin-bottom: 28px; }
   .method-heading .section-index { padding-top: 0; margin-bottom: 19px; }
