@@ -83,7 +83,7 @@ img { display: block; max-width: 100%; }
 .case-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; align-items: start; }
 .case-card { min-width: 0; }
 .case-media { position: relative; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; background: #111; border: 1px solid #ffffff1b; }
-.case-media iframe { position: absolute; inset: 0 auto auto 0; display: block; width: 720px; height: 1280px; transform: scale(var(--player-scale, .5)); transform-origin: top left; border: 0; background: #111; }
+.case-media iframe { position: absolute; inset: 0 auto auto 0; display: block; width: 360px; height: 640px; transform: scale(var(--player-scale, .9)); transform-origin: top left; border: 0; background: #111; }
 .case-copy { padding-top: 18px; }
 .case-meta { display: flex; gap: 14px; align-items: center; margin: 0 0 9px; color: #d5a594; font-size: 12px; font-weight: 700; letter-spacing: .03em; }
 .case-meta span { display: inline-flex; align-items: center; gap: 8px; }

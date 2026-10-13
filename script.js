@@ -38,7 +38,7 @@ const playerWrappers = [...document.querySelectorAll('.case-media')];
 function scalePlayer(wrapper) {
   const frame = wrapper.querySelector('iframe');
   if (!frame) return;
-  frame.style.setProperty('--player-scale', String(wrapper.clientWidth / 720));
+  frame.style.setProperty('--player-scale', String(wrapper.clientWidth / 360));
 }
 
 if ('ResizeObserver' in window) {
