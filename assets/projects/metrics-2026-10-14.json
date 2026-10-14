@@ -1,0 +1,35 @@
+{
+  "observed_on": "2026-10-14",
+  "timezone": "Asia/Shanghai",
+  "source_type": "Public rendered Douyin video pages",
+  "precision": "Display values as observed, including rounded 万 units; no private playback or completion analytics.",
+  "videos": [
+    {
+      "id": "7549017187839741224",
+      "title": "首次公开！揭秘毕导视频制作全过程",
+      "likes": "7.3万",
+      "comments": "791",
+      "favorites": "5031",
+      "shares": "1074",
+      "source": "https://www.douyin.com/video/7549017187839741224"
+    },
+    {
+      "id": "7605293710498254126",
+      "title": "这条线看得清摸得着，但你永远测不出它的长度",
+      "likes": "20.0万",
+      "comments": "3143",
+      "favorites": "2.4万",
+      "shares": "2.3万",
+      "source": "https://www.douyin.com/video/7605293710498254126"
+    },
+    {
+      "id": "7621787772751285519",
+      "title": "这个现象你肯定见过，但初中教材上的解释几乎都是错的",
+      "likes": "51.2万",
+      "comments": "9942",
+      "favorites": "9.6万",
+      "shares": "8.6万",
+      "source": "https://www.douyin.com/video/7621787772751285519"
+    }
+  ]
+}
