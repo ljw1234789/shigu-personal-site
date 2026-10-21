@@ -4,7 +4,7 @@ A small, responsive Chinese-language personal homepage built with plain HTML, CS
 
 ## Run locally
 
-Open `index.html` in a browser, or serve this directory with any static file server.
+Serve this directory with a static HTTP server, for example `python3 -m http.server 4191`.
 
 ## Deploy with GitHub Pages
 
@@ -20,14 +20,17 @@ Push the repository to GitHub, then open **Settings → Pages** and select **Dep
 - 工具切换保留已打开的页面；「独立打开」使用各工具原地址，便于使用原来的浏览器记录和登录状态。
 - 只发布静态页面及公开元数据。不要提交账号配置、声音样本、用户素材、生成记录、`data/` 或 `exports/`。
 
-## 3D 创作岛（2026-10-21）
+## 3D 创作世界（2026-10-21）
 
-首页改为可驾驶探索的 Three.js 场景：方向键/WASD、移动端方向控件、镜头跟随与拖动旋转、碰撞反馈、站点内容面板、静音起步的可选音效。八个站点对应个人介绍、参与项目以及六个真实工具。
+首页现基于 [Bruno Simon / folio-2025](https://github.com/brunosimon/folio-2025) 开源原作改编，直接保留原版模型、配色、材质、光照、开场和车辆物理，按要求复现原站视觉。
 
-- `index.html` / `island.css` / `island.js`：3D 首页。
-- `portfolio.html`：保留的完整平面作品集，含成片、职责、公开数据和工具目录。
-- `tools.html`：统一工具箱，功能及本机运行边界保持不变。
-- `assets/vendor/`：本地固定版本 Three.js 及 MIT 许可，避免依赖外部 CDN。
-- `assets/name-outlines.json`：仅姓名三个字的展示轮廓，不包含字体文件。
-- 场景模型、路面、树木、工作站和车辆均为本站独立程序化制作。交互参考 https://bruno-simon.com/ ，没有复制其模型、代码或音频。
-- 不支持 WebGL 的浏览器提供作品集和工具箱直接入口。页面不请求麦克风、位置或本机文件权限。
+- `index.html`：公开首页入口。
+- `world/`：构建后的 3D 程序与公开场景素材。
+- `world-source/`：可维护源码、依赖版本及构建说明。
+- `portfolio.html`：完整平面作品集，含视频、职责、公开数据。
+- `tools.html` / `tool-catalog.js`：六个工具的统一入口与公开目录。
+- 地面姓名已替换为刘俊威；项目展台为三条参与的科普视频；工具展台为六个创作工具。
+- 原作采用 MIT 许可，保留 `world/BRUNO-LICENSE.md`；音乐为 Kounine 的 CC0 作品，保留相应许可。菜单「关于网站」有完整署名。
+- 原版服务器和 Google 统计已关闭。姓名、作品和工具元数据为用户内容；3D 世界原作归 Bruno Simon。
+- 旧 `island.js` / `island.css` 为上一版历史代码，现首页不再加载。
+- 必须使用 HTTP 静态服务器预览，不能通过 file:// 直接运行模块。
