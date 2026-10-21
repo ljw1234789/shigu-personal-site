@@ -11,7 +11,9 @@
   };
   const icon = key => `<svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[key] || icons.science}</svg>`;
   const card = tool => `<a class="creative-card tone-${tool.color}" href="tools.html?tool=${tool.id}" data-tool="${tool.id}"><div class="creative-card-top"><span>${tool.category}</span><span class="creative-badge">${tool.badge}</span></div><div class="creative-art">${icon(tool.icon)}<span class="creative-arrow" aria-hidden="true">↗</span></div><div class="creative-card-copy"><h3>${tool.name}</h3><p>${tool.summary}</p></div></a>`;
-  document.querySelectorAll('[data-tools-grid]').forEach(grid => { grid.innerHTML = tools.map(card).join(''); });
+  const worldCard = tool => `<a class="world-tool-card" href="tools.html?tool=${tool.id}" data-tool="${tool.id}"><span class="world-tool-icon">${icon(tool.icon)}</span><div class="world-tool-copy"><div class="world-tool-title"><h3>${tool.name}</h3><span class="creative-badge">${tool.badge}</span></div><p>${tool.summary}</p></div><span class="world-tool-arrow" aria-hidden="true">↗</span></a>`;
+  const isToolbox = document.body.classList.contains('toolbox-page');
+  document.querySelectorAll('[data-tools-grid]').forEach(grid => { grid.innerHTML = tools.map(isToolbox ? worldCard : card).join(''); });
   const shell = document.querySelector('.toolbox-shell');
   if (!shell) return;
 
@@ -31,7 +33,7 @@
     if (tool.url) {
       panel.innerHTML = `<div class="frame-notice"><p>${tool.note}</p><a href="${tool.url}" target="_blank" rel="noopener noreferrer">独立打开 ↗</a></div><div class="frame-container"><iframe title="${tool.name}实际界面" src="${tool.url}" allow="fullscreen; clipboard-write" allowfullscreen></iframe></div>`;
     } else {
-      panel.innerHTML = `<div class="local-workspace tone-${tool.color}"><div class="local-hero"><div class="local-art">${icon(tool.icon)}</div><div><span class="local-kicker">${tool.category} · 本机工具</span><h2>${tool.summary}</h2><p>${tool.detail}</p><a class="toolbox-button primary" href="${tool.local}" target="_blank" rel="noopener noreferrer">打开本机${tool.name} <span aria-hidden="true">↗</span></a></div></div><ol class="local-steps">${tool.steps.map((step, index) => `<li><span>0${index+1}</span><p>${step}</p></li>`).join('')}</ol><div class="local-launch"><h3>第一次打开？</h3><p>在装有工具的 Mac 上，先双击「${tool.launcher}」，再点击上方按钮。</p><p>${tool.note}</p></div></div>`;
+      panel.innerHTML = `<div class="local-workspace tone-${tool.color}"><div class="local-hero"><div class="local-art">${icon(tool.icon)}</div><div><span class="local-kicker">${tool.category} · 本机工具</span><h2>${tool.summary}</h2><p>${tool.detail}</p><a class="toolbox-button primary" href="${tool.local}" target="_blank" rel="noopener noreferrer">打开本机${tool.name} <span aria-hidden="true">↗</span></a></div></div><ol class="local-steps">${tool.steps.map((step, index) => `<li><span>0${index+1}</span><p>${step}</p></li>`).join('')}</ol><details class="local-launch"><summary>启动与运行说明</summary><p>在装有工具的 Mac 上，先双击「${tool.launcher}」，再点击上方按钮。</p><p>${tool.note}</p></details></div>`;
     }
     panelHost.appendChild(panel);
     panels.set(tool.id, panel);
@@ -41,6 +43,8 @@
   function renderSelection(id, focusHeading = false) {
     const tool = tools.find(item => item.id === id);
     current = tool?.id || 'overview';
+    document.body.classList.toggle('has-tool', !!tool);
+    if (!tool?.url) document.body.classList.remove('focus-mode');
     nav.querySelectorAll('[data-tool]').forEach(link => {
       const active = link.dataset.tool === current;
       link.classList.toggle('active', active);
@@ -50,9 +54,14 @@
     overview.hidden = !!tool;
     workspace.hidden = !tool;
     panels.forEach(panel => { panel.hidden = true; });
-    document.title = tool ? `${tool.name}｜刘俊威的创作工具箱` : '创作工具箱｜刘俊威的个人网站';
+    document.title = tool ? `${tool.name}｜刘俊威的创作工具箱` : '创作工具箱｜刘俊威';
     if (!tool) { if (focusHeading) overview.querySelector('h1').focus({preventScroll:true}); return; }
-    toolbar.innerHTML = `<div><h1 tabindex="-1">${tool.name}</h1><span class="workspace-badge">${tool.badge}</span></div><div class="workspace-actions">${tool.local ? `<a class="toolbox-button primary" href="${tool.local}" target="_blank" rel="noopener noreferrer">打开本机版 ↗</a>` : ''}${tool.download ? `<a class="toolbox-button" href="${tool.download}">下载 Mac 版 ↓</a>` : ''}${tool.url ? `<a class="toolbox-button" href="${tool.url}" target="_blank" rel="noopener noreferrer">独立打开 ↗</a>` : ''}</div>`;
+    toolbar.innerHTML = `<div><h1 tabindex="-1">${tool.name}</h1><span class="workspace-badge">${tool.badge}</span></div><div class="workspace-actions">${tool.url ? `<button type="button" class="toolbox-button focus-button" aria-pressed="${document.body.classList.contains('focus-mode')}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"/></svg><span>${document.body.classList.contains('focus-mode') ? '退出专注' : '专注模式'}</span></button>` : ''}${tool.local ? `<a class="toolbox-button primary" href="${tool.local}" target="_blank" rel="noopener noreferrer">打开本机版 ↗</a>` : ''}${tool.download ? `<a class="toolbox-button" href="${tool.download}">下载 Mac 版 ↓</a>` : ''}${tool.url ? `<a class="toolbox-button" href="${tool.url}" target="_blank" rel="noopener noreferrer">独立打开 ↗</a>` : ''}</div>`;
+    toolbar.querySelector('.focus-button')?.addEventListener('click', event => {
+      const expanded = document.body.classList.toggle('focus-mode');
+      event.currentTarget.setAttribute('aria-pressed', String(expanded));
+      event.currentTarget.querySelector('span').textContent = expanded ? '退出专注' : '专注模式';
+    });
     const panel = panels.get(tool.id) || makePanel(tool);
     panel.hidden = false;
     if (focusHeading) toolbar.querySelector('h1').focus({preventScroll:true});
@@ -64,10 +73,36 @@
     event.preventDefault();
     const id = link.dataset.tool;
     if (id === current) return;
-    history.pushState({}, '', id === 'overview' ? 'tools.html' : `tools.html?tool=${id}`);
+    const next = new URL(location.href);
+    next.hash = '';
+    if (id === 'overview') next.searchParams.delete('tool');
+    else next.searchParams.set('tool', id);
+    history.pushState({}, '', next);
     renderSelection(id, true);
     window.scrollTo({top:0, behavior:'instant'});
   });
+  const scene = document.querySelector('.tool-world-scene');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let paused = reduceMotion.matches;
+  const motionButton = document.querySelector('.world-motion');
+  function syncMotion() {
+    document.body.classList.toggle('world-paused', paused);
+    if (!motionButton) return;
+    motionButton.setAttribute('aria-pressed', String(paused));
+    motionButton.setAttribute('aria-label', paused ? '开启场景动态' : '暂停场景动态');
+    motionButton.textContent = paused ? '▷' : 'Ⅱ';
+    if(paused && scene) { scene.style.removeProperty('--scene-x'); scene.style.removeProperty('--scene-y'); }
+  }
+  motionButton?.addEventListener('click', () => { paused = !paused; syncMotion(); });
+  reduceMotion.addEventListener('change', event => { paused = event.matches; syncMotion(); });
+  scene?.addEventListener('pointermove', event => {
+    if(paused || event.pointerType === 'touch') return;
+    const rect = scene.getBoundingClientRect();
+    scene.style.setProperty('--scene-x', `${((event.clientX - rect.left) / rect.width - .5) * -16}px`);
+    scene.style.setProperty('--scene-y', `${((event.clientY - rect.top) / rect.height - .5) * -12}px`);
+  });
+  scene?.addEventListener('pointerleave', () => { scene.style.removeProperty('--scene-x'); scene.style.removeProperty('--scene-y'); });
+  syncMotion();
   window.addEventListener('popstate', () => renderSelection(new URLSearchParams(location.search).get('tool')));
   renderSelection(new URLSearchParams(location.search).get('tool'));
 })();

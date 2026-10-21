@@ -34,3 +34,9 @@ Push the repository to GitHub, then open **Settings → Pages** and select **Dep
 - 原版服务器和 Google 统计已关闭。姓名、作品和工具元数据为用户内容；3D 世界原作归 Bruno Simon。
 - 旧 `island.js` / `island.css` 为上一版历史代码，现首页不再加载。
 - 必须使用 HTTP 静态服务器预览，不能通过 file:// 直接运行模块。
+
+## 工具内页主题（2026-10-22）
+
+工具箱使用原场景背景、深紫窗口、顶部方形页签与暖橙按钮。`tool-world.css` 仅作用于工具入口和工作区。各工具自己的 `world-theme.css` 统一操作页面颜色；保留原本的功能、媒体画面与数据存储。声样的服务使用已有 `style.css` 路由加载主题，保持原 CSP。
+
+专注模式收起外围导航，返回全部工具后自动退出。场景动态可以暂停，系统减弱动态偏好默认生效。

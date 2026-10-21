@@ -2,24 +2,32 @@
 <html lang="zh-CN">
 <head>
  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
- <meta name="theme-color" content="#151714">
- <meta name="description" content="刘俊威的创作工具箱：科普工作台、拾片、声样、剪辑助手、动效镜头库、取景。从选题到创作，一处进入。">
- <title>创作工具箱｜刘俊威的个人网站</title>
+ <meta name="theme-color" content="#251f2b">
+ <meta name="description" content="刘俊威的创作工具箱：科普工作台、拾片、声样、剪辑助手、动效镜头库、取景。">
+ <title>创作工具箱｜刘俊威</title>
  <link rel="icon" href="favicon.svg" type="image/svg+xml">
- <link rel="stylesheet" href="toolbox.css?v=20261021-1">
+ <link rel="preload" href="world/ui/previews/personal.webp" as="image">
+ <link rel="stylesheet" href="toolbox.css?v=20261021-world">
+ <link rel="stylesheet" href="tool-world.css?v=20261021-world">
  <script src="tool-catalog.js?v=20261021-1" defer></script>
- <script src="toolbox.js?v=20261021-1" defer></script>
+ <script src="toolbox.js?v=20261021-world" defer></script>
 </head>
 <body class="toolbox-page">
  <a class="toolbox-skip" href="#toolbox-main">跳到工具内容</a>
- <header class="toolbox-header"><a class="toolbox-brand" href="index.html">刘俊威<span>.</span></a><a class="toolbox-back" href="index.html#tools">返回个人网站 <span aria-hidden="true">↗</span></a></header>
+ <header class="toolbox-header">
+  <a class="toolbox-brand" href="index.html">刘俊威<span> / </span><small>创作工具</small></a>
+  <div class="header-actions"><button class="world-motion" type="button" aria-label="暂停场景动态" aria-pressed="false">Ⅱ</button><a class="toolbox-back" href="index.html" aria-label="返回 3D 首页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m3 11 9-8 9 8M5 10v11h5v-7h4v7h5V10"/></svg><span>回到世界</span></a></div>
+ </header>
  <div class="toolbox-shell">
-  <aside class="toolbox-sidebar"><a class="toolbox-label" href="tools.html">创作工具箱 <span>06</span></a><nav id="toolbox-nav" aria-label="切换创作工具"></nav><p class="sidebar-note">从一个想法，<br>到下一部作品。</p></aside>
+  <aside class="toolbox-sidebar"><a class="toolbox-label" href="tools.html" data-tool="overview">创作工具 <span>06</span></a><nav id="toolbox-nav" aria-label="切换创作工具"></nav><a class="sidebar-home" href="index.html">← 回到世界</a></aside>
   <main id="toolbox-main">
    <section id="tools-overview" class="tools-overview">
-    <div class="toolbox-intro"><p>刘俊威的创作工具</p><h1 tabindex="-1">把时间，<br><em>留给创作。</em></h1><div class="intro-bottom"><p>选题、素材、声音、剪辑和画面。<br>日常创作里用到的工具，都在这里。</p><span class="toolbox-spark" aria-hidden="true">✳</span></div></div>
-    <div class="creative-grid" data-tools-grid></div>
-    <div class="toolbox-footnote"><p>在线工具直接进入；标有 Mac 的工具需在装有工具的电脑上运行。</p><a href="index.html">回到我的作品 ↗</a></div>
+    <div class="tool-world-scene">
+     <div class="scene-picture" aria-hidden="true"></div><div class="scene-shade" aria-hidden="true"></div>
+     <div class="toolbox-intro"><span class="scene-tag">刘俊威的创作世界</span><h1 tabindex="-1">创作<br><em>工具箱</em><span class="scene-star" aria-hidden="true">✳</span></h1><p>从一个想法，到下一部作品。</p></div>
+     <div class="scene-caption"><span class="scene-dot" aria-hidden="true"></span><span>选一个工具，开始创作。</span><span aria-hidden="true">↗</span></div>
+    </div>
+    <div class="tool-shelf"><div class="shelf-heading"><h2>我的工具</h2><span>06</span></div><div class="creative-grid" data-tools-grid></div><div class="toolbox-footnote"><span class="status-dot" aria-hidden="true"></span><p>在线直接使用 · Mac 工具在本机打开</p></div></div>
    </section>
    <section id="tool-workspace" hidden><header id="workspace-toolbar" class="workspace-toolbar"></header><div id="workspace-panels"></div></section>
    <noscript><p>请开启 JavaScript 以切换工具。也可以直接打开：</p><ul><li><a href="https://science-evidence-studio.liu2026liu123.chatgpt.site/">科普工作台</a></li><li><a href="https://science-evidence-studio.liu2026liu123.chatgpt.site/tools/batch/">拾片</a></li><li><a href="https://ljw1234789.github.io/photo-coach/">取景</a></li><li><a href="https://ljw1234789.github.io/moto-motion-lab/">动效镜头库</a></li><li><a href="http://127.0.0.1:4190/">本机剪辑助手</a></li><li><a href="http://127.0.0.1:48217/">本机声样</a></li></ul></noscript>
