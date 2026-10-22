@@ -22,9 +22,9 @@ Push the repository to GitHub, then open **Settings → Pages** and select **Dep
 
 ## 3D 创作世界（2026-10-21）
 
-首页现基于 [Bruno Simon / folio-2025](https://github.com/brunosimon/folio-2025) 开源原作改编，直接保留原版模型、配色、材质、光照、开场和车辆物理，按要求复现原站视觉。
+独立 3D 世界基于 [Bruno Simon / folio-2025](https://github.com/brunosimon/folio-2025) 开源原作改编，直接保留原版模型、配色、材质、光照、开场和车辆物理，按要求复现原站视觉。
 
-- `index.html`：公开首页入口。
+- `world/index.html`：独立 3D 世界入口。
 - `world/`：构建后的 3D 程序与公开场景素材。
 - `world-source/`：可维护源码、依赖版本及构建说明。
 - `portfolio.html`：完整平面作品集，含视频、职责、公开数据。
@@ -40,3 +40,18 @@ Push the repository to GitHub, then open **Settings → Pages** and select **Dep
 工具箱使用原场景背景、深紫窗口、顶部方形页签与暖橙按钮。`tool-world.css` 仅作用于工具入口和工作区。各工具自己的 `world-theme.css` 统一操作页面颜色；保留原本的功能、媒体画面与数据存储。声样的服务使用已有 `style.css` 路由加载主题，保持原 CSP。
 
 专注模式收起外围导航，返回全部工具后自动退出。场景动态可以暂停，系统减弱动态偏好默认生效。
+
+
+## 个人创作桌面（2026-10-22）
+
+公开首页改为桌面与多窗口交互，结构参考 Sharlene Yap 的个人桌面，暖橙场景和深紫窗口延续 Bruno Simon 原作视觉。
+
+- `index.html` / `desktop.css` / `desktop.js`：无构建的首页、原创 SVG 立体图标、窗口管理与内容。
+- 介绍、三条参与项目、公开数据、工作经历、六个创作工具都在独立窗口中打开。
+- 桌面支持拖动、调整尺寸、最大化、最小化、关闭和任务栏恢复；手机使用适合触控的整页窗口。
+- 支持 `#about`、`#projects`、`#tools`、`#experience`、`#tool-science` 等直达链接；旧 `#cases` 仍映射到作品。
+- 在线工具延迟到打开窗口时加载；本机工具仅在用户点击时打开本机地址，不探测本机服务。
+- 公开互动数据沿用 2026-10-14 的历史快照，保留日期。本人内容来自原作品集，不新增未确认的履历。
+- 原 3D 世界保留在 `world/index.html`。背景使用已有场景截图，动效为视差、光尘、图标与窗口过渡；首页不加载 3D 引擎。
+- 声音默认关闭；系统减弱动态偏好生效，桌面动态也可手动暂停。作品播放器最小化时会关闭，避免后台播放。
+- 六个工具的业务页面、私有文件、导出记录不受桌面改版影响。原 GitHub Pages 网址保持不变。
