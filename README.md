@@ -70,3 +70,11 @@ Push the repository to GitHub, then open **Settings → Pages** and select **Dep
 - `seasons.css` / `seasons.js` 控制主题。首次按当前月份选择季节，每 22 秒轮换，颜色用 5 秒过渡。
 - 顶栏季节按钮可手动选择、开关自动轮换，选择仅保存到本机。手动选季节后暂停轮换。
 - 页面切到后台、桌面动态暂停或系统开启减弱动态时停止自动轮换；作品媒体和工具 iframe 不套颜色滤镜。
+
+### 四季场景与姓名展示字增强
+
+- 春季增加分批绽放的粉白花朵、花茎与飘落花瓣；秋季增加翻转下落的枫叶及底部落叶层。
+- 夏季强化太阳光盘、光芒与海面反光；冬季增加积雪轮廓及雪晶。效果位于背景，不拦截点击。
+- 动效跟随当前季节、暂停按钮和减弱动态设置；开场幕布退出后再开始开花。
+- `name-display.css` 使用自托管的粗宋体姓名展示字，首页、入场与关于我的姓名保持一致，正文不受影响。
+- `assets/fonts/ljw-display-heavy.woff2` 为 Adobe Source Han Serif CN Heavy 的四字符子集，重命名为 LJW Display；保留完整 OFL 许可，来源见字体目录说明。

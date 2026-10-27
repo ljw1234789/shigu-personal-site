@@ -1,0 +1,11 @@
+/* Four-glyph, locally hosted subset; the body copy keeps its readable UI typeface. */
+@font-face{font-family:LJWDisplay;src:url('assets/fonts/ljw-display-heavy.woff2') format('woff2');font-style:normal;font-weight:900;font-display:swap;unicode-range:U+5218,U+4FCA,U+5A01,U+002E}
+.home-intro h1{font-family:LJWDisplay,'Songti SC',serif;font-size:clamp(68px,6.3vw,82px);font-weight:900;letter-spacing:-.035em;line-height:1.1;text-shadow:none}
+.home-intro h1 .name-stop{font-family:inherit;font-size:.55em;font-weight:900;margin-left:.12em;letter-spacing:0;color:inherit}
+.entrance-name{font-family:LJWDisplay,'Songti SC',serif;font-weight:900;font-size:clamp(48px,5vw,66px);letter-spacing:-.025em;line-height:1.5}
+.entrance-name span{font-family:inherit;font-size:.6em;margin-left:.1em}
+.about-lead h3{font-family:LJWDisplay,'Songti SC',serif;font-weight:900;letter-spacing:-.035em}
+.brand-symbol,.personal-monogram{font-family:LJWDisplay,'Songti SC',serif;font-weight:900}
+@media(max-width:1100px){.home-intro h1{font-size:72px}}
+@media(max-width:700px){.home-intro h1{font-size:60px;line-height:1.1}.entrance-name{font-size:52px}}
+@media(max-width:370px){.home-intro h1{font-size:54px}.entrance-name{font-size:48px}}
