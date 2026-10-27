@@ -1,0 +1,75 @@
+/* Animate UI hues once at the root, without filtering photos, videos or tool iframes. */
+@property --season-hue{syntax:"<number>";inherits:true;initial-value:0}
+@property --ui-saturation{syntax:"<percentage>";inherits:true;initial-value:0%}
+@property --icon-saturation{syntax:"<percentage>";inherits:true;initial-value:0%}
+:root{transition:--season-hue 5s ease,--ui-saturation 5s ease,--icon-saturation 5s ease}
+:root[data-season="spring"]{--season-hue:135;--ui-saturation:17%;--icon-saturation:42%}
+:root[data-season="summer"]{--season-hue:207;--ui-saturation:22%;--icon-saturation:52%}
+:root[data-season="autumn"]{--season-hue:28;--ui-saturation:25%;--icon-saturation:55%}
+:root[data-season="winter"]{--season-hue:218;--ui-saturation:12%;--icon-saturation:14%;--tone-origin:100%;--tone-direction:-.95}
+:root.season-instant{transition:none}
+.wallpaper{isolation:isolate}
+.season-atmosphere,.season-scene{position:absolute;inset:0;pointer-events:none}
+.season-atmosphere{mix-blend-mode:color}
+.season-scene{opacity:0;transition:opacity 5s ease}
+.season-spring{background:linear-gradient(125deg,#a6c790 0%,#6c8c75 52%,#80965a 100%)}
+.season-summer{background:linear-gradient(125deg,#82bcc2 0%,#668bb0 52%,#456b8b 100%)}
+.season-autumn{background:linear-gradient(125deg,#c9a168 0%,#bb845f 52%,#8c6352 100%)}
+.season-winter{background:linear-gradient(125deg,#b2bec8 0%,#9aabba 52%,#7d8a97 100%)}
+[data-season="spring"] .season-spring,[data-season="summer"] .season-summer,[data-season="autumn"] .season-autumn,[data-season="winter"] .season-winter{opacity:1}
+.season-instant .season-scene{transition:none}
+.season-control{position:relative}
+.desktop-controls #season-toggle{font-size:14px;font-weight:600;position:relative}
+.season-control.is-auto #season-toggle::after{content:"";position:absolute;right:3px;bottom:3px;width:3px;height:3px;border-radius:50%;background:currentColor}
+.season-panel{position:absolute;top:44px;right:0;width:232px;padding:14px;background:hsl(var(--season-hue) var(--ui-saturation) 15% / .98);border:1px solid #ffffff36;border-radius:12px;box-shadow:0 12px 32px #0005;text-shadow:none}
+.season-options{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.desktop-controls .season-options button{width:100%;height:auto;padding:10px 4px;display:flex;flex-direction:column;gap:8px;background:transparent;border:1px solid transparent;font-size:13px}
+.season-options button>span{width:17px;height:17px;border-radius:50%;border:1px solid #ffffff3b}
+[data-season-option="spring"]>span{background:#8eaf87}
+[data-season-option="summer"]>span{background:#78a7cb}
+[data-season-option="autumn"]>span{background:#cba078}
+[data-season-option="winter"]>span{background:#b4bdc6}
+.desktop-controls .season-options button:hover{background:#ffffff12}
+.desktop-controls .season-options button[aria-pressed="true"]{border-color:#ffffff85;background:#ffffff12;color:#fff}
+.desktop-controls .season-auto{display:flex;align-items:center;justify-content:space-between;width:100%;height:38px;margin-top:12px;padding:12px 4px 0;border:0;border-top:1px solid #ffffff25;background:none;border-radius:0;font-size:12px;color:#dedede}
+.season-auto span{position:relative;width:27px;height:16px;border-radius:20px;background:#666;transition:background .2s}
+.season-auto span::after{content:"";position:absolute;left:3px;top:3px;width:10px;height:10px;border-radius:50%;background:#ddd;transition:transform .2s}
+.season-auto[aria-pressed="true"] span{background:#ddd}
+.season-auto[aria-pressed="true"] span::after{background:#222;transform:translateX(11px)}
+@media(max-width:700px){.season-panel{position:fixed;top:65px;right:16px}.desktop-controls #season-toggle{font-size:13px}}
+@media(prefers-reduced-motion:reduce){:root,.season-scene{transition:none!important}}
+
+/* Seasonal cues sit behind the desktop. Only the active season keeps animating. */
+.season-weather{position:absolute;inset:0;opacity:0;transition:opacity 5s ease;pointer-events:none;overflow:hidden}
+[data-season="spring"] .spring-weather,[data-season="summer"] .summer-weather,[data-season="autumn"] .autumn-weather,[data-season="winter"] .winter-weather{opacity:1}
+.spring-weather{background:radial-gradient(ellipse at 0 20%,#e7f6c52b,transparent 55%),radial-gradient(ellipse at 95% 85%,#f0d0d238,transparent 45%)}
+.spring-weather i,.autumn-weather i{position:absolute;right:12%;top:13%;width:17px;height:27px;border-radius:80% 0 80% 0;background:#c6dfad85;rotate:-35deg;animation:season-leaf 14s ease-in-out infinite;animation-play-state:paused}
+.spring-weather i:nth-child(2){right:38%;top:78%;width:13px;height:20px;animation-delay:-5s;background:#e8c9c390}
+.spring-weather i:nth-child(3){right:86%;top:40%;width:12px;height:20px;animation-delay:-9s}
+.summer-weather{background:linear-gradient(180deg,#b8e8ff2e,transparent 55%,#007dba44)}
+.summer-sun{position:absolute;right:6%;top:1%;width:clamp(130px,18vw,250px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff5c4 0%,#f8d78d 40%,#f9ce6e1a 66%,transparent 70%);filter:blur(1px);opacity:.88}
+.summer-sea{position:absolute;bottom:-20px;left:-12%;width:124%;height:36%;filter:drop-shadow(0 -15px 35px #9edcf37a)}
+.sea-back{fill:#6db9d0b5;animation:sea-drift 11s ease-in-out infinite alternate;animation-play-state:paused}
+.sea-front{fill:#397fa4c9;animation:sea-drift 8s ease-in-out -3s infinite alternate-reverse;animation-play-state:paused}
+.sea-foam{fill:none;stroke:#d9f5f2b3;stroke-width:2;animation:sea-drift 8s ease-in-out -3s infinite alternate-reverse;animation-play-state:paused}
+.autumn-weather{background:radial-gradient(ellipse at 85% 3%,#ffdb9b30,transparent 65%)}
+.autumn-weather i{right:9%;top:20%;background:#d68e45b5;rotate:30deg;animation-duration:17s}
+.autumn-weather i:nth-child(2){right:87%;top:68%;width:13px;height:21px;background:#b6754990;animation-delay:-4s}
+.autumn-weather i:nth-child(3){right:37%;top:88%;width:12px;height:18px;background:#dea65b99;animation-delay:-9s}
+.autumn-weather i:nth-child(4){right:65%;top:7%;width:10px;height:16px;animation-delay:-12s}
+.winter-frost{position:absolute;inset:0;background:linear-gradient(180deg,#e9f1f8a1 0%,#f3f7fa5c 36%,#f7fbffb8 75%,#fff 100%)}
+.snow{position:absolute;inset:-25%;background-image:radial-gradient(circle,#fff 2px,transparent 3px),radial-gradient(circle,#ffffffd9 1.5px,transparent 2.5px),radial-gradient(circle,#fff 1px,transparent 2px);background-size:171px 147px,283px 213px,127px 197px;background-position:0 0,80px 30px,30px 80px;animation:snow-fall 16s linear infinite;animation-play-state:paused;opacity:.9}
+.snow-far{filter:blur(1px);background-size:227px 193px,347px 277px,181px 231px;animation-duration:24s;animation-delay:-8s;opacity:.6}
+[data-season="spring"] .spring-weather i,[data-season="summer"] .summer-sea path,[data-season="autumn"] .autumn-weather i,[data-season="winter"] .snow{animation-play-state:running}
+body.is-paused .season-weather *,body.is-paused .season-weather{animation-play-state:paused!important}
+[data-season="winter"] .dust{opacity:0}
+[data-season="winter"] .season-panel{background:#f1f4f7fa;border-color:#0003;color:#23282e;box-shadow:0 12px 32px #0002}
+[data-season="winter"] .desktop-controls .season-options button:hover,[data-season="winter"] .desktop-controls .season-options button[aria-pressed="true"]{color:#222;background:#0000000c;border-color:#0006}
+[data-season="winter"] .desktop-controls .season-auto{color:#444;border-top-color:#0002}
+[data-season="winter"] .season-auto[aria-pressed="true"] span{background:#555}
+[data-season="winter"] .season-auto[aria-pressed="true"] span::after{background:#fff}
+@keyframes season-leaf{0%,100%{translate:0 0;rotate:-20deg}50%{translate:30px 45px;rotate:35deg}}
+@keyframes sea-drift{from{translate:-25px 4px}to{translate:25px -8px}}
+@keyframes snow-fall{from{translate:0 -10%}to{translate:50px 15%}}
+@media(max-width:700px){.summer-sun{right:-12px;top:0;width:160px}.summer-sea{height:27%}.snow{background-size:110px 130px,197px 179px,97px 167px}}
+@media(prefers-reduced-motion:reduce){.season-weather{transition:none}.season-weather *{animation:none!important}.snow-near{opacity:.45}}

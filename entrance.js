@@ -25,7 +25,7 @@
     };
     if (settled === true) setTimeout(settleDesktop, 350);
     else settleDesktop();
-    try { sessionStorage.setItem('ljw-intro-20261027', 'seen'); } catch {}
+    try { sessionStorage.setItem('ljw-intro-seasons-20261027', 'seen'); } catch {}
     if (returnFocus) document.querySelector('.desktop-brand')?.focus({ preventScroll: true });
     document.removeEventListener('keydown', onKey, true);
     reduced.removeEventListener('change', onReduced);
