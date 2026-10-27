@@ -19,8 +19,12 @@
     // Remove the pending curtain immediately; let the desktop settle before removing its animation class.
     root.classList.remove('intro-pending');
     curtain.remove();
-    if (settled === true) setTimeout(() => root.classList.remove('intro-running'), 350);
-    else root.classList.remove('intro-running');
+    const settleDesktop = () => {
+      document.querySelector('.home-window')?.classList.add('entrance-complete');
+      root.classList.remove('intro-running');
+    };
+    if (settled === true) setTimeout(settleDesktop, 350);
+    else settleDesktop();
     try { sessionStorage.setItem('ljw-intro-20261027', 'seen'); } catch {}
     if (returnFocus) document.querySelector('.desktop-brand')?.focus({ preventScroll: true });
     document.removeEventListener('keydown', onKey, true);
