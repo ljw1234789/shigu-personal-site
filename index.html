@@ -5,13 +5,13 @@
 <title>刘俊威的个人网站</title><meta name="description" content="你好，我是刘俊威。一个工科背景的内容创作者，用 AI 做内容，也把想法做成工具。我的视频项目、创作工具与工作经历。">
 <meta property="og:title" content="刘俊威的个人网站"><meta property="og:description" content="视频作品、参与职责与创作工具，向下浏览即可了解。"><meta property="og:image" content="https://ljw1234789.github.io/shigu-personal-site/world/ui/previews/personal.webp">
 <link rel="icon" href="favicon.svg?v=20261027" type="image/svg+xml"><link rel="preload" href="world/ui/previews/personal.webp" as="image"><link rel="stylesheet" href="desktop.css?v=20261027-seasons1">
-<script src="tool-catalog.js?v=20261021-1" defer></script><script src="site-data.js?v=20261029-1" defer></script><script src="homepage.js?v=20261029-editorial1" defer></script><script src="editorial.js?v=20261029-1" defer></script>
+<script src="tool-catalog.js?v=20261021-1" defer></script><script src="site-data.js?v=20261029-1" defer></script><script src="homepage.js?v=20261029-folio2" defer></script><script src="editorial.js?v=20261029-2" defer></script>
 <link rel="preload" href="assets/fonts/ljw-display-heavy.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="entrance.css?v=20261027-2"><link rel="stylesheet" href="seasons.css?v=20261027-2">
 <script>
 // Prepare the curtain before first paint; a failed script can never trap the page.
 (()=>{let seen=false;try{seen=sessionStorage.getItem('ljw-intro-seasons-20261027')==='seen'}catch{}if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!location.hash&&!seen){document.documentElement.classList.add('intro-pending');setTimeout(()=>{document.documentElement.classList.remove('intro-pending','intro-running');document.querySelectorAll('[data-intro-inert]').forEach(el=>{el.inert=false;el.removeAttribute('data-intro-inert')});document.getElementById('site-entrance')?.remove()},8000)}})();
 </script>
-<link rel="stylesheet" href="name-display.css?v=20261027-1"><link rel="stylesheet" href="homepage.css?v=20261029-1"><link rel="stylesheet" href="editorial.css?v=20261029-1"><link rel="stylesheet" href="cursor.css?v=20261029-3"><script src="seasons.js?v=20261027-2" defer></script><script src="entrance.js?v=20261029-1" defer></script>
+<link rel="stylesheet" href="name-display.css?v=20261027-1"><link rel="stylesheet" href="homepage.css?v=20261029-1"><link rel="stylesheet" href="editorial.css?v=20261029-2"><link rel="stylesheet" href="cursor.css?v=20261029-3"><script src="seasons.js?v=20261027-2" defer></script><script src="entrance.js?v=20261029-1" defer></script>
 </head>
 <body class="scroll-home" id="top">
 <div id="site-entrance" class="site-entrance">
@@ -25,39 +25,36 @@
 <div class="wallpaper" aria-hidden="true"><div class="world-photo"></div><div class="world-tint"></div><div class="sunlight"></div><div class="season-atmosphere" aria-hidden="true"><div class="season-scene season-spring"></div><div class="season-scene season-summer"></div><div class="season-scene season-autumn"></div><div class="season-scene season-winter"></div></div><div class="season-weather spring-weather"></div><div class="season-weather summer-weather"><div class="summer-sun"></div><svg class="summer-sea" viewBox="0 0 1440 320" preserveAspectRatio="none"><path class="sea-back" d="M0 75Q180 10 360 75T720 75T1080 75T1440 75V320H0Z"/><path class="sea-front" d="M0 125Q180 65 360 125T720 125T1080 125T1440 125V320H0Z"/><path class="sea-foam" d="M0 130Q180 70 360 130T720 130T1080 130T1440 130"/></svg></div><div class="season-weather autumn-weather"></div><div class="season-weather winter-weather"><div class="winter-frost"></div><div class="snow snow-near"></div><div class="snow snow-far"></div></div><div class="dust dust-one"></div><div class="dust dust-two"></div></div>
 <header class="desktop-bar page-header">
   <a class="desktop-brand" href="#top" aria-label="刘俊威的个人网站，返回顶部"><span class="brand-symbol">刘</span><span>刘俊威</span></a>
+  <p class="header-intro">内容创作<br>AI 工具</p>
   <nav class="page-nav" aria-label="首页导航"><a href="#projects">作品</a><a href="#tools">工具</a><a href="#experience">经历</a></nav>
   <div class="desktop-controls"><div class="season-control"><button id="season-toggle" type="button" aria-label="切换四季主题" aria-expanded="false" aria-controls="season-panel" title="四季主题">秋</button><div id="season-panel" class="season-panel" hidden><div class="season-options" role="group" aria-label="选择季节"><button type="button" data-season-option="spring" aria-pressed="false"><span></span>春</button><button type="button" data-season-option="summer" aria-pressed="false"><span></span>夏</button><button type="button" data-season-option="autumn" aria-pressed="false"><span></span>秋</button><button type="button" data-season-option="winter" aria-pressed="false"><span></span>冬</button></div><button id="season-auto" type="button" class="season-auto" aria-pressed="true">自动轮换<span aria-hidden="true"></span></button></div></div><button id="motion-toggle" aria-label="暂停桌面动态" aria-pressed="false" title="暂停桌面动态">Ⅱ</button></div>
 </header>
 <main class="portfolio-page" id="page-main" data-intro-surface>
   <section class="portfolio-hero page-surface" aria-labelledby="intro-title" id="intro">
-    <div class="hero-copy home-intro">
-      <p class="hero-greeting">你好，我是</p>
-      <h1 id="intro-title">刘俊威<span class="name-stop" aria-hidden="true">.</span></h1>
-      <p class="hero-role">内容创作 <span aria-hidden="true">×</span> AI 工具</p>
-    </div>
-    <div class="hero-aside">
-      <svg class="home-flower" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="m50 0 9 29 26-15-15 27 30 9-30 9 15 27-26-15-9 29-9-29-26 15 15-27L0 50l30-9-15-27 26 15Z"/></svg>
-      <p class="hero-summary">从一个问题，<br>到一条好懂的视频。</p>
-      <p class="hero-history">一个工科背景的内容创作者。<br>曾在毕导团队参与科普视频制作。</p>
-      <a class="hero-work-link" href="#projects">看我的作品 <span aria-hidden="true">↓</span></a>
-    </div>
-    <div class="hero-signal" aria-hidden="true"><svg viewBox="0 0 1200 72" preserveAspectRatio="none"><g class="signal-lines"></g></svg></div>
+    <div class="hero-wave" aria-hidden="true"><canvas id="wave-canvas"></canvas></div>
+    <div class="folio-rule" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+    <div class="hero-copy home-intro"><h1 id="intro-title">刘俊威<span class="name-stop" aria-hidden="true">.</span></h1></div>
+    <div class="hero-identity"><p>工科背景的内容创作者<br>曾在毕导团队参与科普视频制作</p><p>用 AI 做内容，<br>也把想法做成工具。</p><a class="hero-work-link" href="#projects">看我的作品 <span aria-hidden="true">↓</span></a></div>
   </section>
-  <section class="content-section page-surface work-section" id="projects" aria-labelledby="projects-title">
-    <header class="page-section-heading" data-reveal><h2 id="projects-title"><span class="title-mask"><span>视频作品</span></span><sup>03</sup></h2><p>毕导团队参与项目<br>选题 · 脚本 · 剪辑 · 发布复盘</p></header>
-    <div class="case-grid" id="case-grid"></div>
-    <p class="data-note">抖音公开互动数据，截至 2026.10.14。</p>
+  <section class="work-section" id="projects" aria-labelledby="projects-title">
+    <div class="work-stage">
+      <canvas id="work-canvas" aria-hidden="true"></canvas>
+      <header class="work-heading"><h2 id="projects-title">视频作品 <sup>03</sup></h2><p>毕导团队参与项目</p></header>
+      <div class="case-grid" id="case-grid"></div>
+      <nav class="work-jump" aria-label="选择视频作品"><button type="button" data-work-step="0" aria-label="展示重新认识干冰白雾"><span>01</span> 干冰白雾</button><button type="button" data-work-step="1" aria-label="展示丈量一条海岸线"><span>02</span> 海岸线</button><button type="button" data-work-step="2" aria-label="展示一条视频的诞生"><span>03</span> 幕后制作</button></nav>
+    </div>
   </section>
+  <p class="data-note">抖音公开互动数据，截至 2026.10.14。</p>
   <section class="content-section page-surface" id="tools" aria-labelledby="tools-title">
     <header class="page-section-heading" data-reveal><h2 id="tools-title"><span class="title-mask"><span>创作工具</span></span><sup>06</sup></h2><p>把创作中的重复步骤，<br>做成顺手的小工具。</p></header>
-    <a class="tool-showcase" href="#tool-science" data-detail="tool-science"><img src="assets/projects/science-workbench.jpg" alt="科普工作台实际界面：依据、文案与分镜在同一工作流中" width="1280" height="720" loading="lazy"><span><strong>科普工作台</strong><span>从观众问题到分镜，把依据放进创作流程。</span><b>打开工具 ↗</b></span></a>
-    <div class="homepage-tools" id="homepage-tools"></div>
+    <div class="tools-core"><a class="tool-showcase" href="#tool-science" data-detail="tool-science"><img src="assets/projects/science-workbench.jpg" alt="科普工作台实际界面：依据、文案与分镜在同一工作流中" width="1280" height="720" loading="lazy"><span><strong>科普工作台</strong><span>从观众问题到分镜，把依据放进创作流程。</span><b>打开工具 ↗</b></span></a>
+    <div class="homepage-tools" id="homepage-tools"></div></div>
   </section>
   <section class="content-section page-surface experience-section" id="experience" aria-labelledby="experience-title" data-reveal>
     <div class="experience-heading"><h2 id="experience-title">工作经历</h2><h3>毕导团队</h3><p>科普视频内容创作</p><p class="experience-intro">用 AI 辅助选题和写脚本，也参与剪辑、发布与复盘。工科背景让我习惯追问原理，做内容则让我学习如何把它讲清楚。</p></div>
     <ol class="experience-steps"><li><h4>选题与脚本</h4><p>从熟悉的现象和观众问题切入，借助 AI 发散角度，再把资料组织成能跟着理解的讲述顺序。</p></li><li><h4>剪辑与表达</h4><p>让画面、字幕与旁白相互对应，把抽象概念放进具体的视觉情境。</p></li><li><h4>发布与复盘</h4><p>整理发布内容，回看评论反馈，为下一条视频找到可以改进的地方。</p></li></ol>
   </section>
-  <section class="closing-section page-surface" aria-label="更多入口" data-reveal><div><h2>用内容表达。<br>用工具实现。</h2><p>刘俊威 · 内容创作与 AI 工具</p></div><div class="closing-actions"><button class="action" data-copy-site>分享我的网站 ↗</button><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a></div></section>
+  <section class="closing-section page-surface" aria-label="更多入口" data-reveal><div><h2 class="closing-name">刘俊威<span aria-hidden="true">.</span></h2><p>用内容表达。用工具实现。</p></div><div class="closing-actions"><button class="action" data-copy-site>分享我的网站 ↗</button><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a></div></section>
 </main>
 <footer class="page-footer" data-intro-surface><span>刘俊威 © 2026</span><button data-detail="site">关于网站</button><a href="#top">回到顶部 ↑</a></footer>
 <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-title"><header class="detail-header"><h2 id="detail-title" tabindex="-1"></h2><button class="detail-close" type="button" aria-label="关闭详情">×</button></header><div id="detail-content" class="detail-content"></div></dialog>
