@@ -9,6 +9,26 @@
   const heading = document.getElementById('detail-title');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let current = '', returnFocus = null, baseHash = '', toastTimer;
+  function syncDetailTheme() {
+    const season = document.documentElement.dataset.season;
+    dialog.querySelectorAll('[data-detail-season]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.detailSeason === season)));
+    const paused = document.body.classList.contains('is-paused');
+    const button = dialog.querySelector('[data-detail-motion]');
+    button.textContent = paused ? '▷' : 'Ⅱ';
+    button.setAttribute('aria-label', paused ? '播放四季动效' : '暂停四季动效');
+    button.setAttribute('aria-pressed',String(paused));
+  }
+  new MutationObserver(syncDetailTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-season']});
+  new MutationObserver(syncDetailTheme).observe(document.body,{attributes:true,attributeFilter:['class']});
+  function prepareDetailScenery() {
+    if(document.readyState === 'loading') { document.addEventListener('DOMContentLoaded',prepareDetailScenery,{once:true}); return; }
+    if(dialog.querySelector('.detail-weather')) return;
+    const source = document.querySelector('body > .wallpaper');
+    if(!source) return;
+    const scenery = source.cloneNode(true);
+    scenery.classList.add('detail-weather');
+    dialog.prepend(scenery);
+  }
   const featured = ['dry-ice','coastline','behind'].map(id=>projects.find(p=>p.id===id));
   const workResults = document.getElementById('work-results');
   if(workResults) workResults.innerHTML = `<div><strong>${evidence.totals.bilibiliViews}</strong><span>所列三条视频 · B 站累计播放</span></div><div><strong>${evidence.totals.douyinLikes}</strong><span>所列三条视频 · 抖音累计点赞</span></div>`;
@@ -47,11 +67,16 @@
       baseHash = Object.hasOwn(details, location.hash.slice(1)) ? (id.startsWith('project-')?'#projects':id.startsWith('tool-')?'#tools':'') : location.hash;
     }
     current = id; heading.textContent = detail.title;
+    const project = id.startsWith('project-');
+    dialog.classList.toggle('is-project-detail',project);
+    dialog.querySelector('.detail-close').textContent = project ? '← 返回作品' : '×';
+    dialog.querySelector('.detail-close').setAttribute('aria-label',project ? '返回作品' : '关闭详情');
     dialog.classList.toggle('is-tool-detail', Boolean(detail.tool));
     content.className = `detail-content${detail.tool?' tool-body':''}`;
     content.innerHTML = detail.body(); content.scrollTop = 0;
     document.body.classList.add('detail-open');
     if (!dialog.open) dialog.showModal();
+    if(project) requestAnimationFrame(()=>{prepareDetailScenery();syncDetailTheme();});
     if (push) history.pushState({detailOverlay:true}, '', `${location.pathname}${location.search}#${id}`);
     heading.focus({preventScroll:true});
   }
@@ -62,6 +87,7 @@
     document.body.classList.remove('detail-open');
     if (route) history.replaceState(null, '', `${location.pathname}${location.search}${baseHash}`);
     if (returnFocus?.isConnected && returnFocus !== document.body) returnFocus.focus({preventScroll:true});
+    else if(baseHash === '#projects') document.getElementById('projects').scrollIntoView({behavior:'instant'});
   }
   function route() {
     const id = location.hash.slice(1);
@@ -78,6 +104,9 @@
     clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('visible'),2500);
   }
   document.addEventListener('click', async event => {
+    const seasonButton = event.target.closest('[data-detail-season]');
+    if(seasonButton) { document.querySelector(`#season-panel [data-season-option="${seasonButton.dataset.detailSeason}"]`)?.click(); return; }
+    if(event.target.closest('[data-detail-motion]')) { document.getElementById('motion-toggle').click(); return; }
     const link = event.target.closest('[data-detail]');
     if (link && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); openDetail(link.dataset.detail,true,link); return; }
     const play = event.target.closest('[data-play]');
