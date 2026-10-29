@@ -10,25 +10,10 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let current = '', returnFocus = null, baseHash = '', toastTimer;
   function syncDetailTheme() {
-    const season = document.documentElement.dataset.season;
-    dialog.querySelectorAll('[data-detail-season]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.detailSeason === season)));
-    const paused = document.body.classList.contains('is-paused');
-    const button = dialog.querySelector('[data-detail-motion]');
-    button.textContent = paused ? '▷' : 'Ⅱ';
-    button.setAttribute('aria-label', paused ? '播放四季动效' : '暂停四季动效');
-    button.setAttribute('aria-pressed',String(paused));
+    const paused=document.body.classList.contains('is-paused'),button=dialog.querySelector('[data-detail-motion]');
+    if(button){button.textContent=paused?'▷':'Ⅱ';button.setAttribute('aria-label',paused?'播放页面动效':'暂停页面动效');button.setAttribute('aria-pressed',String(paused));}
   }
-  new MutationObserver(syncDetailTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-season']});
   new MutationObserver(syncDetailTheme).observe(document.body,{attributes:true,attributeFilter:['class']});
-  function prepareDetailScenery() {
-    if(document.readyState === 'loading') { document.addEventListener('DOMContentLoaded',prepareDetailScenery,{once:true}); return; }
-    if(dialog.querySelector('.detail-weather')) return;
-    const source = document.querySelector('body > .wallpaper');
-    if(!source) return;
-    const scenery = source.cloneNode(true);
-    scenery.classList.add('detail-weather');
-    dialog.prepend(scenery);
-  }
   const featured = ['dry-ice','coastline','behind'].map(id=>projects.find(p=>p.id===id));
   const workResults = document.getElementById('work-results');
   if(workResults) workResults.innerHTML = `<div><strong>${evidence.totals.bilibiliViews}</strong><span>所列三条视频 · B 站累计播放</span></div><div><strong>${evidence.totals.douyinLikes}</strong><span>所列三条视频 · 抖音累计点赞</span></div>`;
@@ -58,7 +43,7 @@
   const details = {};
   projects.forEach(p => { details[`project-${p.id}`] = {title:p.name, body:()=>projectContent(p)}; });
   tools.forEach(t => { details[`tool-${t.id}`] = {title:t.name, body:()=>toolContent(t), tool:!!t.url}; });
-  details.site = { title:'关于网站', body:()=>`<div class="window-content site-info"><h3>内容、作品与工具。</h3><p>个人介绍、参与项目与创作工具：刘俊威。</p><p>首页保留四季动效和姓名展示字，网格排版与作品动效参考 <a href="https://wodniack.dev/" target="_blank" rel="noopener">Antoine Wodniack</a>，入场节奏参考 <a href="https://www.ondastudio.co/" target="_blank" rel="noopener">Onda Studio</a>。原桌面交互参考 <a href="https://www.sharyap.com/" target="_blank" rel="noopener">Sharlene Yap</a>。</p><p>场景画面与独立 3D 世界基于 <a href="https://github.com/brunosimon/folio-2025" target="_blank" rel="noopener">Bruno Simon · Folio 2025</a>，保留 <a href="world/BRUNO-LICENSE.md" target="_blank">MIT 许可</a>。圆润立体姓名基于 <a href="https://github.com/lxgw/LxgwWenKai" target="_blank" rel="noopener">霞鹜文楷</a>构建，保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">OFL 许可</a>。导航姓名采用 <a href="https://github.com/TrionesType/zhuque" target="_blank" rel="noopener">朱雀仿宋</a>子集，保留 <a href="assets/fonts/OFL-ZhuqueFangsong.txt" target="_blank">OFL 许可</a>。</p></div>` };
+  details.site = { title:'关于网站', body:()=>`<div class="window-content site-info"><h3>内容、作品与工具。</h3><p>个人介绍、参与项目与创作工具：刘俊威。</p><p>首页的立体字质感、云状光影和版式参考 <a href="https://haoqi.design/" target="_blank" rel="noopener">Haoqi Design</a>。姓名与结尾立体字基于霞鹜文楷与 Fredoka 字体重新建模，保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">霞鹜文楷</a> 与 <a href="assets/fonts/OFL-Fredoka.txt" target="_blank">Fredoka</a> 的 OFL 许可。早期网格排版与作品动效参考 <a href="https://wodniack.dev/" target="_blank" rel="noopener">Antoine Wodniack</a>，入场节奏参考 <a href="https://www.ondastudio.co/" target="_blank" rel="noopener">Onda Studio</a>。原桌面交互参考 <a href="https://www.sharyap.com/" target="_blank" rel="noopener">Sharlene Yap</a>。</p><p>场景画面与独立 3D 世界基于 <a href="https://github.com/brunosimon/folio-2025" target="_blank" rel="noopener">Bruno Simon · Folio 2025</a>，保留 <a href="world/BRUNO-LICENSE.md" target="_blank">MIT 许可</a>。圆润立体姓名基于 <a href="https://github.com/lxgw/LxgwWenKai" target="_blank" rel="noopener">霞鹜文楷</a>构建，保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">OFL 许可</a>。导航姓名采用 <a href="https://github.com/TrionesType/zhuque" target="_blank" rel="noopener">朱雀仿宋</a>子集，保留 <a href="assets/fonts/OFL-ZhuqueFangsong.txt" target="_blank">OFL 许可</a>。</p></div>` };
   function openDetail(id, push = true, trigger = null) {
     const detail = details[id]; if (!detail) return;
     if (current === id && dialog.open) return;
@@ -76,7 +61,7 @@
     content.innerHTML = detail.body(); content.scrollTop = 0;
     document.body.classList.add('detail-open');
     if (!dialog.open) dialog.showModal();
-    if(project) requestAnimationFrame(()=>{prepareDetailScenery();syncDetailTheme();});
+    if(project) requestAnimationFrame(syncDetailTheme);
     if (push) history.pushState({detailOverlay:true}, '', `${location.pathname}${location.search}#${id}`);
     heading.focus({preventScroll:true});
   }
@@ -104,8 +89,6 @@
     clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('visible'),2500);
   }
   document.addEventListener('click', async event => {
-    const seasonButton = event.target.closest('[data-detail-season]');
-    if(seasonButton) { document.querySelector(`#season-panel [data-season-option="${seasonButton.dataset.detailSeason}"]`)?.click(); return; }
     if(event.target.closest('[data-detail-motion]')) { document.getElementById('motion-toggle').click(); return; }
     const link = event.target.closest('[data-detail]');
     if (link && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); openDetail(link.dataset.detail,true,link); return; }
@@ -131,7 +114,7 @@
     if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeDetail();
   });
   const motion=document.getElementById('motion-toggle');
-  function setMotion(paused){document.body.classList.toggle('is-paused',paused);motion.setAttribute('aria-pressed',String(paused));motion.textContent=paused?'▷':'Ⅱ';motion.setAttribute('aria-label',paused?'播放四季动效':'暂停四季动效');motion.title=motion.getAttribute('aria-label');}
+  function setMotion(paused){document.body.classList.toggle('is-paused',paused);motion.setAttribute('aria-pressed',String(paused));motion.textContent=paused?'动态 [▷]':'动态 [Ⅱ]';motion.setAttribute('aria-label',paused?'播放页面动效':'暂停页面动效');motion.title=motion.getAttribute('aria-label');}
   setMotion(reduced.matches);motion.addEventListener('click',()=>setMotion(!document.body.classList.contains('is-paused')));reduced.addEventListener('change',event=>setMotion(event.matches));
   let pointerFrame=0;
   document.addEventListener('pointermove',event=>{
