@@ -12,8 +12,8 @@
     const original=originals.get(el);if(paused())return;
     const chars=[...original];el.setAttribute('aria-label',original);
     el.innerHTML=chars.map(c=>`<span class="resolve-char" aria-hidden="true">${c}</span>`).join('');
-    const spans=[...el.children], glyphs='＋×—·';const start=performance.now();
-    const id=setInterval(()=>{const t=performance.now()-start;spans.forEach((span,i)=>{const done=t>110+i*35;span.classList.toggle('is-resolving',!done);span.textContent=done?chars[i]:glyphs[(Math.floor(t/75)+i)%glyphs.length]});if(t>chars.length*35+240){clearInterval(id);timers.delete(el);el.textContent=original}},65);timers.set(el,id);
+    const spans=[...el.children], glyphs='X7H#';const start=performance.now();
+    const id=setInterval(()=>{const t=performance.now()-start;spans.forEach((span,i)=>{const done=t>210+i*68;span.classList.toggle('is-resolving',!done);span.textContent=done?chars[i]:glyphs[(Math.floor(t/95)+i)%glyphs.length]});if(t>chars.length*68+330){clearInterval(id);timers.delete(el);el.textContent=original}},65);timers.set(el,id);
   }
   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');observer.unobserve(entry.target)}}),{threshold:.08});
   if(!reduced.matches)root.classList.add('craft-motion');revealTargets.forEach(el=>observer.observe(el));
