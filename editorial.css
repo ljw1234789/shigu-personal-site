@@ -1,9 +1,11 @@
 /* A full-width line field and scroll-driven project stage. */
 :root{--folio-field:hsl(var(--season-hue,28) calc(var(--ui-saturation,25%) * 1.4) 91%);--folio-ink:hsl(var(--season-hue,28) 17% 18%);--folio-active:var(--folio-ink);--folio-raised:color-mix(in srgb,var(--folio-field) 65%,white);--folio-dark:var(--folio-raised);--folio-line:hsl(var(--season-hue,28) 15% 30% / .22);--folio-ease:cubic-bezier(.22,1,.36,1)}
+:root[data-season=spring]{--folio-field:#e6f1e1;--folio-ink:#26382b;--folio-active:#3e6836;--folio-line:#668c633b}
+:root[data-season=summer]{--folio-field:#e5f2fb;--folio-ink:#213648;--folio-active:#256489;--folio-line:#638aac3b}
 :root[data-season=autumn]{--folio-field:#fff3d6;--folio-ink:#343129;--folio-active:#b84d16;--folio-line:#8e6c2738}
 :root[data-season=autumn] .page-header #season-toggle{color:var(--folio-active)}
 .page-header [data-season-option=autumn]>span{background:#e5ae42}
-:root[data-season=winter]{--folio-field:#f6f8fa;--folio-ink:#273139}
+:root[data-season=winter]{--folio-field:#f6f8fa;--folio-ink:#273139;--folio-active:#45667f;--folio-line:#8ea0ae3b}
 html{scroll-padding-top:16px}.scroll-home{color:var(--folio-ink);background:var(--folio-field)}
 .scroll-home .world-photo,.scroll-home .world-tint,.scroll-home .sunlight,.scroll-home .season-atmosphere,.scroll-home .dust{display:none}
 .scroll-home .wallpaper{z-index:2;opacity:.4;pointer-events:none;mask-image:linear-gradient(90deg,#000,transparent 23%,transparent 77%,#000)}.scroll-home.work-in-view .wallpaper{opacity:.06}.scroll-home .wallpaper{transition:opacity .5s ease}.scroll-home .summer-sea{height:17%}.scroll-home .summer-sun{width:130px}
