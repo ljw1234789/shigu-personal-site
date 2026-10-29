@@ -11,7 +11,9 @@
 // Prepare the curtain before first paint; a failed script can never trap the page.
 (()=>{let seen=false;try{seen=sessionStorage.getItem('ljw-intro-refined-20261030-2')==='seen'}catch{}if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!location.hash&&!seen){document.documentElement.classList.add('intro-pending');setTimeout(()=>{document.documentElement.classList.remove('intro-pending','intro-running');document.querySelectorAll('[data-intro-inert]').forEach(el=>{el.inert=false;el.removeAttribute('data-intro-inert')});document.getElementById('site-entrance')?.remove()},8000)}})();
 </script>
-<link rel="stylesheet" href="name-display.css?v=20261029-2"><link rel="stylesheet" href="homepage.css?v=20261029-1"><link rel="stylesheet" href="editorial.css?v=refined-20261030-2"><link rel="stylesheet" href="evidence.css?v=20261029-1"><link rel="stylesheet" href="detail-pages.css?v=refined-20261030-2"><link rel="stylesheet" href="cursor.css?v=20261029-3"><script src="entrance.js?v=refined-20261030-2" defer></script>
+<link rel="stylesheet" href="name-display.css?v=20261029-2"><link rel="stylesheet" href="homepage.css?v=20261029-1"><link rel="stylesheet" href="editorial.css?v=refined-20261030-3"><link rel="stylesheet" href="evidence.css?v=20261029-1"><link rel="stylesheet" href="detail-pages.css?v=refined-20261030-2"><link rel="stylesheet" href="cursor.css?v=20261029-3"><script src="entrance.js?v=refined-20261030-2" defer></script>
+<link rel="modulepreload" href="assets/vendor/three.module.js"><link rel="modulepreload" href="assets/vendor/three.core.js">
+<link rel="preload" href="assets/sculpture-v2/name.bin?v=refined-20261030-2" as="fetch" crossorigin>
 <script type="module" src="name-sculpture.js?v=refined-20261030-2"></script>
 </head>
 <body class="scroll-home" id="top">
