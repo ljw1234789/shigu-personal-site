@@ -1,0 +1,18 @@
+/* Native image cursors keep the pointer precise without a trailing DOM overlay. */
+@media (hover: hover) and (pointer: fine) {
+  body.scroll-home {
+    cursor: url("assets/cursors/arrow.svg") 5 4, default;
+  }
+
+  body.scroll-home :is(a[href], button:not(:disabled), summary, [role="button"]:not([aria-disabled="true"]), input[type="button"], input[type="submit"], input[type="reset"], input[type="checkbox"], input[type="radio"], select) {
+    cursor: url("assets/cursors/pointer.svg") 15 3, pointer;
+  }
+
+  body.scroll-home :is(input:not([type]), input[type="text"], input[type="search"], input[type="email"], input[type="url"], input[type="password"], input[type="tel"], input[type="number"], textarea, [contenteditable="true"]) {
+    cursor: text;
+  }
+
+  body.scroll-home :is(button:disabled, input:disabled, select:disabled, textarea:disabled, [aria-disabled="true"]) {
+    cursor: not-allowed;
+  }
+}
