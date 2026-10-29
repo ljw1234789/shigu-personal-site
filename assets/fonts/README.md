@@ -14,3 +14,5 @@
 - 网站文件：`ljw-signature.woff2`，仅包含“刘俊威.”，不改动字形轮廓。
 - 子集名称：LJW Signature / LJWSignature-Regular；保留版权和许可信息。
 - 原来的 Heavy 子集留存，用于旧页面的兼容性。
+
+The 2026-10-29 3D name uses original vector outlines of 刘俊威 from Zhuque Fangsong, stored in ../name-sculpture.json. The same OFL license applies. The geometry, lighting and seasonal materials are authored for this portfolio.
