@@ -6,7 +6,7 @@
   if (!root.classList.contains('intro-pending')) { curtain.remove(); return; }
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const surfaces = [...document.querySelectorAll('.desktop-bar, #desktop, .desktop-bottom')];
+  const surfaces = [...document.querySelectorAll('.desktop-bar, #desktop, .desktop-bottom, [data-intro-surface]')];
   let finished = false, fallback;
   surfaces.forEach(el => { el.inert = true; el.setAttribute('data-intro-inert', ''); });
 
