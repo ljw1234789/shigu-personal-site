@@ -9,12 +9,13 @@ export function createGlassMaterial(top, bottom) {
       uSkyMap: {value:null}, uTop:{value:new THREE.Color(top)},
       uBottom:{value:new THREE.Color(bottom)}, uTime:{value:0},
       uAspect:{value:1}, uResolution:{value:new THREE.Vector2(1280,720)},
-      uLight:{value:new THREE.Vector3(4,9,.5)}, uYRange:{value:new THREE.Vector2(-1,1)}
+      uLight:{value:new THREE.Vector3(4,9,.5)}, uYRange:{value:new THREE.Vector2(-1,1)},
+      uTintHeight:{value:new THREE.Vector4(0,1,0,0)}
     },
-    vertexShader:`varying vec3 vNormal,vIncident;varying float vHeight;
+    vertexShader:`uniform vec4 uTintHeight;varying vec3 vNormal,vIncident;varying float vHeight;
       void main(){vec4 world=modelMatrix*vec4(position,1.);
         vNormal=normalize((modelMatrix*vec4(normal,0.)).xyz);
-        vIncident=normalize(world.xyz-cameraPosition);vHeight=position.y;
+        vIncident=normalize(world.xyz-cameraPosition);vHeight=dot(vec4(position,1.),uTintHeight);
         gl_Position=projectionMatrix*viewMatrix*world;}`,
     fragmentShader:`uniform sampler2D uSkyMap;uniform vec3 uTop,uBottom,uLight;
       uniform vec2 uResolution,uYRange;varying vec3 vNormal,vIncident;varying float vHeight;

@@ -1,6 +1,6 @@
 import * as THREE from './assets/vendor/three.module.js';
-import {SkyLight} from './sky-light.js?v=optics-20261030-5';
-import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=optics-20261030-5';
+import {SkyLight} from './sky-light.js?v=optics-20261030-6';
+import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=optics-20261030-6';
 // Original inflated meshes and procedural light; no model or artwork from the reference site.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const stopped=()=>reduced.matches||document.body.classList.contains('is-paused')||document.body.classList.contains('detail-open');
@@ -47,13 +47,16 @@ class SculptureScene{
   this.scene.add(new THREE.HemisphereLight('#e8f2ff','#e2d4bd',.45));const key=new THREE.DirectionalLight('#fffaf0',1.6);key.position.set(-4,4,6);this.scene.add(key);const fill=new THREE.DirectionalLight('#c8dfff',.8);fill.position.set(5,1,2);this.scene.add(fill);
   this.group=new THREE.Group();this.scene.add(this.group);this.materials=[];this.group.rotation.set(this.footer?-Math.PI:0,this.footer?0:this.entryStarted?THREE.MathUtils.degToRad(4):THREE.MathUtils.degToRad(240),0);
   if(this.footer){
-   const specs=[['craft',1.12,-.04,'#ffffff','#9dceeb'],['and',0,.06,'#009dff','#ffffff'],['taste',-1.12,.02,'#38afff','#009dff']];
-   const models=await Promise.all(specs.map(s=>loadGeometry(s[0])));specs.forEach(([key,y,z,top,bottom],i)=>{const m=letteringMaterial(top,bottom);models[i].computeBoundingBox();m.uniforms.uYRange.value.set(models[i].boundingBox.min.y,models[i].boundingBox.max.y);this.materials.push(m);const mesh=new THREE.Mesh(models[i],m);mesh.position.y=y;mesh.rotation.z=z;mesh.scale.y=.85;mesh.position.z=i===1?.25:0;this.group.add(mesh);});
+   const specs=[['craft',1.12,-.04],['and',0,.06],['taste',-1.12,.02]];
+   const models=await Promise.all(specs.map(s=>loadGeometry(s[0])));let tintMin=Infinity,tintMax=-Infinity;
+   specs.forEach(([key,y,z],i)=>{const m=letteringMaterial('#ffffff','#009dff');this.materials.push(m);const mesh=new THREE.Mesh(models[i],m);mesh.position.y=y;mesh.rotation.z=z;mesh.scale.y=.85;mesh.position.z=i===1?.25:0;this.group.add(mesh);mesh.updateMatrix();const e=mesh.matrix.elements;m.uniforms.uTintHeight.value.set(e[1],e[5],e[9],e[13]);const p=models[i].attributes.position;for(let n=0;n<p.count;n++){const h=e[1]*p.getX(n)+e[5]*p.getY(n)+e[9]*p.getZ(n)+e[13];tintMin=Math.min(tintMin,h);tintMax=Math.max(tintMax,h);}});
+   // One vertical absorption gradient across the complete word sculpture.
+   this.materials.forEach(m=>m.uniforms.uYRange.value.set(tintMin,tintMax));
   }else{const m=letteringMaterial('#009dff','#ffffff');const geometry=await loadGeometry('name');geometry.computeBoundingBox();m.uniforms.uYRange.value.set(geometry.boundingBox.min.y,geometry.boundingBox.max.y);this.materials.push(m);this.group.add(new THREE.Mesh(geometry,m));}
   this.background.material.uniforms.uSkyMap.value=this.sky.texture;this.materials.forEach(m=>m.uniforms.uSkyMap.value=this.sky.texture);this.visible=true;this.resize();this.frame(performance.now());this.host.classList.add('ready');this.canvas.classList.add('is-ready');this.host.dataset.renderState='ready';
   new ResizeObserver(()=>this.resize()).observe(this.host);
   new IntersectionObserver(entries=>{this.visible=entries[0].isIntersecting;this.canvas.style.visibility=this.visible?'visible':'hidden';if(this.visible){this.last=0;this.schedule();}else{cancelAnimationFrame(this.raf);this.raf=0;}},{rootMargin:'50px'}).observe(this.host);
-  const target=this.host.parentElement;target.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||stopped())return;const r=this.host.getBoundingClientRect();this.target.set((e.clientX-r.left)/r.width-.5,.5-(e.clientY-r.top)/r.height);this.hover=true;this.schedule();},{passive:true});target.addEventListener('pointerleave',()=>{this.target.set(0,0);this.hover=false;});
+  const target=this.host.parentElement;target.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||stopped())return;this.target.set(e.clientX/innerWidth-.5,.5-e.clientY/innerHeight);this.hover=true;this.schedule();},{passive:true});target.addEventListener('pointerleave',()=>{this.target.set(0,0);this.hover=false;});
   new MutationObserver(()=>{if(stopped()){this.target.set(0,0);this.hover=false;}this.schedule();}).observe(document.body,{attributes:true,attributeFilter:['class']});new MutationObserver(this.schedule).observe(document.documentElement,{attributes:true,attributeFilter:['class']});reduced.addEventListener('change',this.schedule);
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(this.raf);this.raf=0;}else{this.last=0;this.schedule();}});
   addEventListener('scroll',this.schedule,{passive:true});addEventListener('resize',()=>this.resize());
@@ -63,7 +66,7 @@ class SculptureScene{
  resize(){if(!this.camera||this.lost)return;const r={width:innerWidth,height:innerHeight};if(!r.width||!r.height)return;this.aspect=r.width/r.height;this.height=Math.max(this.footer?6.2:6.,(this.footer?5.6:7.3)/this.aspect);this.width=this.height*this.aspect;this.mobile=r.width<600;const horizontalFov=THREE.MathUtils.degToRad(r.width<1024?38:60);this.camera.aspect=this.aspect;this.camera.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(horizontalFov/2)/this.aspect));this.worldFit=(2*24*Math.tan(horizontalFov/2)/this.aspect)/this.height;this.camera.updateProjectionMatrix();this.renderer.setSize(r.width,r.height,false);this.paperMaterial.uniforms.uSize.value.set(r.width,r.height);this.sky.resize(r.width,r.height);const pixelSize=this.renderer.getDrawingBufferSize(new THREE.Vector2());this.sceneTarget.setSize(pixelSize.x,pixelSize.y);this.finish.resize(r.width,r.height,this.renderer.getPixelRatio());this.background.scale.set(this.width,this.height,1);this.background.material.uniforms.uAspect.value=this.aspect;for(const m of this.materials){m.uniforms.uAspect.value=this.aspect;this.renderer.getDrawingBufferSize(m.uniforms.uResolution.value);}this.schedule();}
  schedule(){if(!this.raf&&this.visible&&!this.lost&&!document.hidden)this.raf=requestAnimationFrame(this.frame);}
  frame(now){this.raf=0;if(!this.visible||this.lost||document.hidden||!this.group)return;const dt=Math.min(.05,(now-(this.last||now))/1000);this.last=now;const paused=stopped(),pending=document.documentElement.classList.contains('intro-pending');if(!pending)this.entryStarted=true;this.time=opticalTime();const scale=1;
-  this.pointer.lerp(this.target,.06);this.pressure+=((this.hover&&!paused?1:0)-this.pressure)*.07;
+  this.pointer.lerp(this.target,this.hover?.1:.05);this.pressure+=((this.hover&&!paused?1:0)-this.pressure)*.07;
   const rect=this.host.getBoundingClientRect(),viewport=Math.max(1,innerHeight),entry=THREE.MathUtils.clamp(1-rect.top/viewport,0,1),after=THREE.MathUtils.clamp(-rect.top/viewport,0,1);
   const paper=this.footer?THREE.MathUtils.clamp(rect.top/viewport,0,1):THREE.MathUtils.clamp(-rect.top/(.75*viewport),0,1);
   if(this.entryStarted&&!paused)this.entryAge=Math.min(1.2,this.entryAge+dt);
@@ -77,7 +80,7 @@ class SculptureScene{
   this.group.position.y*=this.worldFit;this.group.position.y+=paused||this.mobile?0:Math.sin(this.time*1.2)*.18+Math.sin(this.time*.6)*.06;
   this.host.dataset.motionPhase=this.footer?'entry':'exit';this.host.dataset.motionProgress=(this.footer?entry:after).toFixed(3);this.host.dataset.rotation=[this.group.rotation.x,this.group.rotation.y].map(v=>THREE.MathUtils.radToDeg(v).toFixed(1)).join(',');
   this.host.dataset.paper=paper.toFixed(3);this.host.dataset.dolly=dolly.toFixed(3);this.paperMaterial.uniforms.uOpacity.value=paper;
-  let lightTarget=Math.atan2(9,4);if(this.hover&&!paused){this.lightRay.setFromCamera(new THREE.Vector2(this.pointer.x*2,this.pointer.y*2),this.camera);if(this.lightRay.ray.intersectPlane(this.lightPlane,this.lightHit)&&this.lightHit.lengthSq()>.000001)lightTarget=Math.atan2(-this.lightHit.y,-this.lightHit.x);}
+  let lightTarget=Math.atan2(9,4);if(this.hover&&!paused){this.lightRay.setFromCamera(new THREE.Vector2(this.target.x*2,this.target.y*2),this.camera);if(this.lightRay.ray.intersectPlane(this.lightPlane,this.lightHit)&&this.lightHit.lengthSq()>.000001)lightTarget=Math.atan2(-this.lightHit.y,-this.lightHit.x);}
   this.lightAngle+=Math.atan2(Math.sin(lightTarget-this.lightAngle),Math.cos(lightTarget-this.lightAngle))*(1-Math.exp(-6*dt));
   const sceneTime=this.time;this.host.dataset.opticsTime=sceneTime.toFixed(2);for(const m of this.materials){m.uniforms.uTime.value=sceneTime;m.uniforms.uLight.value.set(Math.hypot(4,9)*Math.cos(this.lightAngle),Math.hypot(4,9)*Math.sin(this.lightAngle),.5);}
   this.background.material.uniforms.uTime.value=sceneTime;this.skyPointer.set(.5+this.pointer.x,.5+this.pointer.y);this.sky.render(this.renderer,sceneTime,this.skyPointer);
