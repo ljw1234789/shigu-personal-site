@@ -8,7 +8,7 @@
  function finishText(){timers.forEach(clearInterval);timers.clear();originals.forEach((value,el)=>{el.innerHTML=value.html})}
  function resolve(el){
   if(el.dataset.resolved)return;el.dataset.resolved='true';if(paused())return;
-  const hero=el.parentElement.classList.contains('hero-statement'),meta=el.closest('.hero-topline,.page-header');
+  const hero=el.parentElement.matches('.hero-statement,.closing-copy'),meta=el.closest('.hero-topline,.page-header');
   const lineIndex=hero?[...el.parentElement.children].indexOf(el):0,delay=hero?300+lineIndex*200:meta?300:0;let step=meta?10:80;
   const glyphs='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*+-=?/<>[]{}',spans=[];
   const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);

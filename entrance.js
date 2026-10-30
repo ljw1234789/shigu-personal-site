@@ -2,7 +2,7 @@
  const root=document.documentElement,curtain=document.getElementById('site-entrance');
  if(!curtain)return;if(!root.classList.contains('intro-pending')){curtain.remove();return}
  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),surfaces=[...document.querySelectorAll('.desktop-bar,[data-intro-surface]')],canvas=document.getElementById('entrance-dots'),ctx=canvas?.getContext('2d'),line=curtain.querySelector('.entrance-progress');
- let finished=false,raf=0,revealAt=0,textStarted=false,fontsReady=!document.fonts,progress=0;const start=performance.now();
+ let finished=false,raf=0,prepareAt=0,revealAt=0,textStarted=false,fontsReady=!document.fonts,progress=.12;const start=performance.now();
  document.fonts?.ready.then(()=>{fontsReady=true});surfaces.forEach(el=>{el.inert=true;el.setAttribute('data-intro-inert','')});
  function startText(){if(textStarted)return;textStarted=true;root.classList.add('intro-text-ready');document.dispatchEvent(new Event('portfolio:intro-text'))}
  function finish(){if(finished)return;finished=true;cancelAnimationFrame(raf);startText();surfaces.forEach(el=>{el.inert=false;el.removeAttribute('data-intro-inert')});root.classList.remove('intro-pending','intro-running');curtain.remove();document.removeEventListener('keydown',key);reduced.removeEventListener('change',finish);removeEventListener('resize',resize)}
@@ -15,7 +15,8 @@
   if(finished)return;const elapsed=now-start,state=document.getElementById('name-stage')?.dataset.renderState,stageReady=state==='ready'||state==='fallback';
   const target=(fontsReady?.5:0)+(stageReady?.5:.4*Math.min(elapsed/6000,1));progress+=(target-progress)*.12;line.style.transform=`scaleX(${Math.max(.03,progress)})`;
   // Wait for the actual lettering, with a bounded failure escape.
-  if(!revealAt&&elapsed>=2200&&((fontsReady&&stageReady)||elapsed>=12000)){revealAt=now;curtain.classList.add('dissolving')}
+  if(!prepareAt&&elapsed>=2200&&((fontsReady&&stageReady)||elapsed>=12000)){prepareAt=now;document.dispatchEvent(new Event('portfolio:intro-prepare'))}
+  if(prepareAt&&!revealAt&&now-prepareAt>=100){revealAt=now;curtain.classList.add('dissolving')}
   if(revealAt){const age=now-revealAt;if(age>=100)startText();if(age>=250)curtain.classList.add('line-fading');
    const t=Math.min(1,age/800),open=easing(t),w=innerWidth,h=innerHeight,unit=Math.min(w,h),radius=Math.hypot(w/unit,h/unit)*open,feather=Math.max(.8,radius*.12),fill=smooth(((1-open)-.92)/.08),cell=16;
    ctx.clearRect(0,0,w,h);ctx.fillStyle='#efede7';ctx.beginPath();
