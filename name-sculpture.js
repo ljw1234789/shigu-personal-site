@@ -1,5 +1,5 @@
 import * as THREE from './assets/vendor/three.module.js';
-import {SkyLight} from './sky-light.js?v=motion-20261030-6';
+import {SkyLight} from './sky-light.js?v=motion-20261030-7';
 // Original inflated meshes and procedural light; no model or artwork from the reference site.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const stopped=()=>reduced.matches||document.body.classList.contains('is-paused')||document.body.classList.contains('detail-open');
@@ -16,7 +16,7 @@ function loadGeometry(key){
 }
 // Shared procedural backdrop, sampled by the lettering too so the image bends through the surface.
 const skyFunctions=`uniform sampler2D uSkyMap;vec3 skyAt(vec2 uv){return texture2D(uSkyMap,clamp(uv,0.,1.)).rgb;}`;
-const cloudVertex=`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`;
+const cloudVertex=`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy*2.,1.,1.);}`;
 const cloudFragment=`varying vec2 vUv;${skyFunctions}void main(){gl_FragColor=vec4(skyAt(vUv),1.);#include <colorspace_fragment>}`.replace('#include','\n#include');
 function skyUniforms(){return {uSkyMap:{value:null},uTime:{value:0},uAspect:{value:1}};}
 function letteringMaterial(top,bottom){
@@ -56,7 +56,7 @@ class SculptureScene{
   }`});this.finishScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.finishMaterial));
   this.paperScene=new THREE.Scene();this.paperMaterial=new THREE.ShaderMaterial({transparent:true,depthTest:false,depthWrite:false,toneMapped:false,uniforms:{uOpacity:{value:0},uSize:{value:new THREE.Vector2(1280,720)},uPaper:{value:new THREE.Color('#f9f8f0')}},vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}',fragmentShader:`varying vec2 vUv;uniform float uOpacity;uniform vec2 uSize;uniform vec3 uPaper;void main(){vec2 cell=fract(vUv*uSize/4.);float d=distance(cell,vec2(.5)),r=.9*uOpacity,aa=fwidth(d)*1.5;float a=1.-smoothstep(r-aa,r+aa,d);if(uOpacity<.001)a=0.;gl_FragColor=vec4(uPaper,a);\n#include <colorspace_fragment>\n}`});this.paperScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.paperMaterial));
   this.sky=new SkyLight();this.skyPointer=new THREE.Vector2(.5,.5);
-  this.scene=new THREE.Scene();this.camera=new THREE.OrthographicCamera(-5,5,3,-3,.1,30);this.camera.position.set(0,0,10);
+  this.scene=new THREE.Scene();this.camera=new THREE.PerspectiveCamera(35,1,.1,100);this.camera.position.set(0,0,24);
   this.background=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.ShaderMaterial({vertexShader:cloudVertex,fragmentShader:cloudFragment,uniforms:skyUniforms(),depthWrite:false,depthTest:false,toneMapped:false}));this.background.position.z=-5;this.background.renderOrder=-10;this.scene.add(this.background);
   this.scene.add(new THREE.HemisphereLight('#e8f2ff','#e2d4bd',.45));const key=new THREE.DirectionalLight('#fffaf0',1.6);key.position.set(-4,4,6);this.scene.add(key);const fill=new THREE.DirectionalLight('#c8dfff',.8);fill.position.set(5,1,2);this.scene.add(fill);
   this.group=new THREE.Group();this.scene.add(this.group);this.materials=[];this.group.rotation.set(this.footer?-Math.PI:0,this.footer?0:this.entryStarted?THREE.MathUtils.degToRad(4):THREE.MathUtils.degToRad(240),0);
@@ -74,7 +74,7 @@ class SculptureScene{
   this.canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();this.lost=true;cancelAnimationFrame(this.raf);this.raf=0;this.host.classList.remove('ready');this.canvas.classList.remove('is-ready');this.host.dataset.renderState='fallback';});this.canvas.addEventListener('webglcontextrestored',()=>{this.lost=false;this.host.classList.add('ready');this.canvas.classList.add('is-ready');this.host.dataset.renderState='ready';this.schedule();});
   addEventListener('pagehide',()=>{cancelAnimationFrame(this.raf);this.raf=0;});addEventListener('pageshow',()=>{this.last=0;this.schedule();});
  }catch(error){this.host.classList.remove('ready');this.host.dataset.renderState='fallback';this.sky?.dispose();this.renderer?.dispose();console.warn('Readable lettering fallback:',error.message);}}
- resize(){if(!this.camera||this.lost)return;const r={width:innerWidth,height:innerHeight};if(!r.width||!r.height)return;this.aspect=r.width/r.height;this.height=Math.max(this.footer?6.2:6.,(this.footer?5.6:7.3)/this.aspect);this.width=this.height*this.aspect;this.mobile=r.width<600;Object.assign(this.camera,{left:-this.width/2,right:this.width/2,top:this.height/2,bottom:-this.height/2});this.camera.updateProjectionMatrix();this.renderer.setSize(r.width,r.height,false);this.paperMaterial.uniforms.uSize.value.set(r.width,r.height);this.sky.resize(r.width,r.height);const pixelSize=this.renderer.getDrawingBufferSize(new THREE.Vector2());this.letterTarget.setSize(pixelSize.x,pixelSize.y);this.finishMaterial.uniforms.uTexel.value.set(1/pixelSize.x,1/pixelSize.y);this.background.scale.set(this.width,this.height,1);this.background.material.uniforms.uAspect.value=this.aspect;for(const m of this.materials){m.uniforms.uAspect.value=this.aspect;this.renderer.getDrawingBufferSize(m.uniforms.uResolution.value);}this.schedule();}
+ resize(){if(!this.camera||this.lost)return;const r={width:innerWidth,height:innerHeight};if(!r.width||!r.height)return;this.aspect=r.width/r.height;this.height=Math.max(this.footer?6.2:6.,(this.footer?5.6:7.3)/this.aspect);this.width=this.height*this.aspect;this.mobile=r.width<600;const horizontalFov=THREE.MathUtils.degToRad(r.width<1024?38:60);this.camera.aspect=this.aspect;this.camera.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(horizontalFov/2)/this.aspect));this.worldFit=(2*24*Math.tan(horizontalFov/2)/this.aspect)/this.height;this.camera.updateProjectionMatrix();this.renderer.setSize(r.width,r.height,false);this.paperMaterial.uniforms.uSize.value.set(r.width,r.height);this.sky.resize(r.width,r.height);const pixelSize=this.renderer.getDrawingBufferSize(new THREE.Vector2());this.letterTarget.setSize(pixelSize.x,pixelSize.y);this.finishMaterial.uniforms.uTexel.value.set(1/pixelSize.x,1/pixelSize.y);this.background.scale.set(this.width,this.height,1);this.background.material.uniforms.uAspect.value=this.aspect;for(const m of this.materials){m.uniforms.uAspect.value=this.aspect;this.renderer.getDrawingBufferSize(m.uniforms.uResolution.value);}this.schedule();}
  schedule(){if(!this.raf&&this.visible&&!this.lost&&!document.hidden)this.raf=requestAnimationFrame(this.frame);}
  frame(now){this.raf=0;if(!this.visible||this.lost||document.hidden||!this.group)return;const dt=Math.min(.05,(now-(this.last||now))/1000);this.last=now;const paused=stopped(),pending=document.documentElement.classList.contains('intro-pending');if(!pending)this.entryStarted=true;if(!paused)this.time+=dt;const scale=1;
   this.pointer.lerp(this.target,.06);this.pressure+=((this.hover&&!paused?1:0)-this.pressure)*.07;
@@ -82,13 +82,13 @@ class SculptureScene{
   const paper=this.footer?THREE.MathUtils.clamp(rect.top/viewport,0,1):THREE.MathUtils.clamp((viewport-rect.bottom)/(.75*viewport),0,1);
   if(this.entryStarted&&!paused)this.entryAge=Math.min(1.2,this.entryAge+dt);
   const dolly=paused?1:24/(24+8*paper+8*(1-entryEase(this.entryAge/1.2)));
-  this.group.scale.setScalar(scale*dolly);if(!this.footer)this.group.scale.x*=1.05;this.group.scale.y*=this.footer||this.mobile ? 1 : .85;
+  this.camera.position.z=24/dolly;this.group.scale.setScalar(scale*this.worldFit);if(!this.footer)this.group.scale.x*=1.05;this.group.scale.y*=this.footer||this.mobile ? 1 : .85;
   const targetX=this.footer?THREE.MathUtils.lerp(-Math.PI,0,entry):0,targetY=this.footer?0:THREE.MathUtils.degToRad(THREE.MathUtils.lerp(4,90,after));
   if(paused){this.group.rotation.set(0,this.footer?0:THREE.MathUtils.degToRad(4),0)}else if(this.entryStarted||this.footer){this.group.rotation.x=THREE.MathUtils.damp(this.group.rotation.x,targetX,6,dt);this.group.rotation.y=THREE.MathUtils.damp(this.group.rotation.y,targetY,6,dt)}
   this.group.position.y=this.mobile?(this.footer ? this.height*.025 : this.height*.10):(this.footer ? -.18 : .70);
   // A fixed canvas keeps the sky behind the introduction; only the sculpture follows document anchors.
-  this.group.position.y+=(this.footer?(viewport/2-rect.top-rect.height/2):-rect.top*(paused?1:.72))/viewport*this.height;
-  this.group.position.y+=paused||this.mobile?0:Math.sin(this.time*1.2)*.18+Math.sin(this.time*.6)*.06;
+  this.group.position.y+=(this.footer?(viewport/2-rect.top-rect.height/2):-rect.top*(paused?1:.72))/viewport*this.height/dolly;
+  this.group.position.y+=paused||this.mobile?0:Math.sin(this.time*1.2)*.18+Math.sin(this.time*.6)*.06;this.group.position.y*=this.worldFit;
   this.host.dataset.motionPhase=this.footer?'entry':'exit';this.host.dataset.motionProgress=(this.footer?entry:after).toFixed(3);this.host.dataset.rotation=[this.group.rotation.x,this.group.rotation.y].map(v=>THREE.MathUtils.radToDeg(v).toFixed(1)).join(',');
   this.host.dataset.paper=paper.toFixed(3);this.host.dataset.dolly=dolly.toFixed(3);this.paperMaterial.uniforms.uOpacity.value=paper;
   const sceneTime=this.time+(this.footer?27:0);for(const m of this.materials){m.uniforms.uTime.value=sceneTime;m.uniforms.uLight.value.set(4+this.pointer.x*7,9+this.pointer.y*5,.5);}
