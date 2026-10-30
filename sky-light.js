@@ -16,7 +16,8 @@ const passes=[
  for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){vec2 n=vec2(float(x),float(y));vec2 point=.5+.5*sin(5.+time*.2+6.2831*hash(cell+n));float d=length(n+point-local);if(d<first){second=first;first=d;nearest=point;}else second=min(second,d);}
  vec2 offset=(nearest*.36-.18)*smoothstep(0.,.02,first)*smoothstep(0.,.04,second-first);gl_FragColor=texture2D(source,vUv+offset);}`,
  `void main(){vec3 total=vec3(0.),weights=vec3(0.);float radius=1.;vec2 pixel=vec2(size.y/size.x,1.)*.003*1.178125;
- for(int i=0;i<32;i++){float a=float(i)*2.39996323;radius+=1./radius;vec2 offset=(radius-1.)*vec2(cos(a),sin(a))*pixel;offset*=1.+.05*(sin(a*.1)*.5+.5)*sin(a*.7);vec3 c=texture2D(source,vUv+offset).rgb;vec3 weight=vec3(5.)+pow(c,vec3(9.))*150.;total+=c*weight;weights+=weight;}
+ float noise=(mod((hash(floor(vUv*size)).x-.5)*6.28318530718,6.28318530718)-.5)*.01;mat2 lensRotation=turn(noise*6.28318530718);
+ for(int i=0;i<32;i++){float a=float(i)*2.39996323;radius+=1./radius;vec2 offset=(radius-1.)*vec2(cos(a),sin(a))*pixel;offset*=1.+.05*(sin(a*.1)*.5+.5)*sin(a*.7+noise);vec3 c=texture2D(source,vUv+lensRotation*offset).rgb;vec3 weight=vec3(5.)+pow(c,vec3(9.))*150.;total+=c*weight;weights+=weight;}
  gl_FragColor=vec4(total/weights,1.);}`,
  `void main(){vec3 base=mix(cream,vec3(1.),.61),light=clamp(texture2D(source,vUv).rgb+green*.35,0.,1.);gl_FragColor=vec4(base*mix(vec3(1.),light,.65),1.);}`
 ];
@@ -28,10 +29,10 @@ export class SkyLight {
   this.quad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.materials[0]);this.scene.add(this.quad);
   this.targets=[0,1].map(()=>new THREE.WebGLRenderTarget(1,1,{depthBuffer:false,stencilBuffer:false}));this.texture=this.targets[1].texture;this.last=-100;
  }
- resize(w,h){w=Math.max(1,Math.round(w*.3));h=Math.max(1,Math.round(h*.3));this.targets.forEach(t=>t.setSize(w,h));this.uniforms.size.value.set(w,h);this.last=-100}
+ resize(w,h){this.mobile=w<600;w=Math.max(1,Math.floor(w*.3));h=Math.max(1,Math.floor(h*.3));this.targets.forEach(t=>t.setSize(w,h));this.uniforms.size.value.set(w,h);this.last=-100}
  render(renderer,time,pointer){
   if(time-this.last<1/30&&this.uniforms.pointer.value.distanceTo(pointer)<.001)return;
-  this.last=time;this.uniforms.time.value=time;this.uniforms.pointer.value.copy(pointer);
+  this.last=time;this.uniforms.time.value=time;if(this.mobile)this.uniforms.pointer.value.set(.5,-.1);else this.uniforms.pointer.value.copy(pointer);
   for(let i=0;i<this.materials.length;i++){this.quad.material=this.materials[i];this.uniforms.source.value=this.targets[(i+1)%2].texture;renderer.setRenderTarget(this.targets[i%2]);renderer.render(this.scene,this.camera)}
   renderer.setRenderTarget(null);
  }
