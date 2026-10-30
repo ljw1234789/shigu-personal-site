@@ -1,5 +1,5 @@
 import * as THREE from './assets/vendor/three.module.js';
-import {SkyLight} from './sky-light.js?v=motion-20261030-7';
+import {SkyLight} from './sky-light.js?v=motion-20261030-8';
 // Original inflated meshes and procedural light; no model or artwork from the reference site.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const stopped=()=>reduced.matches||document.body.classList.contains('is-paused')||document.body.classList.contains('detail-open');
@@ -79,7 +79,7 @@ class SculptureScene{
  frame(now){this.raf=0;if(!this.visible||this.lost||document.hidden||!this.group)return;const dt=Math.min(.05,(now-(this.last||now))/1000);this.last=now;const paused=stopped(),pending=document.documentElement.classList.contains('intro-pending');if(!pending)this.entryStarted=true;if(!paused)this.time+=dt;const scale=1;
   this.pointer.lerp(this.target,.06);this.pressure+=((this.hover&&!paused?1:0)-this.pressure)*.07;
   const rect=this.host.getBoundingClientRect(),viewport=Math.max(1,innerHeight),entry=THREE.MathUtils.clamp(1-rect.top/viewport,0,1),after=THREE.MathUtils.clamp(-rect.top/viewport,0,1);
-  const paper=this.footer?THREE.MathUtils.clamp(rect.top/viewport,0,1):THREE.MathUtils.clamp((viewport-rect.bottom)/(.75*viewport),0,1);
+  const paper=this.footer?THREE.MathUtils.clamp(rect.top/viewport,0,1):THREE.MathUtils.clamp(-rect.top/(.75*viewport),0,1);
   if(this.entryStarted&&!paused)this.entryAge=Math.min(1.2,this.entryAge+dt);
   const dolly=paused?1:24/(24+8*paper+8*(1-entryEase(this.entryAge/1.2)));
   this.camera.position.z=24/dolly;this.group.scale.setScalar(scale*this.worldFit);if(!this.footer)this.group.scale.x*=1.05;this.group.scale.y*=this.footer||this.mobile ? 1 : .85;
