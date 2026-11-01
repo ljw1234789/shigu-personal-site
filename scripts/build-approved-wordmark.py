@@ -16,14 +16,15 @@ from skimage.measure import marching_cubes, find_contours, approximate_polygon
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--option', choices=['01', '03'], default='03')
-parser.add_argument('--finish', choices=['shallow', 'sculpted', 'satin'], default='shallow')
+parser.add_argument('--finish', choices=['shallow', 'sculpted', 'satin', 'rounded'], default='shallow')
 args = parser.parse_args()
 option = args.option
 sculpted = args.finish == 'sculpted'
 satin = args.finish == 'satin'
-if (sculpted or satin) and option != '03':
+rounded = args.finish == 'rounded'
+if (sculpted or satin or rounded) and option != '03':
     parser.error('The sculpted finish is designed for approved option 03.')
-out = root / ('assets/sculpture-v11' if satin else 'assets/sculpture-v10' if sculpted else 'assets/sculpture-v8' if option == '01' else 'assets/sculpture-v9')
+out = root / ('assets/sculpture-v13' if rounded else 'assets/sculpture-v11' if satin else 'assets/sculpture-v10' if sculpted else 'assets/sculpture-v8' if option == '01' else 'assets/sculpture-v9')
 source = f'approved-{option}.png'
 rgb = np.asarray(Image.open(out / source).convert('RGB')).astype(float)
 # Blue ink only; this excludes the neutral option number and the paper background.
@@ -46,12 +47,15 @@ fill = '#72a5d4' if satin else '#5a9ede' if sculpted else '#214d82'
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" role="img" aria-label="刘俊威">'
        f'<title>刘俊威</title><path fill="{fill}" fill-rule="evenodd" d="' + ''.join(paths) + '"/></svg>')
 (out / 'wordmark.svg').write_text(svg)
+if rounded:
+    # Preserve the already approved fallback outline and reference color gradient.
+    (out / 'wordmark.svg').write_bytes((root / 'assets/sculpture-v12/wordmark.svg').read_bytes())
 
 # Narrow bevels preserve the selected design's stroke tips and inner gaps.
-half_depth, bevel = (55., 17.) if satin else (35., 42.) if sculpted else (9., 1.3)
+half_depth, bevel = (65., 65.) if rounded else (55., 17.) if satin else (35., 42.) if sculpted else (9., 1.3)
 extent = half_depth + (10 if satin else 2)
-z = np.linspace(-extent, extent, 49 if satin else 41 if sculpted else 25, dtype=np.float32)
-if sculpted:
+z = np.linspace(-extent, extent, 49 if (satin or rounded) else 41 if sculpted else 25, dtype=np.float32)
+if sculpted or rounded:
     # A convex face, with its zero-depth silhouette exactly on the approved path.
     # Narrow strokes naturally taper; no dilation closes the letter counters.
     edge = np.exp(np.clip(-distance / bevel, -20, 4)).astype(np.float32)

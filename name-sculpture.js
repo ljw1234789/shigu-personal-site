@@ -1,7 +1,7 @@
 import * as THREE from './assets/vendor/three.module.js';
-import {SkyLight} from './sky-light.js?v=name-03-reference-20261102';
-import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=name-03-reference-20261102';
-// Approved custom name outline with a flat face and soft edge bevels; existing entry and optical motion are retained.
+import {SkyLight} from './sky-light.js?v=name-03-full-20261102';
+import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=name-03-full-20261102';
+// Approved custom name outline with a continuous curved face and rounded depth; existing entry and optical motion are retained.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const stopped=()=>reduced.matches||document.body.classList.contains('is-paused')||document.body.classList.contains('detail-open');
 // Both visible scenes sample one optical clock; pausing never jumps the light.
@@ -12,7 +12,7 @@ const geometries=new Map();
 function entryEase(x){x=THREE.MathUtils.clamp(x,0,1);let lo=0,hi=1,t=x;for(let i=0;i<15;i++){const at=3*.66*t*(1-t)**2+3*.01*t*t*(1-t)+t**3;if(at<x)lo=t;else hi=t;t=(lo+hi)/2}return t*t*(3-2*t)}
 function loadGeometry(key){
  if(!geometries.has(key))geometries.set(key,(async()=>{
-  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v11":"sculpture-v2"}/${key}.bin?v=name-03-reference-20261102`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
+  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v13":"sculpture-v2"}/${key}.bin?v=name-03-full-20261102`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
   const buffer=await response.arrayBuffer(),[n,count,scale,indexBytes]=new Uint32Array(buffer,0,4),packed=new Int16Array(buffer,16,n*3),pos=new Float32Array(n*3);
   for(let i=0;i<pos.length;i++)pos[i]=packed[i]/scale;
   const offset=16+Math.ceil(packed.byteLength/4)*4,index=indexBytes===2?new Uint16Array(buffer,offset,count):new Uint32Array(buffer,offset,count);
