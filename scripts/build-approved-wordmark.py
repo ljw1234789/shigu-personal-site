@@ -1,9 +1,10 @@
-"""Convert the approved option-01 drawing to matched SVG and shallow 3D geometry.
+"""Convert an approved drawing to matched SVG and shallow 3D geometry.
 
 No font substitution: the full name retains the drawing's proportions and spacing.
 Run with the image/scipy/skimage Python environment used by the other name builders.
 """
 from pathlib import Path
+import argparse
 import json
 import struct
 
@@ -13,8 +14,12 @@ from scipy.ndimage import distance_transform_edt, gaussian_filter, map_coordinat
 from skimage.measure import marching_cubes, find_contours, approximate_polygon
 
 root = Path(__file__).resolve().parents[1]
-out = root / 'assets/sculpture-v8'
-rgb = np.asarray(Image.open(out / 'approved-01.png').convert('RGB')).astype(float)
+parser = argparse.ArgumentParser()
+parser.add_argument('--option', choices=['01', '03'], default='03')
+option = parser.parse_args().option
+out = root / ('assets/sculpture-v8' if option == '01' else 'assets/sculpture-v9')
+source = f'approved-{option}.png'
+rgb = np.asarray(Image.open(out / source).convert('RGB')).astype(float)
 # Blue ink only; this excludes the neutral option number and the paper background.
 mask = (rgb[:, :, 2] - rgb[:, :, 0] > 25) & (rgb[:, :, 0] < 165) & (rgb[:, :, 1] < 190)
 components, count = label(mask)
@@ -35,7 +40,7 @@ svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" role="img
        '<title>刘俊威</title><path fill="#214d82" fill-rule="evenodd" d="' + ''.join(paths) + '"/></svg>')
 (out / 'wordmark.svg').write_text(svg)
 
-# Narrow bevels preserve the selected design's fine horizontal strokes.
+# Narrow bevels preserve the selected design's stroke tips and inner gaps.
 half_depth, bevel = 9., 1.3
 z = np.linspace(-half_depth-2, half_depth+2, 25, dtype=np.float32)
 qx = bevel-distance[None, :, :]
@@ -60,13 +65,14 @@ indices = faces.astype('<u2' if index_bytes == 2 else '<u4').tobytes()
 data = struct.pack('<IIII', len(pos), faces.size, quant, index_bytes)+packed+indices
 data += (normals*32767).round().astype('<i2').tobytes()
 (out / 'name-wordmark.bin').write_bytes(data)
-report = {'text': '刘俊威', 'source': 'approved-01.png', 'viewBox': [w, h],
+report = {'text': '刘俊威', 'source': source, 'viewBox': [w, h],
           'width_world': 6.45, 'height_world': float((h-24)*scale),
           'half_depth_px': half_depth, 'bevel_px': bevel, 'vertices': len(pos),
           'triangles': len(faces), 'bytes': len(data), 'contours': len(paths)}
 (out / 'build-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
-(out / 'README.md').write_text('Approved option 01: 刘俊威 custom light serif wordmark.\n'
+description = 'custom light serif' if option == '01' else 'custom calligraphic'
+(out / 'README.md').write_text(f'Approved option {option}: 刘俊威 {description} wordmark.\n'
     'The user selected the generated drawing on 2026-11-01. SVG and mesh derive from the same outline; '
-    'spacing and the lower middle character are preserved. No source font is substituted.\n'
-    'Build: scripts/build-approved-wordmark.py. The preview source is retained for reproducibility.\n')
+    'character shapes, spacing and relative placement are preserved. No source font is substituted.\n'
+    f'Build: scripts/build-approved-wordmark.py --option {option}. The preview source is retained for reproducibility.\n')
 print(json.dumps(report, ensure_ascii=False))
