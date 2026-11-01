@@ -1,6 +1,6 @@
 import * as THREE from './assets/vendor/three.module.js';
-import {SkyLight} from './sky-light.js?v=name-03-depth-20261102';
-import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=name-03-depth-20261102';
+import {SkyLight} from './sky-light.js?v=name-03-reference-20261102';
+import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=name-03-reference-20261102';
 // Approved custom name outline with a flat face and soft edge bevels; existing entry and optical motion are retained.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const stopped=()=>reduced.matches||document.body.classList.contains('is-paused')||document.body.classList.contains('detail-open');
@@ -12,7 +12,7 @@ const geometries=new Map();
 function entryEase(x){x=THREE.MathUtils.clamp(x,0,1);let lo=0,hi=1,t=x;for(let i=0;i<15;i++){const at=3*.66*t*(1-t)**2+3*.01*t*t*(1-t)+t**3;if(at<x)lo=t;else hi=t;t=(lo+hi)/2}return t*t*(3-2*t)}
 function loadGeometry(key){
  if(!geometries.has(key))geometries.set(key,(async()=>{
-  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v11":"sculpture-v2"}/${key}.bin?v=name-03-depth-20261102`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
+  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v11":"sculpture-v2"}/${key}.bin?v=name-03-reference-20261102`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
   const buffer=await response.arrayBuffer(),[n,count,scale,indexBytes]=new Uint32Array(buffer,0,4),packed=new Int16Array(buffer,16,n*3),pos=new Float32Array(n*3);
   for(let i=0;i<pos.length;i++)pos[i]=packed[i]/scale;
   const offset=16+Math.ceil(packed.byteLength/4)*4,index=indexBytes===2?new Uint16Array(buffer,offset,count):new Uint32Array(buffer,offset,count);
@@ -53,10 +53,10 @@ class SculptureScene{
   if(this.footer){
    const specs=[['craft',1.12,-.04],['and',0,.06],['taste',-1.12,.02]];
    const models=await Promise.all(specs.map(s=>loadGeometry(s[0])));let tintMin=Infinity,tintMax=-Infinity;
-   specs.forEach(([key,y,z],i)=>{const m=letteringMaterial('#b1c0cb','#527b9b');this.materials.push(m);const mesh=new THREE.Mesh(models[i],m);mesh.position.y=y;mesh.rotation.z=z;mesh.scale.y=.85;mesh.position.z=i===1?.25:0;this.group.add(mesh);mesh.updateMatrix();const e=mesh.matrix.elements;m.uniforms.uTintHeight.value.set(e[1],e[5],e[9],e[13]);const p=models[i].attributes.position;for(let n=0;n<p.count;n++){const h=e[1]*p.getX(n)+e[5]*p.getY(n)+e[9]*p.getZ(n)+e[13];tintMin=Math.min(tintMin,h);tintMax=Math.max(tintMax,h);}});
+   specs.forEach(([key,y,z],i)=>{const m=letteringMaterial('#ffffff','#009dff');this.materials.push(m);const mesh=new THREE.Mesh(models[i],m);mesh.position.y=y;mesh.rotation.z=z;mesh.scale.y=.85;mesh.position.z=i===1?.25:0;this.group.add(mesh);mesh.updateMatrix();const e=mesh.matrix.elements;m.uniforms.uTintHeight.value.set(e[1],e[5],e[9],e[13]);const p=models[i].attributes.position;for(let n=0;n<p.count;n++){const h=e[1]*p.getX(n)+e[5]*p.getY(n)+e[9]*p.getZ(n)+e[13];tintMin=Math.min(tintMin,h);tintMax=Math.max(tintMax,h);}});
    // One vertical absorption gradient across the complete word sculpture.
    this.materials.forEach(m=>m.uniforms.uYRange.value.set(tintMin,tintMax));
-  }else{const geometry=await loadGeometry('name-wordmark');const m=letteringMaterial('#609fde','#a8cde9',true);m.uniforms.uYRange.value.set(-1.1,1.1);this.materials.push(m);const mesh=new THREE.Mesh(geometry,m);mesh.rotation.set(-.09,.18,0);this.group.add(mesh);}
+  }else{const geometry=await loadGeometry('name-wordmark');const m=letteringMaterial('#009dff','#ffffff');m.uniforms.uYRange.value.set(-1.1,1.1);this.materials.push(m);const mesh=new THREE.Mesh(geometry,m);mesh.rotation.set(-.09,.18,0);this.group.add(mesh);}
 
   this.background.material.uniforms.uSkyMap.value=this.sky.texture;this.materials.forEach(m=>m.uniforms.uSkyMap.value=this.sky.texture);this.visible=true;this.resize();this.frame(performance.now());this.host.classList.add('ready');this.canvas.classList.add('is-ready');this.host.dataset.renderState='ready';
   new ResizeObserver(()=>this.resize()).observe(this.host);

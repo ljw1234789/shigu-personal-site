@@ -19,14 +19,14 @@ const passes=[
  float noise=(mod((texture2D(lensNoise,fract(vUv*size/128.)).r-.5)*6.28318530718,6.28318530718)-.5)*.01;mat2 lensRotation=turn(noise*6.28318530718);
  for(int i=0;i<32;i++){float a=float(i)*2.39996323;radius+=1./radius;vec2 offset=(radius-1.)*vec2(cos(a),sin(a))*pixel;offset*=1.+.05*(sin(a*.1)*.5+.5)*sin(a*.7+noise);vec3 c=texture2D(source,vUv+lensRotation*offset).rgb;vec3 weight=vec3(5.)+pow(c,vec3(9.))*150.;total+=c*weight;weights+=weight;}
  gl_FragColor=vec4(total/weights,1.);}`,
- `void main(){vec3 base=mix(cream,vec3(1.),.61),light=clamp(texture2D(source,vUv).rgb+green*.35,0.,1.);gl_FragColor=vec4(base*mix(vec3(1.),light,.22),1.);}`
+ `void main(){vec3 base=mix(cream,vec3(1.),.61),light=clamp(texture2D(source,vUv).rgb+green*.35,0.,1.);gl_FragColor=vec4(base*mix(vec3(1.),light,.65),1.);}`
 ];
 export class SkyLight {
  constructor(){
   this.scene=new THREE.Scene();this.camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
   const pixels=new Uint8Array(128*128*4);let seed=92741;for(let i=0;i<pixels.length;i+=4){seed=(1664525*seed+1013904223)>>>0;const v=Math.floor(seed/4294967296*255);pixels[i]=pixels[i+1]=pixels[i+2]=v;pixels[i+3]=255;}
   this.noise=new THREE.DataTexture(pixels,128,128);this.noise.wrapS=this.noise.wrapT=THREE.RepeatWrapping;this.noise.magFilter=THREE.LinearFilter;this.noise.minFilter=THREE.LinearMipmapLinearFilter;this.noise.generateMipmaps=true;this.noise.needsUpdate=true;
-  this.uniforms={lensNoise:{value:this.noise},source:{value:null},size:{value:new THREE.Vector2(1,1)},pointer:{value:new THREE.Vector2(.5,.5)},time:{value:0},cream:{value:new THREE.Color('#f2f2ed')},blue:{value:new THREE.Color('#b8cbd8')},green:{value:new THREE.Color('#e4e9e6')}};
+  this.uniforms={lensNoise:{value:this.noise},source:{value:null},size:{value:new THREE.Vector2(1,1)},pointer:{value:new THREE.Vector2(.5,.5)},time:{value:0},cream:{value:new THREE.Color('#ffead6')},blue:{value:new THREE.Color('#6196ff')},green:{value:new THREE.Color('#acffb9')}};
   this.materials=passes.map(fragment=>new THREE.ShaderMaterial({precision:"mediump",uniforms:this.uniforms,vertexShader:vertex,fragmentShader:header+fragment,depthTest:false,depthWrite:false,toneMapped:false,blending:THREE.NoBlending}));
   this.quad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.materials[0]);this.scene.add(this.quad);
   this.targets=[0,1].map(()=>new THREE.WebGLRenderTarget(1,1,{depthBuffer:false,stencilBuffer:false}));this.texture=this.targets[1].texture;this.last=-100;

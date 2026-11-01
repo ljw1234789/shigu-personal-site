@@ -19,7 +19,7 @@
   if(prepareAt&&!revealAt&&now-prepareAt>=100){revealAt=now;curtain.classList.add('dissolving')}
   if(revealAt){const age=now-revealAt;if(age>=100)startText();if(age>=250)curtain.classList.add('line-fading');
    const t=Math.min(1,age/800),open=easing(t),w=innerWidth,h=innerHeight,unit=Math.min(w,h),radius=Math.hypot(w/unit,h/unit)*open,feather=Math.max(.8,radius*.12),fill=smooth(((1-open)-.92)/.08),cell=16;
-   ctx.clearRect(0,0,w,h);ctx.fillStyle='#efede7';ctx.beginPath();
+   ctx.clearRect(0,0,w,h);ctx.fillStyle='#f9f8f0';ctx.beginPath();
    // Opaque paper dots shrink; no circular-hole wipe.
    for(let y=cell/2;y<h+cell;y+=cell)for(let x=cell/2;x<w+cell;x+=cell){const d=Math.hypot((x-w/2)*2/unit,(y-h/2)*2/unit),alpha=smooth((d-radius)/feather)*(1-fill)+fill,r=cell*.8*alpha;if(r>.01){ctx.moveTo(x+r,y);ctx.arc(x,y,r,0,Math.PI*2)}}ctx.fill();if(t>=1){finish();return}
   }raf=requestAnimationFrame(draw)

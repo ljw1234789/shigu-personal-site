@@ -35,3 +35,7 @@ html{scroll-behavior:smooth;scroll-padding-top:100px}.scroll-home{background:var
 /* The no-WebGL fallback uses the exact approved outline too. */
 .sculpture-fallback{width:min(66vw,1080px);font-size:0;text-shadow:none}.sculpture-fallback img{display:block;width:100%;height:auto}
 @media(max-width:700px){.sculpture-fallback{width:80vw}}
+
+/* Reference sky and paper palette; existing composition remains unchanged. */
+:root{--hero-sky:#c5dcee;--folio-ink:#000;--folio-field:#f9f8f0;--folio-active:#009dff}
+.hero-statement{color:var(--folio-ink)}.hero-baseline{color:#111}.brand-dot{color:#009dff}
