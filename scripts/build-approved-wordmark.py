@@ -16,13 +16,14 @@ from skimage.measure import marching_cubes, find_contours, approximate_polygon
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--option', choices=['01', '03'], default='03')
-parser.add_argument('--finish', choices=['shallow', 'sculpted'], default='shallow')
+parser.add_argument('--finish', choices=['shallow', 'sculpted', 'satin'], default='shallow')
 args = parser.parse_args()
 option = args.option
 sculpted = args.finish == 'sculpted'
-if sculpted and option != '03':
+satin = args.finish == 'satin'
+if (sculpted or satin) and option != '03':
     parser.error('The sculpted finish is designed for approved option 03.')
-out = root / ('assets/sculpture-v10' if sculpted else 'assets/sculpture-v8' if option == '01' else 'assets/sculpture-v9')
+out = root / ('assets/sculpture-v11' if satin else 'assets/sculpture-v10' if sculpted else 'assets/sculpture-v8' if option == '01' else 'assets/sculpture-v9')
 source = f'approved-{option}.png'
 rgb = np.asarray(Image.open(out / source).convert('RGB')).astype(float)
 # Blue ink only; this excludes the neutral option number and the paper background.
@@ -41,14 +42,15 @@ for contour in find_contours(distance, 0):
     if len(points) < 4:
         continue
     paths.append('M' + 'L'.join(f'{x:.2f},{y:.2f}' for y, x in points) + 'Z')
-fill = '#5a9ede' if sculpted else '#214d82'
+fill = '#72a5d4' if satin else '#5a9ede' if sculpted else '#214d82'
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" role="img" aria-label="刘俊威">'
        f'<title>刘俊威</title><path fill="{fill}" fill-rule="evenodd" d="' + ''.join(paths) + '"/></svg>')
 (out / 'wordmark.svg').write_text(svg)
 
 # Narrow bevels preserve the selected design's stroke tips and inner gaps.
-half_depth, bevel = (35., 42.) if sculpted else (9., 1.3)
-z = np.linspace(-half_depth-2, half_depth+2, 41 if sculpted else 25, dtype=np.float32)
+half_depth, bevel = (55., 17.) if satin else (35., 42.) if sculpted else (9., 1.3)
+extent = half_depth + (10 if satin else 2)
+z = np.linspace(-extent, extent, 49 if satin else 41 if sculpted else 25, dtype=np.float32)
 if sculpted:
     # A convex face, with its zero-depth silhouette exactly on the approved path.
     # Narrow strokes naturally taper; no dilation closes the letter counters.
@@ -57,6 +59,11 @@ if sculpted:
 else:
     qx = bevel-distance[None, :, :]
     qz = np.abs(z[:, None, None])-(half_depth-bevel)
+    if satin:
+        # A slight crown avoids a completely planar face; most depth remains in
+        # the extruded sides rather than inflating every stroke into a tube.
+        crown = 8 * (1-np.exp(-np.maximum(distance-bevel, 0)/32))
+        qz = qz-crown[None, :, :]
     field = (np.hypot(np.maximum(qx, 0), np.maximum(qz, 0))
              + np.minimum(np.maximum(qx, qz), 0)-bevel).astype(np.float32)
 spacing = (float(z[1]-z[0]), 1., 1.)

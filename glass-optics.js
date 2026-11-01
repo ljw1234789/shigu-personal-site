@@ -41,19 +41,20 @@ export function createGlassMaterial(top, bottom, sculpted = false) {
         color+=edge*smoothstep(-.5,.5,dot(n,normalize(vec3(-1,1,-1))))*.12;
         if(uSculpted>.5){
           vec3 view=normalize(-incident);
-          vec3 key=normalize(vec3(-uLight.xy*.18,1.6));
+          vec3 key=normalize(vec3(-uLight.x*.14,uLight.y*.14,1.8));
           vec3 fill=normalize(vec3(1.,-.25,1.4));
           float facing=max(dot(n,view),0.);
-          float diffuse=.56+.34*max(dot(n,key),0.)+.12*max(dot(n,fill),0.);
+          float diffuse=.34+.56*max(dot(n,key),0.)+.10*max(dot(n,fill),0.);
           vec3 reflected=reflect(incident,n);
-          float softbox=pow(max(dot(reflected,normalize(vec3(-.48,.65,1.))),0.),18.);
-          float polish=pow(max(dot(n,normalize(view+key)),0.),85.);
+          // Broad studio reflection defines volume without isolated hot spots.
+          float softbox=pow(max(dot(reflected,normalize(vec3(-.35,.55,1.))),0.),10.);
+          float polish=pow(max(dot(n,normalize(view+key)),0.),28.);
           float rim=pow(1.-facing,3.);
           vec3 skyReflection=texture2D(uSkyMap,clamp(uv+reflected.xy*.16,0.,1.)).rgb;
           color=absorption*diffuse;
-          color=mix(color,skyReflection*mix(absorption,vec3(1.),.32),.17+.16*rim);
-          color+=vec3(.79,.90,1.)*softbox*.44+vec3(1.)*polish*.62;
-          color+=vec3(.40,.63,.88)*rim*.10;
+          color=mix(color,skyReflection*absorption,.06);
+          color+=vec3(.79,.90,1.)*softbox*.16+vec3(.82,.91,1.)*polish*.16;
+          color+=vec3(.40,.63,.88)*rim*.035;
         }
         gl_FragColor=vec4(color,1.);
         #include <colorspace_fragment>
