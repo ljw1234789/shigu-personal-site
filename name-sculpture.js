@@ -1,6 +1,6 @@
 import * as THREE from './assets/vendor/three.module.js';
-import {SkyLight} from './sky-light.js?v=optics-20261030-6';
-import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=optics-20261030-6';
+import {SkyLight} from './sky-light.js?v=optics-20261101-1';
+import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=optics-20261101-1';
 // Original inflated meshes and procedural light; no model or artwork from the reference site.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const stopped=()=>reduced.matches||document.body.classList.contains('is-paused')||document.body.classList.contains('detail-open');
@@ -12,11 +12,13 @@ const geometries=new Map();
 function entryEase(x){x=THREE.MathUtils.clamp(x,0,1);let lo=0,hi=1,t=x;for(let i=0;i<15;i++){const at=3*.66*t*(1-t)**2+3*.01*t*t*(1-t)+t**3;if(at<x)lo=t;else hi=t;t=(lo+hi)/2}return t*t*(3-2*t)}
 function loadGeometry(key){
  if(!geometries.has(key))geometries.set(key,(async()=>{
-  const response=await fetch(new URL(`./assets/sculpture-v2/${key}.bin?v=refined-20261030-2`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
+  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v3":"sculpture-v2"}/${key}.bin?v=optics-20261101-1`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
   const buffer=await response.arrayBuffer(),[n,count,scale,indexBytes]=new Uint32Array(buffer,0,4),packed=new Int16Array(buffer,16,n*3),pos=new Float32Array(n*3);
   for(let i=0;i<pos.length;i++)pos[i]=packed[i]/scale;
   const offset=16+Math.ceil(packed.byteLength/4)*4,index=indexBytes===2?new Uint16Array(buffer,offset,count):new Uint32Array(buffer,offset,count);
-  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(pos,3));geometry.setIndex(new THREE.BufferAttribute(index,1));geometry.computeVertexNormals();
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(pos,3));geometry.setIndex(new THREE.BufferAttribute(index,1));const normalOffset=offset+index.byteLength;
+  if(buffer.byteLength===normalOffset+n*6){geometry.setAttribute('normal',new THREE.BufferAttribute(new Int16Array(buffer,normalOffset,n*3),3,true));}
+  else {geometry.computeVertexNormals();
   // Fair the optical normals along connected faces; preserve every outline and hole.
   // This removes tiny highlight breaks on the quantized inflated surface.
   const normals=geometry.attributes.normal.array,degree=new Float32Array(n);
@@ -24,6 +26,7 @@ function loadGeometry(key){
   for(let pass=0;pass<3;pass++){const sums=new Float32Array(normals.length);
    for(let i=0;i<index.length;i+=3){const a=index[i]*3,b=index[i+1]*3,c=index[i+2]*3;for(let k=0;k<3;k++){sums[a+k]+=normals[b+k]+normals[c+k];sums[b+k]+=normals[a+k]+normals[c+k];sums[c+k]+=normals[a+k]+normals[b+k];}}
    for(let i=0;i<n;i++){const at=i*3,d=Math.max(1,degree[i]);let x=normals[at]*.6+sums[at]/d*.4,y=normals[at+1]*.6+sums[at+1]/d*.4,z=normals[at+2]*.6+sums[at+2]/d*.4;const length=Math.hypot(x,y,z)||1;normals[at]=x/length;normals[at+1]=y/length;normals[at+2]=z/length;}}
+  }
   geometry.attributes.normal.needsUpdate=true;geometry.computeBoundingSphere();return geometry;
  })());return geometries.get(key);
 }
@@ -37,7 +40,7 @@ class SculptureScene{
  constructor(host,canvas,footer=false){this.host=host;this.canvas=canvas;this.footer=footer;this.visible=false;this.lost=false;this.raf=0;this.time=0;this.last=0;this.entryStarted=!document.documentElement.classList.contains('intro-pending');this.pointer=new THREE.Vector2(0,0);this.target=new THREE.Vector2(0,0);this.hover=false;this.pressure=0;this.frame=this.frame.bind(this);this.schedule=this.schedule.bind(this);document.addEventListener('portfolio:intro-prepare',()=>{this.entryStarted=true;this.schedule()},{once:true});this.init();}
  async init(){try{
   this.entryAge=this.footer||this.entryStarted?1.2:0;this.canvas.classList.add('portfolio-scene-canvas');this.canvas.setAttribute('aria-hidden','true');document.body.prepend(this.canvas);
-  this.renderer=new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:false,powerPreference:'low-power'});this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.06;
+  this.renderer=new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:false,powerPreference:'low-power'});this.renderer.setPixelRatio(Math.min(devicePixelRatio,2));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.06;
   this.sceneTarget=new THREE.WebGLRenderTarget(1,1,{type:THREE.UnsignedByteType,depthBuffer:true});
   this.finish=new GlassFinish(this.sceneTarget.texture);this.finishCamera=this.finish.camera;
   this.paperScene=new THREE.Scene();this.paperMaterial=new THREE.ShaderMaterial({transparent:true,depthTest:false,depthWrite:false,toneMapped:false,uniforms:{uOpacity:{value:0},uSize:{value:new THREE.Vector2(1280,720)},uPaper:{value:new THREE.Color('#f9f8f0')}},vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}',fragmentShader:`varying vec2 vUv;uniform float uOpacity;uniform vec2 uSize;uniform vec3 uPaper;void main(){vec2 cell=fract(vUv*uSize/4.);float d=distance(cell,vec2(.5)),r=.9*uOpacity,aa=fwidth(d)*1.5;float a=1.-smoothstep(r-aa,r+aa,d);if(uOpacity<.001)a=0.;gl_FragColor=vec4(uPaper,a);\n#include <colorspace_fragment>\n}`});this.paperScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.paperMaterial));
@@ -52,11 +55,12 @@ class SculptureScene{
    specs.forEach(([key,y,z],i)=>{const m=letteringMaterial('#ffffff','#009dff');this.materials.push(m);const mesh=new THREE.Mesh(models[i],m);mesh.position.y=y;mesh.rotation.z=z;mesh.scale.y=.85;mesh.position.z=i===1?.25:0;this.group.add(mesh);mesh.updateMatrix();const e=mesh.matrix.elements;m.uniforms.uTintHeight.value.set(e[1],e[5],e[9],e[13]);const p=models[i].attributes.position;for(let n=0;n<p.count;n++){const h=e[1]*p.getX(n)+e[5]*p.getY(n)+e[9]*p.getZ(n)+e[13];tintMin=Math.min(tintMin,h);tintMax=Math.max(tintMax,h);}});
    // One vertical absorption gradient across the complete word sculpture.
    this.materials.forEach(m=>m.uniforms.uYRange.value.set(tintMin,tintMax));
-  }else{const m=letteringMaterial('#009dff','#ffffff');const geometry=await loadGeometry('name');geometry.computeBoundingBox();m.uniforms.uYRange.value.set(geometry.boundingBox.min.y,geometry.boundingBox.max.y);this.materials.push(m);this.group.add(new THREE.Mesh(geometry,m));}
+  }else{const letters=await Promise.all(['name-liu','name-jun','name-wei'].map(loadGeometry));letters.forEach((geometry,i)=>{const m=letteringMaterial('#009dff','#ffffff');m.uniforms.uYRange.value.set(-.96,.96);this.materials.push(m);const mesh=new THREE.Mesh(geometry,m);geometry.computeBoundingBox();const middle=(geometry.boundingBox.min.x+geometry.boundingBox.max.x)/2;mesh.position.x=(i-1)*2.30-middle;this.group.add(mesh);});}
+
   this.background.material.uniforms.uSkyMap.value=this.sky.texture;this.materials.forEach(m=>m.uniforms.uSkyMap.value=this.sky.texture);this.visible=true;this.resize();this.frame(performance.now());this.host.classList.add('ready');this.canvas.classList.add('is-ready');this.host.dataset.renderState='ready';
   new ResizeObserver(()=>this.resize()).observe(this.host);
   new IntersectionObserver(entries=>{this.visible=entries[0].isIntersecting;this.canvas.style.visibility=this.visible?'visible':'hidden';if(this.visible){this.last=0;this.schedule();}else{cancelAnimationFrame(this.raf);this.raf=0;}},{rootMargin:'50px'}).observe(this.host);
-  const target=this.host.parentElement;target.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||stopped())return;this.target.set(e.clientX/innerWidth-.5,.5-e.clientY/innerHeight);this.hover=true;this.schedule();},{passive:true});target.addEventListener('pointerleave',()=>{this.target.set(0,0);this.hover=false;});
+  const target=this.host.parentElement;target.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||stopped())return;this.target.set(e.clientX/innerWidth-.5,.5-e.clientY/innerHeight);this.hover=true;this.finish.fluid.move(e.clientX,e.clientY);this.schedule();},{passive:true});target.addEventListener('pointerleave',()=>{this.target.set(0,0);this.hover=false;});
   new MutationObserver(()=>{if(stopped()){this.target.set(0,0);this.hover=false;}this.schedule();}).observe(document.body,{attributes:true,attributeFilter:['class']});new MutationObserver(this.schedule).observe(document.documentElement,{attributes:true,attributeFilter:['class']});reduced.addEventListener('change',this.schedule);
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(this.raf);this.raf=0;}else{this.last=0;this.schedule();}});
   addEventListener('scroll',this.schedule,{passive:true});addEventListener('resize',()=>this.resize());
@@ -74,7 +78,7 @@ class SculptureScene{
   this.camera.position.z=24/dolly;this.group.scale.setScalar(scale*this.worldFit);if(!this.footer)this.group.scale.x*=1.05;this.group.scale.y*=1;
   const targetX=this.footer?THREE.MathUtils.lerp(-Math.PI,0,entry):0,targetY=this.footer?0:THREE.MathUtils.degToRad(THREE.MathUtils.lerp(4,90,after));
   if(paused){this.group.rotation.set(0,this.footer?0:THREE.MathUtils.degToRad(4),0)}else if(this.entryStarted||this.footer){this.group.rotation.x=THREE.MathUtils.damp(this.group.rotation.x,targetX,6,dt);this.group.rotation.y=THREE.MathUtils.damp(this.group.rotation.y,targetY,6,dt)}
-  this.group.position.y=this.mobile?(this.footer ? this.height*.025 : this.height*.10):(this.footer ? -.18 : 0);
+  this.group.position.y=this.mobile?(this.footer ? this.height*.025 : this.height*.10):(this.footer ? -.18 : .22);
   // A fixed canvas keeps the sky behind the introduction; only the sculpture follows document anchors.
   this.group.position.y+=(this.footer?(viewport/2-rect.top-rect.height/2):-rect.top*(paused?1:.72))/viewport*this.height/dolly;
   this.group.position.y*=this.worldFit;this.group.position.y+=paused||this.mobile?0:Math.sin(this.time*1.2)*.18+Math.sin(this.time*.6)*.06;
@@ -87,7 +91,7 @@ class SculptureScene{
   // Composite sky and glass in linear space before the single display conversion.
   this.background.visible=true;this.group.visible=true;this.renderer.setRenderTarget(this.sceneTarget);this.renderer.setClearColor(0x000000,1);this.renderer.render(this.scene,this.camera);
   this.renderer.setRenderTarget(null);
-  this.renderer.autoClear=false;this.finish.render(this.renderer);this.renderer.render(this.paperScene,this.finishCamera);this.renderer.autoClear=true;if(!paused)this.schedule();
+  this.renderer.autoClear=false;this.finish.render(this.renderer,!paused&&paper<.98);this.host.dataset.fluidActive=String(this.finish.fluid.active);this.renderer.render(this.paperScene,this.finishCamera);this.renderer.autoClear=true;if(!paused)this.schedule();
  }
 }
 const hero=document.getElementById('name-stage');if(hero)new SculptureScene(hero,document.getElementById('name-canvas'));

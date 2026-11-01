@@ -1,5 +1,7 @@
 import * as THREE from './assets/vendor/three.module.js';
 
+import {PointerFluid} from './pointer-fluid.js?v=optics-20261101-1';
+
 // Linear-space transmission and angle-dependent absorption, followed by a
 // separate LDR lens pass. Highlights are optical responses, never timed sparkles.
 export function createGlassMaterial(top, bottom) {
@@ -46,6 +48,7 @@ export function createGlassMaterial(top, bottom) {
 const vertex=`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`;
 export class GlassFinish {
   constructor(texture){
+    this.fluid=new PointerFluid();this.output=new THREE.WebGLRenderTarget(1,1,{depthBuffer:false,type:THREE.UnsignedByteType});
     this.camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
     this.target=new THREE.WebGLRenderTarget(1,1,{depthBuffer:false,stencilBuffer:false,type:THREE.UnsignedByteType});
     this.flare=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:false,
@@ -73,12 +76,16 @@ export class GlassFinish {
     this.scene=new THREE.Scene();this.quad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.flare);this.scene.add(this.quad);
   }
   resize(width,height,dpr){
+    this.fluid.resize(width,height,dpr);this.output.setSize(Math.round(width*dpr),Math.round(height*dpr));
     const w=Math.max(1,Math.floor(width*dpr*.5)),h=Math.max(1,Math.floor(height*dpr*.5));
     this.target.setSize(w,h);this.flare.uniforms.uSize.value.set(width*dpr,height*dpr);
     this.flare.uniforms.uStride.value=8*width/1920*(width<600?2:1);
   }
-  render(renderer){
+  render(renderer,allowed=true){
     this.quad.material=this.flare;renderer.setRenderTarget(this.target);renderer.render(this.scene,this.camera);
-    this.quad.material=this.composite;renderer.setRenderTarget(null);renderer.render(this.scene,this.camera);
+    this.quad.material=this.composite;
+    const flowAvailable=!this.fluid.mobile&&renderer.extensions.has('EXT_color_buffer_float');
+    renderer.setRenderTarget(flowAvailable?this.output:null);renderer.render(this.scene,this.camera);
+    if(flowAvailable)this.fluid.render(renderer,this.output.texture,allowed);else this.fluid.active=false;
   }
 }

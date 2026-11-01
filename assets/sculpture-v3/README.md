@@ -1,0 +1,1 @@
+Original Liu Junwei glyphs, based on LXGW WenKai (SIL OFL). Three independently inflated glyphs. Analytic implicit-surface normals preserve smooth optical highlights. Binary v2 header and positions/indices, followed by normalized int16 xyz normals. See scripts/build-name-optics.py.
