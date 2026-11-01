@@ -30,11 +30,7 @@
     const panel = document.createElement('section');
     panel.className = 'workspace-panel';
     panel.setAttribute('aria-label', tool.name);
-    if (tool.url) {
-      panel.innerHTML = `<div class="frame-notice"><p>${tool.note}</p><a href="${tool.url}" target="_blank" rel="noopener noreferrer">独立打开 ↗</a></div><div class="frame-container"><iframe title="${tool.name}实际界面" src="${tool.url}" allow="fullscreen; clipboard-write" allowfullscreen></iframe></div>`;
-    } else {
-      panel.innerHTML = `<div class="local-workspace tone-${tool.color}"><div class="local-hero"><div class="local-art">${icon(tool.icon)}</div><div><span class="local-kicker">${tool.category} · 本机工具</span><h2>${tool.summary}</h2><p>${tool.detail}</p><a class="toolbox-button primary" href="${tool.local}" target="_blank" rel="noopener noreferrer">打开本机${tool.name} <span aria-hidden="true">↗</span></a></div></div><ol class="local-steps">${tool.steps.map((step, index) => `<li><span>0${index+1}</span><p>${step}</p></li>`).join('')}</ol><details class="local-launch"><summary>启动与运行说明</summary><p>在装有工具的 Mac 上，先双击「${tool.launcher}」，再点击上方按钮。</p><p>${tool.note}</p></details></div>`;
-    }
+    panel.innerHTML=window.ToolPresentation.render(tool,icon(tool.icon));
     panelHost.appendChild(panel);
     panels.set(tool.id, panel);
     return panel;

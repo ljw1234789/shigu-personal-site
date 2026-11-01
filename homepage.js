@@ -35,15 +35,12 @@
       ${e.chapters.length?`<details class="case-source-record"><summary>查看原页章节导航 <span>${e.duration}</span></summary><ol class="case-chapters">${e.chapters.map(([time,label])=>`<li><time>${time}</time><span>${label}</span></li>`).join('')}</ol><p>来自抖音原页标注“内容由 AI 生成”的章节导航，仅用于定位观看，不作为原始脚本或个人制作记录。</p></details>`:''}
     </div>`;
   }
-  function toolContent(t) {
-    if(t.url) return `<div class="tool-navigation"><p>${t.mode==='online'?'项目和记录保存在原工具中。':t.mode==='hybrid'?'在线预览；下载与解析使用 Mac 本机版。':'在线体验；真实 AI 点评需要本机助手。'}</p>${t.local?`<a href="${safe(t.local)}" target="_blank" rel="noopener">打开本机版 ↗</a>`:''}<a href="${safe(t.url)}" target="_blank" rel="noopener">独立打开 ↗</a></div><iframe class="tool-iframe" title="${safe(t.name)}实际界面" src="${safe(t.url)}" allow="fullscreen; clipboard-write" allowfullscreen></iframe>`;
-    return `<div class="local-intro"><div class="icon-art">${icon(toolIcon(t))}</div><h3>${safe(t.summary)}</h3><p>${safe(t.detail)}</p><ol>${t.steps.map(s=>`<li>${safe(s)}</li>`).join('')}</ol><a class="action" href="${safe(t.local)}" target="_blank" rel="noopener">打开本机${safe(t.name)} ↗</a><details><summary>启动说明</summary><p>在装有工具的 Mac 上，先双击「${safe(t.launcher)}」，再打开上方入口。</p><p>${safe(t.note)}</p></details></div>`;
-  }
+  function toolContent(t) { return window.ToolPresentation.render(t,icon(toolIcon(t))); }
 
   const details = {};
   projects.forEach(p => { details[`project-${p.id}`] = {title:p.name, body:()=>projectContent(p)}; });
-  tools.forEach(t => { details[`tool-${t.id}`] = {title:t.name, body:()=>toolContent(t), tool:!!t.url}; });
-  details.site = { title:'关于网站', body:()=>`<div class="window-content site-info"><h3>内容、作品与工具。</h3><p>个人介绍、参与项目与创作工具：刘俊威。</p><p>首页的立体字质感、云状光影和版式参考 <a href="https://haoqi.design/" target="_blank" rel="noopener">Haoqi Design</a>。姓名与结尾立体字基于霞鹜文楷与 Fredoka 字体重新建模，保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">霞鹜文楷</a> 与 <a href="assets/fonts/OFL-Fredoka.txt" target="_blank">Fredoka</a> 的 OFL 许可。早期网格排版与作品动效参考 <a href="https://wodniack.dev/" target="_blank" rel="noopener">Antoine Wodniack</a>，入场节奏参考 <a href="https://www.ondastudio.co/" target="_blank" rel="noopener">Onda Studio</a>。原桌面交互参考 <a href="https://www.sharyap.com/" target="_blank" rel="noopener">Sharlene Yap</a>。</p><p>场景画面与独立 3D 世界基于 <a href="https://github.com/brunosimon/folio-2025" target="_blank" rel="noopener">Bruno Simon · Folio 2025</a>，保留 <a href="world/BRUNO-LICENSE.md" target="_blank">MIT 许可</a>。圆润立体姓名基于 <a href="https://github.com/lxgw/LxgwWenKai" target="_blank" rel="noopener">霞鹜文楷</a>构建，保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">OFL 许可</a>。导航姓名采用 <a href="https://github.com/TrionesType/zhuque" target="_blank" rel="noopener">朱雀仿宋</a>子集，保留 <a href="assets/fonts/OFL-ZhuqueFangsong.txt" target="_blank">OFL 许可</a>。</p></div>` };
+  tools.forEach(t => { details[`tool-${t.id}`] = {title:t.name, body:()=>toolContent(t), tool:true}; });
+  details.site = { title:'关于网站', body:()=>`<div class="window-content site-info"><h3>内容、作品与工具。</h3><p>个人介绍、参与项目与创作工具：刘俊威。</p><p>首页的立体字质感、云状光影和版式参考 <a href="https://haoqi.design/" target="_blank" rel="noopener">Haoqi Design</a>。姓名立体字基于<a href="https://github.com/CyanoHao/Resource-Han-Rounded" target="_blank" rel="noopener">资源圆体</a>重新建模，保留<a href="assets/fonts/OFL-ResourceHanRounded.txt" target="_blank">资源圆体 OFL 许可</a>。结尾使用 Fredoka。早期字形保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">霞鹜文楷</a> 与 <a href="assets/fonts/OFL-Fredoka.txt" target="_blank">Fredoka</a> 的 OFL 许可。早期网格排版与作品动效参考 <a href="https://wodniack.dev/" target="_blank" rel="noopener">Antoine Wodniack</a>，入场节奏参考 <a href="https://www.ondastudio.co/" target="_blank" rel="noopener">Onda Studio</a>。原桌面交互参考 <a href="https://www.sharyap.com/" target="_blank" rel="noopener">Sharlene Yap</a>。</p><p>场景画面与独立 3D 世界基于 <a href="https://github.com/brunosimon/folio-2025" target="_blank" rel="noopener">Bruno Simon · Folio 2025</a>，保留 <a href="world/BRUNO-LICENSE.md" target="_blank">MIT 许可</a>。圆润立体姓名基于 <a href="https://github.com/lxgw/LxgwWenKai" target="_blank" rel="noopener">霞鹜文楷</a>构建，保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">OFL 许可</a>。导航姓名采用 <a href="https://github.com/TrionesType/zhuque" target="_blank" rel="noopener">朱雀仿宋</a>子集，保留 <a href="assets/fonts/OFL-ZhuqueFangsong.txt" target="_blank">OFL 许可</a>。</p></div>` };
   function openDetail(id, push = true, trigger = null) {
     const detail = details[id]; if (!detail) return;
     if (current === id && dialog.open) return;
@@ -54,8 +51,8 @@
     current = id; heading.textContent = detail.title;
     const project = id.startsWith('project-');
     dialog.classList.toggle('is-project-detail',project);
-    dialog.querySelector('.detail-close').textContent = project ? '← 返回作品' : '×';
-    dialog.querySelector('.detail-close').setAttribute('aria-label',project ? '返回作品' : '关闭详情');
+    dialog.querySelector('.detail-close').textContent = project ? '← 返回作品' : id.startsWith('tool-') ? '← 返回工具' : '×';
+    dialog.querySelector('.detail-close').setAttribute('aria-label',project ? '返回作品' : id.startsWith('tool-') ? '返回工具' : '关闭详情');
     dialog.classList.toggle('is-tool-detail', Boolean(detail.tool));
     content.className = `detail-content${detail.tool?' tool-body':''}`;
     content.innerHTML = detail.body(); content.scrollTop = 0;

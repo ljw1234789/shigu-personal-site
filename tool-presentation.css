@@ -1,0 +1,28 @@
+/* Workspace pages extend the portfolio's sky blue, warm paper and precise black typography. */
+.detail-dialog.is-tool-detail{inset:0;margin:0;width:100%;height:100dvh;max-height:none;max-width:none;border:0;border-radius:0;background:#f9f8f0;box-shadow:none}
+.is-tool-detail .detail-header{min-height:72px;padding:0 4vw;border-bottom:1px solid #243c4d22;background:#f9f8f0;gap:26px}
+.is-tool-detail .detail-brand{display:block!important;color:#152531}
+.is-tool-detail .detail-header h2{font-size:13px;font-weight:400;margin-right:auto;color:#637886}
+.is-tool-detail .detail-close{width:auto;height:auto;border:1px solid #b7cbd9;border-radius:99px;padding:10px 20px;font-size:13px;background:transparent;color:#223a4e}
+.is-tool-detail .detail-close:hover{background:#e1edf5}
+.is-tool-detail .detail-content{overflow:auto;background:#f9f8f0;flex:1;min-height:0}
+.tool-presentation{color:#192731;max-width:1600px;margin:auto;padding:0 4vw 36px;animation:tool-arrive .35s ease both}
+.tool-intro-header{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 0 24px}
+.tool-sequence{font-size:11px;color:#607b90;letter-spacing:.06em;display:block;margin-bottom:10px}
+.tool-intro-title h3{font-size:36px;font-weight:650;line-height:1.15;margin:0;letter-spacing:-.035em}
+.tool-intro-title p{font-size:13px;line-height:1.7;margin:10px 0 0;color:#617583}
+.tool-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.tool-action{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:42px;padding:10px 17px;border:1px solid #b9cedc;border-radius:99px;color:#284d6c;background:#ffffff60;text-decoration:none;font-size:12px;line-height:1.5;transition:background .2s}
+.tool-action:hover{background:#dcecf7}.tool-action.primary{color:#fff;background:#274f70;border-color:#274f70}
+.tool-live-surface{background:#fff;border:1px solid #c6d7e3;border-radius:17px;overflow:hidden;box-shadow:0 12px 35px #2d537912}
+.tool-live-surface .tool-iframe{display:block;border:0;width:100%;height:calc(100dvh - 250px);min-height:580px;max-height:980px;background:#f8f8f3}
+.tool-runtime-note{font-size:12px;line-height:1.8;color:#617583;padding:14px 2px 0}.tool-runtime-note summary{cursor:pointer;display:inline-block}.tool-runtime-note p{max-width:75ch;margin-top:10px}
+.tool-local-surface{display:grid;grid-template-columns:1fr 1.25fr;align-items:center;gap:5vw;padding:52px 7%;border:1px solid #c6d7e3;border-radius:18px;background:radial-gradient(ellipse at 8% 90%,#fffdf7,transparent 60%),linear-gradient(120deg,#c6dfef,#edf5fa);min-height:330px}
+.tool-local-art{height:230px;display:grid;place-items:center}.tool-local-art svg{width:190px;height:190px;color:#5688b7;filter:drop-shadow(0 5px 0 #fff9) drop-shadow(0 20px 18px #376e9a30)}
+.tool-local-copy h4{font-size:clamp(24px,3vw,36px);line-height:1.5;letter-spacing:-.035em;margin:0;color:#1a3549;font-weight:600}
+.tool-local-copy p{font-size:13px;color:#617583;margin:15px 0 24px}
+.tool-process{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;padding:0;margin:30px 0 12px;gap:30px}
+.tool-process li{border-top:1px solid #b9cedc;padding-top:16px;display:flex;align-items:baseline;gap:18px}.tool-process span{font-size:24px;line-height:1;font-weight:400;color:#7599b4}.tool-process p{font-size:14px;color:#526b7e;line-height:1.8;margin:0}
+@keyframes tool-arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:700px){.is-tool-detail .detail-header{min-height:62px;padding:0 18px;gap:10px}.is-tool-detail .detail-header h2{display:none}.is-tool-detail .detail-brand{margin-right:auto}.is-tool-detail .detail-close{font-size:12px;padding:8px 14px}.tool-presentation{padding:0 14px 24px}.tool-intro-header{padding:24px 4px 20px;display:block}.tool-intro-title h3{font-size:31px}.tool-actions{justify-content:flex-start;margin-top:18px}.tool-action{min-height:40px;font-size:12px}.tool-live-surface{border-radius:12px}.tool-live-surface .tool-iframe{min-height:700px;height:80dvh}.tool-local-surface{grid-template-columns:1fr;gap:20px;padding:30px}.tool-local-art{height:130px}.tool-local-art svg{width:130px;height:130px}.tool-process{grid-template-columns:1fr;gap:20px}}
+@media(prefers-reduced-motion:reduce){.tool-presentation{animation:none}.tool-action{transition:none}}

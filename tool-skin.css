@@ -1,0 +1,107 @@
+/* Shared portfolio skin. Presentation only: existing tool data and workflows are untouched. */
+:root{color-scheme:light;--paper:#f8f8f3;--bg:#f8f8f3;--white:#fff;--card:#fff;--panel:#fff;--ink:#192731;--text:#192731;--muted:#60717d;--line:#d6e1e7;--border:#d6e1e7;--accent:#346ca9;--green:#346ca9;--purple:#527fa7;--red:#346ca9;--orange:#346ca9;--lime:#d9e9f4;--soft:#eaf2f8;--sidebar:#e4eff6;--error:#a33d3d;--radius:16px;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif}
+body{background:var(--bg);color:var(--ink)}
+::selection{background:#c9e3fa;color:#18324e}
+:where(button,a,input,textarea,select):focus-visible{outline:3px solid #6295cc;outline-offset:3px}
+:where(button,.button,a){transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
+h1,h2,h3{color:var(--ink);font-weight:650;letter-spacing:-.035em}h1{line-height:1.2}
+.sidebar{background:radial-gradient(ellipse at 15% 0%,#fffdf7 0,transparent 58%),linear-gradient(160deg,#cce1ef,#edf4f8 65%);color:var(--ink);border-right:1px solid #ccdce7}
+.sidebar .brand{color:var(--ink)}.brand-mark{background:linear-gradient(135deg,#b8d7ef,#e8f4fd 55%,#fff);color:#346ca9;border:1px solid #b3cbdf;box-shadow:inset 0 1px 1px #fff,0 4px 14px #37649212;border-radius:13px}
+.sidebar .brand small,.side-label,.side-bottom,.side-note,.sidebar .nav-label{color:var(--muted)}
+.sidebar select{background:#ffffffa8;color:var(--ink);border:1px solid #bed1df;border-radius:11px}
+.sidebar nav button,.sidebar .nav button,.sidebar .nav-button{color:#526879;border-radius:11px}
+.sidebar nav button span,.sidebar .nav button svg{color:inherit}
+.sidebar nav button:hover,.sidebar .nav button:hover,.sidebar .nav-button:hover{background:#ffffff91;color:var(--ink)}
+.sidebar nav button.active,.sidebar .nav button.active,.sidebar .nav-button.selected{background:#fff;color:#244e75;box-shadow:0 3px 12px #3f688316,inset 3px 0 #4d84b9}
+.sidebar nav button.active span,.sidebar .nav button.active svg{color:#4f7ea5}
+.side-note,.side-help{border-color:#b8cedd;color:var(--muted)}.local-indicator,.settings-button{color:#426179}.local-indicator i{background:#5a8cad}
+.topbar,.site-header{background:#f8f8f3e8;border-bottom:1px solid var(--line)}
+.breadcrumb,.breadcrumb span{color:var(--muted)}.breadcrumb b{color:var(--ink)}
+.button{border-radius:10px;min-height:40px}.button.dark,.button.primary,.primary{background:#254766;color:#fff;border-color:#254766;box-shadow:0 3px 8px #22496b13}
+.button.dark:hover,.button.primary:hover,.primary:hover{background:#38658a;border-color:#38658a}
+.button.lime{background:#dcebf6;color:#254766;border-color:#c5dcea}
+.panel,.issue-card,.record-card,.exercise-card,.stat,.source-tile{border-radius:15px;border-color:var(--line);box-shadow:0 3px 16px #204c6b05}
+input,textarea,select{accent-color:#346ca9}.field :is(input,textarea,select){border-radius:9px;border-color:var(--line);background:#fff;color:var(--ink)}
+:is(dialog){background:#f8f8f3;color:var(--ink);border-color:var(--line);box-shadow:0 25px 100px #25476630;border-radius:18px}dialog::backdrop{background:#28466066;backdrop-filter:blur(8px)}
+[data-portfolio-tool=science] .brand small,[data-portfolio-tool=science] .eyebrow{display:none}
+[data-portfolio-tool=science] main{padding-top:42px}
+[data-portfolio-tool=science] h1{font-size:clamp(28px,3vw,42px)}
+[data-portfolio-tool=science] .subtitle{font-size:13px;max-width:66ch}
+[data-portfolio-tool=science] .page-heading{margin-bottom:30px}
+[data-portfolio-tool=science] .demo-banner{background:#eef3f7;color:#526b7f;border-color:#d9e4ec;border-radius:10px}
+[data-portfolio-tool=science] .demo-banner button{color:#346ca9}
+[data-portfolio-tool=science] :is(.workflow .current,.board-meta,.check-summary,.step-guide,.inbox-filter-panel){background:#e8f1f8;border-color:#cddfeb;color:#244e75}
+[data-portfolio-tool=science] .workflow{border-radius:13px}.workflow .current .step-number{color:#346ca9}
+[data-portfolio-tool=science] :is(.step-guide summary span span,.step-guide summary em,.step-guide-body){color:#566e81;border-color:#cddfeb}
+[data-portfolio-tool=science] .question-hero{background:linear-gradient(120deg,#fffdf7,#e1eff8)}
+[data-portfolio-tool=science] :is(.quote-link,.number-block,.hint){background:#edf3f8;color:#486a88;border-color:#98bad8}
+[data-portfolio-tool=science] .claim{background:#f2f7fb;border-color:#8eafd0}
+[data-portfolio-tool=science] .shot-card{border-radius:16px;border-color:var(--line);overflow:hidden;box-shadow:0 5px 22px #204c6b09}
+[data-portfolio-tool=science] .shot-visual{background:linear-gradient(130deg,#f3f8fb,#d7e8f4);border-bottom:1px solid #cbdde9}
+[data-portfolio-tool=science] .shot-visual svg{filter:hue-rotate(75deg) saturate(.5)}
+[data-portfolio-tool=science] .shot-body{padding:24px}
+[data-portfolio-tool=science] .shot-body h3{font-size:18px}
+[data-portfolio-tool=science] .evidence-table th{background:#edf3f8}
+[data-portfolio-tool=science] .tag.support,[data-portfolio-tool=science] .tag.good{background:#e4efe7;color:#386547}
+[data-portfolio-tool=science] .tag.boundary{background:#e7eff7;color:#3b6389}
+[data-portfolio-tool=science] .next-card{background:#254766}.next-card p{color:#d8e6f1}
+[data-portfolio-tool=batch] .site-header{background:#f8f8f3}
+[data-portfolio-tool=batch] .intro{background:radial-gradient(ellipse at 75% 25%,#d3e7f4 0,transparent 60%);border-radius:0}
+[data-portfolio-tool=batch] .eyebrow{display:none}
+[data-portfolio-tool=batch] .intro h1{letter-spacing:-.05em}.accent{color:var(--accent)}
+[data-portfolio-tool=batch] :is(.card-bili,.card-douyin,.card-red){background:#e2edf5;color:#365b7c;border-color:#b8cfdf;box-shadow:0 10px 28px #31567513}
+[data-portfolio-tool=batch] :is(.workspace-panel,.result-card,.support-card){border-color:var(--line);border-radius:16px}
+[data-portfolio-tool=photo] .eyebrow{display:none}
+[data-portfolio-tool=photo] .upload{background:linear-gradient(135deg,#fffdf8,#e8f2f9);border-color:#a9c7df;border-radius:14px}
+[data-portfolio-tool=photo] .upload .upload-icon{color:#4e7fa8}
+[data-portfolio-tool=photo] .nav button.active{box-shadow:0 3px 12px #3f688316,inset 3px 0 #4d84b9}
+[data-portfolio-tool=photo] .nav button.active svg{color:#346ca9}
+[data-portfolio-tool=photo] .heading h1{font-size:clamp(28px,3vw,42px)}
+[data-portfolio-tool=photo] .notice{background:#eef4f9;border-color:#cedfeb;color:#526e83}
+[data-portfolio-tool=voice] .brand-mark{font-size:31px}
+[data-portfolio-tool=voice] .nav-button.selected{color:#254766}
+[data-portfolio-tool=voice] .brand small{display:none}
+[data-portfolio-tool=editor] header{background:#f8f8f3;border-color:var(--line)}
+[data-portfolio-tool=editor] .workflow-steps{background:#e8f1f7;border-color:var(--line);padding-block:18px}
+[data-portfolio-tool=editor] .workflow-steps .active{color:#244f77}
+[data-portfolio-tool=editor] .workflow-steps span{color:#647b8c}.workflow-steps i{color:#9bb3c5}
+[data-portfolio-tool=editor] :is(label,.quiet,.file-button,.match-note,.brief-bottom,.range-label,.inline-note,.selected-name,.history-row p,summary){color:#526b7b}
+[data-portfolio-tool=editor] :is(input,select,textarea){background:#fff;color:var(--ink);border-color:var(--line)}
+[data-portfolio-tool=editor] :is(button,.scene-row,.asset){background:#fff;color:var(--ink);border-color:var(--line)}
+[data-portfolio-tool=editor] .primary{background:#254766;color:#fff;border-color:#254766}
+[data-portfolio-tool=editor] :is(.choice button.active,.presets button.active,.scene-row.active,.voice-result){background:#e6f0f8;color:#254766;border-color:#9ebdd6}
+[data-portfolio-tool=editor] :is(.step,.upload-label,.voice-result strong){color:#346ca9}.brand-icon{background:#d2e6f4;color:#346ca9}
+[data-portfolio-tool=editor] :is(.connection,.connection.offline){background:#edf4f8;color:#4b6f89;border-color:#c3d7e6}
+[data-portfolio-tool=editor] .empty-thumb{background:#e5eff6;color:#58758c}
+[data-portfolio-tool=editor] .scene-row .no,[data-portfolio-tool=editor] .scene-row small{color:#58758c}
+[data-portfolio-tool=editor] .upload-box{border:1px dashed #b4cddd;border-radius:12px;padding:14px;background:#f5f9fc}
+[data-portfolio-tool=editor] .preview-shell{border-color:#d6e1e7;box-shadow:0 12px 36px #244b6d12}
+[data-portfolio-tool=editor] .play{background:#d8eafa;color:#254766}
+[data-portfolio-tool=motion] .brand-mark{transform:none;background:linear-gradient(135deg,#a6cae6,#edf7ff);color:#346ca9}
+[data-portfolio-tool=motion] .topbar{background:transparent}
+[data-portfolio-tool=motion] :is(.live-badge,.source-link,.library-note,.section-label,.effect-description,.field>span,.field b,.settings-footer p,footer,.intro-copy){color:#60717d}
+[data-portfolio-tool=motion] .intro h1 em{color:#346ca9}
+[data-portfolio-tool=motion] .effect-card{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:13px}
+[data-portfolio-tool=motion] .effect-card:hover,[data-portfolio-tool=motion] .effect-card.active{background:#e7f1f8;border-color:#9dbed8}
+[data-portfolio-tool=motion] :is(.effect-icon,.effect-number,.mini-tag){background:#e8f1f7;color:#346ca9}
+[data-portfolio-tool=motion] .settings-panel{background:#fff;border-color:var(--line);border-radius:15px}
+[data-portfolio-tool=motion] :is(.view-switch,.view-switch button,.step-button,.transport select,.loop-button,.beat-row button,.reset-button,.replace-area button){background:#fff;color:#476b88;border-color:var(--line)}
+[data-portfolio-tool=motion] :is(.view-switch .selected,.loop-button.on){background:#dbeaf5;color:#254766}
+[data-portfolio-tool=motion] .field input[type=text],[data-portfolio-tool=motion] .field select{background:#f8fafb;color:var(--ink);border-color:var(--line)}
+[data-portfolio-tool=motion] .timecode{color:var(--ink)}
+[data-portfolio-tool=motion] :is(.play-button,.download-button){background:#254766;color:white;border-color:#254766}
+[data-portfolio-tool=motion] .notice{background:#edf4f9;color:#526f85;border-color:#c7ddeb}
+@media(max-width:650px){[data-portfolio-tool=science] main{padding-top:25px}[data-portfolio-tool=science] .sidebar{border-right:0;border-bottom:1px solid var(--line)}[data-portfolio-tool=science] .sidebar nav button.active{box-shadow:inset 0 -3px #4d84b9}.button{min-height:38px}}
+@media(prefers-reduced-motion:reduce){:where(button,.button,a){transition:none}}
+[data-portfolio-tool=science] .shot-frame{background:linear-gradient(130deg,#f3f8fb,#d7e8f4);border-bottom:1px solid #cbdde9}
+[data-portfolio-tool=science] .frame-art svg [stroke]{stroke:#6e90ad}[data-portfolio-tool=science] .frame-art svg [fill]:not([fill=none]){fill:#bed5e7}
+[data-portfolio-tool=editor] .production-status{background:linear-gradient(125deg,#deedf7,#f2f7fb);border-color:#bfd4e3;color:#254766}
+[data-portfolio-tool=editor] .production-status :is(p,strong,li){color:#365a76}.production-checklist li span{border-color:#adc5d8;color:#365a76}
+[data-portfolio-tool=editor] :is(.pill,.eyebrow){color:#617b8f;border-color:#c9dae7}
+[data-portfolio-tool=voice] :is(.card,.composer,.settings-panel){background:#fff;border-color:#d6e1e7;border-radius:16px;box-shadow:0 5px 20px #25476606}
+[data-portfolio-tool=voice] :is(textarea,select,input[type=text],input:not([type])){background:#f9fbfd;color:#192731;border-color:#cbdce8}
+[data-portfolio-tool=voice] .primary-button{background:#254766;color:white;box-shadow:none;border-radius:10px}
+[data-portfolio-tool=voice] .primary-button:hover{background:#38658a}
+[data-portfolio-tool=voice] .voice-art{background:#eaf3fa}.voice-art i{background:#8db0cd}
+[data-portfolio-tool=voice] :is(.private-pill,.privacy-note,.reading-preview){background:#e8f2f9;color:#436784}
+[data-portfolio-tool=voice] .eyebrow{display:none}
