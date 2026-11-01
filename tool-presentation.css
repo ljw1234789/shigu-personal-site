@@ -26,3 +26,6 @@
 @keyframes tool-arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(max-width:700px){.is-tool-detail .detail-header{min-height:62px;padding:0 18px;gap:10px}.is-tool-detail .detail-header h2{display:none}.is-tool-detail .detail-brand{margin-right:auto}.is-tool-detail .detail-close{font-size:12px;padding:8px 14px}.tool-presentation{padding:0 14px 24px}.tool-intro-header{padding:24px 4px 20px;display:block}.tool-intro-title h3{font-size:31px}.tool-actions{justify-content:flex-start;margin-top:18px}.tool-action{min-height:40px;font-size:12px}.tool-live-surface{border-radius:12px}.tool-live-surface .tool-iframe{min-height:700px;height:80dvh}.tool-local-surface{grid-template-columns:1fr;gap:20px;padding:30px}.tool-local-art{height:130px}.tool-local-art svg{width:130px;height:130px}.tool-process{grid-template-columns:1fr;gap:20px}}
 @media(prefers-reduced-motion:reduce){.tool-presentation{animation:none}.tool-action{transition:none}}
+/* Explicit cross-axis sizing prevents flex auto margins from shrinking embedded apps. */
+.is-tool-detail .detail-content{display:block;overflow:auto}.tool-presentation{width:100%;box-sizing:border-box;flex:none}
+@media(min-width:701px){.tool-live-surface .tool-iframe{height:calc(100dvh - 140px);min-height:680px}}
