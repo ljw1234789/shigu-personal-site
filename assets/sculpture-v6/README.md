@@ -1,0 +1,1 @@
+Liu Junwei: straight-sided glyphs with flat faces and narrow beveled edges. Source: Resource Han Rounded (SIL OFL), ROND 0, optical weights 740/690/680. Built by scripts/build-name-cut.py. Binary positions/indices plus normalized int16 normals.

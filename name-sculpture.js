@@ -1,6 +1,6 @@
 import * as THREE from './assets/vendor/three.module.js';
-import {SkyLight} from './sky-light.js?v=refined-20261101';
-import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=refined-20261101';
+import {SkyLight} from './sky-light.js?v=type-cut-20261101';
+import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=type-cut-20261101';
 // Original inflated meshes and procedural light; no model or artwork from the reference site.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const stopped=()=>reduced.matches||document.body.classList.contains('is-paused')||document.body.classList.contains('detail-open');
@@ -12,7 +12,7 @@ const geometries=new Map();
 function entryEase(x){x=THREE.MathUtils.clamp(x,0,1);let lo=0,hi=1,t=x;for(let i=0;i<15;i++){const at=3*.66*t*(1-t)**2+3*.01*t*t*(1-t)+t**3;if(at<x)lo=t;else hi=t;t=(lo+hi)/2}return t*t*(3-2*t)}
 function loadGeometry(key){
  if(!geometries.has(key))geometries.set(key,(async()=>{
-  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v5":"sculpture-v2"}/${key}.bin?v=refined-20261101`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
+  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v6":"sculpture-v2"}/${key}.bin?v=type-cut-20261101`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
   const buffer=await response.arrayBuffer(),[n,count,scale,indexBytes]=new Uint32Array(buffer,0,4),packed=new Int16Array(buffer,16,n*3),pos=new Float32Array(n*3);
   for(let i=0;i<pos.length;i++)pos[i]=packed[i]/scale;
   const offset=16+Math.ceil(packed.byteLength/4)*4,index=indexBytes===2?new Uint16Array(buffer,offset,count):new Uint32Array(buffer,offset,count);
@@ -42,6 +42,7 @@ class SculptureScene{
   this.entryAge=this.footer||this.entryStarted?1.2:0;this.canvas.classList.add('portfolio-scene-canvas');this.canvas.setAttribute('aria-hidden','true');document.body.prepend(this.canvas);
   this.renderer=new THREE.WebGLRenderer({canvas:this.canvas,antialias:true,alpha:false,powerPreference:'low-power'});this.renderer.setPixelRatio(Math.min(devicePixelRatio,2));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.06;
   this.sceneTarget=new THREE.WebGLRenderTarget(1,1,{type:THREE.UnsignedByteType,depthBuffer:true});
+  this.sceneTarget.samples=Math.min(4,this.renderer.capabilities.maxSamples);
   this.finish=new GlassFinish(this.sceneTarget.texture);this.finishCamera=this.finish.camera;
   this.paperScene=new THREE.Scene();this.paperMaterial=new THREE.ShaderMaterial({transparent:true,depthTest:false,depthWrite:false,toneMapped:false,uniforms:{uOpacity:{value:0},uSize:{value:new THREE.Vector2(1280,720)},uPaper:{value:new THREE.Color('#f9f8f0')}},vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}',fragmentShader:`varying vec2 vUv;uniform float uOpacity;uniform vec2 uSize;uniform vec3 uPaper;void main(){vec2 cell=fract(vUv*uSize/4.);float d=distance(cell,vec2(.5)),r=.9*uOpacity,aa=fwidth(d)*1.5;float a=1.-smoothstep(r-aa,r+aa,d);if(uOpacity<.001)a=0.;gl_FragColor=vec4(uPaper,a);\n#include <colorspace_fragment>\n}`});this.paperScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.paperMaterial));
   this.sky=new SkyLight();this.skyPointer=new THREE.Vector2(.5,.5);this.lightAngle=Math.atan2(9,4);this.lightRay=new THREE.Raycaster();this.lightPlane=new THREE.Plane(new THREE.Vector3(0,0,1),0);this.lightHit=new THREE.Vector3();
@@ -55,7 +56,7 @@ class SculptureScene{
    specs.forEach(([key,y,z],i)=>{const m=letteringMaterial('#b1c0cb','#527b9b');this.materials.push(m);const mesh=new THREE.Mesh(models[i],m);mesh.position.y=y;mesh.rotation.z=z;mesh.scale.y=.85;mesh.position.z=i===1?.25:0;this.group.add(mesh);mesh.updateMatrix();const e=mesh.matrix.elements;m.uniforms.uTintHeight.value.set(e[1],e[5],e[9],e[13]);const p=models[i].attributes.position;for(let n=0;n<p.count;n++){const h=e[1]*p.getX(n)+e[5]*p.getY(n)+e[9]*p.getZ(n)+e[13];tintMin=Math.min(tintMin,h);tintMax=Math.max(tintMax,h);}});
    // One vertical absorption gradient across the complete word sculpture.
    this.materials.forEach(m=>m.uniforms.uYRange.value.set(tintMin,tintMax));
-  }else{const letters=await Promise.all(['name-liu','name-jun','name-wei'].map(loadGeometry));letters.forEach((geometry,i)=>{const m=letteringMaterial('#527b9b','#b1c0cb');m.uniforms.uYRange.value.set(-.96,.96);this.materials.push(m);const mesh=new THREE.Mesh(geometry,m);geometry.computeBoundingBox();const middle=(geometry.boundingBox.min.x+geometry.boundingBox.max.x)/2;mesh.position.x=(i-1)*2.24-middle;this.group.add(mesh);});}
+  }else{const letters=await Promise.all(['name-liu','name-jun','name-wei'].map(loadGeometry));letters.forEach((geometry,i)=>{const m=letteringMaterial('#2867ba','#81add5');m.uniforms.uYRange.value.set(-.96,.96);this.materials.push(m);const mesh=new THREE.Mesh(geometry,m);geometry.computeBoundingBox();const middle=(geometry.boundingBox.min.x+geometry.boundingBox.max.x)/2;mesh.position.x=(i-1)*2.24-middle;this.group.add(mesh);});}
 
   this.background.material.uniforms.uSkyMap.value=this.sky.texture;this.materials.forEach(m=>m.uniforms.uSkyMap.value=this.sky.texture);this.visible=true;this.resize();this.frame(performance.now());this.host.classList.add('ready');this.canvas.classList.add('is-ready');this.host.dataset.renderState='ready';
   new ResizeObserver(()=>this.resize()).observe(this.host);

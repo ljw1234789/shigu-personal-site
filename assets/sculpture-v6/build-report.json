@@ -1,0 +1,29 @@
+[
+  {
+    "glyph": "刘",
+    "weight": 740,
+    "roundness": 0,
+    "bevel_px": 5.0,
+    "half_depth_px": 22.0,
+    "vertices": 33636,
+    "bytes": 807208
+  },
+  {
+    "glyph": "俊",
+    "weight": 690,
+    "roundness": 0,
+    "bevel_px": 5.0,
+    "half_depth_px": 22.0,
+    "vertices": 40806,
+    "bytes": 979264
+  },
+  {
+    "glyph": "威",
+    "weight": 680,
+    "roundness": 0,
+    "bevel_px": 5.0,
+    "half_depth_px": 22.0,
+    "vertices": 41858,
+    "bytes": 1004584
+  }
+]

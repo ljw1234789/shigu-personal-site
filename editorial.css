@@ -28,3 +28,6 @@ html{scroll-behavior:smooth;scroll-padding-top:100px}.scroll-home{background:var
 .homepage-tool .icon-art{filter:grayscale(1);opacity:.8}.homepage-tool:hover{background:#edf0f1}.tool-showcase>img{background:#e9edef}.brand-dot{color:#526a7c}
 @media(max-width:700px){.hero-topline{top:100px;inset-inline:24px;display:block}.hero-topline p:first-child{font-size:15px}.hero-topline p:last-child{margin-top:12px;max-width:270px;font-size:11px}.hero-bottom{bottom:104px;inset-inline:24px;display:block}.hero-statement{font-size:29px;max-width:100%;line-height:1.3}.hero-work-link{margin-top:24px;justify-content:space-between}.hero-work-link b{font-size:30px}.hero-baseline{bottom:30px}.sculpture-fallback{font-size:21vw;top:44%}}
 @media(max-width:700px){.hero-topline p:last-child{text-align:left;margin-inline:0;padding-left:0;max-width:300px;font-size:11px}}
+
+/* Straight-sided name fallback matches the 3D lettering. */
+.sculpture-fallback{font-family:NameRounded,sans-serif;font-weight:710;font-variation-settings:"ROND" 0;letter-spacing:.04em;color:#3a76b9;text-shadow:2px 3px 0 #1c467052}
