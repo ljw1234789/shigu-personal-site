@@ -4,7 +4,7 @@ import {PointerFluid} from './pointer-fluid.js?v=optics-20261101-1';
 
 // Linear-space transmission and angle-dependent absorption, followed by a
 // separate LDR lens pass. Highlights are optical responses, never timed sparkles.
-export function createGlassMaterial(top, bottom) {
+export function createGlassMaterial(top, bottom, sculpted = false) {
   return new THREE.ShaderMaterial({
     toneMapped: false,
     uniforms: {
@@ -12,7 +12,7 @@ export function createGlassMaterial(top, bottom) {
       uBottom:{value:new THREE.Color(bottom)}, uTime:{value:0},
       uAspect:{value:1}, uResolution:{value:new THREE.Vector2(1280,720)},
       uLight:{value:new THREE.Vector3(4,9,.5)}, uYRange:{value:new THREE.Vector2(-1,1)},
-      uTintHeight:{value:new THREE.Vector4(0,1,0,0)}
+      uTintHeight:{value:new THREE.Vector4(0,1,0,0)}, uSculpted:{value:sculpted ? 1 : 0}
     },
     vertexShader:`uniform vec4 uTintHeight;varying vec3 vNormal,vIncident;varying float vHeight;
       void main(){vec4 world=modelMatrix*vec4(position,1.);
@@ -20,7 +20,7 @@ export function createGlassMaterial(top, bottom) {
         vIncident=normalize(world.xyz-cameraPosition);vHeight=dot(vec4(position,1.),uTintHeight);
         gl_Position=projectionMatrix*viewMatrix*world;}`,
     fragmentShader:`uniform sampler2D uSkyMap;uniform vec3 uTop,uBottom,uLight;
-      uniform vec2 uResolution,uYRange;varying vec3 vNormal,vIncident;varying float vHeight;
+      uniform vec2 uResolution,uYRange;uniform float uSculpted;varying vec3 vNormal,vIncident;varying float vHeight;
       float rand(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
       void main(){vec3 n=normalize(vNormal),incident=normalize(vIncident);
         vec2 uv=gl_FragCoord.xy/uResolution;vec3 transmitted=vec3(0.);
@@ -39,6 +39,22 @@ export function createGlassMaterial(top, bottom) {
         float specular=pow(abs(dot(n,halfway)),65.);
         color+=(specular+max(0.,dot(n,light))*.16)*.38;
         color+=edge*smoothstep(-.5,.5,dot(n,normalize(vec3(-1,1,-1))))*.12;
+        if(uSculpted>.5){
+          vec3 view=normalize(-incident);
+          vec3 key=normalize(vec3(-uLight.xy*.18,1.6));
+          vec3 fill=normalize(vec3(1.,-.25,1.4));
+          float facing=max(dot(n,view),0.);
+          float diffuse=.56+.34*max(dot(n,key),0.)+.12*max(dot(n,fill),0.);
+          vec3 reflected=reflect(incident,n);
+          float softbox=pow(max(dot(reflected,normalize(vec3(-.48,.65,1.))),0.),18.);
+          float polish=pow(max(dot(n,normalize(view+key)),0.),85.);
+          float rim=pow(1.-facing,3.);
+          vec3 skyReflection=texture2D(uSkyMap,clamp(uv+reflected.xy*.16,0.,1.)).rgb;
+          color=absorption*diffuse;
+          color=mix(color,skyReflection*mix(absorption,vec3(1.),.32),.17+.16*rim);
+          color+=vec3(.79,.90,1.)*softbox*.44+vec3(1.)*polish*.62;
+          color+=vec3(.40,.63,.88)*rim*.10;
+        }
         gl_FragColor=vec4(color,1.);
         #include <colorspace_fragment>
       }`

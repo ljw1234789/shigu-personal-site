@@ -1,0 +1,17 @@
+{
+  "text": "刘俊威",
+  "source": "approved-03.png",
+  "viewBox": [
+    1349,
+    472
+  ],
+  "finish": "sculpted",
+  "width_world": 6.45,
+  "height_world": 2.1808301886792454,
+  "half_depth_px": 35.0,
+  "bevel_px": 42.0,
+  "vertices": 189048,
+  "triangles": 378064,
+  "bytes": 6805360,
+  "contours": 13
+}
