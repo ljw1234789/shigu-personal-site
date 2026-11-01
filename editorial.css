@@ -31,3 +31,7 @@ html{scroll-behavior:smooth;scroll-padding-top:100px}.scroll-home{background:var
 
 /* Straight-sided name fallback matches the 3D lettering. */
 .sculpture-fallback{font-family:NameRounded,sans-serif;font-weight:710;font-variation-settings:"ROND" 0;letter-spacing:.04em;color:#3a76b9;text-shadow:2px 3px 0 #1c467052}
+
+/* The no-WebGL fallback uses the exact approved outline too. */
+.sculpture-fallback{width:min(66vw,1080px);font-size:0;text-shadow:none}.sculpture-fallback img{display:block;width:100%;height:auto}
+@media(max-width:700px){.sculpture-fallback{width:80vw}}

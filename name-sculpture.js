@@ -1,7 +1,7 @@
 import * as THREE from './assets/vendor/three.module.js';
-import {SkyLight} from './sky-light.js?v=type-cut-20261101';
-import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=type-cut-20261101';
-// Original inflated meshes and procedural light; no model or artwork from the reference site.
+import {SkyLight} from './sky-light.js?v=name-01-20261101';
+import {createGlassMaterial,GlassFinish} from './glass-optics.js?v=name-01-20261101';
+// Approved custom name outline with shallow bevels; existing entry and optical motion are retained.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const stopped=()=>reduced.matches||document.body.classList.contains('is-paused')||document.body.classList.contains('detail-open');
 // Both visible scenes sample one optical clock; pausing never jumps the light.
@@ -12,7 +12,7 @@ const geometries=new Map();
 function entryEase(x){x=THREE.MathUtils.clamp(x,0,1);let lo=0,hi=1,t=x;for(let i=0;i<15;i++){const at=3*.66*t*(1-t)**2+3*.01*t*t*(1-t)+t**3;if(at<x)lo=t;else hi=t;t=(lo+hi)/2}return t*t*(3-2*t)}
 function loadGeometry(key){
  if(!geometries.has(key))geometries.set(key,(async()=>{
-  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v6":"sculpture-v2"}/${key}.bin?v=type-cut-20261101`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
+  const response=await fetch(new URL(`./assets/${key.startsWith("name-")?"sculpture-v8":"sculpture-v2"}/${key}.bin?v=name-01-20261101`,import.meta.url));if(!response.ok)throw new Error('Lettering asset unavailable');
   const buffer=await response.arrayBuffer(),[n,count,scale,indexBytes]=new Uint32Array(buffer,0,4),packed=new Int16Array(buffer,16,n*3),pos=new Float32Array(n*3);
   for(let i=0;i<pos.length;i++)pos[i]=packed[i]/scale;
   const offset=16+Math.ceil(packed.byteLength/4)*4,index=indexBytes===2?new Uint16Array(buffer,offset,count):new Uint32Array(buffer,offset,count);
@@ -56,7 +56,7 @@ class SculptureScene{
    specs.forEach(([key,y,z],i)=>{const m=letteringMaterial('#b1c0cb','#527b9b');this.materials.push(m);const mesh=new THREE.Mesh(models[i],m);mesh.position.y=y;mesh.rotation.z=z;mesh.scale.y=.85;mesh.position.z=i===1?.25:0;this.group.add(mesh);mesh.updateMatrix();const e=mesh.matrix.elements;m.uniforms.uTintHeight.value.set(e[1],e[5],e[9],e[13]);const p=models[i].attributes.position;for(let n=0;n<p.count;n++){const h=e[1]*p.getX(n)+e[5]*p.getY(n)+e[9]*p.getZ(n)+e[13];tintMin=Math.min(tintMin,h);tintMax=Math.max(tintMax,h);}});
    // One vertical absorption gradient across the complete word sculpture.
    this.materials.forEach(m=>m.uniforms.uYRange.value.set(tintMin,tintMax));
-  }else{const letters=await Promise.all(['name-liu','name-jun','name-wei'].map(loadGeometry));letters.forEach((geometry,i)=>{const m=letteringMaterial('#2867ba','#81add5');m.uniforms.uYRange.value.set(-.96,.96);this.materials.push(m);const mesh=new THREE.Mesh(geometry,m);geometry.computeBoundingBox();const middle=(geometry.boundingBox.min.x+geometry.boundingBox.max.x)/2;mesh.position.x=(i-1)*2.24-middle;this.group.add(mesh);});}
+  }else{const geometry=await loadGeometry('name-wordmark');const m=letteringMaterial('#2867ba','#81add5');m.uniforms.uYRange.value.set(-1.1,1.1);this.materials.push(m);this.group.add(new THREE.Mesh(geometry,m));}
 
   this.background.material.uniforms.uSkyMap.value=this.sky.texture;this.materials.forEach(m=>m.uniforms.uSkyMap.value=this.sky.texture);this.visible=true;this.resize();this.frame(performance.now());this.host.classList.add('ready');this.canvas.classList.add('is-ready');this.host.dataset.renderState='ready';
   new ResizeObserver(()=>this.resize()).observe(this.host);
@@ -76,7 +76,7 @@ class SculptureScene{
   const paper=this.footer?THREE.MathUtils.clamp(rect.top/viewport,0,1):THREE.MathUtils.clamp(-rect.top/(.75*viewport),0,1);
   if(this.entryStarted&&!paused)this.entryAge=Math.min(1.2,this.entryAge+dt);
   const dolly=paused?1:24/(24+8*paper+8*(1-entryEase(this.entryAge/1.2)));
-  this.camera.position.z=24/dolly;this.group.scale.setScalar(scale*this.worldFit);if(!this.footer)this.group.scale.x*=1.05;this.group.scale.y*=1;
+  this.camera.position.z=24/dolly;this.group.scale.setScalar(scale*this.worldFit);this.group.scale.y*=1;
   const targetX=this.footer?THREE.MathUtils.lerp(-Math.PI,0,entry):0,targetY=this.footer?0:THREE.MathUtils.degToRad(THREE.MathUtils.lerp(4,90,after));
   if(paused){this.group.rotation.set(0,this.footer?0:THREE.MathUtils.degToRad(4),0)}else if(this.entryStarted||this.footer){this.group.rotation.x=THREE.MathUtils.damp(this.group.rotation.x,targetX,6,dt);this.group.rotation.y=THREE.MathUtils.damp(this.group.rotation.y,targetY,6,dt)}
   this.group.position.y=this.mobile?(this.footer ? this.height*.025 : this.height*.10):(this.footer ? -.18 : .65);
