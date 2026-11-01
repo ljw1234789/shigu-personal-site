@@ -30,15 +30,15 @@ export function createGlassMaterial(top, bottom) {
           transmitted+=vec3(texture2D(uSkyMap,uv+rayR.xy*offset).r,
             texture2D(uSkyMap,uv+rayG.xy*offset).g,texture2D(uSkyMap,uv+rayB.xy*offset).b);}
         transmitted/=3.;float luma=dot(transmitted,vec3(.2125,.7154,.0721));
-        transmitted=mix(vec3(luma),transmitted,1.2);transmitted=(transmitted*.78-.5)*.9+.5;
+        transmitted=mix(vec3(luma),transmitted,.65);transmitted=(transmitted*.78-.5)*.9+.5;
         float height=clamp((vHeight-uYRange.x)/max(uYRange.y-uYRange.x,.00001),0.,1.);
         vec3 absorption=clamp(mix(uBottom,uTop,height),.001,1.);
         float edge=1.-abs(dot(n,incident));float tintAlpha=mix(.92,1.,edge);
         vec3 color=mix(transmitted,transmitted*absorption,tintAlpha);
         vec3 light=normalize(-uLight),halfway=normalize(incident+light);
-        float specular=pow(abs(dot(n,halfway)),120.);
-        color+=(specular+max(0.,dot(n,light))*.1)*1.2;
-        color+=edge*smoothstep(-.5,.5,dot(n,normalize(vec3(-1,1,-1))))*.24;
+        float specular=pow(abs(dot(n,halfway)),65.);
+        color+=(specular+max(0.,dot(n,light))*.16)*.38;
+        color+=edge*smoothstep(-.5,.5,dot(n,normalize(vec3(-1,1,-1))))*.12;
         gl_FragColor=vec4(color,1.);
         #include <colorspace_fragment>
       }`
@@ -65,7 +65,7 @@ export class GlassFinish {
         void main(){vec2 px=uStride/uSize;
           vec3 glow=bright(vUv)*1.2+streak(vec2(0.,px.y))+
             streak(vec2(px.x*.8660254,px.y*.5))+streak(vec2(px.x*.8660254,-px.y*.5));
-          gl_FragColor=vec4(glow*.525,1.);}`});
+          gl_FragColor=vec4(glow*.025,1.);}`});
     this.composite=new THREE.ShaderMaterial({transparent:false,depthTest:false,depthWrite:false,toneMapped:false,
       uniforms:{uImage:{value:texture},uFlare:{value:this.target.texture}},vertexShader:vertex,
       fragmentShader:`varying vec2 vUv;uniform sampler2D uImage,uFlare;

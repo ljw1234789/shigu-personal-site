@@ -19,3 +19,12 @@ html{scroll-behavior:smooth;scroll-padding-top:100px}.scroll-home{background:var
 
 /* Screen-fixed sky and lettering, covered by the scroll-driven paper dots. */
 .portfolio-scene-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0}.portfolio-scene-canvas.is-ready{opacity:1}.portfolio-hero,.closing-section{background:transparent}.portfolio-hero:has(.sculpture-stage:not(.ready)),.closing-section:has(.sculpture-stage:not(.ready)){background:var(--hero-sky)}
+
+/* Quiet interview-facing composition: dedicated name field, separate introduction. */
+:root{--hero-sky:#e7eced;--folio-active:#405b70;--folio-field:#f7f7f3;--folio-ink:#20272b}
+::selection{background:#d7e1e8;color:#182530}.folio-grid{opacity:.25}
+.hero-topline{grid-template-columns:1fr 1fr;top:116px}.hero-topline p:first-child{font-size:17px;font-weight:500;letter-spacing:.015em}.hero-topline p:last-child{justify-self:end;font-size:12px;line-height:1.9;max-width:330px}
+.hero-bottom{bottom:98px;align-items:end}.hero-statement{font-size:clamp(32px,3.4vw,53px);font-weight:600;line-height:1.22;letter-spacing:-.045em;max-width:75%;color:#20272b}.hero-statement>span+span{margin-top:4px}.hero-baseline{color:#65727a}.hero-baseline span:nth-child(2){display:none}.hero-baseline span:last-child{font-size:18px}
+.homepage-tool .icon-art{filter:grayscale(1);opacity:.8}.homepage-tool:hover{background:#edf0f1}.tool-showcase>img{background:#e9edef}.brand-dot{color:#526a7c}
+@media(max-width:700px){.hero-topline{top:100px;inset-inline:24px;display:block}.hero-topline p:first-child{font-size:15px}.hero-topline p:last-child{margin-top:12px;max-width:270px;font-size:11px}.hero-bottom{bottom:104px;inset-inline:24px;display:block}.hero-statement{font-size:29px;max-width:100%;line-height:1.3}.hero-work-link{margin-top:24px;justify-content:space-between}.hero-work-link b{font-size:30px}.hero-baseline{bottom:30px}.sculpture-fallback{font-size:21vw;top:44%}}
+@media(max-width:700px){.hero-topline p:last-child{text-align:left;margin-inline:0;padding-left:0;max-width:300px;font-size:11px}}

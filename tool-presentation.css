@@ -29,3 +29,8 @@
 /* Explicit cross-axis sizing prevents flex auto margins from shrinking embedded apps. */
 .is-tool-detail .detail-content{display:block;overflow:auto}.tool-presentation{width:100%;box-sizing:border-box;flex:none}
 @media(min-width:701px){.tool-live-surface .tool-iframe{height:calc(100dvh - 140px);min-height:680px}}
+
+/* The wrapper stays quiet so the actual workspace has priority. */
+.detail-dialog.is-tool-detail,.is-tool-detail .detail-header,.is-tool-detail .detail-content{background:#f6f7f8}
+.tool-action,.is-tool-detail .detail-close{border-radius:5px;border-color:#cdd5db}.tool-action.primary{background:#2a3e4d;border-color:#2a3e4d}.tool-live-surface{border-radius:6px;box-shadow:none;border-color:#d5dde3}.tool-intro-title h3{font-size:30px}.tool-sequence{letter-spacing:.02em}.tool-local-surface{grid-template-columns:64px 1fr;gap:30px;min-height:280px;padding:45px;background:#fff;border-color:#d5dde3;border-radius:6px}.tool-local-art{height:64px;align-self:start}.tool-local-art svg{width:52px;height:52px;color:#526a7c;filter:grayscale(1)}.tool-local-copy h4{font-size:26px;max-width:24em;font-weight:550}.tool-process span{font-size:18px;color:#8a969f}.tool-process li{gap:15px;border-color:#d4dce1}
+@media(max-width:700px){.tool-local-surface{grid-template-columns:1fr;padding:28px;gap:14px}.tool-local-art{height:44px}.tool-local-art svg{width:40px;height:40px}.tool-local-copy h4{font-size:23px}.tool-intro-title h3{font-size:29px}}

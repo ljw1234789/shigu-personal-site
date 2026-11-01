@@ -1,0 +1,1 @@
+Liu Junwei sculptural lettering, based on Resource Han Rounded (SIL OFL). Optical weights 780 / 720 / 700, roundness 60, shallow depth 1.0. Independently centered glyphs and open counters. Binary v2 header and positions/indices, followed by normalized int16 xyz normals. See scripts/build-name-optics.py.
