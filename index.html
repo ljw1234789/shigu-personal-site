@@ -11,7 +11,7 @@
 // Prepare the curtain before first paint; a failed script can never trap the page.
 (()=>{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&(!location.hash||location.hash==='#top')){document.documentElement.classList.add('intro-pending');setTimeout(()=>{document.documentElement.classList.add('intro-text-ready');document.documentElement.classList.remove('intro-pending','intro-running');document.querySelectorAll('[data-intro-inert]').forEach(el=>{el.inert=false;el.removeAttribute('data-intro-inert')});document.getElementById('site-entrance')?.remove();document.dispatchEvent(new Event('portfolio:intro-text'))},15000)}})();
 </script>
-<link rel="stylesheet" href="name-display.css?v=20261029-2"><link rel="stylesheet" href="homepage.css?v=20261029-1"><link rel="stylesheet" href="editorial.css?v=type-system-20261102"><link rel="stylesheet" href="evidence.css?v=20261029-1"><link rel="stylesheet" href="detail-pages.css?v=refined-20261030-2"><link rel="stylesheet" href="cursor.css?v=20261029-3"><script src="entrance.js?v=name-03-full-20261102" defer></script>
+<link rel="stylesheet" href="name-display.css?v=20261029-2"><link rel="stylesheet" href="homepage.css?v=20261029-1"><link rel="stylesheet" href="editorial.css?v=clean-notes-20261102"><link rel="stylesheet" href="evidence.css?v=20261029-1"><link rel="stylesheet" href="detail-pages.css?v=refined-20261030-2"><link rel="stylesheet" href="cursor.css?v=20261029-3"><script src="entrance.js?v=name-03-full-20261102" defer></script>
 <link rel="preload" href="assets/fonts/ljw-editorial-serif.woff2?v=type-system-20261102" as="font" type="font/woff2" crossorigin>
 <link rel="modulepreload" href="assets/vendor/three.module.js"><link rel="modulepreload" href="assets/vendor/three.core.js">
 <link rel="preload" href="assets/sculpture-v13/name-wordmark.bin?v=name-03-full-20261102" as="fetch" crossorigin>
@@ -46,7 +46,6 @@
 
     </div>
   </section>
-  <p class="data-note">B 站与抖音原页数据，核验于 2026.10.29。</p>
   <section class="content-section page-surface" id="tools" aria-labelledby="tools-title">
     <header class="page-section-heading" data-reveal><h2 id="tools-title"><span class="title-mask"><span>创作工具</span></span><sup>06</sup></h2><p>把创作中的重复步骤，<br>做成顺手的小工具。</p></header>
     <div class="tools-core"><a class="tool-showcase" href="#tool-science" data-detail="tool-science"><img src="assets/projects/science-workbench.jpg?v=refined-20261101" alt="科普工作台实际界面：依据、文案与分镜在同一工作流中" width="1280" height="720" loading="lazy"><span><strong>科普工作台</strong><span>从观众问题到分镜，把依据放进创作流程。</span><b>打开工具 ↗</b></span></a>
