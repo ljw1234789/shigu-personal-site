@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 8 746 106" role="img" aria-labelledby="name description">
+  <title id="name">LIU JUNWEI</title>
+  <desc id="description">A custom slender Roman signature with tapered serifs, an extended J hook and an open W, paired with Liu Junwei's Chinese lettering.</desc>
+  <defs>
+    <path id="L" d="M0 16H23V18H19C15 18 14 20 14 25V84C14 90 17 92 23 92H33C44 92 50 87 56 77H58L53 96H0V94H4C8 94 9 92 9 87V25C9 20 8 18 4 18H0Z"/>
+    <path id="I" d="M0 16H25V18H21C17 18 15 20 15 25V87C15 92 17 94 21 94H25V96H0V94H4C8 94 10 92 10 87V25C10 20 8 18 4 18H0Z"/>
+    <path id="U" d="M0 16H25V18H21C16 18 15 20 15 25V67C15 85 23 94 37 94C51 94 59 84 59 67V27C59 21 57 18 51 18H49V16H71V18H69C63 18 61 21 61 27V67C61 87 51 98 35 98C19 98 10 88 10 68V25C10 20 8 18 4 18H0Z"/>
+    <path id="J" d="M20 16H49V18H45C40 18 39 20 39 25V79C39 98 31 108 18 108C9 108 3 103 0 96L2 94C6 100 11 103 17 103C29 103 34 94 34 79V25C34 20 32 18 27 18H20Z"/>
+    <path id="N" d="M0 16H14L63 86V28C63 21 61 18 55 18H53V16H76V18H74C68 18 65 21 65 28V97H63L13 26V84C13 91 15 94 21 94H24V96H0V94H2C8 94 11 91 11 84V24C8 20 6 18 1 18H0Z"/>
+    <path id="W" d="M0 16H24V18H20C16 18 15 20 17 26L34 84L50 34L47 25C45 20 44 18 39 18H37V16H63V18H60C55 18 53 20 55 26L75 84L93 27C95 21 94 18 88 18H85V16H109V18H107C101 18 98 21 96 28L76 98H73L52 41L35 98H32L11 28C9 21 7 18 2 18H0Z"/>
+    <path id="E" d="M0 16H53L54 33H52C50 22 45 18 36 18H20C15 18 14 20 14 24V54H31C40 54 43 51 45 43H47V69H45C43 60 40 57 31 57H14V85C14 90 16 93 22 93H36C47 93 52 88 57 79H59L55 96H0V94H4C8 94 9 92 9 87V25C9 20 8 18 4 18H0Z"/>
+  </defs>
+  <g fill="#264d6a">
+    <use href="#L"/>
+    <use href="#I" x="82"/>
+    <use href="#U" x="132"/>
+    <use href="#J" x="238"/>
+    <use href="#U" x="317"/>
+    <use href="#N" x="408"/>
+    <use href="#W" x="503"/>
+    <use href="#E" x="632"/>
+    <use href="#I" x="710"/>
+  </g>
+</svg>

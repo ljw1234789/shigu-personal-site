@@ -181,8 +181,7 @@
  .portfolio-focused .content-section#tools{padding-block:38px}.scroll-home.portfolio-focused .page-section-heading h2{font-size:32px}.portfolio-focused .page-section-heading p{font-size:16px;margin-top:14px}.portfolio-focused .tool-showcase{display:block}.portfolio-focused .tool-showcase>span{padding:22px}.portfolio-focused .tool-showcase>img{aspect-ratio:16/9}.portfolio-focused .homepage-tool{grid-template-columns:36px 1fr;gap:0 16px}.portfolio-focused .experience-section{padding-block:38px}.portfolio-focused .closing-section{display:block;padding-block:28px}.portfolio-focused .closing-section .closing-actions{margin-top:25px;justify-content:space-between;gap:20px}
 }
 
-/* Roman signature: deliberate spacing, one quiet baseline beneath the name. */
-.portfolio-focused .hero-roman-name{position:absolute;z-index:5;left:50%;top:55%;transform:translateX(-50%);display:flex;align-items:baseline;gap:.65em;padding-left:.24em;font:500 clamp(14px,1.5vw,19px)/1.3 'Helvetica Neue',Arial,sans-serif;letter-spacing:.24em;color:#264d6a;white-space:nowrap}
-.hero-roman-name>span:first-child{font-weight:650}
-.hero-roman-name>span:last-child{font-weight:400}
-@media(max-width:700px){.portfolio-focused .hero-roman-name{top:54%;font-size:13px;letter-spacing:.22em}}
+/* Original vector letterforms echo the Chinese signature's tapered strokes. */
+.portfolio-focused .hero-roman-name{position:absolute;z-index:5;left:50%;top:54%;transform:translateX(-50%);display:block;width:clamp(180px,18vw,224px);padding:0;margin:0;line-height:0}
+.hero-roman-name>img{display:block;width:100%;height:auto}
+@media(max-width:700px){.portfolio-focused .hero-roman-name{top:50%;width:160px}}
