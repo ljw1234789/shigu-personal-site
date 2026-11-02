@@ -23,5 +23,5 @@
  const textObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting&&introReady())resolve(e.target)}),{threshold:.1});targets.forEach(el=>textObserver.observe(el));
  document.addEventListener('portfolio:intro-text',resolveVisible);new MutationObserver(resolveVisible).observe(root,{attributes:true,attributeFilter:['class']});
  new MutationObserver(()=>{if(paused())finishText()}).observe(document.body,{attributes:true,attributeFilter:['class']});reduced.addEventListener('change',()=>{if(reduced.matches){finishText();root.classList.remove('craft-motion');reveal.forEach(el=>el.classList.add('revealed'))}});
- let frame=0;const update=()=>{frame=0;document.body.classList.toggle('is-scrolled',scrollY>innerHeight-130)};addEventListener('scroll',()=>{if(!frame)frame=requestAnimationFrame(update)},{passive:true});update();addEventListener('pagehide',finishText);
+ let frame=0;const update=()=>{frame=0;document.body.classList.toggle('is-scrolled',scrollY>(document.querySelector('.portfolio-hero')?.offsetHeight||innerHeight)-130)};addEventListener('scroll',()=>{if(!frame)frame=requestAnimationFrame(update)},{passive:true});update();addEventListener('pagehide',finishText);
 })();
