@@ -86,7 +86,7 @@
 .scroll-home .detail-dialog .detail-header :is(.detail-brand,.detail-close,h2){color:#264d6a}
 .scroll-home .detail-dialog .detail-close{background:transparent;border-color:#bfd0df}
 @media(max-width:1000px){
- .case-grid{gap:45px 26px}.case-card:nth-of-type(1){grid-template-columns:1.35fr 1fr}.case-card:nth-of-type(1) .case-copy{padding-left:26px}.case-card:nth-of-type(1) .case-cover{aspect-ratio:4/5}.case-results{gap:24px}.case-summary{font-size:14px}.case-role{font-size:12px}.case-copy h3{font-size:27px}.tool-showcase>span{padding:28px}.experience-steps{grid-template-columns:1fr}.experience-steps li{padding-top:16px}.experience-steps p{margin-top:8px}
+ .case-grid{gap:45px 26px}.case-card:nth-of-type(1){display:block}.case-card:nth-of-type(1) .case-copy{padding:24px 0 0}.case-card:nth-of-type(1) .case-cover{aspect-ratio:16/9}.case-results{gap:24px}.case-summary{font-size:14px}.case-role{font-size:12px}.case-copy h3{font-size:27px}.tool-showcase>span{padding:28px}.experience-steps{grid-template-columns:1fr}.experience-steps li{padding-top:16px}.experience-steps p{margin-top:8px}
 }
 @media(max-width:700px){
  :root{--gutter:22px}.folio-grid{display:none}.page-header.desktop-bar{height:68px;padding-inline:var(--gutter)}.page-header .desktop-brand{font-size:21px}.page-nav{font-size:12px;gap:18px;margin-right:18px}.page-nav a:last-child{display:none}
