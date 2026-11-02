@@ -21,7 +21,8 @@ try{
  renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.outputColorSpace=THREE.SRGBColorSpace;
  renderer.setClearColor(0,0);scene=new THREE.Scene();camera=new THREE.Camera();
  const geometry=new THREE.PlaneGeometry(2,2),loader=new THREE.TextureLoader();
- for(const img of document.querySelectorAll('.case-cover>img,.tool-showcase>img')){
+ // Tool screenshots retain native object-fit:contain so their full interface stays readable.
+ for(const img of document.querySelectorAll('.case-cover>img')){
   const layer={img,progress:0,mesh:null,ready:false};layers.push(layer);
   loader.load(img.currentSrc||img.src,texture=>{
    texture.colorSpace=THREE.SRGBColorSpace;texture.minFilter=THREE.LinearFilter;
@@ -64,7 +65,7 @@ function frame(now){
    layer.mesh.visible=visible;
    if(!visible){layer.progress=0;continue}
    layer.progress=paused()?1:Math.min(1,layer.progress+dt/.8);
-   const u=layer.mesh.material.uniforms;u.uRect.value.set((left-viewport.left)/viewport.width,1-(top+height-viewport.top)/viewport.height,width/viewport.width,height/viewport.height);u.uCurl.value=paused()?0:.06*curl;u.uPolarity.value=ease(layer.progress);u.uBoxAspect.value=width/height;
+   const u=layer.mesh.material.uniforms;u.uRect.value.set((left-viewport.left)/viewport.width,1-(top+height-viewport.top)/viewport.height,width/viewport.width,height/viewport.height);u.uCurl.value=paused()?0:.06*curl;u.uPolarity.value=1;u.uBoxAspect.value=width/height;
    hasVisible=true;
   }
   renderer.render(scene,camera);
