@@ -1,0 +1,80 @@
+/* Shared blue-white palette, from the name sculpture to every portfolio surface. */
+:root {
+  --site-paper: #f0f6fb;
+  --site-white: #fbfdff;
+  --site-tint: #e2edf6;
+  --site-ink: #264d6a;
+  --site-copy: #456176;
+  --site-muted: #587185;
+  --site-blue: #356b9a;
+  --site-line: #bfd0df;
+  --folio-field: var(--site-paper);
+  --folio-ink: var(--site-ink);
+  --folio-active: var(--site-blue);
+  --folio-line: var(--site-line);
+  --folio-raised: var(--site-white);
+  --folio-dark: var(--site-tint);
+  --paper: var(--site-ink);
+  --ink: var(--site-ink);
+  --window: var(--site-paper);
+  --muted: var(--site-muted);
+  --line: var(--site-line);
+  --surface-raised: var(--site-white);
+  --surface-line: var(--site-line);
+  --accent: var(--site-blue);
+  --season-hue: 208;
+  --icon-saturation: 36%;
+}
+::selection { background: #bfd9ed; color: var(--site-ink); }
+.scroll-home :is(h2,h3,h4,.intro-note p,.experience-intro,.case-results strong,.experience-results strong,.metrics dd,.closing-copy p,.hero-work-link,.closing-actions a,.closing-actions button),
+.scroll-home .detail-dialog :is(.detail-brand,.detail-close,.detail-copy h3),
+.toolbox-page :is(h1,h2,h3,h4,.toolbox-brand,.shelf-heading),
+.tool-presentation :is(h3,h4) { color: var(--site-ink); }
+.scroll-home :is(.hero-baseline,.intro-signature,.work-intro>span,.case-role,.tool-card-bottom,.experience-heading>p:not(.experience-intro)),
+.scroll-home .intro-note>p:last-child>span,
+.scroll-home :is(.detail-copy>p,.case-context,.case-reading-grid p,.case-feedback li),
+.tool-presentation :is(p,.tool-sequence,.tool-runtime-note),
+.toolbox-page :is(.toolbox-intro p,.scene-tag,.scene-caption,.world-tool-copy p,.toolbox-brand small,.toolbox-brand span) { color: var(--site-copy); }
+.brand-dot { color: var(--site-blue); }
+.scroll-home .page-nav a:hover { color: var(--site-blue); }
+.scroll-home .case-play { background: #f0f6fbeb; color: var(--site-ink); }
+.scroll-home .homepage-tool:hover { background: var(--site-tint); }
+.scroll-home .tool-showcase>img,
+.scroll-home .case-evidence-figure { background: var(--site-tint); }
+.scroll-home .homepage-tool .icon-art { color: var(--site-blue); filter: none; opacity: 1; }
+.scroll-home :is(.homepage-tool .icon-art,.tool-local-art) svg { color: var(--site-blue); }
+.scroll-home .resolve-char.is-resolving { color: var(--site-blue); }
+.scroll-home :is(a,button,summary):focus-visible,
+.toolbox-page :is(a,button,summary):focus-visible { outline-color: var(--site-blue); }
+.intro-pending .site-entrance { background: var(--site-paper); color: var(--site-ink); }
+.intro-running .site-entrance.dissolving { background: transparent; }
+.entrance-progress { background: var(--site-blue); }
+
+/* The same paper and ink continue inside cases and tool introductions. */
+.detail-dialog.is-tool-detail,
+.is-tool-detail .detail-header,
+.is-tool-detail .detail-content,
+body.toolbox-page,.toolbox-header,.toolbox-shell,.tool-shelf { background: var(--site-paper); color: var(--site-ink); }
+.tool-presentation { color: var(--site-ink); }
+.tool-action,.is-tool-detail .detail-close,.toolbox-back {
+  color: var(--site-ink);
+  border-color: var(--site-line);
+  background: var(--site-white);
+}
+.tool-action:hover,.is-tool-detail .detail-close:hover,.toolbox-back:hover { background: var(--site-tint); }
+.tool-action.primary { background: var(--site-blue); border-color: var(--site-blue); color: var(--site-white); }
+.tool-action.primary:hover { background: var(--site-ink); border-color: var(--site-ink); }
+.tool-local-surface,.tool-live-surface,.world-tool-card { background: var(--site-white); border-color: var(--site-line); }
+.tool-local-art svg { color: var(--site-blue); filter: none; }
+.tool-process li,.scene-caption,.toolbox-header { border-color: var(--site-line); }
+.tool-process span,.world-tool-arrow { color: var(--site-blue); }
+.toolbox-sidebar,.tool-world-scene { background: var(--site-tint); border-color: var(--site-line); }
+.toolbox-page { --tb-paper:var(--site-paper); --tb-ink:var(--site-ink); --tb-lime:var(--site-blue); --tb-muted:var(--site-muted); --tb-line:var(--site-line); }
+.toolbox-page .toolbox-intro h1 em { color: var(--site-blue); }
+.toolbox-page :is(.toolbox-nav-link,.toolbox-back) { color: var(--site-copy)!important; }
+.toolbox-page .toolbox-nav-link.active { color: var(--site-ink)!important; background:var(--site-white); border-color:var(--site-line); }
+.toolbox-page .toolbox-nav-link:not(.active):hover { background:var(--site-white); color:var(--site-blue)!important; }
+.toolbox-label,.sidebar-home,.shelf-heading span { color: var(--site-copy); }
+.world-tool-card:hover { background:var(--site-tint); border-color:var(--site-line); }
+.world-tool-icon { color:var(--site-blue); background:var(--site-tint); filter:none; }
+.scene-dot { background: var(--site-blue); }
