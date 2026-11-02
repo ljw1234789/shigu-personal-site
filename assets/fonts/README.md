@@ -23,7 +23,8 @@ The 2026-10-29 3D name uses original vector outlines of 刘俊威 from Zhuque Fa
 
 ## 2026-11-02 主标题字体
 
-- `ljw-editorial-serif.woff2`：Noto Serif SC 可变字体的 600 字重实例，按首页与结尾主标题文字提取子集。
+- `ljw-editorial-serif.woff2`：Noto Serif SC 可变字体的 400–600 字重范围，按首页、案例详情及工具入口文字提取子集。
 - 子集重新命名为 LJW Editorial，保留版权与 SIL OFL 1.1 声明；OFL 全文见同目录 `OFL-NotoSerifSC.txt`。
 - 原字体由 Adobe 制作，官方项目 https://github.com/notofonts/noto-cjk 。
-- 字形未改写；标题通过字重、行距和标点宽度与现有姓名字标协调。
+- 字形未改写；标题使用 600 字重，导语使用 500，叙述正文使用 400；导航、按钮和数据使用无衬线字体。通过字重、行距和标点宽度与现有姓名字标协调。
+- `scripts/build-editorial-font.py` 可从原版 Noto Serif SC 重建子集，并检查当前内容的汉字覆盖。

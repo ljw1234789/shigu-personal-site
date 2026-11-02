@@ -1,0 +1,65 @@
+/* One typographic hierarchy for the portfolio and its detail pages. */
+@font-face {
+  font-family: 'LJW Editorial';
+  src: url('assets/fonts/ljw-editorial-serif.woff2?v=type-system-20261102') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --type-editorial: 'LJW Editorial', 'Noto Serif SC', 'Songti SC', serif;
+  --type-interface: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+}
+body.scroll-home, body.toolbox-page { font-family: var(--type-interface); }
+.scroll-home :is(h2, h3, h4),
+.toolbox-page :is(h1, h2, h3, h4),
+.intro-note > p, .work-intro > p,
+.experience-heading .experience-intro,
+.page-section-heading > p, .tool-showcase strong,
+.closing-copy p, .project :is(h3, h4),
+.section-title, .creative-card-copy h3 {
+  font-family: var(--type-editorial);
+  font-weight: 600;
+  font-synthesis: none;
+  letter-spacing: .01em;
+  font-feature-settings: 'palt' 1;
+  text-wrap: balance;
+}
+.intro-note > p:last-child, .work-intro > p,
+.experience-heading .experience-intro, .page-section-heading > p {
+  font-weight: 500;
+  line-height: 1.6;
+}
+.scroll-home .intro-signature { font-weight: 500; letter-spacing: .04em; }
+.scroll-home :is(.case-copy h3, .homepage-tool h3, .experience-steps h4),
+.scroll-home .is-project-detail :is(.section-heading h3, .detail-copy h3, .case-reading h3, .case-feedback h3),
+.toolbox-page :is(.toolbox-intro h1, .world-tool-title h3),
+.tool-presentation :is(.tool-intro-title h3, .tool-local-copy h4) {
+  font-family: var(--type-editorial);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .01em;
+  text-wrap: balance;
+}
+.scroll-home :is(.experience-steps p, .homepage-tool > p, .detail-copy > p, .case-context, .case-reading-grid p, .case-feedback li),
+.tool-presentation :is(.tool-intro-title p, .tool-local-copy p, .tool-process p),
+.toolbox-page :is(.toolbox-intro p, .world-tool-copy p) {
+  font-family: var(--type-editorial);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1.9;
+  letter-spacing: .015em;
+}
+.scroll-home :is(button, .page-nav, .hero-work-link, .detail-header h2, .metrics, .case-results, .case-index, .case-step),
+.toolbox-page :is(button, .toolbox-nav-link),
+.tool-presentation :is(.tool-action, .tool-sequence, summary),
+.work-heading sup, .page-section-heading sup {
+  font-family: var(--type-interface);
+  letter-spacing: .02em;
+}
+@media(max-width:700px) {
+  .scroll-home .intro-note > p:last-child { line-height: 1.65; }
+  .scroll-home .case-copy h3 { font-size: 21px; }
+  .scroll-home .homepage-tool h3 { font-size: 21px; }
+  .scroll-home .experience-heading .experience-intro { line-height: 1.75; }
+}
