@@ -43,7 +43,7 @@ try{
    layer.mesh=new THREE.Mesh(geometry,material);layer.mesh.frustumCulled=false;layer.mesh.visible=false;scene.add(layer.mesh);layer.ready=true;
   },undefined,()=>{layer.ready=false});
  }
- const resize=()=>renderer?.setSize(innerWidth,innerHeight,false);addEventListener('resize',resize);resize();
+ const resize=()=>renderer?.setSize(canvas.clientWidth,canvas.clientHeight,false);addEventListener('resize',resize);resize();
  canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();layers.forEach(l=>l.img.classList.remove('scroll-image-ready'));renderer=null;canvas.style.display='none'});
 }catch(error){canvas.remove();console.warn('Native project images retained:',error.message)}
 
@@ -54,6 +54,7 @@ function frame(now){
  const target=paused()||blocked()?0:Math.min(1,speed/800),tau=target>curl?.025:.175;
  curl+=(target-curl)*(1-Math.exp(-dt/tau));
  if(renderer){
+  const viewport=canvas.getBoundingClientRect();
   let hasVisible=false;
   for(const layer of layers){
    if(!layer.ready)continue;
@@ -63,7 +64,7 @@ function frame(now){
    layer.mesh.visible=visible;
    if(!visible){layer.progress=0;continue}
    layer.progress=paused()?1:Math.min(1,layer.progress+dt/.8);
-   const u=layer.mesh.material.uniforms;u.uRect.value.set(left/innerWidth,1-(top+height)/innerHeight,width/innerWidth,height/innerHeight);u.uCurl.value=paused()?0:.06*curl;u.uPolarity.value=ease(layer.progress);u.uBoxAspect.value=width/height;
+   const u=layer.mesh.material.uniforms;u.uRect.value.set((left-viewport.left)/viewport.width,1-(top+height-viewport.top)/viewport.height,width/viewport.width,height/viewport.height);u.uCurl.value=paused()?0:.06*curl;u.uPolarity.value=ease(layer.progress);u.uBoxAspect.value=width/height;
    hasVisible=true;
   }
   renderer.render(scene,camera);
