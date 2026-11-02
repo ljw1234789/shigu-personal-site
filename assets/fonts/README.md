@@ -20,3 +20,10 @@ The 2026-10-29 3D name uses original vector outlines of 刘俊威 from Zhuque Fa
 ## 2026-10-30 立体字
 
 首页姓名使用霞鹜文楷轮廓生成圆润实体网格，结尾 CRAFT / & / TASTE 使用 Fredoka Bold 轮廓。建模过程见 `scripts/build-inflated-type.py`，网格位于 `../sculpture-v2/`，完整字体许可见 `OFL-LXGWWenKai.txt` 与 `OFL-Fredoka.txt`。参考 Haoqi Design 的版式、蓝白折射和入场次序；网格、背景及渲染代码为本项目重新实现。
+
+## 2026-11-02 主标题字体
+
+- `ljw-editorial-serif.woff2`：Noto Serif SC 可变字体的 600 字重实例，按首页与结尾主标题文字提取子集。
+- 子集重新命名为 LJW Editorial，保留版权与 SIL OFL 1.1 声明；OFL 全文见同目录 `OFL-NotoSerifSC.txt`。
+- 原字体由 Adobe 制作，官方项目 https://github.com/notofonts/noto-cjk 。
+- 字形未改写；标题通过字重、行距和标点宽度与现有姓名字标协调。
