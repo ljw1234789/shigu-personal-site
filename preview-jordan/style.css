@@ -13,7 +13,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #31466c;outline-offset:5p
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .entry{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .55s .16s,visibility .55s .16s}
 .entry.is-gone{opacity:0;visibility:hidden;pointer-events:none}
-.entry-button{width:300px;height:50px;border:0;border-radius:99px;background:#fff;font-size:13px;letter-spacing:3px;transition:transform .28s cubic-bezier(.2,.7,.3,1);overflow:hidden}
+.entry-button{display:flex;align-items:center;justify-content:center;width:300px;height:50px;border:0;border-radius:99px;background:#fff;color:#18191b;text-decoration:none;font-size:13px;letter-spacing:3px;transition:transform .28s cubic-bezier(.2,.7,.3,1);overflow:hidden}
 .entry-button:hover{transform:scale(1.04)}
 .entry-button span{display:block;transition:transform .35s}
 .entry-button:active span{transform:translateY(-3px)}
@@ -47,6 +47,8 @@ body.is-inspecting #desk{touch-action:none}
 .motion-button{width:30px;font-size:15px;padding:10px 3px}
 .scroll-cue{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);font-size:10px;color:#696c77;display:flex;align-items:center;gap:15px;z-index:5;transition:opacity .5s}
 .scroll-cue span{font-size:20px}
+.asset-status{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:35;padding:12px 18px;margin:0;background:#f8f8f2e8;border-radius:2px;font-size:12px;color:#555b69;white-space:nowrap}
+.asset-status a{color:#252b37;margin-left:15px;text-underline-offset:4px}
 .inspection{position:fixed;inset:0;pointer-events:none;z-index:24;opacity:0;transition:opacity .25s}
 .inspection.is-ready{opacity:1}
 .inspection-title{position:absolute;left:50%;top:24px;transform:translateX(-50%);font-size:11px;margin:0;color:#4f5059;white-space:nowrap}

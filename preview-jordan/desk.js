@@ -43,9 +43,12 @@ function setMenu(open){
 }
 $('#menu-toggle').addEventListener('click',()=>setMenu(menu.hidden));
 $('#work-index').addEventListener('click',()=>setMenu(true));
-$('#enter').addEventListener('click',()=>{
-  if(entered||!ready)return;
+$('#enter').addEventListener('click',e=>{
+  if(!scene&&!fallback)return;
+  e.preventDefault();
+  if(entered)return;
   entered=true;enterAt=performance.now()+120;
+  $('#asset-status').hidden=ready;
   canvas.dataset.phase='entering';
   entry.classList.add('is-gone');
   document.body.classList.add('has-entered','is-entering');
@@ -87,7 +90,7 @@ function setInspection(){
   let name=d.title||'',html='',description='';
   if(a.kind==='case'){
     const p=projects.find(p=>p.id===a.id),n=narrative[a.id];name=p.name;
-    html=(d.panel?'<button data-inspect="play">'+(playing?'停止播放 □':'播放成片 ▷')+'</button>':'')+
+    html=(d.panel?'<button data-inspect="play">'+(playing?'关闭播放器 □':'播放成片 ▷')+'</button>':'')+
       (d.back?'<button data-inspect="flip">'+(flipTo?'回到封面 ↻':'我的贡献 ↻')+'</button>':'')+
       '<a href="'+evidence[a.id].bilibili.url+'" target="_blank" rel="noopener">B 站原片 ↗</a>';
     description=p.name+'。我的参与：'+n.summary+'。'+n.steps.map(s=>s[0]+'：'+s[1]).join('。');
@@ -115,9 +118,20 @@ function openObject(g){
   $('.desk-controls').inert=true;
   inspector.hidden=false;inspector.inert=false;inspector.removeAttribute('aria-hidden');setInspection();
   canvas.dataset.focus=g.userData.action.id||g.userData.action.kind;
+  canvas.dataset.objectKind=g.userData.kind;
   canvas.dataset.phase='lifting';
+  if(g.userData.kind==='phone')startVideo();
 }
 function stopVideo(){playing=false;video.replaceChildren();video.hidden=true;}
+function startVideo(){
+  if(!active?.userData.panel)return;
+  flipTo=0;dragYaw=dragPitch=0;playing=true;
+  const p=projects.find(p=>p.id===active.userData.action.id);
+  const iframe=document.createElement('iframe');iframe.title=p.title;
+  iframe.src='https://open.douyin.com/player/video?vid='+p.video+'&autoplay=1';
+  iframe.allow='autoplay; fullscreen; picture-in-picture';iframe.allowFullscreen=true;
+  video.replaceChildren(iframe);setInspection();
+}
 function closeObject(){
   if(!active||focusTo===0)return;
   stopVideo();inspector.classList.remove('is-ready');uiReady=false;
@@ -134,12 +148,7 @@ actions.addEventListener('click',e=>{
   }
   if(b.dataset.inspect==='play'){
     if(playing){stopVideo();setInspection();return;}
-    flipTo=0;dragYaw=dragPitch=0;playing=true;
-    const p=projects.find(p=>p.id===active.userData.action.id);
-    const iframe=document.createElement('iframe');iframe.title=p.title;
-    iframe.src='https://open.douyin.com/player/video?vid='+p.video+'&autoplay=0';
-    iframe.allow='autoplay; fullscreen; picture-in-picture';iframe.allowFullscreen=true;
-    video.replaceChildren(iframe);setInspection();
+    startVideo();
   }
 });
 document.querySelectorAll('[data-case]').forEach(b=>b.addEventListener('click',()=>{
@@ -299,7 +308,7 @@ function phone(img,x,z,id){
   const tex=texture(720,1400,(c,W,H)=>{
     c.fillStyle='#11131c';c.fillRect(0,0,W,H);cover(c,img,0,170,W,950);
     c.fillStyle='#f4f4f7';c.font='36px DeskSerif,serif';c.fillText('丈量一条海岸线',42,1250);
-    c.font='26px Arial';c.fillStyle='#bac0cd';c.fillText('PLAY / 13:55',44,1320);
+    c.font='26px Arial';c.fillStyle='#bac0cd';c.fillText('点击观看 / 13:55',44,1320);
     c.strokeStyle='#fff9';c.lineWidth=2;c.beginPath();c.arc(W/2,650,70,0,Math.PI*2);c.stroke();
     c.fillStyle='#fff';c.beginPath();c.moveTo(W/2-18,613);c.lineTo(W/2-18,687);c.lineTo(W/2+40,650);c.closePath();c.fill();
   });
@@ -363,8 +372,12 @@ function floorText(text,x,z,w,color='#b39d50',size=84){
   return g;
 }
 async function nameModel(){
-  const response=await fetch('../assets/sculpture-v13/name-wordmark.bin');if(!response.ok)throw Error('姓名模型加载失败');
-  const b=await response.arrayBuffer(),[n,count,scale,indexBytes]=new Uint32Array(b,0,4);
+  const compressed=typeof DecompressionStream==='function';
+  const response=await fetch(compressed?'name-wordmark.bin.gz':'../assets/sculpture-v13/name-wordmark.bin',{signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error('姓名模型加载失败');
+  let b=await response.arrayBuffer();
+  const magic=new Uint8Array(b,0,2);
+  if(magic[0]===31&&magic[1]===139)b=await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+  const [n,count,scale,indexBytes]=new Uint32Array(b,0,4);
   const packed=new Int16Array(b,16,n*3),pos=new Float32Array(n*3);for(let i=0;i<pos.length;i++)pos[i]=packed[i]/scale;
   const offset=16+Math.ceil(packed.byteLength/4)*4;
   const ind=indexBytes===2?new Uint16Array(b,offset,count):new Uint32Array(b,offset,count);
@@ -374,6 +387,11 @@ async function nameModel(){
   geo.computeBoundingBox();geo.center();const s=7.2/(geo.boundingBox.max.x-geo.boundingBox.min.x);geo.scale(s,s,s*.65);geo.computeBoundingBox();
   const p=geo.attributes.position.array,index=geo.index.array,parts=[[],[],[]];
   for(let i=0;i<index.length;i+=3){const x=(p[index[i]*3]+p[index[i+1]*3]+p[index[i+2]*3])/3;parts[x< -1.2?0:x<1.2?1:2].push(index[i],index[i+1],index[i+2]);}
+  for(let i=objects.length-1;i>=0;i--){
+    const old=objects[i];if(!old.userData.fallbackName)continue;
+    scene.remove(old);objects.splice(i,1);
+    old.traverse(o=>{if(o.isMesh){o.geometry.dispose();for(const m of [].concat(o.material)){m.map?.dispose();m.dispose();}}});
+  }
   const root=object(-2.4,-1.05,0,null,'刘俊威','name');root.userData.width=7.2;root.userData.height=2.6;
   parts.forEach((indices,i)=>{
     const g=new THREE.BufferGeometry();g.setAttribute('position',geo.attributes.position);g.setAttribute('normal',geo.attributes.normal);g.setIndex(indices);
@@ -381,8 +399,28 @@ async function nameModel(){
     m.userData.depth=(geo.boundingBox.max.z-geo.boundingBox.min.z)/2;m.userData.index=i;root.add(m);identities.push(m);
   });contact(root,8.1,3.3,.13);
   const label=floorText('LIU JUNWEI',-2.4,.3,7.15);label.userData.identity=true;
+  canvas.dataset.nameMode='sculpture';
 }
-function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(Error('无法加载 '+src));i.src=src;});}
+function loadImage(src,timeout=6500){return new Promise((resolve,reject)=>{
+  const i=new Image(),timer=setTimeout(()=>{i.onload=i.onerror=null;reject(Error('素材加载超时'));},timeout);
+  i.onload=()=>{clearTimeout(timer);resolve(i);};i.onerror=()=>{clearTimeout(timer);reject(Error('无法加载 '+src));};i.src=src;
+});}
+function placeholderImage(label){
+  const c=document.createElement('canvas');c.width=1200;c.height=1200;const ctx=c.getContext('2d');
+  ctx.fillStyle='#dfe4ed';ctx.fillRect(0,0,1200,1200);ctx.fillStyle='#465873';ctx.font='500 85px DeskSerif,serif';wrap(ctx,label,100,480,1000,125);ctx.font='35px Arial';ctx.fillText('点击查看作品 ↗',100,1050);return c;
+}
+async function fallbackName(){
+  if(objects.some(g=>g.userData.kind==='name'))return;
+  const img=await loadImage('../assets/sculpture-v13/wordmark.svg',2500).catch(()=>null);
+  if(objects.some(g=>g.userData.kind==='name'))return;
+  const t=texture(1500,600,(c,W,H)=>{
+    if(img){c.drawImage(img,0,0,W,H);c.globalCompositeOperation='source-in';c.fillStyle='#f6f6fa';c.fillRect(0,0,W,H);}
+    else{c.fillStyle='#f6f6fa';c.font='500 400px DeskSerif,serif';c.textAlign='center';c.fillText('刘俊威',W/2,440);}
+  });
+  const root=object(-2.4,-1.05,0,null,'刘俊威','name');root.userData.fallbackName=true;const face=surface(root,7.2,2.88,.03,t,true);face.material.transparent=true;
+  const label=floorText('LIU JUNWEI',-2.4,.9,7.15);label.userData.identity=true;label.userData.fallbackName=true;
+  canvas.dataset.nameMode='vector';
+}
 function studioEnvironment(){
   const faces=Array.from({length:6},(_,i)=>{
     const c=document.createElement('canvas');c.width=c.height=256;const ctx=c.getContext('2d');
@@ -539,7 +577,7 @@ function render(now){
 }
 function useFallback(err){
   console.warn('创作桌面使用静态作品浏览。',err?.message||err);fallback=true;$('#fallback').hidden=false;document.body.classList.add('has-fallback');
-  canvas.dataset.state='fallback';$('#enter').disabled=false;$('#load-status').hidden=true;ready=true;
+  canvas.dataset.state='fallback';$('#load-status').hidden=true;$('#asset-status').hidden=true;ready=true;
 }
 async function init(){
   try{
@@ -557,13 +595,15 @@ async function init(){
     scene.add(light,light.target);const fill=new THREE.DirectionalLight('#c4d2f0',.4);fill.position.set(6,8,3);scene.add(fill);
     const floor=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.MeshBasicMaterial({color:'#d5d6e1',toneMapped:false}));floor.rotation.x=-Math.PI/2;floor.position.y=-.035;scene.add(floor);
     const shadows=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.ShadowMaterial({opacity:.19,color:'#676d87',depthWrite:false}));shadows.rotation.x=-Math.PI/2;shadows.position.y=-.03;shadows.receiveShadow=true;scene.add(shadows);
-    resize();frame=requestAnimationFrame(render);
-    await document.fonts.load('500 30px DeskSerif');
+    resize();frame=requestAnimationFrame(render);canvas.dataset.state='loading';
+    const nameTimer=setTimeout(()=>fallbackName(),1800);
+    const nameTask=nameModel().catch(()=>fallbackName()).finally(()=>clearTimeout(nameTimer));
+    await Promise.race([document.fonts.load('500 30px DeskSerif').catch(()=>[]),new Promise(resolve=>setTimeout(resolve,1800))]);
+    const asset=(src,label)=>loadImage(src).catch(()=>placeholderImage(label));
     const [dry,coast,behind,science,dryDetail,coastDetail,behindDetail]=await Promise.all([
-      loadImage(ASSETS+images['dry-ice']),loadImage(ASSETS+images.coastline),loadImage(ASSETS+images.behind),loadImage(ASSETS+'science-workbench.jpg'),
-      loadImage(ASSETS+'evidence/dry-ice-experiment.jpg'),loadImage(ASSETS+'evidence/coast-dimension.jpg'),loadImage(ASSETS+'evidence/behind-ai.jpg')
+      asset(ASSETS+images['dry-ice'],'重新认识干冰白雾'),asset(ASSETS+images.coastline,'丈量一条海岸线'),asset(ASSETS+images.behind,'一条视频的诞生'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
+      asset(ASSETS+'evidence/dry-ice-experiment.jpg','实验里的白雾'),asset(ASSETS+'evidence/coast-dimension.jpg','海岸线的尺度'),asset(ASSETS+'evidence/behind-ai.jpg','从选题到成片')
     ]);
-    await nameModel();
     polaroid(dry,'dry-ice',-3.3,4.95,-.2);
     keyboard('SCIENCE/FILM',3.3,5.7,.1,{kind:'case',id:'dry-ice'});
     note('dry-ice',-5.7,10.8,-.1);polaroid(dryDetail,'dry-ice',-.5,11.4,.1,'实验里的白雾',false);
@@ -580,8 +620,10 @@ async function init(){
     const st=texture(1200,1680,(c,W,H)=>{c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#2e3441';c.font='500 76px DeskSerif,serif';c.fillText('科普工作台',100,250);c.font='42px DeskSerif,serif';let y=wrap(c,scienceInfo.detail,100,480,1000,76)+110;scienceInfo.features.forEach(f=>{c.fillText(f,100,y);y+=130;});});
     paper(st,null,3.9,53.6,-.18,{kind:'tool',id:'science'},'科普工作台');
     notebook(-2.9,62);keyboard('LIU/JUNWEI',3.7,61.6,.12,{kind:'about'});
-    resize();ready=true;canvas.dataset.state='ready';canvas.dataset.phase='waiting';
-    $('#enter').disabled=false;$('#load-status').hidden=true;
+    resize();ready=true;canvas.dataset.state='ready';
+    if(!entered)canvas.dataset.phase='waiting';
+    $('#load-status').hidden=true;$('#asset-status').hidden=true;
+    await nameTask;
   }catch(err){if(frame)cancelAnimationFrame(frame);useFallback(err);}
 }
 addEventListener('resize',resize,{passive:true});
