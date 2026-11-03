@@ -506,10 +506,10 @@ function updateVideo(){
   const W=Math.round(Math.hypot(p1.x-p0.x,p1.y-p0.y)),H=Math.round(Math.hypot(p3.x-p0.x,p3.y-p0.y));
   const matrix=[(p1.x-p0.x+a*p1.x)/W,(p1.y-p0.y+a*p1.y)/W,0,a/W,(p3.x-p0.x+b*p3.x)/H,(p3.y-p0.y+b*p3.y)/H,0,b/H,0,0,1,0,p0.x,p0.y,0,1];
   video.style.width=W+'px';video.style.height=H+'px';video.style.transform='matrix3d('+matrix.join(',')+')';
-  const iframe=video.querySelector('iframe'),fit=Math.min(W/320,H/640);
+  const iframe=video.querySelector('iframe'),fit=Math.min(W/360,H/800);
   if(iframe){
-    iframe.style.width='320px';iframe.style.height='640px';
-    iframe.style.transform='translate('+(W-320*fit)/2+'px,'+(H-640*fit)/2+'px) scale('+fit+')';
+    iframe.style.width='360px';iframe.style.height='800px';
+    iframe.style.transform='translate('+(W-360*fit)/2+'px,'+(H-800*fit)/2+'px) scale('+fit+')';
   }
   video.hidden=false;
 }
