@@ -31,6 +31,7 @@ const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE
 const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
+let enterRequested=new URLSearchParams(location.search).get('enter')==='1';
 let frame=0,lastTime=0,drawAt=0,scrollGoal=0,viewZ=0,scrollPosition=0;
 let hover=null,down=null,dragYaw=0,dragPitch=0,cameraYaw=0,cameraPitch=0;
 let active=null,focus=0,focusFrom=0,focusTo=0,focusAt=0,flip=0,flipTo=0;
@@ -44,10 +45,8 @@ function setMenu(open){
 }
 $('#menu-toggle').addEventListener('click',()=>setMenu(menu.hidden));
 $('#work-index').addEventListener('click',()=>setMenu(true));
-$('#enter').addEventListener('click',e=>{
-  if(!scene&&!fallback)return;
-  e.preventDefault();
-  if(entered)return;
+function enterDesk(){
+  if((!scene&&!fallback)||entered)return;
   entered=true;enterAt=performance.now()+120;
   $('#asset-status').hidden=ready;
   canvas.dataset.phase='entering';
@@ -55,6 +54,9 @@ $('#enter').addEventListener('click',e=>{
   document.body.classList.add('has-entered','is-entering');
   $('#menu-toggle').focus({preventScroll:true});
   if(paused||reduced.matches||fallback)document.body.classList.remove('is-entering');
+}
+$('#enter').addEventListener('click',e=>{
+  e.preventDefault();enterRequested=true;enterDesk();
 });
 function updateMotionButton(){
   const b=$('#motion-toggle');b.setAttribute('aria-pressed',String(paused));
@@ -626,6 +628,7 @@ function render(now){
 function useFallback(err){
   console.warn('创作桌面使用静态作品浏览。',err?.message||err);fallback=true;$('#fallback').hidden=false;document.body.classList.add('has-fallback');
   canvas.dataset.state='fallback';$('#load-status').hidden=true;$('#asset-status').hidden=true;ready=true;
+  if(enterRequested)enterDesk();
 }
 async function init(){
   try{
@@ -644,6 +647,7 @@ async function init(){
     const floor=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.MeshBasicMaterial({color:'#d5d6e1',toneMapped:false}));floor.rotation.x=-Math.PI/2;floor.position.y=-.035;scene.add(floor);
     const shadows=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.ShadowMaterial({opacity:.19,color:'#676d87',depthWrite:false}));shadows.rotation.x=-Math.PI/2;shadows.position.y=-.03;shadows.receiveShadow=true;scene.add(shadows);
     resize();frame=requestAnimationFrame(render);canvas.dataset.state='loading';
+    if(enterRequested)enterDesk();
     const nameTimer=setTimeout(()=>fallbackName(),1800);
     const nameTask=nameModel().catch(()=>fallbackName()).finally(()=>clearTimeout(nameTimer));
     await Promise.race([document.fonts.load('500 30px DeskSerif').catch(()=>[]),new Promise(resolve=>setTimeout(resolve,1800))]);

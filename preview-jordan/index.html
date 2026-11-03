@@ -6,21 +6,29 @@
   <meta name="theme-color" content="#d8d9e3">
   <meta name="description" content="刘俊威的创作桌面：视频作品、个人贡献与创作工具。">
   <title>刘俊威 · 创作桌面预览</title>
+  <script>
+    if (location.protocol === 'file:') {
+      const target = new URL('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/');
+      target.searchParams.set('v', 'entry-route10');
+      if (new URLSearchParams(location.search).get('enter') === '1') target.searchParams.set('enter', '1');
+      location.replace(target.href);
+    }
+  </script>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../assets/fonts/ljw-editorial-serif.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="modulepreload" href="../assets/vendor/three.module.js">
   <link rel="preload" href="name-wordmark.bin.gz" as="fetch" crossorigin>
-  <link rel="stylesheet" href="style.css?v=photos-clean9">
+  <link rel="stylesheet" href="style.css?v=entry-route10">
   <link rel="stylesheet" href="../cursor.css?v=20261029-3">
   <script src="../site-data.js"></script>
   <script src="../project-evidence.js"></script>
   <script src="../portfolio-narrative.js"></script>
   <script src="../tool-catalog.js"></script>
-  <script type="module" src="desk.js?v=photos-clean9"></script>
+  <script type="module" src="desk.js?v=entry-route10"></script>
 </head>
 <body class="scroll-home">
   <div class="entry" id="entry">
-    <a class="entry-button" id="enter" href="../portfolio.html"><span>进入刘俊威的作品集</span></a>
+    <a class="entry-button" id="enter" href="?enter=1"><span>进入刘俊威的作品集</span></a>
     <p id="load-status" role="status">正在准备桌面</p>
   </div>
   <header class="site-bar">
