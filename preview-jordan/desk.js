@@ -62,6 +62,7 @@ document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click'
 }));
 $('#work-index').addEventListener('click', showIndex);
 $('#motion-toggle').setAttribute('aria-pressed', String(paused));
+$('#motion-toggle').setAttribute('aria-label', paused ? '播放桌面动态' : '暂停桌面动态');
 $('#motion-toggle').textContent = paused ? '▷' : 'Ⅱ';
 $('#motion-toggle').addEventListener('click', () => {
   paused = !paused;
