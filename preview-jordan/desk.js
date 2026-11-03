@@ -129,7 +129,13 @@ function startVideo(){
   flipTo=0;dragYaw=dragPitch=0;playing=true;
   const p=projects.find(p=>p.id===active.userData.action.id);
   const iframe=document.createElement('iframe');iframe.title=p.title;
-  iframe.src='https://open.douyin.com/player/video?vid='+p.video+'&autoplay=1';
+  const panel=active.userData.panel,vw=panel.viewportWidth||960,vh=panel.viewportHeight||600;
+  iframe.width=String(vw);iframe.height=String(vh);
+  iframe.style.width=vw+'px';iframe.style.height=vh+'px';
+  iframe.setAttribute('scrolling','no');
+  // The platform chooses its layout once at startup. Navigate only after the
+  // projected screen is visible and its fixed viewport has been laid out.
+  iframe.dataset.playerSrc='https://open.douyin.com/player/video?vid='+p.video+'&autoplay=1';
   iframe.allow='autoplay; fullscreen; picture-in-picture';iframe.allowFullscreen=true;
   video.replaceChildren(iframe);setInspection();
 }
@@ -305,17 +311,11 @@ function keyboard(text,x,z,angle,action){
 function phone(img,x,z,id,angle=-.3){
   const p=projects.find(p=>p.id===id);
   const g=object(x,z,angle,{kind:'case',id},p.name,'phone');
-  g.userData.width=2.65;g.userData.height=5.05;g.userData.device=true;
-  slab(g,2.65,5.05,.24,black,.22);
-  const tex=texture(720,1400,(c,W,H)=>{
-    c.fillStyle='#11131c';c.fillRect(0,0,W,H);cover(c,img,0,170,W,950);
-    c.fillStyle='#f4f4f7';c.font='36px DeskSerif,serif';c.fillText(p.name,42,1250,W-84);
-    c.font='26px Arial';c.fillStyle='#bac0cd';c.fillText('点击观看 / '+videoTimes[id],44,1320);
-    c.strokeStyle='#fff9';c.lineWidth=2;c.beginPath();c.arc(W/2,650,70,0,Math.PI*2);c.stroke();
-    c.fillStyle='#fff';c.beginPath();c.moveTo(W/2-18,613);c.lineTo(W/2-18,687);c.lineTo(W/2+40,650);c.closePath();c.fill();
-  });
-  surface(g,2.44,4.8,.245,tex,true);slab(g,.7,.12,.014,black,.06).position.set(0,.26,-2.28);
-  g.userData.panel={x:0,z:0,w:2.44,h:4.8,y:.27};contact(g,3.6,6,.19);return g;
+  g.userData.width=5.05;g.userData.height=2.95;g.userData.baseScale=.84;g.userData.device=true;
+  slab(g,5.05,2.95,.24,black,.22);
+  surface(g,4.72,2.66,.245,deviceCover(img,id,1440,810),true);
+  slab(g,.08,.65,.014,black,.035).position.set(-2.46,.26,0);
+  g.userData.panel={x:0,z:0,w:4.72,h:2.66,y:.27,viewportWidth:960,viewportHeight:575};contact(g,6,3.8,.19);return g;
 }
 function deviceCover(img,id,w,h){
   const p=projects.find(p=>p.id===id);
@@ -330,11 +330,11 @@ function deviceCover(img,id,w,h){
 }
 function tablet(img,x,z,id,angle=.12){
   const p=projects.find(p=>p.id===id),g=object(x,z,angle,{kind:'case',id},p.name,'tablet');
-  g.userData.width=5.05;g.userData.height=3.65;g.userData.device=true;
-  slab(g,5.05,3.65,.18,grey,.2);slab(g,4.98,3.58,.19,black,.18);
-  surface(g,4.69,3.33,.195,deviceCover(img,id,1268,900),true);
-  const lens=mesh(new THREE.SphereGeometry(.026,12,8),grey);lens.position.set(0,.206,-1.75);g.add(lens);
-  g.userData.panel={x:0,z:0,w:4.69,h:3.33,y:.215,viewportWidth:960,viewportHeight:682};
+  g.userData.width=5.05;g.userData.height=3.25;g.userData.device=true;
+  slab(g,5.05,3.25,.18,grey,.2);slab(g,4.98,3.18,.19,black,.18);
+  surface(g,4.69,2.93,.195,deviceCover(img,id,1440,900),true);
+  const lens=mesh(new THREE.SphereGeometry(.026,12,8),grey);lens.position.set(0,.206,-1.55);g.add(lens);
+  g.userData.panel={x:0,z:0,w:4.69,h:2.93,y:.215,viewportWidth:960,viewportHeight:600};
   contact(g,6,4.6,.19);return g;
 }
 function laptop(img,x,z,id,angle=-.1){
@@ -583,12 +583,21 @@ function updateVideo(){
   const W=Math.round(Math.hypot(p1.x-p0.x,p1.y-p0.y)),H=Math.round(Math.hypot(p3.x-p0.x,p3.y-p0.y));
   const matrix=[(p1.x-p0.x+a*p1.x)/W,(p1.y-p0.y+a*p1.y)/W,0,a/W,(p3.x-p0.x+b*p3.x)/H,(p3.y-p0.y+b*p3.y)/H,0,b/H,0,0,1,0,p0.x,p0.y,0,1];
   video.style.width=W+'px';video.style.height=H+'px';video.style.transform='matrix3d('+matrix.join(',')+')';
-  const iframe=video.querySelector('iframe'),vw=panel.viewportWidth||360,vh=panel.viewportHeight||800,fit=Math.min(W/vw,H/vh);
+  const iframe=video.querySelector('iframe'),vw=panel.viewportWidth||960,vh=panel.viewportHeight||600,fit=Math.min(W/vw,H/vh);
   if(iframe){
     iframe.style.width=vw+'px';iframe.style.height=vh+'px';
     iframe.style.transform='translate('+(W-vw*fit)/2+'px,'+(H-vh*fit)/2+'px) scale('+fit+')';
   }
   video.hidden=false;
+  if(iframe&&!iframe.hasAttribute('src')&&!iframe.dataset.mounting){
+    iframe.dataset.mounting='true';
+    requestAnimationFrame(()=>{
+      delete iframe.dataset.mounting;
+      if(!iframe.isConnected||!playing||video.hidden)return;
+      iframe.getBoundingClientRect();
+      iframe.src=iframe.dataset.playerSrc;
+    });
+  }
 }
 function render(now){
   frame=requestAnimationFrame(render);const dt=Math.min((now-lastTime)/1000||.016,.05);lastTime=now;
@@ -646,7 +655,7 @@ async function init(){
     polaroid(dry,'dry-ice',-3.3,4.95,-.2);
     keyboard('SCIENCE/FILM',3.3,5.7,.1,{kind:'case',id:'dry-ice'});
     note('dry-ice',-5.7,10.8,-.1);polaroid(dryDetail,'dry-ice',-.5,11.4,.1,'实验里的白雾',false);
-    phone(dry,5.2,11.1,'dry-ice',-.23);
+    phone(dry,4.8,11.1,'dry-ice',-.23);
     keyboard('COAST/LINE',-3.5,18.0,-.15,{kind:'case',id:'coastline'});
     polaroid(coast,'coastline',3.3,18.2,.2);
     note('coastline',-5.2,24.4,.1);polaroid(coastDetail,'coastline',.3,24.5,-.12,'越细看，越长',false);
