@@ -494,7 +494,9 @@ function studioEnvironment(){
 }
 function resize(){
   if(!renderer)return;
-  mobile=innerWidth/innerHeight<.8;camera.aspect=innerWidth/innerHeight;camera.fov=mobile?80:50;camera.updateProjectionMatrix();
+  mobile=innerWidth/innerHeight<.8;camera.aspect=innerWidth/innerHeight;
+  camera.fov=mobile?80:THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(25))*Math.max(1,1.65/camera.aspect)));
+  camera.updateProjectionMatrix();
   qBase.setFromEuler(new THREE.Euler(-THREE.MathUtils.degToRad(mobile?55:45),0,0));
   renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.7:2));renderer.setSize(innerWidth,innerHeight);
   objects.forEach(g=>{const d=g.userData;d.scale=(mobile?(d.kind==='name'?.79:d.kind==='keyboard'?.45:(d.device||d.kind==='monitor')?.54:.72):1)*(d.baseScale||1);});
