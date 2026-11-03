@@ -650,7 +650,7 @@ async function init(){
     const asset=(src,label)=>loadImage(src).catch(()=>placeholderImage(label));
     const [dry,coast,behind,science,dryDetail,coastDetail,behindDetail]=await Promise.all([
       asset(ASSETS+images['dry-ice'],'重新认识干冰白雾'),asset(ASSETS+images.coastline,'丈量一条海岸线'),asset(ASSETS+images.behind,'一条视频的诞生'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
-      asset('dry-ice-experiment-clean.png','实验里的白雾'),asset(ASSETS+'evidence/coast-dimension.jpg','海岸线的尺度'),asset(ASSETS+'evidence/behind-ai.jpg','从选题到成片')
+      asset('dry-ice-experiment-clean.png','实验里的白雾'),asset('coast-dimension-clean.png','海岸线的尺度'),asset('behind-ai-clean.png','从选题到成片')
     ]);
     polaroid(dry,'dry-ice',-3.3,4.95,-.2);
     keyboard('SCIENCE/FILM',3.3,5.7,.1,{kind:'case',id:'dry-ice'});
