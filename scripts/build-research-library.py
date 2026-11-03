@@ -20,6 +20,7 @@ BLOCKED = {'依赖','RapidOCR依赖','OCR依赖','Omni依赖','__pycache__','nod
 TEXT = {'.txt','.md','.json','.csv','.py','.swift','.m','.sh','.command','.js','.css','.html'}
 IMAGES = {'.jpg','.jpeg','.png','.webp'}
 MEDIA = {'.mp4','.wav','.m4s'}
+RESOURCES = {'.woff2'}
 for p in [OUT/'data',OUT/'evidence',OUT/'downloads',OUT/'yingjun/study',OUT/'bidao/report',WORK/'release-media']:
     p.mkdir(parents=True, exist_ok=True)
 
@@ -36,10 +37,10 @@ for group, root in ROOTS.items():
         rel=p.relative_to(root); suffix=p.suffix.lower()
         reason = ('软件运行环境或缓存' if any(x in BLOCKED for x in rel.parts) else
                   '系统文件或运行日志' if p.name.startswith('.') or suffix in {'.log','.pyc'} else
-                  '编译产物或模型，不是研究正文' if suffix not in TEXT|IMAGES|MEDIA|{'.zip'} else '')
+                  '编译产物或模型，不是研究正文' if suffix not in TEXT|IMAGES|MEDIA|RESOURCES|{'.zip'} else '')
         if reason:
             excluded.append({'group':group,'source':str(rel),'reason':reason,'bytes':p.stat().st_size});continue
-        b=p.read_bytes(); sha=digest(b); kind='image' if suffix in IMAGES else 'media' if suffix in MEDIA else 'archive' if suffix=='.zip' else 'document'
+        b=p.read_bytes(); sha=digest(b); kind='image' if suffix in IMAGES else 'media' if suffix in MEDIA else 'resource' if suffix in RESOURCES else 'archive' if suffix=='.zip' else 'document'
         item={'id':digest((group+'/'+str(rel)).encode())[:16],'group':group,'account':LABELS[group],
               'source':str(rel),'title':p.stem,'kind':kind,'format':suffix[1:],'bytes':len(b),'source_sha256':sha}
         item['_path']=p
@@ -50,6 +51,10 @@ for group, root in ROOTS.items():
             item['treatment']='同尺寸 WebP 阅读副本；原图保留在原始资料包'
         elif kind=='media':
             item['url']=RELEASE+'yingjun-public-media.zip';item['treatment']='公开视频或原声研究副本，收录在媒体资料包'
+        elif kind=='resource':
+            item['url']='bidao/report/'+str(rel.relative_to('dist')) if group=='bidao' and rel.parts[0]=='dist' else 'downloads/'+sha[:24]+suffix
+            target=OUT/item['url'];target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,target)
+            item['treatment']='原报告所需字体资源，原文件直接保留'
         elif kind=='archive':
             item['url']='downloads/'+group+'-'+sha[:12]+'.zip';shutil.copy2(p,OUT/item['url'])
         else:
@@ -72,12 +77,17 @@ for name in site_files:
 study_source=ROOTS['yingjun']/'原片联动学习/研究数据.js'
 s=study_source.read_text();study=json.loads(s[s.index('{'):].rstrip().rstrip(';'))
 media_uploads=[]
+compat_file=WORK/'web-media-complete.json'
+compat={r['id']:r for r in json.loads(compat_file.read_text())} if compat_file.exists() else {}
 for r in study['items']:
     p=(study_source.parent/unquote(r['media'])).resolve();item=source_map[str(p)]
     name='yingjun-'+r['id']+'.mp4';target=WORK/'release-media'/name
     if not target.exists():os.link(p,target)
     item['url']=RELEASE+name;item['treatment']='对应公开视频的研究副本；保留原平台入口'
-    media_uploads.append({'id':r['id'],'path':str(target),'name':name,'sha256':item['source_sha256']})
+    web=compat.get(r['id'])
+    if web:
+        item.update(published_sha256=web['published_sha256'],published_bytes=web['published_bytes'],web_codec='h264',original_codec='hevc',treatment='网页播放使用同尺寸同音轨 H.264 转码；原始 HEVC 及原声保留在完整媒体资料包')
+    media_uploads.append({'id':r['id'],'path':web['path'] if web else str(target),'name':name,'sha256':web['published_sha256'] if web else item['source_sha256'],'source_sha256':item['source_sha256']})
 
 missing_refs=[]
 def mapped(value, source, base):
@@ -137,12 +147,12 @@ for p in picks:
 works=[{k:r[k] for k in ['id','index','title','category','caption','duration','published','likes','original']} for r in study['items']]
 for r in works:r['study']='yingjun/study/?id='+r['id']
 clean=[{k:v for k,v in item.items() if k!='_path'} for item in entries]
-dump(OUT/'catalog.json',[i for i in clean if i['kind'] in ['document','archive']])
+dump(OUT/'catalog.json',[i for i in clean if i['kind'] in ['document','archive','resource']])
 dump(OUT/'evidence-index.json',[i for i in clean if i['kind'] in ['image','media']])
 dump(OUT/'works.json',works);dump(OUT/'picks.json',picks)
 dump(OUT/'coverage.json',{'snapshot':'2026-11-03','status':'研究资料归档；完整原声听审未完成，未进行本轮重剪','included':clean,'excluded':excluded,'missing_source_references':missing_refs})
 with (OUT/'downloads/source-coverage.csv').open('w',newline='',encoding='utf-8-sig') as f:
-    w=csv.writer(f);w.writerow(['资料组','源文件','状态','网站路径','源文件SHA256','字节','处理说明'])
+    w=csv.writer(f,lineterminator='\n');w.writerow(['资料组','源文件','状态','网站路径','源文件SHA256','字节','处理说明'])
     for i in clean:w.writerow([i['account'],i['source'],'已纳入',i.get('view',i['url']),i['source_sha256'],i['bytes'],i.get('treatment','全文保留；本地关联路径转为网页入口')])
     for i in excluded:w.writerow([LABELS[i['group']],i['source'],'不上传','','',i['bytes'],i['reason']])
 stats={'snapshot':'2026-11-03','files':len(clean),'documents':sum(i['kind']=='document' for i in clean),'images':sum(i['kind']=='image' for i in clean),
