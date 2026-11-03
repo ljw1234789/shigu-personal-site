@@ -1,0 +1,70 @@
+"""按全长ASR定位型号、数值、价格与比较句，提取画面交叉核查线索。"""
+from pathlib import Path
+import json
+import re
+import subprocess
+import sys
+import time
+
+BASE=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(BASE/'原声核验/RapidOCR依赖'))
+from rapidocr import RapidOCR
+from PIL import Image
+
+FF='/Users/ljw/Documents/ChatGPT/小工具/batch-media-tool/bin/ffmpeg'
+SKIP={'7669738424873635107','7593246079882136883','7670528824794254655'}
+rows=json.loads((BASE/'求职准备总包/09_74条研究覆盖与缺口.json').read_text())['items']
+rows=sorted((r for r in rows if r['video_id'] not in SKIP),key=lambda r:r.get('likes_exact_snapshot_20261102',0),reverse=True)
+if sys.argv[1:]:rows=[r for r in rows if r['video_id'] in sys.argv[1:]]
+engine=RapidOCR()
+
+def spread(items,limit):
+    if len(items)<=limit:return items
+    if limit==1:return items[:1]
+    return [items[round(i*(len(items)-1)/(limit-1))] for i in range(limit)]
+
+for row in rows:
+    folder=BASE/'内部分析素材'/row['video_id']
+    target=folder/'重点参数画面初筛-未人工核对.json'
+    if target.exists() and json.loads(target.read_text()).get('processing_complete'):continue
+    source=next(folder.glob('*.mp4'))
+    draft=json.loads((folder/'自动转写-large-v3-turbo-未听审.json').read_text())['result']
+    segs=draft.get('segments',[])
+    buckets={
+      '产品或型号':[i for i,s in enumerate(segs) if re.search(r'OPPO|[Ff]ind|[Mm]agic|[Mm]ate|[iI][Pp]hone|[Pp]ro|[Pp]ad|[Rr]eno|[Aa]ce|[Uu]ltra|华为|荣耀|一加|小米|海信|拓竹|耳机|手柄|键盘',s['text'])],
+      '数值或规格':[i for i,s in enumerate(segs) if re.search(r'\d',s['text'])],
+      '价格或权益':[i for i,s in enumerate(segs) if re.search(r'价格|便宜|免息|分期|补贴|国补|购机|到手|降价|原价|售价|折扣|权益|\d+(?:[.,]\d+)?[元块]',s['text'])],
+      '比较条件或结论':[i for i,s in enumerate(segs) if re.search(r'相比|对比|比较|区别|同样|相同|不如|第一|排名|最好|只[要有能]|更[好强快薄轻]|但是|不过|前提|如果',s['text'])]
+    }
+    chosen={}
+    for kind,limit in [('产品或型号',3),('数值或规格',4),('价格或权益',2),('比较条件或结论',2)]:
+      for i in spread(buckets[kind],limit):chosen.setdefault(i,[]).append(kind)
+    if not chosen and segs:
+      for i in spread(list(range(len(segs))),3):chosen[i]=['少量语音样本，不能推断无旁白']
+    if not chosen:chosen={None:['缺少可用转写，直接检查画面']}
+    work=folder/'重点参数补证画面';work.mkdir(exist_ok=True)
+    result={'video_id':row['video_id'],'index':row['index'],'topic':row['topic_summary'],'selection_version':2,
+      'scope':'以全长ASR中的型号、数字、价格、比较词定位的有限画面；不保证覆盖所有说法，不是原声听审。',
+      'human_verified':False,'processing_complete':False,'candidates':[]}
+    for i,kinds in sorted(chosen.items(),key=lambda kv: -1 if kv[0] is None else kv[0]):
+      s=segs[i] if i is not None else {'start':0,'end':min(4,row['duration_seconds']),'text':''}
+      start=float(s['start']);end=min(float(s['end']),row['duration_seconds'])
+      t=max(0,min(row['duration_seconds']-.05,start+(end-start)*.6))
+      frame=work/f'{t:09.3f}.jpg'
+      if not frame.exists():subprocess.run([FF,'-nostdin','-v','error','-y','-ss',f'{t:.3f}','-i',str(source),'-frames:v','1','-vf','scale=640:-2','-q:v','2',str(frame)],check=True)
+      try:
+        ocr=engine(str(frame));lines=list(ocr.txts or []);scores=[float(x) for x in (ocr.scores or [])]
+        boxes=ocr.boxes.tolist() if ocr.boxes is not None else []
+        with Image.open(frame) as image:height=image.height
+        subtitle=[]
+        for text,score,box in zip(lines,scores,boxes):
+          y1=min(p[1] for p in box);y2=max(p[1] for p in box)
+          if score>=.8 and len(text)>=3 and y1>=height*.58 and y2<=height*.89 and y2-y1>=14:subtitle.append(text)
+        c={'segment_index':i,'source_start':start,'source_end':end,'sample_seconds':round(t,3),'kinds':kinds,
+           'asr_draft':s['text'],'image_path':str(frame),'screen_text':lines,'screen_text_scores':scores,
+           'subtitle_region_candidates':subtitle,'all_boxes':boxes,'human_verified':False}
+      except Exception as error:c={'segment_index':i,'sample_seconds':t,'image_path':str(frame),'error':str(error),'human_verified':False}
+      result['candidates'].append(c)
+    result['processing_complete']=True
+    target.write_text(json.dumps(result,ensure_ascii=False,indent=2))
+    print(json.dumps({'index':row['index'],'video_id':row['video_id'],'claim_frames':len(result['candidates']),'errors':sum('error'in c for c in result['candidates'])}),flush=True)

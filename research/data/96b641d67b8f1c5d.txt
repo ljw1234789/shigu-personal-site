@@ -1,0 +1,117 @@
+- link "企查查":
+  - /url: https://www.qcc.com/
+  - img "企查查"
+- generic: 缔造有远见的商业传奇
+- generic: 全国企业信用查询系统
+- text: 应用
+- link "企业套餐":
+  - /url: https://www.qcc.com/web/pay/qiye?vf=1
+  - generic: 企业套餐
+- 'generic "图标: mobile-simple"':
+- link:
+  - /url: https://www.qcc.com/web/pay/vip?vf=1
+- button "免费注册":
+  - generic: 免费注册
+- img "企查查"
+- generic: 扫码登录
+- generic: 微信登录
+- generic: 二维码已失效
+- button "刷新":
+  - generic: 刷新
+- paragraph:
+  - text: 打开
+  - text: 企查查APP
+  - generic: 或
+  - text: 微信扫一扫
+  - generic: 登录
+- generic: 其他方式登录
+- img "企查查"
+- generic: 短信/密码登录
+- img "企查查"
+- heading "关于企查查" [level=4]
+- list:
+  - link "关于我们":
+    - /url: https://www.qcc.com/web/cms/cm_892
+  - link "用户协议":
+    - /url: https://www.qcc.com/web/cms/cm_14
+  - link "隐私政策":
+    - /url: https://www.qcc.com/web/cms/cm_15
+  - link "会员协议":
+    - /url: https://www.qcc.com/web/cms/cm_146523
+  - link "意见反馈":
+    - /url: javascript:;
+- 'heading "联系方式 图标: customer-service 在线咨询" [level=4]':
+  - text: 联系方式
+  - 'link "图标: customer-service 在线咨询"':
+    - /url: https://help.qcc.com/onlineService?from=footer
+    - 'generic "图标: customer-service"':
+    - text: 在线咨询
+- list:
+  - listitem: 客服电话：400-928-2212
+  - listitem: 工作时间：工作日 9:00-20:00
+  - listitem: 客服邮箱： kefu@qcc.com
+  - listitem: 商务合作： bd@qcc.com
+  - listitem: 地址：江苏省苏州市工业园区汇智街8号
+- heading "快捷导航" [level=4]
+- list:
+  - link "裁判文书":
+    - /url: https://www.qcc.com/web/bigsearch/judicial-litigation/search?dataType=0
+  - link "企业风控":
+    - /url: https://pro.qcc.com/?source=websiteFoot
+  - link "千寻地图":
+    - /url: https://www.qcc.com/map
+  - link "热搜企业":
+    - /url: https://top.qcc.com/
+- list:
+  - link "标找找":
+    - /url: https://www.biaozhaozhao.com/
+  - link "空壳扫描":
+    - /url: https://pro.qcc.com/keIntro?source=websiteFoot&term=%E7%A9%BA%E5%A3%B3%E6%89%AB%E6%8F%8F
+  - link "工商接口":
+    - /url: https://openapi.qcc.com/data?source=websiteBottom&term=detail
+  - link "人员名录":
+    - /url: https://top.qcc.com/cms_dirhot
+- list:
+  - link "失信被执行人":
+    - /url: https://www.qcc.com/more_deadbeat
+  - link "受益所有人":
+    - /url: https://aml.qcc.com/?source=websiteFoot&term=%E5%8F%97%E7%9B%8A%E4%BA%BA
+  - link "企业产品中心":
+    - /url: https://b.qcc.com/?source=qcc_websitefoot&link=zhongxin
+  - link "企查查移动版":
+    - /url: https://m.qcc.com
+- list:
+  - link "尽调风控":
+    - /url: https://pro.qcc.com/?source=websiteFoot
+  - link "企业税号查询":
+    - /url: https://www.qcc.com/tax
+  - link "全球企业查询":
+    - /url: https://www.qcckyc.com/
+  - link "企查查MCP":
+    - /url: https://www.qcc.com/web/cms/mcp-auth?source=websiteBottom&term=detail
+- generic: 数据来源：
+- generic: 主要包括 国家企业信用信息公示系统
+- generic: 中国裁判文书网
+- generic: 中国执行信息公开网
+- generic: 国家知识产权局
+- generic: 商标局
+- generic: 版权局
+- link "©2014-2026":
+  - /url: javascript:void(0)
+- text: 企查查科技股份有限公司 版权所有
+- link "苏ICP备15042526号":
+  - /url: https://beian.miit.gov.cn/
+- text: 增值电信业务经营许可证：
+- link "苏ICP证B2-20180251":
+  - /url: https://beian.miit.gov.cn/
+- link "营业执照":
+  - /url: https://up.qcc.com/manage/cf228e11-bd0d-432b-a657-610c8ddc95e5.png
+- text: 企业征信备案号： 04005
+- text: 违法和不良信息举报电话：400-928-2212 举报邮箱： jubao@qcc.com
+- link "企查查 苏公网安备 32059002002866号":
+  - /url: http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32059002002866
+  - img "企查查"
+  - text: 苏公网安备 32059002002866号
+- link "企查查":
+  - /url: https://scjgj.suzhou.gov.cn/
+  - img "企查查"

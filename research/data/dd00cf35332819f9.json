@@ -1,0 +1,1 @@
+{"initial_failure":"8797无监听，HTTP连接失败；本地文件存在","fixed":"独立进程提供本机服务，并增加双击启动入口","binding":"127.0.0.1:8797","repeated_start_reuses_same_process":true,"server_parent_process":"1","visible_samples":74,"video_ready_state":4,"video_duration":190.8,"video_error":null,"shell_syntax_check":"passed","screenshot":"../evidence/c324b61d830d2bb82cecea72.webp"}

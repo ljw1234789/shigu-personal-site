@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="zh-CN" class="no-js">
+<head>
+<script>document.documentElement.classList.replace("no-js","js");</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>毕导｜锚定IP深度调研</title>
+<meta name="description" content="从生活问号到实验科普：毕导的个人定位、内容审美、团队、商业模式与抖音互动证据。含10条作品数据和自测练习。">
+<meta name="theme-color" content="#f3f1e9">
+<style>
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 600 900;
+  font-display: swap;
+  src: url(fonts/display-sc.woff2) format('woff2');
+  unicode-range: U+20, U+49, U+50, U+58, U+201c-201d, U+3002, U+4e00, U+4e0a, U+4e0d-4e0e, U+4e13, U+4e1a, U+4e1d, U+4e24, U+4e2a, U+4e2d, U+4e3a-4e3b, U+4e48, U+4e5f, U+4e86, U+4e8b, U+4e92, U+4e9b, U+4ea4, U+4ea7, U+4eba, U+4ec0, U+4ecd, U+4ed6, U+4ef6, U+4efd, U+4f17, U+4f53, U+4f5c, U+4f9d, U+4fdd, U+4fe1, U+505a, U+5148, U+5165, U+516c, U+5171, U+5173, U+5177, U+5185, U+5199, U+51b3, U+51c6, U+51e0, U+51fa, U+521b, U+521d, U+5224, U+5230, U+526a, U+52a1, U+52a8-52a9, U+5347, U+534f, U+5355, U+53d8, U+53e3, U+53e5, U+53ef, U+5408, U+540c, U+540e, U+5417, U+5426, U+548c, U+54c1, U+54ea, U+5546, U+56e2, U+5706, U+5728, U+5904, U+591a, U+5927, U+5938, U+5957, U+597d, U+5982, U+5b50, U+5b57-5b58, U+5b66, U+5b83, U+5b9a, U+5b9e, U+5ba1, U+5bb9, U+5bfc, U+5c0f, U+5c31, U+5c42, U+5de5, U+5e38, U+5e55, U+5e7d, U+5e8f, U+5e93, U+5f00, U+5f02, U+5f84, U+5f97, U+5ff5, U+600e, U+6027, U+606f, U+60ac, U+611f, U+6210-6211, U+624e, U+6253, U+627e, U+628a, U+62cd, U+62ec, U+6301, U+636e, U+63a5, U+63d0, U+6444, U+6491, U+652f, U+6570, U+6587, U+6599, U+65ad, U+65b0, U+65b9, U+65e5, U+65e7, U+65f6, U+660e, U+662f, U+663e, U+666e, U+66f4, U+6700, U+6709, U+670d, U+672c, U+6750, U+6761, U+6765, U+679c, U+683c, U+6982, U+6b21, U+6b63, U+6bcf, U+6bd4-6bd5, U+6beb, U+6c14, U+6c34, U+6ca1, U+6cd5, U+6ce2, U+6d3b, U+6d41, U+70b9, U+7136, U+724c, U+7269, U+73a9, U+73b0, U+7403, U+7406, U+751f, U+7528, U+754c, U+7559, U+7684, U+76d8, U+770b, U+77e5, U+7814, U+786e, U+79cd, U+79d1, U+7a0b, U+7a3f, U+7a76, U+7b52, U+7b54, U+7b5b, U+7b80, U+7c89, U+7c98, U+7cfb, U+7ec8, U+7ecf, U+7edf, U+7eed, U+7f8e, U+80cc, U+80fd, U+811a, U+81ea, U+84dd, U+8868, U+8981, U+89c2, U+89c6, U+89e3, U+8ba4, U+8ba9, U+8bba, U+8bc1, U+8bc4, U+8bdd, U+8be1, U+8bfb, U+8c03, U+8d22, U+8d28, U+8d44, U+8db3, U+8dc3, U+8eab, U+8f91, U+8fb9, U+8fbe, U+8fd8-8fd9, U+8ffd, U+9002, U+9009, U+90fd, U+91ca, U+91cc, U+91cf, U+94fe, U+951a, U+952e, U+95ee, U+961f, U+987a, U+9891, U+9898, U+98ce, U+9a8c, U+9ed8, U+ff0c, U+ff0f, U+ff1a, U+ff1f;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url(fonts/space-grotesk.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url(fonts/space-grotesk-2.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url(fonts/space-grotesk-3.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/plex-mono.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/plex-mono-2.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/plex-mono-3.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/plex-mono-4.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/plex-mono-5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/plex-mono-6.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/plex-mono-7.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/plex-mono-8.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/plex-mono-9.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/plex-mono-10.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+</style>
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="report.ff7a60b764.css">
+<link rel="stylesheet" href="poster-edition.1e51107435.css">
+</head>
+<body class="edition-two">
+<div id="top" aria-hidden="true"></div>
+<section class="entry-cover poster-cover scroll-cover" id="personEntry" aria-label="先认识毕导">
+<div class="entry-bar"><div class="entry-brand"><span class="brand-glyph" aria-hidden="true">b.</span> 毕导 <small>/ IP 研究</small></div><div class="entry-tools"><span>趣味科学 · 生活实验</span><div class="entry-motion-controls"><button id="replayEntry" type="button" aria-label="重播封面">重播 <span aria-hidden="true">↻</span></button><button id="toggleEntryLoop" type="button" aria-label="暂停封面动效">暂停 <span aria-hidden="true">Ⅱ</span></button></div><a class="edition-compare" href="classic.html">查看上一版 ↗</a></div></div>
+<div class="entry-layout">
+<div class="entry-copy"><span class="kicker entry-eyebrow">小问题，值得大研究。</span><h1 aria-label="毕导"><span class="entry-name-mask" aria-hidden="true"><span>毕</span></span><span class="entry-name-mask" aria-hidden="true"><span>导</span></span></h1><p class="entry-identity">毕啸天 · 清华大学化学工程系博士</p><p class="entry-line"><span class="entry-line-mask"><span>一本正经，</span></span><span class="entry-line-mask"><span>研究点<span class="entry-fun">好玩的</span>。</span></span></p><div class="entry-question"><div class="entry-question-top"><span id="entryQuestionCount">01 / 03</span><button id="entryQuestionNext" type="button">换个问题 <span aria-hidden="true">↻</span></button></div><p id="entryQuestionText" aria-live="polite">刻度写着100 mL，倒出来也一样吗？</p></div><a class="btn primary entry-enter" id="enterLab" href="#reportStart">向下探索 <span aria-hidden="true">↓</span></a></div>
+<figure class="entry-portrait"><div class="poster-shape" aria-hidden="true"><svg viewBox="0 0 500 500"><path d="M250 5 300 50 367 31 390 94 460 104 451 175 495 225 450 276 466 345 401 369 383 438 312 433 263 490 210 443 142 463 115 399 45 384 52 313 6 262 51 212 33 143 100 118 118 49 189 56Z"/></svg></div><div class="entry-orbit" aria-hidden="true"><svg viewBox="0 0 500 500"><circle class="orbit-guide" cx="250" cy="250" r="228"/><g class="orbit-track"><circle class="orbit-arc" cx="250" cy="250" r="228"/><circle class="orbit-node" cx="478" cy="250" r="5"/><path class="orbit-cross" d="M238 22h24M250 10v24"/></g><g class="orbit-track-inner"><circle class="orbit-arc-inner" cx="250" cy="250" r="208"/><circle class="orbit-node-small" cx="42" cy="250" r="3"/></g></svg></div>
+      <div class="entry-portrait-motion"><div class="entry-portrait-window"><img class="entry-portrait-image" src="assets/bidao-cover-magazine.jpeg" width="1080" height="1041" fetchpriority="high" decoding="async" alt="毕导穿条纹衬衫、戴渔夫帽的户外人物肖像"></div><span class="entry-frame" aria-hidden="true"></span></div>
+    <figcaption class="poster-photo-label"><span>毕导</span><span>生活，是实验的起点。</span></figcaption></figure>
+</div>
+<div class="entry-route" aria-label="从生活问题到科学解释"><span><small>01</small>看见问题</span><i aria-hidden="true">→</i><span><small>02</small>动手验证</span><i aria-hidden="true">→</i><strong><small>03</small>讲清原理</strong></div>
+</section>
+<header class="top"><div class="wrap top-inner"><a class="brand" href="#personEntry" data-open-cover aria-label="返回毕导封面"><span class="brand-glyph" aria-hidden="true">b.</span> 毕导 <span class="brand-sep">/</span><span class="brand-note">IP 研究</span></a><nav class="nav" aria-label="报告导航"><a href="#personEntry" data-open-cover>封面</a><a href="#profile">人物</a><a href="#data">数据</a><a href="#content">内容</a><a href="#business">团队</a><a href="#opportunity">我的工作</a><a href="#exam">考考你</a></nav><span class="edition">2026.10.11</span></div><div class="reading-progress" aria-hidden="true"></div></header>
+<main id="reportStart">
+<section class="hero-scroll" aria-label="毕导研究报告开篇"><div class="hero-stage"><div class="hero-word" aria-hidden="true">BI DAO</div><div class="lab-grid" aria-hidden="true"></div><div class="hero-meta"><span>趣味科学 / 生活实验</span><span>独立课堂调研</span></div><canvas id="labCanvas" role="img" aria-label="可换角度的动态量筒示意"></canvas><div class="hero-copy story-panel is-active" data-panel="0"><p class="hero-label">毕导 · 一本正经的幽默科普</p><h1>一本正经，<br>研究点好玩的。</h1><p class="hero-lead">量筒里有多少水？盘子上的X从哪来？<br>在他这里，小问题也值得认真研究。</p><button class="btn primary" type="button" data-scene="1">往下看，他怎么把问题讲有趣 <span aria-hidden="true">↓</span></button></div>
+<div class="hero-copy story-panel panel-right" data-panel="1"><p class="hero-label">01 / 一个生活里的问号</p><h2>越是小问题，<br>越容易让人好奇。</h2><p class="hero-lead">“这个量筒里，到底有几毫升水？”<br>看似普通的读数，先让观众亲自判断。<br>悬念来自熟悉的生活，而不是堆砌术语。</p><a class="story-source" href="https://www.douyin.com/video/7690946606966770953" target="_blank" rel="noopener">对应作品：量筒读数 ↗</a></div>
+<div class="hero-copy story-panel" data-panel="2"><p class="hero-label">02 / 把“我以为”变成“我看到了”</p><h2>先别下结论。<br>换个角度看看。</h2><p class="hero-lead">提问之后，还要观察、找资料、做验证。<br>真人、道具、字幕与图解各有任务：<br>让观众跟得上，科学也讲得清。</p><span class="story-source">本页器材示意，不复刻原视频实验结果。</span></div>
+<div class="hero-copy story-panel panel-right" data-panel="3"><p class="hero-label">03 / 好玩之后，得说得明白</p><h2>有趣，是入口。<br>认真，是底气。</h2><p class="hero-lead">但一个好看的视频，还不能说明全部。<br>他的观众还活跃吗？团队如何运转？<br>接下来，用作品和数据继续拆解。</p><a class="btn primary" href="#profile">进入人物与内容调研 <span aria-hidden="true">→</span></a><a class="story-source" href="#experiment">先试试你的直觉 ↗</a></div><div class="hero-signal"><span class="signal-index" id="signalIndex">01 / 好奇</span><p id="signalText">越普通的问题，<br>越可能藏着惊喜。</p></div><button class="angle-button" id="angleButton" type="button" aria-label="改变量筒观察角度">换个角度 <span aria-hidden="true">↻</span></button><div class="hero-bottom"><div class="story-steps" aria-label="开篇的四个阅读阶段"><button type="button" data-scene="0" aria-pressed="true"><span>01</span> 好奇</button><button type="button" data-scene="1" aria-pressed="false"><span>02</span> 提问</button><button type="button" data-scene="2" aria-pressed="false"><span>03</span> 验证</button><button type="button" data-scene="3" aria-pressed="false"><span>04</span> 解释</button></div><a href="#profile">直接看调研 <span aria-hidden="true">↗</span></a></div></div></section><div class="wrap hero-stats"><div class="statstrip"><div class="stat"><strong>452.3<span class="unit">万</span></strong><span class="label">抖音主页粉丝快照</span><small>2026.10.11 · 主页口径</small></div><div class="stat"><strong>14.95<span class="unit">万</span></strong><span class="label">最近10条点赞中位数</span><small>排除置顶 · 8.14—9.30</small></div><div class="stat"><strong>7<span class="unit">人</span></strong><span class="label">采访披露的工作室规模</span><small>2025.12报道 · 当前人数未公开</small></div><div class="stat"><strong>434<span class="unit">条</span></strong><span class="label">抖音主页公开作品</span><small>2026.10.11 · 主页快照</small></div></div><div class="scope"><span>数据采集：2026.10.11 ｜ 主平台：抖音 ｜ 子赛道：趣味科学／生活实验科普</span><span>事实有出处，判断有边界。</span></div></div>
+<section class="section wrap experiment" id="experiment"><div class="experiment-copy"><span class="kicker">先猜，再验证。</span><h2>这两个蓝圆，<br>哪个更大？</h2><p>先别急着说“这么简单”。<br>你的眼睛，可能有自己的意见。</p><div class="guess-buttons" aria-label="比较两个蓝色圆的大小"><button type="button" data-guess="A">A 更大</button><button type="button" data-guess="same">一样大</button><button type="button" data-guess="B">B 更大</button></div><p class="experiment-answer" id="experimentAnswer" aria-live="polite">选一个答案，看看会发生什么。</p><button class="mini-button" type="button" id="resetExperiment" hidden>让眼睛再上一次当 ↻</button><p class="experiment-note">本页设计的视觉互动示意，用来体验“提问—验证”的表达方式。</p></div><div class="illusion-board" id="illusionBoard"><svg viewBox="0 0 600 330" role="img" aria-label="两个蓝色中心圆，一个被小圆环绕，一个被大圆环绕"><g class="context context-a" fill="#d0d8df"><circle cx="114" cy="110" r="10"/><circle cx="150" cy="90" r="10"/><circle cx="186" cy="110" r="10"/><circle cx="202" cy="150" r="10"/><circle cx="186" cy="190" r="10"/><circle cx="150" cy="210" r="10"/><circle cx="114" cy="190" r="10"/><circle cx="98" cy="150" r="10"/></g><g class="context context-b" fill="#d0d8df"><circle cx="410" cy="74" r="36"/><circle cx="490" cy="74" r="36"/><circle cx="534" cy="150" r="36"/><circle cx="490" cy="226" r="36"/><circle cx="410" cy="226" r="36"/><circle cx="366" cy="150" r="36"/></g><g class="measure" stroke="#b6c5d1" fill="none"><path d="M150 107V197M450 107V197M122 126H478M122 174H478" stroke-dasharray="3 5"/><path d="M133 126H167M433 126H467M133 174H167M433 174H467"/></g><g class="target target-a"><circle cx="150" cy="150" r="24" fill="#3478ff"/><text x="150" y="155" text-anchor="middle" fill="white">A</text></g><g class="target target-b"><circle cx="450" cy="150" r="24" fill="#3478ff"/><text x="450" y="155" text-anchor="middle" fill="white">B</text></g></svg><span class="illusion-caption" id="illusionCaption">先相信直觉。然后，我们验证一下。</span></div></section>
+<section class="section wrap" id="profile"><div class="section-head"><span class="kicker">01 / 人物</span><div><h2>为什么锚定毕导？</h2><p>能研究的不只是“他讲了什么”，还有一个人的表达风格、团队生产机制与商业接口。</p></div></div><div class="person-intro"><figure class="person-photo"><img src="assets/bidao-speaking.jpg" width="1440" height="960" alt="毕导戴着眼镜，在科普活动现场手持话筒和道具进行讲解" loading="lazy" decoding="async"><figcaption><span>毕导在科普活动现场</span></figcaption></figure><div class="person-intro-copy"><span class="kicker">BIDAO / SCIENCE COMMUNICATOR</span><h3 class="person-name">毕导</h3><p class="person-realname">毕啸天 · 清华大学化学工程系博士</p><p class="thesis">科学训练，日常好奇，<br><span class="highlight">还有一本正经的幽默。</span></p><p class="person-summary">从生活里的一个小问题出发，亲自观察、验证，再把背后的科学讲明白。这是本次内容样本中，他鲜明的个人表达。</p></div></div><div class="style-line"><div><span>表达</span><strong>一本正经的冷幽默</strong><p>问题越小，研究越较真。认真推导和生活化的笑点形成反差。</p></div><div><span>叙事</span><strong>疑问 → 验证 → 解释</strong><p>让人先好奇、再观察，最后带走一个能讲明白的知识点。</p></div><div><span>视觉</span><strong>真人、实物、字幕与图解</strong><p>把抽象原理落到能看到的对象上，让观众跟得上。</p></div></div><div class="identity"><div><p style="font-size:14px;color:var(--muted)">这是本次对内容样本的归纳。“能让人认出是谁在讲”，比单纯把知识整理成字幕更适合做个人IP调研。真实出镜、生活化问题与实验行动，让内容可以从人设、叙事、视觉三个层面拆解。</p><a class="mini-link" href="https://www.douyin.com/user/MS4wLjABAAAA26unzRl4eTG2pAGnxD1pS3kMvjaUIcNxvLGr3VJOiKU" target="_blank" rel="noopener">打开毕导抖音主页 ↗</a></div><dl class="profile-list"><div><dt>姓名／账号</dt><dd>毕啸天／毕导 · 抖音号 <code>bidao</code></dd></div><div><dt>专业身份</dt><dd>主页自述：清华大学化学工程系博士</dd></div><div><dt>个人定位</dt><dd>把科学问题讲成有趣、可理解的生活故事</dd></div><div><dt>内容对象</dt><dd>愿意探索日常现象的泛知识观众；未取得年龄、地域等完整粉丝画像</dd></div><div><dt>公开作品</dt><dd>抖音主页显示434条 · 累计获赞4352.5万</dd></div></dl></div>
+<div class="timeline"><div><strong>2016</strong><p>注册个人公众号，开始图文创作。</p></div><div><strong>2017</strong><p>创办自媒体工作室。</p></div><div><strong>2019</strong><p>开始科普视频创作。</p></div><div><strong>2024—25</strong><p>工作室搬到杭州；2025年采访披露7人团队。</p></div><div><strong>2026</strong><p>公开分享团队创作流程与AI辅助调研。</p></div></div><p class="small" style="color:var(--muted);margin:17px 0 0">这些是内容事业节点，不能替代抖音账号注册时间。抖音创立日期、公司工商成立日期本次未取得。</p>
+<div class="criteria"><article class="criterion"><span class="pill good">有团队依据</span><h3>能否支撑小团队？</h3><p>采访人数、2026年协作流程及公开商业合作共同支持团队运营判断。实际工资、净利润和现金流未公开，不能直接写“发工资能力已验证”。</p></article><article class="criterion"><span class="pill good">有公开采样</span><h3>更新是否持续？</h3><p>近30日窗口内可见7条非置顶作品；截至采集日，距最新发布约11天。具备持续发布记录，也存在不均匀更新间隔。</p></article><article class="criterion"><span class="pill good">有样本依据</span><h3>有没有审美？</h3><p>样本有清晰的人物主体、字幕与实验细节。审美围绕“看清问题、跟上解释”展开；下文拆解具体作品。</p></article></div><a class="chapter-next" href="#data"><span>他的观众，还在认真看吗？</span><span aria-hidden="true">→</span></a></section>
+
+<div class="dark"><section class="section wrap" id="data"><div class="section-head"><span class="kicker">02 / 数据</span><div><h2>452万粉丝，<br>还有多少人在互动？</h2><p>先看这批作品的赞、评、藏、转，再看观众留下的追问。粉丝总数只是起点，作品之间的波动更值得拆解。数据为2026.10.11快照。</p></div></div><div class="metricline" id="metricline" aria-live="polite"></div><div class="controls"><div class="seg" aria-label="选择采样范围"><button type="button" data-scope="30" aria-pressed="true">近30日可见作品 · 7条</button><button type="button" data-scope="10" aria-pressed="false">最近10条非置顶</button></div><div class="seg metric-switch" role="group" aria-label="观察指标"><button type="button" data-metric="likes" aria-pressed="true">点赞</button><button type="button" data-metric="comments" aria-pressed="false">评论</button><button type="button" data-metric="saves" aria-pressed="false">收藏</button><button type="button" data-metric="shares" aria-pressed="false">分享</button></div></div><div class="chart" id="chart" aria-label="作品互动柱状图"></div><div class="legend"><span><i class="swatch"></i>无显式品牌标签</span><span><i class="swatch amber"></i>含显式品牌标签</span></div><p class="chartnote" id="chartnote"></p><div class="insight-grid"><div><h3>活性：有互动，也有明显波动。</h3><p>最近10条点赞从2.7万到61.2万。中位数14.95万，比只挑一条爆款更能描述这批样本；仍然不能代表每个粉丝都活跃。点赞、分享不是播放人数，也不能拿点赞／粉丝数当真实活跃率。</p></div><div><h3>粘性：追问旧问题，比夸一句更有信息。</h3><p>足球视频评论中，多位观众继续追问以前的“水盆波纹为什么是方的”。这是跨作品记忆与期待的定性线索。评论区展示有排序偏差，未取得用户复访、重合或关注者观看数据，因此不计算“粉丝粘性百分比”。</p><a class="mini-link" href="https://www.douyin.com/video/7690099402740273658" target="_blank" rel="noopener">核对评论上下文 ↗</a></div></div><details class="research-note"><summary>更新节奏 · 查看说明</summary><div class="note">更新节奏：窗口2026.09.11—10.10内，可见非置顶作品7条，约每周1.6条；9.15到9.23存在8天间隔，9.30之后至采集日未见更近的非置顶作品。该统计只覆盖公开可见样本，不能推断删除、私密作品或团队全部产能。</div></details><details class="samples"><summary>查看10条完整采样表：日期、赞评藏转与原链接</summary><div class="table-scroll"><table class="datatable"><thead><tr><th>作品</th><th>发布时间</th><th>点赞</th><th>评论</th><th>收藏</th><th>分享</th><th>品牌标签</th></tr></thead><tbody id="sampleRows"></tbody></table></div></details><details class="research-note"><summary>采样方法 · 查看说明</summary><div class="note">采样方法：从抖音主页排除3条置顶，按当前列表顺序取得最近10条，并逐条打开视频核对发布时间和互动。近30日图表是这10条中落在时间窗内的7条。所有指标均来自抖音公开页面逐条核验。</div></details><a class="chapter-next" href="#content"><span>这些小问题，究竟是怎么讲有趣的？</span><span aria-hidden="true">→</span></a></section></div>
+
+<section class="section wrap" id="content"><div class="section-head"><span class="kicker">03 / THE CRAFT</span><div><h2>小问题，<br>为什么能让人一直看？</h2><p>观察公开片段、页面与评论，不把标题解读当作全片分析。以下为样本分析，不能概括账号所有视频。</p></div></div>
+<div class="case-story"><div class="case-visual" aria-label="三个选题的视觉示意"><div class="case-visual-inner"><span class="case-visual-label">先判断，再动手。</span>
+<svg class="case-object is-active cylinder-demo" data-object="0" viewBox="0 0 500 400" aria-hidden="true"><defs><linearGradient id="caseGlass" x1="0" x2="1"><stop stop-color="#d7e5ef" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity=".8"/><stop offset="1" stop-color="#bdcfdf" stop-opacity=".4"/></linearGradient><linearGradient id="caseWater" x1="0" x2="1"><stop stop-color="#a4c8ff"/><stop offset="1" stop-color="#5c91e5"/></linearGradient></defs><ellipse cx="147" cy="355" rx="72" ry="12" fill="#b4c5d3" opacity=".18"/><ellipse cx="354" cy="355" rx="82" ry="12" fill="#b4c5d3" opacity=".18"/><g id="pourCylinder"><path d="M103 63V330Q147 349 191 330V63" fill="url(#caseGlass)" stroke="#a5becf"/><g id="cylinderWater"><path d="M107 185V328Q147 345 187 328V185" fill="url(#caseWater)"/><ellipse class="liquid-surface" cx="147" cy="185" rx="40" ry="9" fill="#b6d2ff" stroke="#7da7e5"/></g><path class="wall-water" d="M109 93V329Q147 343 185 329V93" fill="none" stroke="#81afe9" stroke-width="3"/><ellipse cx="147" cy="63" rx="44" ry="11" fill="#f6fbfe" fill-opacity=".6" stroke="#a5becf"/><path class="glass-shine" d="M115 81V315" stroke="white" stroke-width="3" opacity=".8"/><g stroke="#7f9db3"><path d="M177 93H190M182 116H190M177 139H190M182 162H190M177 185H190M182 208H190M177 231H190M182 254H190M177 277H190M182 300H190"/></g><text x="173" y="187" text-anchor="end" fill="#426587" font-size="11">100</text><text id="cylinderMark" x="145" y="111" text-anchor="middle" fill="#426587" font-size="15" font-weight="600">In</text></g><path id="pourStream" d="M251 154Q338 175 354 296" fill="none" stroke="#91b9f3" stroke-width="6" stroke-linecap="round"/><path d="M291 202L286 213V329Q352 357 420 329V207L405 198" fill="url(#caseGlass)" stroke="#a5becf"/><g id="beakerWater"><path d="M291 279V328Q352 350 415 328V279Z" fill="url(#caseWater)"/><ellipse class="liquid-surface beaker-surface" cx="353" cy="279" rx="62" ry="13" fill="#b6d2ff" stroke="#7da7e5"/></g><path d="M300 222V323" stroke="white" stroke-width="3" opacity=".8"/><ellipse cx="353" cy="203" rx="62" ry="12" fill="none" stroke="#a5becf"/><g fill="#537998" font-size="13" text-anchor="middle"><text x="147" y="381" id="containedVolume">筒内 100mL</text><text x="353" y="381" id="deliveredVolume">烧杯里会有多少？</text></g></svg>
+<svg class="case-object" data-object="1" viewBox="0 0 500 470" aria-hidden="true"><defs><radialGradient id="plateShade"><stop offset="0" stop-color="#fff"/><stop offset=".7" stop-color="#e9f0f5"/><stop offset=".85" stop-color="#fff"/><stop offset="1" stop-color="#c8d8e3"/></radialGradient></defs><g class="plate-object"><g class="plate-idle"><ellipse cx="250" cy="349" rx="156" ry="28" fill="#a7bac9" opacity=".16"/><ellipse cx="250" cy="257" rx="167" ry="129" fill="url(#plateShade)" stroke="#b9ccd9"/><ellipse cx="250" cy="257" rx="130" ry="98" fill="none" stroke="#d4e0e9"/><path class="plate-x" d="M190 205L310 305M193 304L309 207" stroke="#76a2d5" stroke-width="13" opacity=".38" stroke-linecap="round"/><path class="plate-glint" d="M120 218C140 168 220 133 305 156" fill="none" stroke="white" stroke-width="11" stroke-linecap="round"/></g></g><g class="plate-detail" fill="none" stroke="#8fa4b5" stroke-width=".8"><ellipse cx="250" cy="245" rx="15" ry="12.0"/><ellipse cx="250" cy="245" rx="22" ry="17.6"/><ellipse cx="250" cy="245" rx="29" ry="23.200000000000003"/><ellipse cx="250" cy="245" rx="36" ry="28.8"/><ellipse cx="250" cy="245" rx="43" ry="34.4"/><ellipse cx="250" cy="245" rx="50" ry="40.0"/><ellipse cx="250" cy="245" rx="57" ry="45.6"/><ellipse cx="250" cy="245" rx="64" ry="51.2"/><ellipse cx="250" cy="245" rx="71" ry="56.800000000000004"/><ellipse cx="250" cy="245" rx="78" ry="62.400000000000006"/><ellipse cx="250" cy="245" rx="85" ry="68.0"/><ellipse cx="250" cy="245" rx="92" ry="73.60000000000001"/><ellipse cx="250" cy="245" rx="99" ry="79.2"/><ellipse cx="250" cy="245" rx="106" ry="84.80000000000001"/><ellipse cx="250" cy="245" rx="113" ry="90.4"/><ellipse cx="250" cy="245" rx="120" ry="96.0"/><ellipse cx="250" cy="245" rx="127" ry="101.60000000000001"/><ellipse cx="250" cy="245" rx="134" ry="107.2"/><ellipse cx="250" cy="245" rx="141" ry="112.80000000000001"/><ellipse cx="250" cy="245" rx="148" ry="118.4"/><ellipse cx="250" cy="245" rx="155" ry="124.0"/><ellipse cx="250" cy="245" rx="162" ry="129.6"/><ellipse cx="250" cy="245" rx="169" ry="135.20000000000002"/><ellipse cx="250" cy="245" rx="176" ry="140.8"/></g><text class="plate-detail-label" x="250" y="423" text-anchor="middle" fill="#537998" font-size="13">细微同心圆划痕 · 纹路示意</text><text x="70" y="88" fill="#8198ab" font-size="11">你注意过这个X吗？</text><path d="M194 98L233 141" stroke="#a4bacd" stroke-dasharray="3 5"/></svg>
+<svg class="case-object" data-object="2" viewBox="0 0 500 470" aria-hidden="true"><defs><radialGradient id="ballShade" cx=".35" cy=".25"><stop stop-color="#fff"/><stop offset=".6" stop-color="#e1ebf4"/><stop offset="1" stop-color="#a9c1d4"/></radialGradient><clipPath id="ballClip"><circle cx="250" cy="240" r="128"/></clipPath></defs><ellipse class="ball-shadow" cx="250" cy="390" rx="115" ry="19" fill="#9aafc0" opacity=".18"/><g class="ball-object"><g class="ball-idle"><circle cx="250" cy="240" r="128" fill="url(#ballShade)" stroke="#9eb6ca"/><g clip-path="url(#ballClip)" fill="none" stroke="#7c9cb8" stroke-width="2.5"><path d="M250 174L313 218L290 284H210L187 218Z M250 174L251 114M313 218L375 196M290 284L329 344M210 284L173 344M187 218L125 197M251 114L307 131L334 165L375 196L377 258L355 302L329 344L263 368L221 363L173 344L141 294L125 245L125 197L169 145L220 117Z"/><path d="M307 131L313 218M355 302L290 284M221 363L210 284M125 245L187 218M169 145L250 174" opacity=".5"/></g><path d="M181 162Q243 121 296 147" fill="none" stroke="white" stroke-width="8" opacity=".75"/></g></g><g class="comment-orbit"><path d="M306 250Q390 251 407 173" fill="none" stroke="#8aa7c0" stroke-dasharray="4 6"/><rect x="252" y="113" width="226" height="73" rx="5" fill="#fafcfd" stroke="#bfd0dd"/><text x="270" y="139" fill="#7590a4" font-size="10">评论中的旧题追问 / 归纳</text><text x="270" y="164" fill="#335774" font-size="14">水盆波纹，为什么是方的？</text></g><text x="68" y="93" fill="#8198ab" font-size="11">不用打气，也能踢？</text></svg>
+<button class="object-hit-area" id="caseObjectAction" type="button" aria-label="点击量筒倒水" aria-describedby="caseActionHint"></button><button class="motion-toggle" id="caseMotionToggle" type="button" aria-label="暂停图形动效" aria-pressed="false">暂停动效 <span aria-hidden="true">Ⅱ</span></button><div class="case-visual-footer"><span id="caseVisualName">01 / 量筒读数</span><span id="caseActionHint">点量筒，倒出看看 ↗</span></div></div></div><div class="case-list"><article class="case story-case"><div><span class="kicker">CASE A / 2026.09.30</span><h3>“量筒有几毫升水？”<br>把简单问题变成认知悬念。</h3><p>先问筒内到底有多少水，再称重、结合水的密度计算，最后解释“量入／量出”的区别。观众带着自己的判断，跟着实验校正答案。</p><div class="case-interaction" id="cylinderInteraction"><span class="demo-label">动手试试 / 刻度都是100mL</span><p class="demo-question">倒出去，也会是100mL吗？</p><div class="demo-actions"><div class="demo-modes" role="group" aria-label="选择量筒标定方式"><button type="button" data-calibration="In" aria-pressed="true">量入 In</button><button type="button" data-calibration="Ex" aria-pressed="false">量出 Ex</button></div><button class="demo-action" id="pourButton" type="button">倒出看看 <span aria-hidden="true">↗</span></button></div><p class="demo-feedback" id="pourFeedback" aria-live="polite">先看量入式：刻度对应筒内的水量。你觉得倒出后会怎样？</p><small class="demo-note">原理示意，挂壁效果放大；不显示原视频实测值。实际操作须按器材规定。</small></div><dl><div><dt>观察</dt><dd>主体与背景分离，字幕接近日常问话，理解入口清晰。</dd></div><div><dt>数据</dt><dd>61.2万赞／5828评／4.8万藏／9.9万转。</dd></div><div><dt>判断</dt><dd>实验对象与疑问构成视觉信息中心。这条在本次10条样本中点赞最高，不代表单一画面因素造成爆款。</dd></div></dl><a class="mini-link" href="https://www.douyin.com/video/7690946606966770953" target="_blank" rel="noopener">观看原作品 ↗</a></div></article>
+<article class="case story-case"><div><span class="kicker">CASE B / 2026.09.23</span><h3>“盘子上诡异的X”<br>日常物件，成为科学入口。</h3><p>这条以熟悉却少被注意的餐盘现象切入。标题里的“没人能说清”，同时承诺解释，也为观众提供讨论动机。</p><div class="case-interaction"><span class="demo-label">仔细看看 / 盘子的表面</span><div class="demo-actions"><p class="demo-question">只看X，可能漏掉了什么？</p><button class="demo-action" id="plateDetailButton" type="button" aria-pressed="false">看近一点 <span aria-hidden="true">＋</span></button></div><p class="demo-feedback" id="plateFeedback" aria-live="polite">先看整体，再点开表面细节。熟悉的物件，也值得多看一眼。</p><small class="demo-note">纹路示意依据原视频01:29片段；完整光学解释请看原作品。</small></div><dl><div><dt>观察</dt><dd>真人表达与生活对象结合，科学议题不是孤立的术语清单。</dd></div><div><dt>数据</dt><dd>25.4万赞／2998评／3.5万藏／3.7万转。</dd></div><div><dt>判断</dt><dd>适合研究“生活经验如何转化为知识需求”。高收藏、分享是传播线索，不能直接等同于观众已理解原理。</dd></div></dl><a class="mini-link" href="https://www.douyin.com/video/7688649420908383522" target="_blank" rel="noopener">观看原作品 ↗</a></div></article>
+<article class="case story-case"><div><span class="kicker">CASE C / 2026.09.27</span><h3>“不用打气的足球”<br>品牌题材与科普表达的交点。</h3><p>标题继续采用生活疑问，页面含米其林品牌标签。可研究技术解释与产品关联怎样同场出现，但标签本身不能证明合同、报酬或广告投放效果。</p><div class="case-interaction"><span class="demo-label">去评论里 / 观众接着问什么</span><div class="demo-actions"><p class="demo-question">看完足球，只讨论足球吗？</p><button class="demo-action" id="commentButton" type="button" aria-pressed="false">看看追问 <span aria-hidden="true">↗</span></button></div><p class="demo-feedback" id="commentFeedback" aria-live="polite">先看这条视频，再看看观众把话题带去了哪里。</p><small class="demo-note">本次可见评论的归纳，不代表全部观众；足球仅作选题对象示意。</small></div><dl><div><dt>数据</dt><dd>7.1万赞／1131评／3065藏／1427转。</dd></div><div><dt>讨论</dt><dd>多个评论追问旧视频中的水盆问题，说明部分观众记得账号以前的内容。</dd></div><div><dt>待比较</dt><dd>这条点赞低于样本中位数。题材、发布日期和流量分发均可能影响，不能直接归因于品牌植入。</dd></div></dl><a class="mini-link" href="https://www.douyin.com/video/7690099402740273658" target="_blank" rel="noopener">观看原作品与评论 ↗</a></div></article>
+</div></div><div class="aesthetic"><div><strong>01 / HIERARCHY</strong><h3>层次：先看人和问题</h3><p>画面中的人物、道具和字幕有明确分工。相较于背景装饰，观众更容易知道当前要观察什么。</p></div><div><strong>02 / LEGIBILITY</strong><h3>可读性：字幕服务理解</h3><p>采样片段中字幕与背景存在对比，语言直接。小屏观看时，知识入口不依赖一张塞满术语的图。</p></div><div><strong>03 / CHARACTER</strong><h3>气质：实验感与幽默共存</h3><p>真实物件、动作和生活疑问形成辨识度。趣味科学的审美要能承载解释，而不只是画面“高级”。</p></div></div><div class="note">审美判断：样本能看到有意组织的视觉表达，适合做作业中的内容审美分析。这里没有声称所有近期视频都已完整观看，也没有拿B站播放数据替代抖音表现。</div></section>
+
+<section class="section wrap" id="business"><div class="section-head"><span class="kicker">04 / OUR TEAM</span><div><h2>我们的团队</h2><p>从选题、调研到脚本和拍摄剪辑，协作完成一条视频。</p></div></div><div class="split team-only"><div><h3>团队分工与协作</h3><p>2025年杭州新闻采访中，工作室规模为7人；2026年本人大会演讲继续介绍公司协作。两项证据共同支持“小团队持续运营”的判断。 </p><p>以下按其公开流程归纳职责，不是已核验的在职员工名单或组织架构。本人负责表达与判断，资料、脚本、拍摄后期需要协作。</p></div></div><div class="team-motion"><div class="team-motion-stage"><div class="flow"><div class="step"><b>01</b><span class="flow-diagram" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="40"/><path d="M48 45c0-17 28-17 28 0 0 10-16 9-16 24M60 81v2"/></svg></span><h3>选题初筛</h3><p>把日常问题变成候选题，判断是否值得做。</p></div><div class="step"><b>02</b><span class="flow-diagram" aria-hidden="true"><svg viewBox="0 0 120 120"><path d="M40 15h40M46 15v72q0 15 14 15t14-15V15M47 60h26M60 34h14M60 46h14M60 74h14M60 87h14"/><path class="flow-liquid" d="M47 61h26v26q0 14-13 14t-13-14Z"/></svg></span><h3>资料调研</h3><p>寻找解释与依据，整理待验证的问题。</p></div><div class="step"><b>03</b><span class="flow-diagram" aria-hidden="true"><svg viewBox="0 0 120 120"><path d="M32 17h56v86H32ZM44 37h32M44 52h32M44 68h20M44 84h26"/><path d="m80 72 12-12 9 9-12 12-14 5Z"/></svg></span><h3>脚本创作</h3><p>组织问题、过程与解释，保留个人表达。</p></div><div class="step"><b>04</b><span class="flow-diagram" aria-hidden="true"><svg viewBox="0 0 120 120"><rect x="21" y="31" width="78" height="61" rx="3"/><circle cx="60" cy="62" r="20"/><path d="M40 31v-9h39v9M84 43h4M55 51l16 11-16 11Z"/></svg></span><h3>拍摄／剪辑</h3><p>把实验与知识转成可以观看的内容。</p></div></div><div class="flow-status" aria-hidden="true"><span id="flowStatus">01 / 选题初筛</span><div><i></i><i></i><i></i><i></i></div></div></div></div>
+<div class="table-scroll"><table class="reporttable"><thead><tr><th>商业信号</th><th>本次看到的事实</th><th>可以怎样解读</th></tr></thead><tbody><tr><td>品牌标签内容</td><td>10条样本中4条含显式品牌标签：米其林、清闲、TCL、宜家。</td><td>可分析选题与商业场景；不逐条认定为有报酬的商单。</td></tr><tr><td>明确赞助鸣谢</td><td>B站作者《首次公开！揭秘毕导视频制作全过程》说明中感谢豆包电脑版支持。</td><td>至少存在公开合作说明；合作金额未披露。</td></tr><tr><td>直播收入</td><td>未取得完整近30日直播统计和实际收入。</td><td>保留未公开／未取得。不能填0收入，不能以商单报价代替。</td></tr></tbody></table></div><div class="tradeoff"><div><strong>商业优势 · 可把产品议题讲成知识问题</strong><p>材料、技术、日常物件与实验天然存在连接机会。这是内容策略分析，不是该账号收入构成的财务结论。</p></div><div><strong>商业约束 · 每次合作也占用创作资源</strong><p>品牌题材要同时满足表达、事实和合作需求。分析时应比较同时间窗、相近题材，并保留自然流量与投放的差异。</p></div></div></section>
+
+<section class="section wrap" id="opportunity">
+<div class="section-head"><span class="kicker">05 / MY ROLE</span><div><h2>作为毕导的IP助理，<br>我把问号推进到成片。</h2><p>我负责把争论拆清、把解释拍清，把下一步交到团队手上。</p></div></div>
+<div class="role-equation" aria-label="我的工作：问题、证据、画面、交付"><span>问题</span><i>＋</i><span>证据</span><i>＋</i><span>画面</span><i>＝</i><strong>能执行的方案</strong></div>
+<div class="workbench" id="my-work">
+<div class="workbench-heading"><div><span class="kicker">一个具体选题 / 工作样稿</span><h3>“100 mL”，<br>到底在说哪一份水？</h3></div><p>以量筒作品为例，<br>点开四步，看我怎么接住这个任务。</p></div>
+<div class="workbench-layout">
+<div class="work-tabs" role="tablist" aria-label="我的选题工作步骤" aria-orientation="vertical">
+<button id="work-tab-0" type="button" role="tab" aria-selected="true" aria-controls="work-panel-0" data-work-tab="0"><span>01</span><b>拆问题</b><small>一张研究卡</small><i aria-hidden="true">↗</i></button>
+<button id="work-tab-1" type="button" role="tab" aria-selected="false" aria-controls="work-panel-1" tabindex="-1" data-work-tab="1"><span>02</span><b>做验证</b><small>一个拍摄方案</small><i aria-hidden="true">↗</i></button>
+<button id="work-tab-2" type="button" role="tab" aria-selected="false" aria-controls="work-panel-2" tabindex="-1" data-work-tab="2"><span>03</span><b>讲清楚</b><small>一份双栏脚本</small><i aria-hidden="true">↗</i></button>
+<button id="work-tab-3" type="button" role="tab" aria-selected="false" aria-controls="work-panel-3" tabindex="-1" data-work-tab="3"><span>04</span><b>交给团队</b><small>一张执行清单</small><i aria-hidden="true">↗</i></button>
+</div>
+<div class="work-panels">
+<article id="work-panel-0" role="tabpanel" aria-labelledby="work-tab-0" tabindex="0" class="work-panel">
+<div class="work-panel-top"><span>RESEARCH CARD / 01</span><span class="work-symbol" aria-hidden="true">?</span></div><h4>先分清，我们在问什么。</h4><p class="work-lead">刻度读数、筒内体积、倒出体积，是三个需要分开说的量。</p>
+<dl class="work-facts"><div><dt>观众争论</dt><dd>看到100 mL，就等于能倒出100 mL吗？</dd></div><div><dt>关键线索</dt><dd>原作品涉及In / Ex标定和挂壁水。先看器具标识，再谈读数代表什么。</dd></div><div><dt>研究动作</dt><dd>逐句记录视频解释；查对应器具说明，把“已核实、待核实、需实验”分开。</dd></div><div><dt>表达边界</dt><dd>不把一个器具的残留量套到所有量筒；量出式读数要连同规定操作一起说明。</dd></div></dl>
+<div class="work-output"><span>我的交付</span><strong>研究卡：一个主问题、三个概念、待验证项。</strong><a href="https://www.douyin.com/video/7690946606966770953" target="_blank" rel="noopener">对应作品 ↗</a></div>
+</article>
+<article id="work-panel-1" role="tabpanel" aria-labelledby="work-tab-1" tabindex="0" class="work-panel" hidden>
+<div class="work-panel-top"><span>TEST PLAN / 02</span><span class="work-symbol wide" aria-hidden="true">In / Ex</span></div><h4>用一个对照，把区别拍出来。</h4><p class="work-lead">先确认标定，再比较同一器具的筒内水量与按规定操作交付的水量。</p>
+<dl class="work-facts"><div><dt>准备什么</dt><dd>标识清楚的器具、接水容器、精度适配的天平、温度计和水。</dd></div><div><dt>怎样验证</dt><dd>分别记录空器具与装水质量、空接水容器与接水后质量，用质量差和实际温度对应的水密度估算体积。</dd></div><div><dt>固定什么</dt><dd>读数视线、液面位置、器具状态，以及说明书要求的流出和等待操作；重复测量，保留原始记录。</dd></div><div><dt>怎样拍清</dt><dd>标识特写 → 平视读数 → 同框拍倾倒与接水 → 天平数值 → 挂壁水近景。差异不足以分辨时，先调整测量方案。</dd></div></dl>
+<div class="work-output"><span>我的交付</span><strong>验证方案＋道具表＋镜头清单；实测后再填写数值。</strong></div>
+</article>
+<article id="work-panel-2" role="tabpanel" aria-labelledby="work-tab-2" tabindex="0" class="work-panel" hidden>
+<div class="work-panel-top"><span>SCRIPT / 03</span><span class="work-symbol" aria-hidden="true">→</span></div><h4>先让人猜，再让人看懂。</h4><p class="work-lead">保留毕导“一本正经研究小问题”的气质，让每一句解释都有对应画面。</p>
+<div class="script-pairs"><div class="script-label"><span>旁白样稿</span><span>画面任务</span></div><div><p>“这儿写着100 mL。倒出来，也一定是100 mL吗？”</p><p>刻度特写，停顿留给观众判断。</p></div><div><p>“先别急着倒，看看筒上写的是In还是Ex。”</p><p>推近标识，分别标注“量入 / 量出”。</p></div><div><p>“里面有多少，和按规定能倒出多少，要分开说。”</p><p>筒内水、接水、挂壁水分色图解；叠加实际测量记录。</p></div><div><p>“所以下次读量筒，别只盯着刻度，也看看它怎么标定。”</p><p>回到开场画面，突出标识与操作条件。</p></div></div>
+<div class="work-output"><span>我的交付</span><strong>双栏脚本＋字幕重点；幽默服务理解，结论对照实测。</strong></div>
+</article>
+<article id="work-panel-3" role="tabpanel" aria-labelledby="work-tab-3" tabindex="0" class="work-panel" hidden>
+<div class="work-panel-top"><span>HANDOFF / 04</span><span class="work-symbol" aria-hidden="true">✓</span></div><h4>让团队知道，下一步做什么。</h4><p class="work-lead">我把任务交成能判断、能拍、能剪的材料，再把发布后的问题接回来。</p>
+<dl class="work-facts"><div><dt>交给毕导</dt><dd>选题研究卡、关键解释与未决问题，请确认科学表述和个人表达。</dd></div><div><dt>交给拍摄</dt><dd>道具及器具标识、对照操作、镜头顺序和测量记录表。数据不足，先补测。</dd></div><div><dt>交给剪辑</dt><dd>双栏脚本、原始测量片段、图解层次和字幕重点。关键条件跟着结论出现。</dd></div><div><dt>发布后接回</dt><dd>归纳“我的器具是哪种”“为什么会残留”等待观察的追问，记录同时间窗的赞评藏转，再决定补解释还是做新题。</dd></div></dl>
+<div class="work-output"><span>验收标准</span><strong>问题说得清、证据对得上、条件看得见、镜头拍得出来。</strong></div>
+</article>
+</div></div>
+<div class="workbench-bottom"><span id="workStepCount" aria-live="polite">01 / 04 · 拆问题</span><button type="button" id="workNext">下一步：做验证 <span aria-hidden="true">→</span></button></div>
+</div>
+<div class="assistant-tools"><div class="subsection-head"><span class="kicker">AI / MY METHOD</span><h3>AI接哪一步，<br>我把关哪一步。</h3><p>围绕这条选题使用工具，输入具体材料，拿回具体交付。</p></div>
+<div class="tool-row"><span class="tool-name">ChatGPT / 豆包<small>问题拆解与脚本备选</small></span><div><p><b>我给：</b>原视频笔记、器具说明摘录、实测记录。</p><p><b>AI做：</b>拆概念、列矛盾、整理双栏脚本，不补造数据。</p><p><b>我核：</b>逐条回到原材料，确认科学解释、限制条件与语气。</p><details class="prompt-sheet"><summary>查看我的调研指令 <span aria-hidden="true">＋</span></summary><div><p id="researchPrompt">只依据我提供的视频笔记、器具说明和测量记录，整理一张研究卡：①观众争论的问题；②刻度读数、筒内体积、倒出体积的区别；③每条解释对应的材料位置；④缺少证据和需要实验的项目。不要编造来源、条件或测量结果。证据不足请标记“待核实”。</p><button type="button" class="prompt-copy" data-copy-prompt="researchPrompt">复制指令</button></div></details></div></div>
+<div class="tool-row"><span class="tool-name">剪映<small>转写与粗剪</small></span><div><p><b>我给：</b>已确认脚本、口播和实验素材。</p><p><b>工具做：</b>辅助转写、对齐字幕，整理可比较的剪辑版本。</p><p><b>我核：</b>In / Ex、单位与数字不能转错；实验过程不因剪辑省略关键条件。</p></div></div>
+<div class="tool-row"><span class="tool-name">飞书<small>协作与验收</small></span><div><p><b>我放：</b>研究卡、脚本、镜头表、原始记录与负责人。</p><p><b>团队看：</b>哪个结论已确认、哪个镜头待拍、哪个版本待审核。</p><p><b>我跟：</b>每轮修改落到具体材料，发布后把评论问题接回选题库。</p></div></div>
+</div>
+<div class="assistant-abilities"><div class="subsection-head"><span class="kicker">WHAT I BRING</span><h3>做这类视频，<br>我需要练成的三项能力。</h3></div><div class="ability-grid"><article><span>01</span><h4>科学判断</h4><p>能拆概念、读原材料、设计对照。知道什么时候可以下结论，什么时候需要补测。</p></article><article><span>02</span><h4>视觉翻译</h4><p>把抽象解释变成物件、动作和图解。先安排观众看什么，再决定字幕怎么写。</p></article><article><span>03</span><h4>执行与复盘</h4><p>把研究交成脚本和镜头表。能跟进版本、记录测量、从评论追问中提出下一步。</p></article></div></div>
+<a class="chapter-next" href="#exam"><span>看完了，能讲明白他是谁吗？</span><span aria-hidden="true">→</span></a></section>
+
+<section class="section wrap" id="exam"><div class="quiz-layout"><div class="quiz-intro"><span class="kicker">06 / KNOW YOUR IP</span><h2 style="margin-top:18px">把“了解他”，<br>变成能答得出来。</h2><p>14道选择题。身份、风格、代表作品、团队与数据，一个也别漏。</p><p>先回答，再核对证据。答辩的重点是分清“我看到了什么”和“我据此判断什么”。</p></div><div><div class="quiz-box"><div class="quiz-count" id="quizCount"></div><h3 id="quizQuestion"></h3><div class="quiz-options" id="quizOptions"></div><div class="quiz-feedback" id="quizFeedback" aria-live="polite"></div><div class="quiz-bottom"><span class="quiz-score" id="quizScore"></span><button class="btn" id="quizNext" disabled>下一题 →</button></div></div></div></div></section>
+
+
+</main><footer class="wrap footer"><span>毕导 / IP 研究</span><span>有趣是入口，认真是底气。</span><div class="footer-links"><a href="classic.html">查看上一版 ↗</a><a href="#personEntry" data-open-cover>返回封面 ↑</a></div></footer>
+
+<script id="reportData" type="application/json">{
+  "checkedAt": "2026-10-11",
+  "source": "抖音公开页面逐条采样",
+  "excluded": "置顶作品",
+  "rows": [
+    {
+      "title": "这个量筒里到底有几毫升水？别笑，你也答不上来！",
+      "url": "https://www.douyin.com/video/7690946606966770953",
+      "date": "2026-09-30 11:00",
+      "likes": 612000.0,
+      "comments": 5828.0,
+      "saves": 48000.0,
+      "shares": 99000.0,
+      "brandTagged": false
+    },
+    {
+      "title": "见过不用打气的足球么？",
+      "url": "https://www.douyin.com/video/7690099402740273658",
+      "date": "2026-09-27 17:02",
+      "likes": 71000.0,
+      "comments": 1131.0,
+      "saves": 3065.0,
+      "shares": 1427.0,
+      "brandTagged": true
+    },
+    {
+      "title": "你吃饭的盘子上一直有个诡异的X，但没人能说清它为什么在那",
+      "url": "https://www.douyin.com/video/7688649420908383522",
+      "date": "2026-09-23 16:46",
+      "likes": 254000.0,
+      "comments": 2998.0,
+      "saves": 35000.0,
+      "shares": 37000.0,
+      "brandTagged": false
+    },
+    {
+      "title": "人会越变越矮？我不到180的原因找到了",
+      "url": "https://www.douyin.com/video/7685373221143244965",
+      "date": "2026-09-15 12:00",
+      "likes": 75000.0,
+      "comments": 447.0,
+      "saves": 3769.0,
+      "shares": 7902.0,
+      "brandTagged": true
+    },
+    {
+      "title": "世界上一半的人每天看见这个现象，却不知道为什么",
+      "url": "https://www.douyin.com/video/7684877754814188843",
+      "date": "2026-09-13 17:20",
+      "likes": 134000.0,
+      "comments": 796.0,
+      "saves": 12000.0,
+      "shares": 10000.0,
+      "brandTagged": false
+    },
+    {
+      "title": "前沿科技首发计划｜我被机器人KO了？？ 除了打我，它还能做什么…",
+      "url": "https://www.douyin.com/video/7684621847220038053",
+      "date": "2026-09-12 22:42",
+      "likes": 165000.0,
+      "comments": 1503.0,
+      "saves": 7602.0,
+      "shares": 1692.0,
+      "brandTagged": false
+    },
+    {
+      "title": "飞了8000公里参加考试！我来考考AI！",
+      "url": "https://www.douyin.com/video/7684105960566181160",
+      "date": "2026-09-11 13:48",
+      "likes": 27000.0,
+      "comments": 205.0,
+      "saves": 484.0,
+      "shares": 122.0,
+      "brandTagged": true
+    },
+    {
+      "title": "为啥海拔越高，气温越低？物理老师和地理老师打起来了！",
+      "url": "https://www.douyin.com/video/7677793995778542911",
+      "date": "2026-08-25 17:00",
+      "likes": 186000.0,
+      "comments": 3156.0,
+      "saves": 18000.0,
+      "shares": 23000.0,
+      "brandTagged": false
+    },
+    {
+      "title": "反复拉出柜子20万次，下场竟然是......？",
+      "url": "https://www.douyin.com/video/7675213907305239269",
+      "date": "2026-08-23 12:00",
+      "likes": 94000.0,
+      "comments": 952.0,
+      "saves": 7283.0,
+      "shares": 2901.0,
+      "brandTagged": true
+    },
+    {
+      "title": "吵翻天了！飞机放在跑步机上，到底能不能起飞？",
+      "url": "https://www.douyin.com/video/7673348711728041252",
+      "date": "2026-08-14 17:00",
+      "likes": 225000.0,
+      "comments": 11000.0,
+      "saves": 23000.0,
+      "shares": 33000.0,
+      "brandTagged": false
+    }
+  ]
+}</script>
+<script>
+'use strict';
+const data=JSON.parse(document.getElementById('reportData').textContent);
+const format=n=>n>=10000?`${+(n/10000).toFixed(2)}万`:n.toLocaleString('zh-CN');
+const tbody=document.getElementById('sampleRows');for(const r of data.rows){const tr=document.createElement('tr');const title=document.createElement('td');const a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener';a.textContent=r.title+' ↗';title.append(a);tr.append(title);for(const s of [r.date,...['likes','comments','saves','shares'].map(k=>format(r[k])),r.brandTagged?'有':'未见']){const td=document.createElement('td');td.textContent=s;tr.append(td)}tbody.append(tr)}
+const quiz=[
+{"q": "毕导的专业身份是什么？", "a": ["清华大学化学工程系博士", "专职影视导演", "计算机专业教授"], "right": 0, "why": "抖音主页自述为清华大学化学工程系博士。身份是内容背景，具体解释仍要逐项核对。"},
+{"q": "用一句话概括毕导的风格，哪个最准确？", "a": ["情绪激烈的观点输出", "一本正经的幽默科普", "以书单推荐为主的知识整理"], "right": 1, "why": "本报告对样本的归纳是：认真研究生活问题，以幽默表达、实物实验和通俗解释吸引观众。"},
+{"q": "“量筒里有几毫升水”这个选题，先调动了观众什么？", "a": ["对设备价格的兴趣", "购买课程的需求", "亲自判断并验证答案的好奇心"], "right": 2, "why": "一个看似简单的读数问题，让观众先参与判断，再期待解释。它在本次10条样本中获赞最高，但不能把爆款归因于单一因素。"},
+{"q": "“盘子上的X”最适合体现哪种选题方法？", "a": ["从熟悉的生活现象发现科学问题", "追热点时不需要查证", "把术语直接排成知识清单"], "right": 0, "why": "餐盘是日常物件，异常现象构成提问入口。日常经验、悬念和解释需求连在一起，是这条样本的研究价值。"},
+{"q": "毕导视频的审美主要服务什么？", "a": ["让背景装饰越多越好", "让观众看清问题、实验过程与解释", "让所有画面始终保持同一个景别"], "right": 1, "why": "从公开片段看，人物、道具、字幕与图解各有任务。视觉层次服务理解；不需要每条视频都套同一种画面。"},
+{"q": "研究毕导团队流程时，哪一种顺序更合理？", "a": ["选题→调研→脚本→拍摄与剪辑", "先接所有广告，再随意补解释", "把AI答案直接拍成视频"], "right": 0, "why": "本人公开演讲介绍选题、调研、脚本、剪辑等流程。拍摄是本报告对视频制作环节的补充归纳，科学判断与最终表达仍需要人负责。"},
+{q:'毕导最适合归入哪个具体子赛道？',a:['读书讲书与书单推荐','趣味科学／生活实验科普','AI工具教程合集'],right:1,why:'他的真人表达与生活实验围绕科学问题展开。本报告不把他继续归为严格的读书讲书赛道。'},
+{"q": "毕导的工作室在2024年搬到了哪里？", "a": ["上海", "北京", "杭州"], "right": 2, "why": "杭州新闻采访提到，2024年博士毕业后，毕导将工作室搬回杭州。人物部分的时间线也保留了这个节点。"},
+{q:'7人团队这个数字应该怎样表达？',a:['2026年现在固定有7名员工，每月工资已核验','2025年采访披露工作室7人，当前人数和工资未公开','根据视频质量估计有7人'],right:1,why:'7人来自2025.12杭州新闻采访。它支持曾有团队运营，不等于当前员工数或工资凭证。'},
+{q:'最近10条非置顶作品的点赞中位数是多少？',a:['14.95万，样本跨8月14日至9月30日','13.4万，是账号全部历史作品中位数','61.2万，是最近10条平均点赞'],right:0,why:'10条排序后，中间两项是13.4万与16.5万，平均为14.95万。13.4万属于近30日窗口内7条的中位数；61.2万是单条样本最高值。'},
+{"q": "作品页面出现品牌标签，能够直接证明什么？", "a": ["这条视频的实际报酬", "团队每月净利润", "公开页面存在品牌关联"], "right": 2, "why": "品牌标签提供内容与商业场景的线索，无法直接证明合同金额、回款或广告效果。"},
+{q:'评论继续追问旧视频的水盆问题，能支持哪种结论？',a:['部分观众记得旧内容并期待回应，是定性粘性线索','所有粉丝都会复看旧作品','所有452.3万粉丝都持续观看'],right:0,why:'跨作品追问可以支持部分观众具有内容记忆。评论有排序偏差，不能推算全部关注者的复访率。'},
+{"q": "近30日7条作品这个数字来自哪里？", "a": ["按每周更新频率推算", "抖音公开页面的日期手工核验，限定可见非置顶作品", "凭印象判断"], "right": 1, "why": "时间窗为2026.09.11—10.10；本次逐条打开作品核对日期，统计的是可见非置顶样本，不能代表团队全部产能。"},
+{q:'2016年这个时间节点对应什么？',a:['抖音账号注册日','公司工商成立日','本人公开演讲中的公众号注册年份'],right:2,why:'2016是公众号节点。工作室创办时间为报道中的2017；抖音账号注册日和工商成立日未取得。'}
+];let qi=0,score=0,answered=false;const next=document.getElementById('quizNext');function renderQuiz(){answered=false;next.disabled=true;document.getElementById('quizCount').textContent=`第 ${String(qi+1).padStart(2,'0')} 题 / ${quiz.length}`;document.getElementById('quizQuestion').textContent=quiz[qi].q;document.getElementById('quizFeedback').textContent='';document.getElementById('quizScore').textContent=`已答 ${qi} / ${quiz.length} · 正确 ${score}`;next.textContent=qi===quiz.length-1?'查看成绩 →':'下一题 →';const box=document.getElementById('quizOptions');box.replaceChildren();quiz[qi].a.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.textContent=String.fromCharCode(65+i)+'. '+s;b.addEventListener('click',()=>{if(answered)return;answered=true;const correct=i===quiz[qi].right;if(correct)score++;Array.from(box.children).forEach((c,j)=>{c.disabled=true;if(j===quiz[qi].right)c.classList.add('correct');else if(j===i)c.classList.add('wrong')});document.getElementById('quizFeedback').textContent=(correct?'回答正确。':'再核对一下。')+quiz[qi].why;document.getElementById('quizScore').textContent=`已答 ${qi+1} / ${quiz.length} · 正确 ${score}`;next.disabled=false});box.append(b)})}next.addEventListener('click',()=>{if(qi===quiz.length){qi=0;score=0;renderQuiz();return}if(!answered)return;if(qi===quiz.length-1){qi=quiz.length;document.getElementById('quizCount').textContent='本轮练习完成';document.getElementById('quizQuestion').textContent=`答对 ${score} / ${quiz.length} 题`;document.getElementById('quizOptions').replaceChildren();document.getElementById('quizFeedback').textContent=score===quiz.length?'关键事实与证据边界已掌握。':'回看刚才不确定的内容，再练一次。辨清未知项也是调研能力的一部分。';next.textContent='重新练习 ↻';next.disabled=false}else{qi++;renderQuiz()}});renderQuiz();
+</script>
+<script src="lab.238497ce00.js" defer></script>
+<script src="editorial-motion.9515f62bf9.js" defer></script>
+<script src="data-motion.js?v=20261012-2" defer></script>
+</body></html>

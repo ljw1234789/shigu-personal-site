@@ -1,0 +1,71 @@
+# -*- coding: utf-8 -*-
+from pathlib import Path
+import json, re
+
+root = Path(__file__).resolve().parents[1]
+p = root / 'dist/index.html'
+s = p.read_text()
+old = '<figure class="entry-portrait"><img src="assets/bidao-speaking.jpg" width="1440" height="960" alt="毕导在公开科普活动中讲解科学问题" fetchpriority="high" decoding="async"></figure>'
+new = '<figure class="entry-portrait"><img src="assets/bidao-studio-front.png" width="667" height="328" alt="毕导在工作室拍摄区面对镜头，背景是摆放书籍和道具的书架" fetchpriority="high" decoding="async"></figure>'
+assert old in s
+s = s.replace(old, new, 1)
+s = re.sub(r'<div class="entry-credit">.*?</div>', '<div class="entry-credit"><a href="https://www.bilibili.com/video/BV1GdHrzkENs/" target="_blank" rel="noopener">画面来源：毕导本人视频 ↗</a></div>', s, count=1)
+old = '<div class="stat"><strong>52,500<span class="unit">元</span></strong><span class="label">星图植入视频挂牌价</span><small>2026.10.11 · 不等于到账收入</small></div>'
+assert old in s
+s = s.replace(old, '<div class="stat"><strong>434<span class="unit">条</span></strong><span class="label">抖音主页公开作品</span><small>2026.10.11 · 主页快照</small></div>', 1)
+s, n = re.subn(r'<div><dt>账号层级</dt><dd>.*?</dd></div>', '', s, count=1)
+assert n == 1
+s = re.sub(r'<div class="note">层级依据：.*?</div>', '', s, count=1)
+s = re.sub(r'<details class="research-note"><summary>用户画像与关系.*?</details>', '', s, count=1)
+s = s.replace('飞瓜此前因查询额度不足，未返回完整视频与直播统计；这里采用的是抖音手工核验，不能标成飞瓜统计。', '所有指标均来自抖音公开页面逐条核验。', 1)
+s = s.replace('星图报价与作者公开鸣谢赞助能证明合作入口或合作存在；无法证明每月订单数、回款、毛利及实际工资支付。', '作者公开鸣谢赞助，说明存在商业合作；每月订单、回款、毛利及实际工资支付未公开。', 1)
+s, n = re.subn(r'<tr><td>星图.*?</tr>', '', s)
+assert n == 4
+s = re.sub(r'<div class="note">平台差异：.*?</div>', '', s, count=1)
+s, n = re.subn(r'<div class="source-row" id="s02">.*?</p></div></div>', '', s, count=1)
+assert n == 1
+s = s.replace('抖音公开页面逐条采样，非飞瓜统计', '抖音公开页面逐条采样')
+
+new_questions = {
+    '本报告判断账号层级，依据是什么？': {
+        'q': '毕导的工作室在2024年搬到了哪里？',
+        'a': ['上海', '北京', '杭州'], 'right': 2,
+        'why': '杭州新闻采访提到，2024年博士毕业后，毕导将工作室搬回杭州。人物部分的时间线也保留了这个节点。'
+    },
+    '星图¥52,500植入报价能证明什么？': {
+        'q': '作品页面出现品牌标签，能够直接证明什么？',
+        'a': ['这条视频的实际报酬', '团队每月净利润', '公开页面存在品牌关联'], 'right': 2,
+        'why': '品牌标签提供内容与商业场景的线索，无法直接证明合同金额、回款或广告效果。'
+    },
+    '近30日7条作品这个数字来自哪里？': {
+        'q': '近30日7条作品这个数字来自哪里？',
+        'a': ['按每周更新频率推算', '抖音公开页面的日期手工核验，限定可见非置顶作品', '凭印象判断'], 'right': 1,
+        'why': '时间窗为2026.09.11—10.10；本次逐条打开作品核对日期，统计的是可见非置顶样本，不能代表团队全部产能。'
+    }
+}
+lines = s.splitlines()
+for i, line in enumerate(lines):
+    for key, question in new_questions.items():
+        if line.startswith("{q:'" + key + "'"):
+            lines[i] = json.dumps(question, ensure_ascii=False) + ','
+            break
+s = '\n'.join(lines) + '\n'
+s = s.replace('粉丝复访率已证明为6.1%', '所有粉丝都会复看旧作品')
+s = s.replace('评论有排序偏差，星图互动率也不是粉丝复访率。', '评论有排序偏差，不能推算全部关注者的复访率。')
+s = s.replace('report.css?v=20261012-13', 'report.css?v=20261012-14')
+assert not any(x in s for x in ['星图', '飞瓜', 'xingtu', '52,500', '510,000', '#s02'])
+p.write_text(s)
+data_path = root / 'dist/data.json'
+data = json.loads(data_path.read_text())
+data['source'] = '抖音公开页面逐条采样'
+data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2))
+source = {
+    'title': '首次公开！揭秘毕导视频制作全过程',
+    'author': '毕的二阶导',
+    'url': 'https://www.bilibili.com/video/BV1GdHrzkENs/',
+    'frame_seconds': 10.584413,
+    'file': 'dist/assets/bidao-studio-front.png',
+    'note': '本人制作幕后视频的工作室拍摄区正面画面；保留原画面中的作者标记。'
+}
+(root / 'research/studio-homepage-source.json').write_text(json.dumps(source, ensure_ascii=False, indent=2))
+print('Replaced homepage portrait; removed platform-specific fields and questions.')

@@ -1,0 +1,51 @@
+"""560b3521九张画面板及四幅完整图已实际查看。"""
+from pathlib import Path
+import json,subprocess,sys,collections,hashlib
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';out={}
+non={33:[1,30,32,33,34,35],17:[27,49,52,53,56,58,62,64,66],10:[6,37,38,46,48,61,63,65,66,70,71,89,108,110],19:[61,63,65,67,68,71,74,75,76],42:[16,118]}
+terms={
+33:{0:'HarmonyOS 6',17:'MateBook14鸿蒙版',24:'华为Mate80 Pro Max',27:'国补',48:'正襟危坐',60:'双层OLED云晰柔光屏',65:'HUAWEI M-Pencil Pro',70:'MateBook14鸿蒙版',72:'鸿蒙小圆本超有AI',75:'小艺深度研究',79:'小艺深度解题',84:'波点艺术圆键盘',87:'2.8K OLED云晰柔光屏',100:'骑行模拟功率'},
+17:{1:'迈从God60',2:'God60',8:'八斜面剑锋设计',9:'顶部格栅',12:'全铝CNC',13:'阳极氧化',14:'激光镭雕',15:'五大精工工艺',29:'电竞糕手',31:'迈从God60',34:'特调长弹簧',36:'越按越轻',42:'迈从God60',50:'迈从自研天问方案',67:'误触、漏触',68:'不落俗套',72:'夯实的技术积累'},
+10:{2:'ARRI',5:'ARRI',18:'ARRI LogC3',19:'ARRI LogC3',21:'LogC3',22:'LogC3',35:'LUT',39:'2套还原LUT和12套风格化LUT',42:'完整LUT包',44:'87种创意ARRI Look',49:'ARRI Look Library',60:'ARRI-5121',73:'ARRI-8170',76:'荣耀Magic9',88:'荣耀Magic9；双2亿阿莱镜头',91:'清透人像',94:'2.35X长焦',101:'小屏机型',105:'荣耀Magic9'},
+19:{1:'《盗梦空间》',5:'Pocket',8:'Pocket',14:'6.31英寸的Robot Phone',21:'俯仰锁定',26:'Robot Phone',27:'Pocket或稳定器',31:'AI运动算法',34:'匀速旋转90度或180度',36:'《盗梦空间》同款运镜',40:'莱卡、哈苏、蔡司',41:'荣耀Robot Phone',57:'阿莱Log C3',59:'阿莱Log C3',66:'阿莱LUT',69:'阿莱LUT',89:'YOYO机器人模式',92:'YOYO',98:'荣耀Robot Phone',100:'手机＋云台',104:'Robot Phone',112:'Robot Phone'},
+42:{9:'枪神手柄',25:'FPS糕手',27:'架狙',37:'FPS手游',55:'伏地魔',88:'枪神手柄',91:'掌机',101:'枪神手柄',108:'165Hz高刷大屏',116:'一加Ace6至尊版',119:'旗舰SoC',126:'一加Ace系列',127:'集大成者',134:'一加Ace6至尊版',136:'一加15',137:'大R角',138:'金属魔方Deco',139:'金属中框',140:'一加15'}}
+for board in sorted(root.glob('*560b3521*.jpg.json')):
+    for c in json.loads(board.read_text()):
+        i=c['index'];n=int(c['candidate_id'].split('_')[-1])
+        d=dict(category='字幕措辞差异',after='本处字幕与草稿措辞差异保留',note='已实际查看画面；字幕删补、同义或繁简差异不自动判定为原声错误。',visible_resolution='wording_preserved_audio_pending',verified_screen_reading=None)
+        if n in non.get(i,[]):d.update(category='界面实物或引用文字',after='界面入口、背景或引用文字',note='不补成口述；局部字母不拼出完整参数或人名。',visible_resolution='non_speech_text')
+        if n in terms.get(i,{}):d.update(category='可见术语纠词',after=terms[i][n],note='依据本处实际画面纠词；仅确认片中写法，原声、独立产品事实或功能适配条件仍待核。',visible_resolution='screen_correction_confirmed')
+        if i==33:
+            if n==27 or n==26:d.update(category='优惠前置条件',after='平台券后再叠国补',note='不删平台、国补资格、日期和叠加限制；不是当前所有人均享的到手价。',visible_resolution='context_condition_confirmed')
+            elif n==42:d.update(category='作品字幕应用名变体',after='本处字幕写天生绘画APP',note='另一条作品写天生会画；这里保留本处实际写法，不按熟悉名称静默改成一致，应用官方名另核。',visible_resolution='source_caption_name_variant')
+            elif n==92:d.update(category='价格与型号整图关联',after='Mate80 Pro，5299元起',note='143.5秒整图同时显示华为Mate80Pro；不是前面MateBook14或Mate80ProMax的价格。保留起及历史活动语境。',visible_resolution='context_condition_confirmed')
+        elif i==17:
+            if n in (54,57,60,61):d.update(category='不同参数字段分开',after='RT范围0.001—3.4mm；扫描率256K；延迟0.06ms',note='69.5/71.5秒整图另列精度0.001mm、回报率16K、触发行程0.1—3.4mm。这些字段和单位不能混用；未独立实测。',visible_resolution='context_condition_confirmed')
+            elif n==29:d['note']='糕手是画面谐音，不写成职业高手或真实电竞段位。'
+        elif i==10:
+            if n in (39,44):d['note']='2套还原、12套风格LUT与87种ARRI Look分属片中不同层级，不合并成同一个套数；只确认作品表达。'
+            elif n==41:d.update(category='OCR叠入背景文字',after='导入荣耀官方的LUT语境',note='后方使用说明混入字幕框；不将多个层次拼成完整口述。',visible_resolution='non_speech_text')
+            elif n==81:d.update(category='过程计时与功能总时长分开',after='0.1s是3秒电影实况过程中的界面计时',note='111.5秒整图顶部写正在拍摄3秒电影实况，底部字幕触发后3秒的画面；不能用0.1s推翻3秒描述。',visible_resolution='context_condition_confirmed')
+            elif n==94:d['note']='片中为装上后的2.35X，不是裸机默认倍率或任意镜头的统一倍数；独立光学参数未核实。'
+        elif i==19:
+            if n in (57,59):d['note']='REC为旁边的录制标识，不拼成Log C3REC这个格式名。'
+            elif n in (60,62,64,66,69,72,73):d.update(category='OCR混入背景招牌',after='灰片、阿莱LUT和电影感的字幕',note='MAI、MANN、INNER等前缀来自咖啡店招牌，不是影像格式、设备型号或本处口述。',visible_resolution='screen_correction_confirmed')
+            elif n==101:d.update(category='效果比喻',after='1＋1＞2',note='这是手机与云台结合的效果修辞，不是参数实测或普通算式结论。',visible_resolution='context_condition_confirmed')
+        elif i==42:
+            if n==25:d['note']='糕手是画面自嘲，不把它改成真实职业高手或电竞段位。'
+            elif n==96:d.update(category='缺少量化定义的比较',after='直接减了大半是体验描述',note='没有因此确认负担减少的精确比例、测量方法或普遍健康效果。',visible_resolution='context_condition_confirmed')
+            elif n in (119,122):d['note']='旗舰和大规格属于本片概括，此处没有完整型号或容量；不能按后续发布规格倒填当时未披露信息。'
+        out[c['candidate_id']]=d
+target=root.parent/'批次F已看画面决定.json';target.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for board in sorted(root.glob('*560b3521*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(board),str(target)],check=True)
+stats={'batch':'F','total':len(out),'visible_resolution_counts':dict(collections.Counter(d['visible_resolution'] for d in out.values())),'audio_approved':0,'raw_asr_overwritten':False}
+(root.parent/'批次F验收计数.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2));print(json.dumps(stats,ensure_ascii=False))
+p=root.parent/'整图补证决定.json';rows=json.loads(p.read_text())
+extras=[(33,'7645238682932219179',143.5,'多品视频价格归属','5299元起同框对象为Mate80Pro，不是此前出现的MateBook14或Mate80ProMax。','多品稿每个金额都对应完整产品型号；相邻段落不能继承上一个产品对象。','历史片中活动口径，当前价格和资格未核实。'),
+ (17,'7679395942381980934',69.5,'键盘参数字段分别核对','同一表中精度0.001mm、回报率16K、延迟0.06ms、触发行程0.1—3.4mm、RT范围0.001—3.4mm、扫描率256K，各自字段和单位明确。','字幕压缩时仍保留字段，mm不写成ms，回报率和扫描率不互换。','只确认片中表格，没有独立验证宣传性能。'),
+ (10,'7689010523853163786',111.5,'过程计时不能替代功能总时长','相机界面顶部写正在拍摄3秒电影实况，画面中间的0.1s是过程计时；底部字幕说触发后3秒的画面，两者不矛盾。','遇到计数器先确认它在计什么，再与整段功能时长对照，不能单独摘一帧改稿。','确认片中功能说明与计时位置，未核实所有拍摄模式的实际输出。')]
+for idx,vid,start,cat,finding,lesson,scope in extras:
+    im=base/'内部分析素材'/vid/'全文字幕补证画面'/f'{start:09.3f}.jpg'
+    rec=dict(index=idx,video_id=vid,start=start,category=cat,finding=finding,production_lesson=lesson,scope=scope,image_path=str(im),image_sha256=hashlib.sha256(im.read_bytes()).hexdigest(),source_urls=[],audio_verbatim_approved=False)
+    rows=[r for r in rows if (r['video_id'],r['start'],r['category'])!=(vid,start,cat)];rows.append(rec)
+p.write_text(json.dumps(rows,ensure_ascii=False,indent=2))

@@ -1,0 +1,227 @@
+- banner:
+  - link "巨量星图":
+    - /url: /ad/
+    - img "巨量星图"
+  - link "首页":
+    - /url: /ad/creator/index
+    - generic: 首页
+  - link "我的星图":
+    - /url: /ad/creator/user/task/management
+    - generic: 我的星图
+  - link "找灵感":
+    - /url: /ad/creator/insight/content-market
+    - generic: 找灵感
+  - link "找达人":
+    - /url: /ad/creator/market
+    - generic: 找达人
+  - link "找活动":
+    - /url: /ad/creator/activity
+    - generic: 找活动
+  - link "助投放":
+    - /url: /ad/creator/boost-group
+    - generic: 助投放
+  - button "达人清单":
+    - button "达人清单":
+      - generic: 达人清单
+  - text: "+1"
+  - button "发布任务":
+    - generic: 发布任务
+  - 'link "瑞 瑞埃拓标识 ID: 1860700389291209"':
+    - /url: /ad/user-center/user/account
+    - generic: 瑞
+    - generic: 瑞埃拓标识
+    - text: "ID:"
+    - generic: "1860700389291209"
+- banner:
+  - button "通用短视频主页 ":
+    - generic: 通用短视频主页
+    - generic: 
+  - generic: 
+- main:
+  - generic: 毕导
+  - text: "星图ID:"
+  - generic: "6629663245483376653"
+  - generic: 头部必选榜·周榜·科普·第8名
+  - generic: 月连接用户数
+  - generic: 1,538.7w
+  - generic: 月深度用户数
+  - generic: 726.8w
+  - generic: 粉丝
+  - generic: 410.7w
+  - generic: 月涨粉率
+  - generic: 1.9%
+  - generic: 达人类型
+  - generic: 艺术文化
+  - generic: 内容主题
+  - generic: AI应用
+  - generic: 科技资讯
+  - generic: 5+
+  - generic: 查看主题词相关视频和达人
+  - generic: 行业标签
+  - generic: 3C及电器
+  - generic: 美妆
+  - generic: 性别
+  - generic: 男
+  - generic: 地区
+  - generic: 浙江省-杭州市
+  - generic: 介绍
+  - text: 清华大学化学工程系博士，分享科学的快乐和美😎 看到好玩的科学现象，请在评论...
+  - button "展开"
+  - button "加入清单":
+    - generic: 加入清单
+  - generic: 
+  - generic: 联系
+- generic: 达人服务报价
+- text: ￥
+- generic: 52,500
+- generic: 植入视频
+- button "下单"
+- text: 
+- text: ￥
+- generic: 510,000
+- generic: 定制视频
+- button "下单"
+- text: 
+- generic: 达人还支持抖音短视频共创-主投稿达人等其他2报价方式
+- tablist:
+  - tab "达人概览" [selected]:
+    - generic: 达人概览
+  - tab "商业能力":
+    - generic: 商业能力
+  - tab "创作能力":
+    - generic: 创作能力
+  - tab "履约能力":
+    - generic: 履约能力
+  - tab "连接用户":
+    - generic: 连接用户
+- tabpanel "达人概览"
+- heading "商业能力" [level=2]
+- generic: 衡量达人过往商单效果
+- textbox
+- generic: 数据范围：
+- generic: 近30天
+- button "查看全部":
+  - generic: 查看全部
+- generic: 达人主页升级后，原星图指数五维图已下线，你可通过查看下方数据评估达人的「传播价值」「种草价值」和「转化价值」。
+- generic: 传播价值
+- generic: 个人视频
+- generic: 星图视频
+- group "checkbox-group":
+  - checkbox "只看指派" [checked]
+  - generic: 只看指派
+- group "checkbox-group":
+  - checkbox "排除营销流量" [checked]
+  - generic: 排除营销流量
+- generic: 播放量中位数
+- generic: 138.5w
+- generic: 优于
+- generic: 99.72%
+- generic: 同类型达人
+- generic: 预期CPM
+- generic: "49.3"
+- generic: 完播率
+- generic: 1.8%
+- generic: 优于
+- generic: 98.36%
+- generic: 同类型达人
+- generic: 互动率
+- generic: 4.6%
+- generic: 优于
+- generic: 92.09%
+- generic: 同类型达人
+- generic: 种草价值
+- generic: 商单视频看后搜率
+- generic: 0.1% - 0.25%
+- generic: 优于
+- generic: 75%
+- generic: 同类型达人
+- generic: 个人视频看后搜率
+- generic: <0.02%
+- generic: 优于
+- generic: "-%"
+- generic: 同类型达人
+- generic: A3增长数
+- generic: 20,000 - 100,000
+- generic: 优于
+- generic: 90%
+- generic: 同类型达人
+- generic: 进店成本
+- generic: "-"
+- generic: 转化价值
+- generic: 相关视频数
+- generic: "3"
+- generic: 组件点击率
+- generic: "-"
+- generic: CPC
+- generic: "-"
+- heading "历史合作行业" [level=3]
+- text: 行业占比
+- generic: 汽车(25%)
+- generic: 3C及电器(25%)
+- generic: 本地服务(25%)
+- generic: 家居建材(25%)
+- text: 类目
+- generic: 一级类目
+- generic: 二级类目
+- generic: 一级类目
+- generic: 汽车后市场
+- heading "创作能力" [level=2]
+- generic: 包括达人内容类型及内容数据表现
+- textbox "请输入关键词搜索"
+- button "查看全部":
+  - generic: 查看全部
+- generic: 个人爆文
+- generic: "酒在坛子里是绿色，舀出来瞬间变红！这是什么妖术？ #科普 #灯红酒绿 #欢迎问我任何问题 #知识前沿派对#奇妙实验室漫游"
+- generic: 播放量
+- generic: 3,180.3w
+- generic: 点赞量
+- generic: 104.1w
+- generic: 评论量
+- generic: 1.2w
+- generic: 商单爆文
+- generic: "摇可乐会喷的真正原因，你可能错了十几年 #RIO强爽#强爽快速到位#汽水 #为什么摇汽水会喷#科普"
+- generic: 播放量
+- generic: 1,156.4w
+- generic: 点赞量
+- generic: 14.4w
+- generic: 评论量
+- generic: 2,091
+- generic: 代表视频
+- generic: "这个量筒里到底有几毫升水？别笑，你也答不上来！ #欢迎问我任何问题 #知识前沿派对"
+- generic: 播放量
+- generic: 1,157.8w
+- generic: 点赞量
+- generic: 61.2w
+- generic: 评论量
+- generic: 5,828
+- generic: 最新视频
+- generic: "见过不用打气的足球么？ #科普 #欢迎问我任何问题 #知识前沿派对 #米其林大材就该小用 #米其林创新不止于道路"
+- generic: 播放量
+- generic: 274.4w
+- generic: 点赞量
+- generic: 7.1w
+- generic: 评论量
+- generic: 1,132
+- link "帮助":
+  - /url: /help-center/demander
+  - text: 帮助
+- superscript: "1"
+- text: 联系
+- generic: 客服
+- text: 
+- generic: 反馈
+- contentinfo:
+  - link "用户协议":
+    - /url: "#"
+  - separator
+  - generic: 联系方式：star-QA@xingtu.bytedance.com
+  - text: "官方账号:"
+  - generic: 
+  - paragraph:
+    - text: © 2026 武汉巨量星图科技有限公司 |
+    - link "鄂ICP备2021002083号-1":
+      - /url: https://beian.miit.gov.cn/
+    - link "鄂公网安备 42018502005245号":
+      - /url: http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42018502005245
+- tooltip "所选数据范围内视频播放量中位数（仅统计公开可见视频）":
+  - generic: 所选数据范围内视频播放量中位数（仅统计公开可见视频）

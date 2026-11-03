@@ -1,0 +1,54 @@
+"""对浏览器已发现的两条公开视频制作研究初稿；不计原声听审。"""
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import sys
+import urllib.request
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+FF = Path('/Users/ljw/Documents/ChatGPT/小工具/batch-media-tool/bin/ffmpeg')
+jobs = [('小红书新增AI短片_资产清单.json', 'EX02_国行AI短片'), ('小红书新增原相机教程_资产清单.json', 'EX03_原相机教程')]
+os.environ.update(HF_HUB_OFFLINE='1', HF_HUB_DISABLE_TELEMETRY='1', HF_HUB_DISABLE_IMPLICIT_TOKEN='1')
+os.environ['PATH'] = str(FF.parent) + ':' + os.environ.get('PATH', '')
+sys.path.insert(0, '/Users/ljw/Documents/ChatGPT/小工具/上戏搭子/runtime/voice-python')
+sys.path.insert(0, str(HERE.parent / '依赖'))
+import mlx_whisper
+from PIL import Image, ImageDraw, ImageFont
+
+model = '/Users/ljw/.cache/huggingface/hub/models--mlx-community--whisper-large-v3-turbo/snapshots/a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb'
+for source_name, slug in jobs:
+    inv = json.loads((HERE / source_name).read_text())
+    media = [a for a in inv['assets'] if a['kind'] == 'video']
+    assert len(media) == 1
+    media = media[0]
+    folder = HERE / slug
+    folder.mkdir(exist_ok=True)
+    path = folder / '公开原片_仅供研究.mp4'
+    if not path.exists():
+        req = urllib.request.Request(media['url'], headers={'User-Agent': 'Mozilla/5.0', 'Referer': 'https://www.xiaohongshu.com/'})
+        with urllib.request.urlopen(req, timeout=40) as response, path.with_suffix('.part').open('wb') as dest:
+            shutil.copyfileobj(response, dest)
+        path.with_suffix('.part').rename(path)
+    (folder / '来源与校验.json').write_text(json.dumps({'page': inv['pageUrl'], 'inventory_file': source_name, 'observed_asset_id': media['id'], 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'bytes': path.stat().st_size, 'full_audiovisual_approved': False}, ensure_ascii=False, indent=2))
+    subprocess.run([str(FF), '-nostdin', '-v', 'error', '-y', '-i', str(path), '-ac', '1', '-ar', '16000', str(folder / '原声16k.wav')], check=True)
+    step = 4 if slug.startswith('EX02') else 6
+    subprocess.run([str(FF), '-nostdin', '-v', 'error', '-y', '-i', str(path), '-vf', f'fps=1/{step},scale=270:-2', '-q:v', '3', str(folder / '画面_%03d.jpg')], check=True)
+    frames = sorted(folder.glob('画面_*.jpg'))
+    board = Image.new('RGB', (4*280, ((len(frames)+3)//4)*510), (25,25,25))
+    draw = ImageDraw.Draw(board)
+    font = ImageFont.truetype('/System/Library/Fonts/Monaco.ttf', 17)
+    for i, frame in enumerate(frames):
+        x, y = i%4*280+5, i//4*510+25
+        sec = i*step+step/2
+        draw.text((x,y-22), f'~{int(sec)//60:02}:{int(sec)%60:02}', font=font, fill='white')
+        im = Image.open(frame)
+        im.thumbnail((270,480))
+        board.paste(im,(x,y))
+    board.save(folder / '全时段间隔画面板.jpg')
+    draft = mlx_whisper.transcribe(str(folder / '原声16k.wav'), path_or_hf_repo=model, language='zh', temperature=0, condition_on_previous_text=False, verbose=None)
+    (folder / '机器转写_未听审.json').write_text(json.dumps({'status': 'machine_draft_not_listening_approved', 'result': draft}, ensure_ascii=False, indent=2))
+    (folder / '机器转写_未听审.txt').write_text('\n'.join(f'[{s["start"]:.1f}–{s["end"]:.1f}] {s["text"]}' for s in draft['segments']))
+    print(json.dumps({'case':slug, 'frames':len(frames), 'machine_segments':len(draft['segments']), 'path':str(folder), 'full_audiovisual_approved':False}, ensure_ascii=False), flush=True)

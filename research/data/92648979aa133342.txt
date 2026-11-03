@@ -1,0 +1,27 @@
+from pathlib import Path
+r=Path(__file__).resolve().parents[1]
+p=r/'dist/index.html';s=p.read_text()
+s=s.replace('report.css?v=20261014-4','report.css?v=20261014-5')
+science='''<div class="entry-science" aria-hidden="true"><svg viewBox="0 0 100 100"><g class="entry-shape entry-shape-circle"><circle cx="50" cy="50" r="32"/><path d="M50 7v18m0 50v18M7 50h18m50 0h18"/></g><g class="entry-shape entry-shape-hex"><path d="M50 13 82 31v38L50 87 18 69V31Z"/></g><g class="entry-shape entry-shape-glass"><path d="M34 17h32M38 17v57q0 9 12 9t12-9V17M39 49h22M52 28h10M52 38h10M52 60h10M52 70h10"/><path class="entry-water" d="M39 50h22v24q0 8-11 8t-11-8Z"/></g></svg></div>'''
+s=s.replace('<div class="entry-layout">',science+'\n  <div class="entry-layout">',1)
+a=s.index('<div class="flow">',s.index('id="business"'));b=s.index('<div class="table-scroll">',a)
+old=s[a:b].strip()
+icons=[
+'<circle cx="60" cy="60" r="40"/><path d="M48 45c0-17 28-17 28 0 0 10-16 9-16 24M60 81v2"/>',
+'<path d="M40 15h40M46 15v72q0 15 14 15t14-15V15M47 60h26M60 34h14M60 46h14M60 74h14M60 87h14"/><path class="flow-liquid" d="M47 61h26v26q0 14-13 14t-13-14Z"/>',
+'<path d="M32 17h56v86H32ZM44 37h32M44 52h32M44 68h20M44 84h26"/><path d="m80 72 12-12 9 9-12 12-14 5Z"/>',
+'<rect x="21" y="31" width="78" height="61" rx="3"/><circle cx="60" cy="62" r="20"/><path d="M40 31v-9h39v9M84 43h4M55 51l16 11-16 11Z"/>'
+]
+for i,icon in enumerate(icons):
+ needle='<div class="step"><b>0'+str(i+1)+'</b>'
+ replacement=needle+'<span class="flow-diagram" aria-hidden="true"><svg viewBox="0 0 120 120">'+icon+'</svg></span>'
+ old=old.replace(needle,replacement,1)
+s=s[:a]+'<div class="team-motion"><div class="team-motion-stage">'+old+'<div class="flow-status" aria-hidden="true"><span id="flowStatus">01 / 选题初筛</span><div><i></i><i></i><i></i><i></i></div></div></div></div>\n'+s[b:]
+s=s.replace('<script src="lab.js?v=20261014-4" defer></script>','<script src="lab.js?v=20261014-4" defer></script>\n<script src="editorial-motion.js?v=20261014-1" defer></script>')
+p.write_text(s)
+p=r/'build-offline.py';s=p.read_text();needle="html = re.sub(r'<script src=\"data-motion\\.js(?:\\?[^\\\"]*)?\" defer></script>', lambda _: '<script>'+(dist/'data-motion.js').read_text()+'</script>', html)"
+# Keep any deferred script belonging to this pass embedded in the offline submission.
+line="html = re.sub(r'<script src=\"editorial-motion\\.js(?:\\?[^\\\"]*)?\" defer></script>', lambda _: '<script>'+(dist/'editorial-motion.js').read_text()+'</script>', html)"
+if line not in s:
+ s=s.replace("for font in (dist / 'fonts').glob('*.woff2'):",line+"\nfor font in (dist / 'fonts').glob('*.woff2'):")
+p.write_text(s)

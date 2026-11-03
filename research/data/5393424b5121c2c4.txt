@@ -1,0 +1,42 @@
+- list:
+  - link "首页":
+    - /url: //www.bilibili.com
+    - text: 首页
+- list:
+  - generic: 投稿
+- heading "你还在纠结iPhone17/18系列到底该怎么选吗？这期视频给你讲明白！" [level=1]
+- generic: "504"
+- generic: "9"
+- generic: 2026-09-09 09:44:59
+- generic: 个人观点，仅供参考
+- generic "哔哩哔哩播放器"
+- generic "点赞（Q）":
+  - generic: "12"
+- generic "投币（W）":
+  - generic: 投币
+- generic "收藏（E）":
+  - generic: "2"
+- generic: 分享
+- link "科技":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E7%A7%91%E6%8A%80&from_source=video_tag
+- link "数码":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E6%95%B0%E7%A0%81&from_source=video_tag
+- link "手机":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E6%89%8B%E6%9C%BA&from_source=video_tag
+- link "iPhone 18系列":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=iPhone%2018%E7%B3%BB%E5%88%97&from_source=video_tag
+- link "苹果手机":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E8%8B%B9%E6%9E%9C%E6%89%8B%E6%9C%BA&from_source=video_tag
+- link "iPhone":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=iPhone&from_source=video_tag
+- link "iPhone 17":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=iPhone%2017&from_source=video_tag
+- link:
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.head.click
+- link "英俊姐妹日记":
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.detail.click
+- link " 发消息":
+  - /url: //message.bilibili.com/zh-Hans?spm_id_from=333.788.upinfo.detail.click#whisper/mid3706983859358214
+  - generic: 
+  - text: 发消息
+- generic "记录让人心动的新玩意"

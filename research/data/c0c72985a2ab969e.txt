@@ -1,0 +1,85 @@
+from pathlib import Path
+from collections import Counter
+import json,sys,re
+BASE=Path(__file__).resolve().parent;PACK=BASE/'求职准备总包';ROOT=BASE/'原声核验/全文字幕对照'
+sys.path.insert(0,str(BASE/'原声核验'))
+from 字幕文本规则 import norm
+NUMBER=re.compile(r'\d+(?:\.\d+)?(?:万|亿)?(?:mah|wh|w|hz|db|gb|tb|mb|mm|cm|km|inch|元|块|倍|组|种|个|年|天|位|颗|核|%|h|min|s)?',re.I)
+catalog=json.loads((PACK/'09_74条研究覆盖与缺口.json').read_text())['items']
+rows=[];decisions=[]
+for item in catalog:
+    f=BASE/'内部分析素材'/item['video_id'];strong=json.loads((f/'自动转写-large-v3-turbo-未听审.json').read_text())['result']['segments'];small=json.loads((f/'自动转写-未听审.json').read_text()).get('segments',[])
+    row={'index':item['index'],'video_id':item['video_id'],'topic':item['topic_summary'],
+      'large_asr_segments_total':len(strong),'small_asr_segments_total':len(small),
+      'number_unit_occurrences_total':sum(len(NUMBER.findall(norm(s['text']))) for s in strong),
+      'time_grid_ocr_complete':False,'sentence_comparison_available':False,
+      'screen_difference_candidates':0,'assistant_checked_difference_candidates':0,
+      'screen_difference_queue_complete':False,'audio_verbatim_approved_segments':0,
+      'full_parameter_review_complete':False,'full_audiovisual_review_complete':False}
+    ocr=f/'全时段字幕带OCR-未逐图验收.json'
+    if ocr.exists():
+        o=json.loads(ocr.read_text());row['time_grid_ocr_complete']=o.get('processing_complete',False);row['time_grid_samples_processed']=o.get('samples_processed',0)
+    alignment=ROOT/(item['video_id']+'.json')
+    if alignment.exists():
+        d=json.loads(alignment.read_text());c=d['counts'];row.update(sentence_comparison_available=True,
+          alignment_version=d.get('alignment_version',1),screen_line_groups=c['screen_line_groups'],
+          screen_difference_candidates=c['difference_candidates'],important_difference_candidates=c['important_candidates'],
+          assistant_checked_difference_candidates=c['assistant_image_checked_candidates'],
+          screen_difference_queue_complete=bool(c['difference_candidates']) and c['visible_text_difference_audit_complete'],
+          number_unit_machine_text_supported=c['number_unit_text_supported'],
+          segments_with_some_machine_screen_support=c['segments_with_some_exact_screen_text'],
+          source_alignment_path=str(alignment))
+        for diff in d['candidates']:
+            if not diff.get('assistant_image_checked'):continue
+            decision=diff['decision']
+            decisions.append({'candidate_id':diff['candidate_id'],'index':item['index'],'video_id':item['video_id'],
+              'start':diff['start'],'end':diff['end'],'category':decision['category'],
+              'before':decision.get('before'),'after':decision.get('after'),'note':decision['note'],
+              'visible_resolution':decision.get('visible_resolution','previous_visual_record_unclassified'),
+              'image_path':diff['image_path'],'image_box':diff['box'],'image_sha256':decision['source_image_sha256'],
+              'large_segment_indices':diff['large_segment_indices'],'audio_verbatim_approved':False,
+              'raw_asr_overwritten':False,'scope':'助手已查看这一差异的实际图像区域；未据此确认原声逐字说法。'})
+    rows.append(row)
+counts={'catalog_total':74,'large_asr_segments_total':sum(r['large_asr_segments_total'] for r in rows),
+  'small_asr_segments_total':sum(r['small_asr_segments_total'] for r in rows),
+  'number_unit_occurrences_total':sum(r['number_unit_occurrences_total'] for r in rows),
+  'time_grid_ocr_completed_videos':sum(r['time_grid_ocr_complete'] for r in rows),
+  'sentence_comparison_videos':sum(r['sentence_comparison_available'] for r in rows),
+  'asr_segments_machine_compared':sum(r['large_asr_segments_total'] for r in rows if r['sentence_comparison_available']),
+  'screen_difference_candidates':sum(r['screen_difference_candidates'] for r in rows),
+  'assistant_checked_difference_candidates':sum(r['assistant_checked_difference_candidates'] for r in rows),
+  'pending_screen_difference_candidates':sum(r['screen_difference_candidates']-r['assistant_checked_difference_candidates'] for r in rows),
+  'screen_difference_queue_completed_videos':sum(r['screen_difference_queue_complete'] for r in rows),
+  'videos_without_machine_difference_candidates':sum(r.get('sentence_comparison_available',False) and r['screen_difference_candidates']==0 for r in rows),
+  'approved_audio_segments':0,'approved_full_audiovisual_videos':0,'full_parameter_review_completed_videos':0}
+visual_states=dict(Counter(d['visible_resolution'] for d in decisions))
+result={'updated_on':'2026-11-02','visual_difference_queue_status':'complete' if counts['pending_screen_difference_candidates']==0 else 'in_progress',
+  'visible_resolution_counts':visual_states,
+  'scope':'全时间范围0.5秒网格字幕带采集与句级机器对照；实际差异逐图核查。未覆盖每个GUI标签，短于采样间隔或区域外字幕可能漏检，需按未对应句补查。',
+  'denominator_definition':'句数为两版ASR的语音段数，不等于人工确认的句子。数字/单位分母为large草稿中每次出现的候选，含型号数字与重复，不是独立产品事实数。机器文字对应不算原声或产品性能核准。',
+  'counts':counts,'items':rows}
+(PACK/'18_全文字幕与参数校核进度.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
+lines=['英俊姐妹日记｜全文字幕与参数校核进度','日期：2026年11月2日',result['scope'],result['denominator_definition'],'',
+ f"large语音段分母：{counts['large_asr_segments_total']}；small语音段分母：{counts['small_asr_segments_total']}；数字／单位出现候选：{counts['number_unit_occurrences_total']}。",
+ f"全时段字幕网格已处理：{counts['time_grid_ocr_completed_videos']}／74条；已建立句级对照：{counts['sentence_comparison_videos']}条。",
+ f"当前差异候选：{counts['screen_difference_candidates']}；已回图检查：{counts['assistant_checked_difference_candidates']}；待回图：{counts['pending_screen_difference_candidates']}。",
+ '差异队列回图完成后，画面模糊、原声、机器一致但可能同错、抽样遗漏及产品真实性仍须分别核实。',
+ '完整连续视听、原声逐句听审与全文参数验收仍为0。以下不是全部研究完成报告。','']
+for r in rows:
+    lines.extend([f"{r['index']:02d}｜{r['topic']}",f"语音段large／small：{r['large_asr_segments_total']}／{r['small_asr_segments_total']}；数字单位候选：{r['number_unit_occurrences_total']}。",
+      f"时间网格处理：{'已完成' if r['time_grid_ocr_complete'] else '进行中或未开始'}；句级对照：{'已有' if r['sentence_comparison_available'] else '待建立'}；差异回图：{r['assistant_checked_difference_candidates']}／{r['screen_difference_candidates']}。",
+      '未匹配不直接叫纯口述或ASR错字，可能还包括OCR错漏、字卡与时间错位；原声待可靠听审。',''])
+(PACK/'18_全文字幕与参数校核进度.txt').write_text('\n'.join(lines))
+context_file=ROOT/'整图补证决定.json';context_checks=json.loads(context_file.read_text()) if context_file.exists() else []
+(PACK/'19_全文字幕已核更正与待听项.json').write_text(json.dumps({'updated_on':'2026-11-02','scope':'只收实际差异回图决定，保留措辞差异和模糊项；不输出整篇作者逐字稿。','records':decisions,'context_checks':context_checks},ensure_ascii=False,indent=2))
+for filename in ['05_证据与覆盖记录.json','09_74条研究覆盖与缺口.json']:
+    p=PACK/filename;d=json.loads(p.read_text());d['full_caption_audit_20261102']=counts
+    d['full_caption_audit_progress_path']=str(PACK/'18_全文字幕与参数校核进度.json')
+    if filename.startswith('05'):
+        for path in [PACK/'18_全文字幕与参数校核进度.json',PACK/'18_全文字幕与参数校核进度.txt',PACK/'19_全文字幕已核更正与待听项.json']:
+            if str(path) not in d['additional_documents_20261102']:d['additional_documents_20261102'].append(str(path))
+    else:
+        by={r['video_id']:r for r in rows}
+        for item in d['items']:item['full_caption_audit_progress']=by[item['video_id']]
+    p.write_text(json.dumps(d,ensure_ascii=False,indent=2))
+print(json.dumps(counts,ensure_ascii=False))

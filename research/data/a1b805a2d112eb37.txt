@@ -1,0 +1,24 @@
+"""仅在助手已经实际查看指定画面板后调用；默认保留字幕/口述差异，不自动改ASR。"""
+from pathlib import Path
+import json,sys,hashlib
+BASE=Path(__file__).resolve().parents[1];ROOT=BASE/'原声核验/全文字幕对照'
+manifest=Path(sys.argv[1]);shown=json.loads(manifest.read_text())
+overrides=json.loads(Path(sys.argv[2]).read_text()) if len(sys.argv)>2 else {}
+groups={}
+for c in shown:groups.setdefault(c['video_id'],[]).append(c)
+for vid,cases in groups.items():
+    path=ROOT/(vid+'.json');data=json.loads(path.read_text());lookup={c['candidate_id']:c for c in data['candidates']}
+    for shown_c in cases:
+        c=lookup[shown_c['candidate_id']]
+        assert c['image_path']==shown_c['image_path'] and c['screen_text']==shown_c['screen_text'],'画面板与当前候选不同，拒绝套编号'
+        key=c['candidate_id'].split('_')[-1]
+        decision={'category':'字幕与稿差异保留','after':'画面写法已查看，实际口述仍待听',
+          'note':'已逐图查看本处；不因OCR和机器稿不同就自动判定口述错字。',
+          'verified_screen_reading':None,'audio_verbatim_approved':False,'raw_asr_overwritten':False}
+        decision.update(overrides.get(c['candidate_id'],overrides.get(key,{})))
+        decision['source_image_sha256']=hashlib.sha256(Path(c['image_path']).read_bytes()).hexdigest();decision['review_board']=[str(manifest.with_suffix(''))]
+        c['assistant_image_checked']=True;c['decision']=decision
+    data['counts']['assistant_image_checked_candidates']=sum(c['assistant_image_checked'] for c in data['candidates'])
+    data['counts']['visible_text_difference_audit_complete']=all(c['assistant_image_checked'] for c in data['candidates'])
+    path.write_text(json.dumps(data,ensure_ascii=False,indent=2))
+    print(json.dumps({'index':data['index'],'checked':data['counts']['assistant_image_checked_candidates'],'total':len(data['candidates'])}),flush=True)

@@ -1,0 +1,70 @@
+"""349db50a七张画面板已逐项查看，额外整图另行记录。"""
+from pathlib import Path
+import json,subprocess,sys,collections,hashlib
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';out={}
+def put(d,cat,a,note,state='screen_correction_confirmed'):d.update(category=cat,after=a,note=note,visible_resolution=state)
+for board in sorted(root.glob('*349db50a*.jpg.json')):
+    for c in json.loads(board.read_text()):
+        i=c['index'];n=int(c['candidate_id'].split('_')[-1])
+        d=dict(category='字幕措辞差异',after='可见字幕与草稿措辞差异保留',note='本处实际画面已查看；字幕删补与口语差异不自动判定为原声错误。',verified_screen_reading=None,visible_resolution='wording_preserved_audio_pending')
+        if i==53:
+            if n in (4,):put(d,'产品字卡','Mac字卡','不是新增完整口述。','non_speech_text')
+            elif n in (7,38):put(d,'型号纠词','MacBook Neo','不采纳mablene等转写。')
+            elif n==10:put(d,'历史价格条件','国补后3900','画面带国补后限定；不是原价或当前人人可购价。','context_condition_confirmed')
+            elif n in (20,21):put(d,'内存口径','8GB统一内存','GB是容量单位，不据此合并成存储容量；仅确认片中写法。','context_condition_confirmed')
+            elif n==24:put(d,'否定语境补回','本段将MagSafe列入被削减的功能','已查看25.5秒和29.5秒整图，后文为都被刀法斩于马下，不能只见功能名就写本机支持MagSafe。','context_condition_confirmed')
+            elif n==28:put(d,'接口纠词','一个C口','C不是吸；后段还有接口规格语境，不能由一个C口推断所有接口数和速度。')
+            elif n==41:put(d,'夸张用词','加亿点点钱','亿是网络夸张写法，不作为具体加价金额。','context_condition_confirmed')
+        elif i==40:
+            if n in (3,24):put(d,'型号补全','Mate 80 Pro Max风驰版及对照版','本机风驰版与对照Mate80ProMax分别记录，不把两个产品当成两个译名。')
+            elif n==12:put(d,'字幕纠词','掉帧','不是掉针。')
+            elif n==17 or n in (42,45,46):put(d,'实物及界面文字','品牌局部、功能界面或输入法标签','不补进语音稿。','non_speech_text')
+            elif n in (26,28):put(d,'称重对象与动态读数','上方风驰版242.5；下方对照读数变化','37.5/38秒完整分屏中下方为241.8→241.2，OCR漏小数或读成24.12。不能把下方值分给风驰版，未据此核准秤或最终称量结果。','context_condition_confirmed')
+            elif n in (54,60):put(d,'演示比喻','气球是解释后台应用的比喻道具','不能把气球数量或玩法当成应用数量、内存容量的实测。','context_condition_confirmed')
+            elif n==56:put(d,'OCR插字','旧的APP就被清理掉了','图中没有机器插入的I；实际口述仍待听。')
+        elif i==54:
+            if n==0 or n==49:put(d,'调侃标签','“丐版”MacBook','丐版是本片调侃，不是苹果正式产品系列名。','context_condition_confirmed')
+            elif n==1:put(d,'字幕纠词','放了鸽子','不是放了个子。')
+            elif n==4:put(d,'芯片名纠词','苹果自研N1无线芯片','不是苹果间的n1。')
+            elif n in (6,8,13,15,21,24,44):put(d,'资料或水印文字','网页局部或账号水印','不把STORAGE局部和数码日记水印补成口述。','non_speech_text')
+            elif n==7:put(d,'刷新率字幕','60Hz','仅确认本片对应段落中的屏幕刷新率，不迁移到后面的Pro／Max或显示器。','context_condition_confirmed')
+            elif n in (16,31,32,34):
+                a={16:'512GB存储',31:'存储1TB起步',32:'该段起步价涨1000块',34:'512GB过渡选择'}[n]
+                put(d,'容量与价格语境',a,'标准版更新与后面Pro／Max段落分开；这些都是本片当时说法，不能当当前购机报价。','context_condition_confirmed')
+            elif n==23:put(d,'技术解释比喻','两颗芯片拼一颗','这是该段的简化比喻，不据此确认封装工艺和完整架构。','context_condition_confirmed')
+            elif n in (45,46):put(d,'显示器型号与起价','Studio Display XDR；24999起','起价属于本段显示器，不是前面MacBook价格；不去掉起。','context_condition_confirmed')
+            elif n==48:put(d,'文案修辞','买不起','作品中的情绪表达，不能据此推断个人财产或收入。','context_condition_confirmed')
+        elif i==51:
+            if n in (6,17,19,20,60,77):put(d,'衣服印字或水印','服装印字／评测标识','不是口述；残缺英文不拼完整私下信息。','non_speech_text')
+            elif n in (7,57):put(d,'型号纠词','OPPO Watch X3','不是openwatch；与上一代X2分开。')
+            elif n==11:put(d,'动作纠词','破冰后再直接大火炙烤','破冰不是破屏；演示情节不构成普遍耐用保证。')
+            elif n==13:put(d,'部件名纠词','蓝宝石水晶表镜','表镜不是整块表或全部材质。')
+            elif n==21:put(d,'配色名纠词','寰宇星橙','不是环宇星辰。')
+            elif n==24:put(d,'工艺数量','十二边切割','确认本片字样，不独立验证加工工艺。','context_condition_confirmed')
+            elif n in (32,37):put(d,'功能时长语境','60s体检','不是所有监测项目均只需60秒，也不等同体检诊断。','context_condition_confirmed')
+            elif n==35:put(d,'测量界面归属','97%是血氧显示值','已看整图，不是准确率97%；旁有心率72次/分等不同项目。','context_condition_confirmed')
+            elif n==46:put(d,'功能限定词','无感高血压风险评估','风险评估不改成确诊；未验证医疗效能。','context_condition_confirmed')
+            elif n in (53,54):put(d,'功能及说明','心电分析／测量说明','仅为功能或界面，不自动替代独立医学证据。','context_condition_confirmed')
+            elif n==55:put(d,'被裁切条件待核','可见时长不少于3，后面单位被表盘边缘裁切','另看81/81.5秒，仍未完整读清单位与前置条件；不猜成3分钟或3小时。','uncertain_screen_text')
+            elif n==78:put(d,'芯片名纠词','骁龙Wear Elite','不是virelite。')
+        elif i==61:
+            if n in (50,51,68):put(d,'机身品牌字样','局部Magic／HONOR标识','局部字样不补成口述或完整型号。','non_speech_text')
+            elif n in (81,82):put(d,'标题关键词','薄、续航、拍照','属于三项取舍标签，不是一个连续名词或性能实测。','context_condition_confirmed')
+            elif n==54:put(d,'限定措辞','不追求极限薄','不能删掉否定词，变成推荐理由是极限薄。','context_condition_confirmed')
+        elif i==55:
+            if n in (1,7,31,37,49,62):put(d,'型号补全','iPhone17e','不能漏e变成iPhone17，或误成iPhone11。')
+            elif n in (2,3,41,59):put(d,'产品字卡或背景文字','A19宣传卡、Rainbow或呵呵字样','不是全句口述或独立性能结论。','non_speech_text')
+            elif n==13:put(d,'容量语境','256GB起步','该段为iPhone17e存储，不作为运行内存。','context_condition_confirmed')
+            elif n==20:put(d,'基带型号纠词','C1X 5G基带','不采纳cf5g等转写。')
+            elif n==27:put(d,'历史价与容量归属','256GB 4499元','整图为手机存储选择；另有512GB 6499元，不能与分期每月额、国补价互换。','context_condition_confirmed')
+            elif n==29:put(d,'补贴条件','有国补的情况下','不是有过的情况下，不去掉补贴资格前提。','context_condition_confirmed')
+            elif n in (32,33,35):put(d,'eSIM用词','eSIM；两个eSIM／加一个eSIM的不同句子','不是一sim；支持、激活、同时使用与实体卡组合分开，地区机型和运营商条件尚未独立核实。','context_condition_confirmed')
+            elif n in (42,43,44):put(d,'对照产品语境','高刷、相机和灵动岛属于对照段落','不能把对照iPhone17的优势改写成17e已有的功能。','context_condition_confirmed')
+            elif n==47:put(d,'历史价差','差价一千多','并非当前实时差价，不能据此算精确到手价。','context_condition_confirmed')
+            elif n==53:put(d,'跨产品参数归属','12GB属于后面的iPad Air段落','此前已转入平板与M4介绍；不把12GB写成iPhone17e内存。','context_condition_confirmed')
+            elif n in (55,56):put(d,'连接规格与版本语境','Wi-Fi7、蓝牙6与蜂窝版段落','仍在iPad Air段落；标准无线版与蜂窝版配置分开，规格事实未独立核实。','context_condition_confirmed')
+        out[c['candidate_id']]=d
+target=root.parent/'批次D已看画面决定.json';target.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for board in sorted(root.glob('*349db50a*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(board),str(target)],check=True)
+stats={'batch':'D','total':len(out),'visible_resolution_counts':dict(collections.Counter(d['visible_resolution'] for d in out.values())),'audio_approved':0,'raw_asr_overwritten':False}
+(root.parent/'批次D验收计数.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2));print(json.dumps(stats,ensure_ascii=False))

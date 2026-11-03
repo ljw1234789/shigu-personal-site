@@ -1,0 +1,73 @@
+"""4d41e5ee八张画面板已逐项查看；额外整图含原片算术不一致。"""
+from pathlib import Path
+import json,subprocess,sys,collections,hashlib
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';out={}
+def put(d,cat,a,note,state='screen_correction_confirmed'):d.update(category=cat,after=a,note=note,visible_resolution=state)
+for board in sorted(root.glob('*4d41e5ee*.jpg.json')):
+    for c in json.loads(board.read_text()):
+        i=c['index'];n=int(c['candidate_id'].split('_')[-1])
+        d=dict(category='字幕措辞差异',after='本处字幕与草稿的措辞差异保留',note='实际画面已查看；不自动等同原声错误。',visible_resolution='wording_preserved_audio_pending',verified_screen_reading=None)
+        if i==25:
+            if n in (1,2,3,4,6,7,8,9,10,11,16,18,24,27,28,34,48,61,62):put(d,'输入法及设置界面','候选字、键帽、拼音或设置标签','不是新增口述；123是键帽，不是操作次数，输入中的示例也不是博主真实个人资料。','non_speech_text')
+            elif n in (5,54,64):put(d,'品类纠词','iPhone输入法','不是iPhone书法。')
+            elif n in (14,37,46,53):
+                a={14:'1.自定义短语',37:'2.键盘触控板',46:'3.拼音回正',53:'4.其他'}[n]
+                put(d,'章节标题',a,'序号属于教程分节，不是功能参数或口述中的数字。','context_condition_confirmed')
+            elif n==20:put(d,'操作按钮','右上角+号','不是另一种加号功能名；具体系统版本的路径未独立核准。','context_condition_confirmed')
+            elif n==22:put(d,'OCR插字','就可以进行设置','末尾i来自键盘背景，不拼进口述。')
+            elif n==23 or n==31:put(d,'输入示例','取餐的拼音／qucan','这是自定义短语示例，不将其当成邮箱、账号或真实地址。','context_condition_confirmed')
+            elif n==49:put(d,'字幕纠词','误触变成了拼音','不是误出。')
+        elif i==73:
+            if n in (12,):put(d,'实物文字','手机包装上的局部文字','不补进口述。','non_speech_text')
+            elif n==16:put(d,'场景联想','大学校园是片中文案联想','不能由联想句推断已确认的真实学校、学历或毕业年份。','context_condition_confirmed')
+            elif n in (30,31):put(d,'工艺名纠词','纱缎光刻','不是砂断光刻；只确认片中名称，不独立验证工艺。')
+            elif n==32:put(d,'部件名纠词','点阵光栅','不是点阵光或光山。')
+            elif n in (38,49):put(d,'字幕纠词','纯平后盖','不是成平、纯屏后盖。')
+            elif n==40:put(d,'部件名纠词','镜头Deco','不是镜头ieco。')
+            elif n==41:put(d,'材质字幕','航空级铝金属','铝不是铬；仅确认作品字卡，不核准材料等级。')
+            elif n in (57,92):put(d,'型号与尺寸','6.59英寸的vivo S50','不是vos50；尺寸仅按片中口径，不同于裸机长宽和对角线实测。','context_condition_confirmed')
+            elif n==66:put(d,'配重比例','1∶1配重','这里是配重，不是照片画幅1∶1或两台设备售价比。','context_condition_confirmed')
+            elif n in (81,82,88):put(d,'作品中表达的兴趣','本片说对趣味光栅主题感兴趣','可记录为这条作品中的公开表达；没有因此证明广告之外的长期私人爱好。','context_condition_confirmed')
+            elif n==83:put(d,'圈层用词','IP定制谷子','不是定制骨子；在此是效果联想，不据此认定正式IP授权或个人收藏。')
+            elif n==96:put(d,'公开署名纠词','李英俊的数码日记','不是邻居的说话机记。')
+        elif i==46:
+            if n in (4,6,10,12,39,40,43,47,51,53,55,56,78):put(d,'衣服或背景印字','衣服印字／背景字样','不补成口述；局部字母不猜完整英文。','non_speech_text')
+            elif n==1:put(d,'开场对照条件','120帧与165帧同时点击开火','对象为片中对照，不将两个数字合成同一设置。','context_condition_confirmed')
+            elif n==18:put(d,'数字纠词','60fps对应画面每帧16.7毫秒','整图清楚为16.7，不采纳漏1的6.7。此处是一帧间隔，不是整条触控到显示的总延迟。','context_condition_confirmed')
+            elif n in (22,23,24,25,28):put(d,'对照图标签','144Hz／60Hz','属于对照图各自标签；不把Hz与fps机械当成同一数值或另一个延迟单位。','context_condition_confirmed')
+            elif n==33:put(d,'管线图条件','图中显示输出延迟有不同刷新率区间','已看整图，图里还有触控、CPU、GPU与显示环节；不把其中一项区间当作整体实测或独立权威标准。','context_condition_confirmed')
+            elif n==36:put(d,'原片画面算术不一致','16.7−6.06＝10.64；字幕写10.04','43秒整图同时显示60fps/16.7ms、165fps/6.06ms及10.04ms字幕，两者算术不符。按未四舍五入的1000/60−1000/165约10.606ms，也不是10.04；不据此判断原声实际说法或总输入延迟。','source_visual_arithmetic_inconsistency')
+            elif n==37:put(d,'图示标签','165是fps标签的一部分','不作次数、售价或完整口述。','non_speech_text')
+            elif n==49:put(d,'解释比喻纠词','接力赛','不是接地赛；是多环节管线的比喻。')
+            elif n in (64,65):put(d,'字幕纠词','谁先倒下','不是水仙倒下。')
+            elif n==68:put(d,'游戏判定词','perfect变成great','perfect不是profit；不是财务利润。')
+            elif n==71:put(d,'品类纠词','中端机','不是终端机这个更广类别。')
+        elif i==62:
+            if n in (0,1,2,10,16,17,21,22,26,28,37,50,68,90,91,92):put(d,'耳机类型纠词','入耳／半入耳，按实际画面区分','不采纳弱耳、热耳等转写。是本片的条件式选购论述，不能由类型名保证每个人都舒适或稳固。')
+            elif n==31:put(d,'场景纠词','办公室久戴党','不是酒呆党。')
+            elif n==46:put(d,'声学表达纠词','人声更贴脸','人声不是人身；仍是本片听感描述，不是独立测试结果。')
+            elif n in (66,67):put(d,'降噪条件','密封不到位就别谈降噪','画面保留了前提，不改成所有入耳均有相同降噪能力。','context_condition_confirmed')
+            elif n==79:put(d,'字幕纠词','不闷耳','不是不门耳。')
+        elif i==65:
+            if n in (17,21,22,27,28,30,31,32,33,49,50,51,52,54,71,73):put(d,'手机界面文字','时钟、USB模式、系统入口或游戏图标','不是实验计时或新增口述；无线反向充电是界面入口，不据此证明本轮有线演示使用无线方式。','non_speech_text')
+            elif n==5:put(d,'字幕纠词','计量单位','不是技能单位，是本片的夸张说法。')
+            elif n==14:put(d,'对照容量','1万毫安时充电宝','对象为充电宝，不把这个数直接分配给充电后的iPhone；未核准电压、损耗及可比测试条件。','context_condition_confirmed')
+            elif n in (38,39):put(d,'结果对象与百分比','iPad mini被充到30%','30%属于接受充电的平板；不是荣耀WIN剩余电量、转换效率或充电速度。','context_condition_confirmed')
+            elif n in (42,59):put(d,'型号纠词','荣耀WIN','不是荣耀兵或荣耀运。')
+            elif n==57:put(d,'型号补全','iPhone17 Pro Max','不是17polm等残词。')
+            elif n==72:put(d,'设置条件纠词','马达震动开到最大','不是马达制动；本片设置条件不能删去后比较不同测试结果。','context_condition_confirmed')
+            elif n==79:put(d,'公开署名纠词','李英俊的数码日记','不是邻居。')
+        out[c['candidate_id']]=d
+target=root.parent/'批次E已看画面决定.json';target.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for board in sorted(root.glob('*4d41e5ee*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(board),str(target)],check=True)
+stats={'batch':'E','total':len(out),'visible_resolution_counts':dict(collections.Counter(d['visible_resolution'] for d in out.values())),'audio_approved':0,'raw_asr_overwritten':False}
+(root.parent/'批次E验收计数.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2));print(json.dumps(stats,ensure_ascii=False))
+p=root.parent/'整图补证决定.json';rows=json.loads(p.read_text());vid='7625234785224396066'
+im=base/'内部分析素材'/vid/'全文字幕补证画面/00043.000.jpg'
+rec=dict(index=46,video_id=vid,start=43,category='原视频同屏算术不一致',
+ finding='同屏60fps标16.7ms、165fps标6.06ms，字幕却写省10.04ms。按显示值相减是10.64ms；按未四舍五入的一帧间隔计算约10.606ms。这里存在画面数字之间的不一致，不能只改机器稿后继续照抄字幕。',
+ production_lesson='知识解释片要同时核图、字幕和计算；一帧间隔与整个输入到显示管线延迟分别表达。',
+ scope='只确认本处可见数值与算术矛盾，原声未听审，整段游戏机制与实验条件未独立验证。',
+ image_path=str(im),image_sha256=hashlib.sha256(im.read_bytes()).hexdigest(),source_urls=[],audio_verbatim_approved=False)
+rows=[r for r in rows if (r['video_id'],r['start'],r['category'])!=(vid,43,rec['category'])];rows.append(rec)
+p.write_text(json.dumps(rows,ensure_ascii=False,indent=2))

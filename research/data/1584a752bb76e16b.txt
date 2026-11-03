@@ -1,0 +1,13 @@
+from pathlib import Path
+import json,subprocess,sys
+base=Path(__file__).resolve().parent
+for script in ['更新全文校核进度.py','生成逐句参数索引.py']:
+    subprocess.run([sys.executable,str(base/script)],check=True)
+subprocess.run(['/Users/ljw/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3',str(base/'生成原片学习数据.py')],check=True)
+c=json.loads((base/'求职准备总包/18_全文字幕与参数校核进度.json').read_text())['counts']
+p=base/'求职准备总包/00_从这里看_账号研究总册.txt';s=p.read_text();lines=s.splitlines()
+for i,line in enumerate(lines):
+    if line.startswith('新增机器转写74条、切点候选3431处；'):
+        lines[i]=f"新增机器转写74条、切点候选3431处；片头片尾OCR444张；三条重点OCR1088张。全74条均已完成0.5秒网格字幕采集与句级机器对照；{c['screen_difference_candidates']}处差异候选中{c['assistant_checked_difference_candidates']}处已回图，{c['screen_difference_queue_completed_videos']}条作品的非空差异队列已查看，另有{c['videos_without_machine_difference_candidates']}条机器没有提出差异。余{c['pending_screen_difference_candidates']}处仍待回图。文字差异数不等于独立图片数，差异队列已查看不等于全片审阅通过。完整连续视听、原声逐句听审及完整参数验收仍为0。"
+p.write_text('\n'.join(lines)+'\n')
+print('学习页与总册已同步',c['assistant_checked_difference_candidates'],c['pending_screen_difference_candidates'])

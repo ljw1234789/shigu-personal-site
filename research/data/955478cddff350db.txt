@@ -1,0 +1,49 @@
+"""仅下载浏览器已观察到的公开媒体资源，供本地研究，不作完整听审。"""
+import concurrent.futures
+import hashlib
+import json
+import os
+import subprocess
+import sys
+import urllib.request
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+FF = Path('/Users/ljw/Documents/ChatGPT/小工具/batch-media-tool/bin/ffmpeg')
+inventory = json.loads((HERE / 'B站未匹配作品资产清单.json').read_text())
+assets = [a for a in inventory['assets'] if a['name'].endswith('.m4s') and 'bilivideo.com/' in a['url']]
+assert len(assets) == 2
+out = HERE / '新增作品_BV1UAh36ZEZc'
+out.mkdir(exist_ok=True)
+
+def download(asset):
+    dest = out / asset['name']
+    if not dest.exists():
+        req = urllib.request.Request(asset['url'], headers={'Referer': 'https://www.bilibili.com/', 'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=40) as response, dest.with_suffix('.part').open('wb') as f:
+            while data := response.read(1024 * 1024):
+                f.write(data)
+        dest.with_suffix('.part').rename(dest)
+    return {'name': dest.name, 'path': str(dest), 'size': dest.stat().st_size,
+            'sha256': hashlib.sha256(dest.read_bytes()).hexdigest(), 'source_asset_id': asset['id']}
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+    result = list(pool.map(download, assets))
+(out / '媒体来源与校验.json').write_text(json.dumps({'origin': 'CUA pageAssets resource inventory', 'page': 'https://www.bilibili.com/video/BV1UAh36ZEZc/', 'assets': result, 'audiovisual_approved': False}, ensure_ascii=False, indent=2))
+video = next(Path(r['path']) for r in result if '30080' in r['name'])
+audio = next(Path(r['path']) for r in result if '30232' in r['name'])
+subprocess.run([str(FF), '-nostdin', '-v', 'error', '-y', '-i', str(video), '-i', str(audio), '-map', '0:v:0', '-map', '1:a:0', '-c', 'copy', str(out / '公开原片_仅供研究.mp4')], check=True)
+subprocess.run([str(FF), '-nostdin', '-v', 'error', '-y', '-i', str(audio), '-ac', '1', '-ar', '16000', str(out / '原声16k.wav')], check=True)
+subprocess.run([str(FF), '-nostdin', '-v', 'error', '-y', '-i', str(video), '-vf', 'fps=1/8,scale=270:-2', '-q:v', '3', str(out / '画面_%03d.jpg')], check=True)
+print(json.dumps({'downloaded': len(result), 'frame_samples': len(list(out.glob('画面_*.jpg'))), 'path': str(out)}, ensure_ascii=False), flush=True)
+
+os.environ['PATH'] = str(FF.parent) + ':' + os.environ.get('PATH', '')
+os.environ.update(HF_HUB_OFFLINE='1', HF_HUB_DISABLE_TELEMETRY='1', HF_HUB_DISABLE_IMPLICIT_TOKEN='1')
+sys.path.insert(0, '/Users/ljw/Documents/ChatGPT/小工具/上戏搭子/runtime/voice-python')
+sys.path.insert(0, str(HERE.parent / '依赖'))
+import mlx_whisper
+model = '/Users/ljw/.cache/huggingface/hub/models--mlx-community--whisper-large-v3-turbo/snapshots/a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb'
+draft = mlx_whisper.transcribe(str(out / '原声16k.wav'), path_or_hf_repo=model, language='zh', temperature=0, condition_on_previous_text=False, verbose=None)
+(out / '机器转写_未听审.json').write_text(json.dumps({'status': 'machine_draft_not_listening_approved', 'source': 'https://www.bilibili.com/video/BV1UAh36ZEZc/', 'result': draft}, ensure_ascii=False, indent=2))
+(out / '机器转写_未听审.txt').write_text('\n'.join(f'[{s["start"]:.1f}–{s["end"]:.1f}] {s["text"]}' for s in draft['segments']))
+print(json.dumps({'asr_segments': len(draft['segments']), 'audio_verbatim_approved': False}, ensure_ascii=False))

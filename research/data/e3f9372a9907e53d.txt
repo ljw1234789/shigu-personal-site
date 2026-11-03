@@ -1,0 +1,62 @@
+from pathlib import Path
+p=Path('dist/lab.js')
+s=p.read_text()
+s=s.replace("const stages=[['01 / 好奇','越普通的问题，<br>越可能藏着惊喜。'],['02 / 验证','换个角度，<br>直觉还能站住吗？'],['03 / 解释','有趣是入口，<br>认真是底气。']];let stageIndex=-1;", """const stages=[['01 / 好奇','小问题，值得认真。'],['02 / 提问','先让观众猜一猜。'],['03 / 验证','让证据进入画面。'],['04 / 解释','有趣之后，讲明白。']];let stageIndex=-1;
+  const panels=[...document.querySelectorAll('.story-panel')], sceneButtons=[...document.querySelectorAll('[data-scene]')];
+  function setScene(idx){
+    if(idx===stageIndex)return;stageIndex=idx;
+    panels.forEach((panel,i)=>{panel.classList.toggle('is-active',i===idx);panel.setAttribute('aria-hidden',String(i!==idx));panel.inert=i!==idx});
+    sceneButtons.filter(b=>b.closest('.story-steps')).forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.scene===idx)));
+    document.getElementById('signalIndex').textContent=stages[idx][0];document.getElementById('signalText').textContent=stages[idx][1];
+    stage.dataset.scene=idx;
+  }
+  sceneButtons.forEach(btn=>btn.addEventListener('click',()=>{
+    const idx=+btn.dataset.scene;
+    if(reduced){setScene(idx);heroProgress=idx/4;draw(0);return}
+    const r=hero.getBoundingClientRect(),top=parseFloat(getComputedStyle(stage).top)||0;
+    window.scrollTo({top:Math.max(0,scrollY+r.top-top+(r.height-h)*(idx/4+.025)),behavior:'smooth'});
+  }));
+  const clamp=n=>Math.max(0,Math.min(1,n)), lerp=(a,b,t)=>a+(b-a)*t;
+  function camera(p){
+    const keys=[{x:.65,y:.43,s:1,ax:-.20,ay:0,az:-.23},{x:.29,y:.49,s:1.32,ax:-.06,ay:.8,az:.04},{x:.70,y:.47,s:1.03,ax:.27,ay:1.72,az:-.10},{x:.29,y:.48,s:.94,ax:.08,ay:2.55,az:.07}];
+    const pos=Math.min(3,p*4),idx=Math.min(2,Math.floor(pos)),t=pos-idx,e=t*t*(3-2*t),a=keys[idx],b=keys[idx+1];
+    return Object.fromEntries(Object.keys(a).map(k=>[k,lerp(a[k],b[k],e)]));
+  }""")
+s=s.replace("function resize(){const r=stage.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,1.6);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw(0)}", "function resize(){const r=stage.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,1.6);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);scroll();draw(0)}")
+s=s.replace("const r=hero.getBoundingClientRect();heroProgress=Math.max(0,Math.min(1,(72-r.top)/Math.max(1,r.height-h)));", "const r=hero.getBoundingClientRect(),top=parseFloat(getComputedStyle(stage).top)||0;\n    if(!reduced)heroProgress=clamp((top-r.top)/Math.max(1,r.height-h));")
+s=s.replace("const idx=Math.min(2,Math.floor(heroProgress*2.99));if(idx!==stageIndex){stageIndex=idx;document.getElementById('signalIndex').textContent=stages[idx][0];document.getElementById('signalText').innerHTML=stages[idx][1];}", "if(!reduced||stageIndex<0)setScene(Math.min(3,Math.floor(heroProgress*4)));\n    stage.style.setProperty('--guide-opacity',Math.max(0,1-Math.abs(heroProgress-.55)*5).toFixed(3));\n    updateCase();")
+a="""const mobile=w<650;const scale=mobile?Math.min(w/540,h/890):Math.min(w/1160,h/640);
+    const centerX=mobile?w*.51:w*(.64-heroProgress*.03), centerY=mobile?h*.285:h*(.43+heroProgress*.05);
+    const ay=angle+heroProgress*1.7+lookX*.22;
+    const ax=-.20+heroProgress*.28+lookY*.13;
+    const az=mobile?-.13:-.23+heroProgress*.19;
+    const float=reduced?0:Math.sin(time*.0006)*5;"""
+b="""const mobile=w<650,c= camera(heroProgress);
+    const scale=mobile?Math.min(w/540,h/890)*(.91+(c.s-1)*.35):Math.min(w/1160,h/640)*c.s;
+    const centerX=mobile?w*(.50+(c.x-.5)*.18):w*c.x,centerY=mobile?h*.29:h*c.y;
+    const ay=angle+c.ay+lookX*.16,ax=c.ax+lookY*.09,az=mobile?c.az*.55:c.az;
+    const float=reduced?0:Math.sin(time*.0006)*2.5;"""
+assert a in s;s=s.replace(a,b)
+s=s.replace("angle+=(turn+Math.sin((t-startTime)*.00023)*.28-angle)*.05", "angle+=(turn+Math.sin((t-startTime)*.00023)*.10-angle)*.05")
+s=s.replace("  resize();scroll();if(!reduced)frame=requestAnimationFrame(tick);", """  // The charts reveal once in view; newly selected metrics remain directly comparable.
+  const chart=document.getElementById('chart');
+  function prepareBars(){chart.querySelectorAll('.bar').forEach((bar,i)=>bar.style.setProperty('--bar-delay',`${i*45}ms`))}
+  prepareBars();new MutationObserver(prepareBars).observe(chart,{childList:true});
+  new IntersectionObserver(([entry])=>{if(entry.isIntersecting)chart.classList.add('in-view')},{threshold:.15}).observe(chart);
+  // One restrained illustration accompanies three stable case texts.
+  const caseStory=document.querySelector('.case-story'),cases=[...document.querySelectorAll('.story-case')],objects=[...document.querySelectorAll('.case-object')];
+  const caseNames=['01 / 量筒读数','02 / 盘子上的X','03 / 不用打气的足球'];let caseIndex=-1;
+  function updateCase(){
+    if(!caseStory)return;const r=caseStory.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
+    const focus=innerHeight*(w<650?.56:.48);let best=0,distance=Infinity;
+    cases.forEach((el,i)=>{const b=el.getBoundingClientRect(),d=Math.abs(b.top+Math.min(b.height*.4,200)-focus);if(d<distance){distance=d;best=i}});
+    if(best!==caseIndex){caseIndex=best;objects.forEach((obj,i)=>obj.classList.toggle('is-active',i===best));document.getElementById('caseVisualName').textContent=caseNames[best]}
+    const b=cases[best].getBoundingClientRect(),p=clamp((innerHeight-b.top)/(innerHeight+b.height));
+    caseStory.style.setProperty('--case-turn',`${reduced?0:(p-.5)*10}deg`);
+  }
+  const flow=document.querySelector('.flow');new IntersectionObserver(([entry],obs)=>{if(entry.isIntersecting){flow.classList.add('flow-ready');obs.disconnect()}},{threshold:.2}).observe(flow);
+  if(!reduced)new MutationObserver(()=>{
+    document.getElementById('quizQuestion').animate([{opacity:.35,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
+  }).observe(document.getElementById('quizQuestion'),{childList:true});
+  resize();if(!reduced&&!frame)frame=requestAnimationFrame(tick);""")
+p.write_text(s)

@@ -1,0 +1,45 @@
+"""提取三个高赞样本每0.5秒的完整画面，并OCR；字幕证据不冒充原声。"""
+from pathlib import Path
+import json
+import subprocess
+import sys
+import time
+
+BASE = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(BASE/'原声核验/RapidOCR依赖'))
+from rapidocr import RapidOCR
+
+FF = '/Users/ljw/Documents/ChatGPT/小工具/batch-media-tool/bin/ffmpeg'
+engine = RapidOCR()
+ids = ['7669738424873635107', '7593246079882136883', '7670528824794254655']
+for video_id in ids:
+    folder = BASE/'内部分析素材'/video_id
+    frames = folder/'字幕补证画面'
+    frames.mkdir(exist_ok=True)
+    source = next(folder.glob('*.mp4'))
+    if not list(frames.glob('*.jpg')):
+        subprocess.run([FF, '-nostdin', '-v', 'error', '-i', str(source), '-vf', 'fps=2,scale=540:-2', '-q:v', '3', str(frames/'%05d.jpg')], check=True)
+    target = folder/'字幕画面OCR-未逐帧确认.json'
+    result = json.loads(target.read_text()) if target.exists() else {
+        'video_id': video_id, 'method': '完整画面每0.5秒抽样，RapidOCR机器识别；时间是抽样索引近似值，不是字幕入出点',
+        'is_source_audio_transcript': False, 'manual_verification_complete': False, 'frames': []}
+    done = {row['path'] for row in result['frames']}
+    for path in sorted(frames.glob('*.jpg')):
+        if str(path) in done:
+            continue
+        t = (int(path.stem)-1)*0.5
+        try:
+            ocr = engine(str(path))
+            record = {'sample_seconds': t, 'path': str(path), 'lines': list(ocr.txts or []),
+                      'scores': [float(x) for x in (ocr.scores or [])],
+                      'boxes': ocr.boxes.tolist() if ocr.boxes is not None else []}
+        except Exception as error:
+            record = {'sample_seconds': t, 'path': str(path), 'error': str(error)}
+        result['frames'].append(record)
+        if len(result['frames']) % 50 == 0:
+            target.write_text(json.dumps(result, ensure_ascii=False, indent=2))
+            print(json.dumps({'video_id': video_id, 'frames': len(result['frames'])}), flush=True)
+    result['processing_complete'] = True
+    result['error_count'] = sum('error' in row for row in result['frames'])
+    target.write_text(json.dumps(result, ensure_ascii=False, indent=2))
+    print(json.dumps({'video_id': video_id, 'done': len(result['frames']), 'errors': result['error_count']}), flush=True)

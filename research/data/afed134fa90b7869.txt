@@ -1,0 +1,78 @@
+"""更强本地ASR和全时长切点候选；均不等于原声逐句听审。"""
+from pathlib import Path
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+import wave
+
+BASE = Path(__file__).resolve().parent
+os.environ.update(HF_HUB_OFFLINE='1', HF_HUB_DISABLE_TELEMETRY='1',
+                  HF_HUB_DISABLE_IMPLICIT_TOKEN='1', TOKENIZERS_PARALLELISM='false')
+sys.path.insert(0, '/Users/ljw/Documents/ChatGPT/小工具/上戏搭子/runtime/voice-python')
+sys.path.insert(0, str(BASE / '原声核验/依赖'))
+ROWS = json.loads((BASE / '求职准备总包/09_74条研究覆盖与缺口.json').read_text())['items']
+priority = {vid: n for n, vid in enumerate(['7669738424873635107', '7593246079882136883', '7670528824794254655'])}
+ROWS.sort(key=lambda row: (priority.get(row['video_id'], 999), row['index']))
+if len(sys.argv) > 2:
+    ids = set(sys.argv[2:])
+    ROWS = [row for row in ROWS if row['video_id'] in ids]
+
+def asr_all():
+    import numpy as np
+    import mlx.core as mx
+    import mlx_whisper
+    mx.set_memory_limit(6 * 1024**3)
+    mx.set_cache_limit(128 * 1024**2)
+    model = '/Users/ljw/.cache/huggingface/hub/models--mlx-community--whisper-large-v3-turbo/snapshots/a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb'
+    for row in ROWS:
+        folder = BASE / '内部分析素材' / row['video_id']
+        out = folder / '自动转写-large-v3-turbo-未听审.json'
+        if out.exists():
+            continue
+        start = time.time()
+        with wave.open(str(folder / 'audio.wav')) as wav:
+            assert wav.getframerate() == 16000 and wav.getnchannels() == 1
+            audio = np.frombuffer(wav.readframes(wav.getnframes()), np.int16).astype(np.float32) / 32768
+        result = mlx_whisper.transcribe(audio, path_or_hf_repo=model,
+            task='transcribe', language='zh', temperature=0,
+            condition_on_previous_text=False, word_timestamps=True, verbose=None)
+        record = {'video_id': row['video_id'], 'engine': 'mlx_whisper/whisper-large-v3-turbo',
+                  'source_audio_duration_seconds': len(audio) / 16000,
+                  'model_path': model, 'method': '全长原声本地机器转写，带机器词级时间码；非逐句听审',
+                  'human_listened_and_approved': False, 'result': result,
+                  'inference_seconds': round(time.time() - start, 2)}
+        out.write_text(json.dumps(record, ensure_ascii=False, indent=2))
+        print(json.dumps({'asr_draft_ready': row['video_id'], 'seconds': record['inference_seconds']}, ensure_ascii=False), flush=True)
+
+def cuts_all():
+    ff = '/Users/ljw/Documents/ChatGPT/小工具/batch-media-tool/bin/ffmpeg'
+    for row in ROWS:
+        folder = BASE / '内部分析素材' / row['video_id']
+        out = folder / '剪辑切点候选-未逐点确认.json'
+        if out.exists():
+            continue
+        source = next(folder.glob('*.mp4'))
+        started = time.time()
+        run = subprocess.run([ff, '-nostdin', '-hide_banner', '-loglevel', 'info',
+            '-i', str(source), '-an', '-vf', "scale=320:-2,select='gt(scene,0.24)',showinfo",
+            '-fps_mode', 'vfr', '-f', 'null', '-'], capture_output=True, text=True)
+        if run.returncode:
+            print(json.dumps({'cut_error': row['video_id'], 'error': run.stderr[-700:]}, ensure_ascii=False), flush=True)
+            continue
+        times = [float(value) for value in re.findall(r'pts_time:([0-9.]+)', run.stderr)]
+        times = sorted(set(times))
+        record = {'video_id': row['video_id'], 'method': '全帧扫描，缩至320像素宽，FFmpeg scene差异阈值0.24',
+                  'timestamps_seconds': times, 'candidate_count': len(times),
+                  'limits': '画面变化候选，运动、字卡或闪光也可能触发；溶解可能漏检。不能当人工确认镜头数或精确切点。',
+                  'manual_cut_review_complete': False, 'scan_seconds': round(time.time() - started, 2)}
+        out.write_text(json.dumps(record, ensure_ascii=False, indent=2))
+        print(json.dumps({'cut_candidates_ready': row['video_id'], 'count': len(times)}, ensure_ascii=False), flush=True)
+
+if __name__ == '__main__':
+    if sys.argv[1] == 'asr':
+        asr_all()
+    elif sys.argv[1] == 'cuts':
+        cuts_all()

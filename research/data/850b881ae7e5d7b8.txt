@@ -1,0 +1,89 @@
+- link "bilibili":
+  - /url: //www.bilibili.com/zh-Hans
+  - img "bilibili"
+- generic: 下载客户端
+- textbox
+- link:
+  - /url: //space.bilibili.com/zh-Hans/1820524742
+- link "1 消息":
+  - /url: //message.bilibili.com/zh-Hans
+  - generic: "1"
+  - generic: 消息
+- link "动态":
+  - /url: //t.bilibili.com/zh-Hans
+  - generic: 动态
+- link "收藏":
+  - /url: //space.bilibili.com/zh-Hans/1820524742/favlist
+  - generic: 收藏
+- link "历史":
+  - /url: //www.bilibili.com/zh-Hans/history
+  - generic: 历史
+- link "创作中心":
+  - /url: //member.bilibili.com/zh-Hans/platform/home
+  - generic: 创作中心
+- link "投稿":
+  - /url: //member.bilibili.com/zh-Hans/platform/upload/video/frame
+  - generic: 投稿
+- heading "不止防护拉满？还有万级长寿电池！OPPO A7 Pro Max首发体验" [level=1]
+- generic: "753"
+- generic: "0"
+- generic: 2026-08-03 07:55:31
+- generic: 个人观点，仅供参考
+- generic "哔哩哔哩播放器":
+  - button "播放/暂停":
+  - generic: 00:25 / 02:23
+  - button "清晰度":
+    - generic: 1080P 高清
+    - generic: 自动
+  - button "倍速":
+    - generic: 倍速
+  - generic "字幕":
+    - generic: 字幕
+    - text: • • •
+  - button "音量":
+  - button "设置":
+  - button "画中画":
+  - button "宽屏":
+  - button "网页全屏":
+  - button "全屏":
+  - generic: 1人正在看
+  - generic "弹幕显示隐藏":
+    - checkbox
+  - generic: 已关闭弹幕
+  - link "弹幕礼仪":
+    - /url: //www.bilibili.com/blackboard/help.html#/?qid=359&pid=357
+    - generic: 弹幕礼仪
+  - generic: 发送
+- generic "点赞（Q）":
+  - generic: "10"
+- generic "投币（W）":
+  - generic: "2"
+- generic "收藏（E）":
+  - generic: "4"
+- generic: 分享
+- link "评测":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E8%AF%84%E6%B5%8B&from_source=video_tag
+- link "数码":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E6%95%B0%E7%A0%81&from_source=video_tag
+- link "科技":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E7%A7%91%E6%8A%80&from_source=video_tag
+- link "体验":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E4%BD%93%E9%AA%8C&from_source=video_tag
+- link "OPPO A7 ProMax":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=OPPO%20A7%20ProMax&from_source=video_tag
+- link "万级长寿大电池":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E4%B8%87%E7%BA%A7%E9%95%BF%E5%AF%BF%E5%A4%A7%E7%94%B5%E6%B1%A0&from_source=video_tag
+- link "OPPO":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=OPPO&from_source=video_tag
+- generic: 评论
+- generic: 正在玩命加载…
+- link:
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.head.click
+- link "英俊姐妹日记":
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.detail.click
+- link " 发消息":
+  - /url: //message.bilibili.com/zh-Hans?spm_id_from=333.788.upinfo.detail.click#whisper/mid3706983859358214
+  - generic: 
+  - text: 发消息
+- generic "记录让人心动的新玩意"
+- text: 关注 144

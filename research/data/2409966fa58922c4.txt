@@ -1,0 +1,201 @@
+"""将本轮直接查看的画面核对结果保存为独立更正层，不改写原始ASR。"""
+from pathlib import Path
+import json
+from collections import Counter
+import hashlib
+
+BASE=Path(__file__).resolve().parent
+PACK=BASE/'求职准备总包'
+ledger=json.loads((PACK/'09_74条研究覆盖与缺口.json').read_text())
+by_index={r['index']:r for r in ledger['items']}
+manifest=json.loads((BASE/'原声核验/71条重点画面逐项核对清单.json').read_text())
+by_frame={r['index']:r for r in manifest}
+
+# 分类：C画面纠错，N写法规范，P条件与归因，V本处一致，U待核，R排除无支持文稿，O纠正OCR。
+facts='''
+3|C|Windows 16|OPPO Reno16|结尾型号是Reno16，不能把机器错词当成Windows产品。|机型写错会带偏选题、产品素材和搜索。
+4|C|全脚筒|全家桶|画面讲的是多产品组合，不是另一种设备。|按多品之间的关系组织段落。
+5|P|近6万元|视频当时的价格说法|这一数值在画面出现，但没有核实交易平台、时间和实际成交。|行情引子不等于现价或市场普遍成交价。
+6|P|75小时，未带条件|关闭降噪的最长音乐时长口径|完整画面的小字限定了续航条件。App界面还显示vivo Headphones。|不能把关闭降噪的续航移用到降噪通勤；零售完整型号仍需官方资料。
+7|C|有圈的小野|泳圈与Hirono小野|画面明确是联名角色与泳圈意象。|道具、联名名词要先核对再写脚本。
+8|C|荣耀Magic Joe|荣耀Magic9|型号尾部为数字9。|保持产品名在标题、字幕和口播一致。
+9|C|iPhone 2|iPhone Duo|画面列出的比较对象是iPhone Duo。|不能把两个不同产品混成一场比较。
+10|C|双两翼|双2亿|画面使用双2亿阿莱镜头的表述。|像素数字不应被转写成不存在的结构术语；性能仍未独立实测。
+11|N|1加16|一加16|画面使用品牌名一加及明日星光版本名。|品牌、代号与配色分开记。
+12|C|晨晨码|乘车码|这一段是出行前的乘车码使用情境。|用户任务是出行，不应被错词掩盖。
+13|V|Find X10系列|Find X10系列|这一处画面中的系列名与研究对象一致。|局部一致不代表全篇专名与技术主张均核准。
+14|C|Fat Mass染指模式|FatMax燃脂模式|画面里的功能名是FatMax燃脂模式。|复刻时应拍清模式入口和数据，不能只用运动人物空镜。
+15|C|GOS系统|JUOS系统|电视画面写JUOS。|先区分设备系统名，再理解AI功能如何组织。
+16|P|旧机用户换机建议|有条件的换机建议|本帧只显示iPhone14系列条件，不能据此确认后续所有机型与取舍。|换机结论保留原机型、预算、使用需求和发布时点。
+17|C|GOLA60、GOLD60|迈从God 60|画面明确标出键盘的品牌与型号。|检索测试资料与准备道具时采用已核实的画面名称。
+18|V|30组动作|画面标为30组动作|数字在这一帧一致，仍是片中宣传口径。|动作数量不等于你已经逐项实测过的数量。
+19|U|色彩科学路线|所选片段未显示完整后半句|本帧只有转折前半句；另核到相机界面ARRI LogC3。|不把半句字幕接成自己想象的完整技术论证。
+20|U|短片语音区间|未逐句原声确认|抽样是景物画面，没有足够文字证明整段台词。|视觉创作片不能按机器生成的零散句子硬套长口播。
+21|R|片尾出现电视栏目式机器文稿|不纳入可靠台词|查看的片尾是电脑与手写笔画面，未找到支持该机器短句的文字；原声未听审。|不根据这类机器短句编造旁白、节目名或制作署名。
+22|P|1000万台|预期讨论不等于实际销量|抽样文字属于苹果折叠屏趋势讨论，不能拿来报已售数量。|观点片中的假设、估算和已发生事实分开。
+23|P|加青色|当前示例的调色操作|抽样显示在具体图片上加青色的示范。|复刻需说明原图偏色条件，不能用同一参数处理所有照片。
+24|P|200亿美元|片中成本说法待独立来源|数字在画面出现，但本轮未核实其统计范围及原始来源。|预算、研发、投入与销量不能互相替代。
+25|C|iPhone书法|iPhone输入法|这条讲输入法使用技巧。|教程必须把功能对象和操作入口说准。
+26|C|Ctrl+C+S|Ctrl+Shift+S|画面里的A卡组合键含Shift；该段讲即时回放保存，前半段才是截图。|截图与回放分开；软件版本、开启状态及自定义热键仍需实际设备核对。
+27|C|没拍的PoMas|华为MatePad Pro Max|画面明确标出产品名。|别把机器错词当成另一个平板系列。
+28|C|A21、AL|A2L|画面比较的是A2L与前辈A1，L不能读作数字1。|对照关系要保留两代产品身份。
+29|V|50W无线与100W有线|画面中的两种充电口径|两组数字在同一画面出现。|有线、无线和条件分别记录，不相加成一个功率。
+30|C|胶段|焦段，14—230mm|画面为焦段覆盖的表述。|复刻比较前先说清镜头、等效焦段与样片对应关系。
+31|C|小方屏|小方瓶|画面名为120W小方瓶双口充电器。|产品名和显示屏功能不是同一件事。
+32|P|4099元起|片中当时到手价|画面有到手价；它不能直接当今天、所有配置都可获得的价格。|价格应附日期、配置、补贴资格和渠道。
+33|C|Mable14红模版|MateBook14鸿蒙版|画面明确为MateBook14鸿蒙版。|多设备互联脚本要把设备和版本写清。
+34|C|刷情率|刷新率，144Hz|画面为刷新率术语。|刷新率不能直接代替应用实际帧率和全程流畅性。
+35|V|AI姿势参考|画面显示该功能入口|这一处文字与功能主题一致。|要拍入口、参考动作与实际结果，而非只有摆姿势。
+36|V|X2D|X2D|画面在打印部件近景中标出X2D。|部件近景只支持可见结构，材料性能及失败率仍需实测。
+37|C|华为MacBook14|华为MateBook14鸿蒙版|这台设备的系列是MateBook。|混淆MacBook会把生态、软件和素材准备全部带偏。
+38|C|Olog2直线|o-log2曲线|字幕显示的是曲线名称。|拍摄格式、调色曲线和成片效果分开解释。
+39|C|跑不下来|跑步下来|画面是完成一组户外3km跑步后的情境，不能读成跑不动。|一个否定词会反转体验意义，评价句必须回原片核查。
+40|P|有点东西|片中的体验评价|这处是人物表达的评价，不是通用性能指标。|观点可以分析写法，但不能替代实验条件和结果。
+41|C|天机9500|天玑9500|字幕使用芯片名称天玑。|型号与技术名词先校对，再讨论产品卖点。
+42|C|一家S6|一加Ace6至尊版|画面显示完整版本名称。|同系列的版本不可混用样片和参数。
+43|P|天青色发光芯片|展会画面的技术说明|本帧能确认这一说法出现，不能由它确定整机型号或色域测量方法。|展会片要把厂商展示、现场观察与独立测试分开。
+44|C|欧空女合|OPPO礼盒|高分辨率画面明确是OPPO礼盒，低清初筛漏字。|横屏片需保留足够分辨率，不能只依赖竖屏字幕区域规则。
+45|N|X300S|X300s|画面中的型号后缀写小写s。|型号后缀与系列区分清楚，拍摄建议不能无条件扩到其他机型。
+46|C|Profit|perfect|画面在讨论音游判定等级变化，不是利润。|先理解示例的任务与评分，不能照搬听起来相近的英文词。
+47|C|华为小异|华为小艺|画面和界面使用小艺名称。|AI功能的名字、输入和输出应对应，不能只列品牌。
+48|C|红魔旗舰|鸿蒙旗舰|字幕讨论鸿蒙系统，不能误指红魔手机品牌。|比较对象、网络条件和操作任务必须同时保留。
+49|N|EXFAT|exFAT|画面使用文件系统名称exFAT。|这只是片中操作说明；本轮未在Windows设备上测试，也未执行格式化。
+50|C|iPhone17首发399元|iPhone17e，价格画面为3*99元|机型后缀能确认，价格中有星号遮蔽，缺失数字不能补猜。|不得把它整理成完整首发价或当前到手价。
+51|V|Watch X3|OPPO Watch X3|此处型号与画面一致。|健康功能和车钥匙兼容仍要逐功能确认，不从型号名推导。
+52|C|Find6|OPPO Find N6|包装与字幕均保留N。|字母遗漏会造成错误机型索引。
+53|P|256升级512，700元|本帧只确认容量档位|画面当前显示256到512的容量选择，没有同时显示完整价差。|700元暂不升级为核实价格，需对应帧或当时官方价表。
+54|C|2499元、Studio Display插掉|24999元、Studio Display XDR|追加帧显示24999，邻近完整产品页面同时显示XDR名称与价格。|不要丢失一位数字，也不要把不同显示器的价格互换；这是片中历史口径。
+55|C|256GB449元|256GB4499元|画面清楚显示4499。|价格错一位会使选购逻辑失真；此数不代表今天售价。
+56|C|荣耀MajorV6|荣耀Magic V6|开头产品字卡能确认Magic V6。|视觉短片仍需先核实片头型号。
+57|U|绘画开场整句|此处只看到主题引入|本次这一帧尚未显示主题句的后半部分。|不能把一帧或零散转写当成完整旁白；画面结果另见既有结构研究。
+58|P|只有首款的机器文稿|另核到肌肉财神爷摆件画面|全长机器稿极少，追加画面能确认至少一个具体礼物条目。|不能根据首句推断五件产品的完整清单、材质和售价。
+59|V|iQOO15Ultra|iQOO15Ultra|画面确为该型号；OCR中的字母O与数字0混淆不采用。|品牌的字母数字仍需人工看原图。
+60|O|OCR十毫米；ASR导鬼|二十毫米导轨|原图为二十毫米；OCR漏掉二，不应把ASR正确的20改成10。|机器之间有差异时，以可读原图限定本处校正；不扩大成原声听审通过。
+61|C|超保手机|超薄手机|开头讲的是超薄手机选购。|用户需求先确定为轻薄，再讨论续航和配件取舍。
+62|P|5分钟|片中设定的佩戴计时|5分钟计时可见，但这不是长时间佩戴的独立验证。|舒适度结论应说明个体、时长与条件。
+63|C|猜术|参数|画面表述是模型与参数。|别由错词臆造新的技术概念。
+64|P|200元档|视频发布时的预算分档|这一处预算分档可见，型号、渠道和现价仍需分别核实。|价格档位不等于所有平台固定成交价。
+65|P|7小时18分钟|片中测试结果口径|时长在画面可见；本轮没有复现实验或核实全部测试条件。|不把单次片中结果当所有用户的续航。
+66|C|MOBA Palette70|Mova Pilot70|展示的设备名是Mova Pilot70。|展会产品名称必须对画面，不能按听感补成其他品牌。
+68|C|Made70Pro加|Mate70Pro+|画面中的产品为Mate70Pro+。|回收榜单还要保留容量、成色、时间与报价来源，不能由名称推出当前残值。
+69|R|角色式短句与志愿者式机器文稿|未作为可靠台词或署名|本轮抽样不能支持这些机器文字，且没有原声听审。|不据此确定角色台词、真实人名或幕后工作人员。
+70|N|5000w像素|5000万像素的书写口径|画面把万写作w，研究文本规范为万。|像素与电功率单位不能混淆，成像性能仍需样片和条件。
+71|C|比我S50、新仓|vivoS50、寻常|高清画面能确认型号及结尾用词；片中另有主力机使用两周的自述。|自述是内容证据，不等于独立验证了实际体验天数和私下生活。
+72|C|中文15Pro|真我15Pro|包装和人物段落讨论真我15Pro。|联名外观、基础机型与影像体验分别记录。
+73|C|配种|配重，1:1|画面在描述机身配重，而不是另一种含义。|外观体验词也要回原图核对，避免离谱错字进入提案。
+74|C|一家S6T|一加Ace6T|结尾型号在画面明确；系统名称的另一个机器错词见补充核对。|机型名核准不等于整条原声文稿通过。
+'''
+
+labels={'C':'画面纠错','N':'写法规范','P':'条件与归因','V':'本处一致','U':'仍待核实','R':'排除无支持文稿','O':'OCR纠错'}
+records=[]
+for line in facts.strip().splitlines():
+    index,kind,before,after,finding,impact=line.split('|')
+    index=int(index);item=by_index[index];frame=by_frame[index]
+    entry={'index':index,'video_id':item['video_id'],'topic':item['topic_summary'],'type':labels[kind],
+      'before':before,'after':after,'finding':finding,'practical_effect':impact,
+      'sample_seconds':frame['sample_seconds'],'image_path':frame['image_path'],'review_board_path':frame['board'],
+      'video_url':item['url'],'machine_transcript_path':str(BASE/'内部分析素材'/item['video_id']/'自动转写-large-v3-turbo-未听审.json'),
+      'assistant_visual_frame_checked':True,'human_screen_checked':False,'human_audio_listened_and_approved':False,'whole_video_audiovisual_approved':False,
+      'product_performance_independently_tested':False,'raw_transcript_preserved':True,
+      'scope':'有限重点画面及相关片段，不是全片逐句参数校对；画面所写与真实产品事实分开。',
+      'remaining':'原声逐句、其余型号数值、价格有效日期和完整比较条件仍需继续核查。','additional_checks':[]}
+    records.append(entry)
+
+assert len(records)==71
+rec={r['index']:r for r in records}
+hires=json.loads((BASE/'原声核验/重点参数高清追加OCR.json').read_text())
+extras=json.loads((BASE/'原声核验/重点参数追加画面OCR.json').read_text())
+
+def use_frame(index,t,source):
+    row=min((r for r in source if r['index']==index),key=lambda r:abs(r['sample_seconds']-t))
+    rec[index]['sample_seconds']=row['sample_seconds'];rec[index]['image_path']=row['image_path']
+    rec[index]['review_board_path']=str(BASE/'原声核验/参数补核高清组.jpg')
+
+for index,t,source in [(44,2.3,hires),(54,53,hires),(58,48,hires),(71,260.3,hires),(50,4.5,extras)]:use_frame(index,t,source)
+
+def add(index,t,before,after,finding,image_path=None,urls=None):
+    rec[index]['additional_checks'].append({'sample_seconds':t,'before':before,'after':after,'finding':finding,
+      'image_path':image_path,'public_source_urls':urls or [],'human_audio_listened_and_approved':False,
+      'verification_basis':'直接查看画面' if image_path else '官方产品资料提供术语背景；不是原声逐字确认'})
+
+def candidate(index,j):
+    f=BASE/'内部分析素材'/by_index[index]['video_id']
+    return json.loads((f/'重点参数画面初筛-未人工核对.json').read_text())['candidates'][j]
+
+for index,j,before,after,finding in [
+  (9,5,'莱卡图摄','徕卡主摄','已查看本处画面；与这条的比较对象和像素口径一起理解。'),
+  (38,0,'FAM的S9Ultra','Find X9 Ultra','开头机型名称已从画面校正，非逐字听审。'),
+  (6,6,'蓝厂耳机，零售型号未确认','界面显示vivo Headphones','直接查看连接界面；零售完整型号不只凭蓝厂称呼补猜。')]:
+    c=candidate(index,j);add(index,c['sample_seconds'],before,after,finding,c['image_path'])
+
+for index,t,before,after,finding in [
+  (19,76.012,'阿莱LogC3','ARRI LogC3','追加高清画面显示相机界面的格式项；不能由一个界面证明整套色彩效果。'),
+  (71,13.048,'使用两周','片中的体验时长自述','能确认画面存在该自述，不能据此独立确认她实际日程。')]:
+    row=min((r for r in hires if r['index']==index),key=lambda r:abs(r['sample_seconds']-t));add(index,t,before,after,finding,row['image_path'])
+
+add(74,81.34,'HELLO OS X6','官方产品资料为ColorOS 16','一加Ace6T官方产品页支持系统术语背景；该句真实发音仍待听审。',urls=['https://www.oneplus.com/cn/ace-6t'])
+rec[26]['public_source_urls']=[
+ 'https://www.amd.com/en/resources/support-articles/faqs/DH-023.html',
+ 'https://www.nvidia.com/en-ph/geforce/news/nvidia-app-download-and-features/']
+rec[26]['remaining']='未在实际Windows显卡软件中操作验证。厂商文档存在版本和快捷键口径差异，不能把片中的键位当当前全部设备通用设置。'
+rec[53]['remaining']='700元差价没有在选定画面中同时出现，尚未确认；不能只依赖ASR给出确定金额。'
+rec[50]['remaining']='价格的星号所代数字、发布当时渠道与补贴资格未核实；不从另一条视频搬数字填空。'
+rec[6]['remaining']='独立零售型号、降噪58dB的原始条件及听感仍待核实，75小时只按画面标注的关闭降噪口径记录。'
+rec[60]['remaining']='本处20毫米保留；原声未逐句听审。OCR错误不计为ASR数值错误。'
+
+old=[
+ (1,0,'Apple Pencil（联合模型）','白色手写笔，不能凭外形认定品牌','联合模型的笔品牌推断不采用；解释性插入画面另有网络来源标注。'),
+ (2,8,'iPhone A7 Pro Max（联合模型）','OPPO A7 Pro Max','片头产品字卡足以排除联合模型错认的品牌。'),
+ (67,162,'700025mAh','7025mAh','画面能纠正错误数字；未独立测试电池，也不据此确认当前产品信息。')]
+for index,t,before,after,finding in old:
+    item=by_index[index];folder=BASE/'内部分析素材'/item['video_id']
+    records.append({'index':index,'video_id':item['video_id'],'topic':item['topic_summary'],'type':'前轮重点补核',
+      'before':before,'after':after,'finding':finding,'practical_effect':'保留机型、数字与证据来源的区别。',
+      'sample_seconds':t,'image_path':str(folder/'字幕补证画面'/f'{t*2+1:05d}.jpg'),
+      'video_url':item['url'],'machine_transcript_path':str(folder/'自动转写-large-v3-turbo-未听审.json'),
+      'assistant_visual_frame_checked':True,'human_screen_checked':False,'human_audio_listened_and_approved':False,'whole_video_audiovisual_approved':False,
+      'product_performance_independently_tested':False,'raw_transcript_preserved':True,'additional_checks':[],
+      'scope':'前轮三条重点样本的有限画面补核，详见16文件。','remaining':'完整原声逐句与所有参数仍未核完。'})
+
+records.sort(key=lambda r:r['index'])
+assert len(records)==74 and len({r['video_id'] for r in records})==74
+for r in records:
+    assert Path(r['image_path']).is_file()
+    folder=BASE/'内部分析素材'/r['video_id']
+    r['source_video_path']=str(next(folder.glob('*.mp4')))
+    r['proof_image_sha256']=hashlib.sha256(Path(r['image_path']).read_bytes()).hexdigest()
+    r['machine_transcript_sha256']=hashlib.sha256(Path(r['machine_transcript_path']).read_bytes()).hexdigest()
+    r['before_origin']='机器ASR草稿'
+    if r['index'] in [1,2]:r['before_origin']='联合视听模型输出'
+    if r['index']==60:r['before_origin']='OCR与ASR对照；ASR的20没有更改'
+    if r['index']==58:r['before_origin']='机器稿覆盖不足，追加画面观察'
+    if r['index'] in by_frame:
+        j={44:1,71:7}.get(r['index'],by_frame[r['index']]['candidate_index'])
+        c=candidate(r['index'],j)
+        r['machine_segment_index']=c.get('segment_index')
+        r['machine_segment_range']=[c.get('source_start'),c.get('source_end')]
+    for c in r['additional_checks']:
+        if c.get('image_path'):assert Path(c['image_path']).is_file()
+counts=Counter(r['type'] for r in records)
+result={'updated_on':'2026-11-02','account':'英俊姐妹日记',
+ 'scope':'74条均有有限重点项记录；本轮新增71条，每条至少查看一处选定画面，另加重点补帧。不是74条完整逐句参数校核。',
+ 'new_targeted_works':71,'previous_targeted_works':3,'raw_transcripts_overwritten':False,
+ 'full_audiovisual_approved':0,'approved_verbatim_transcripts':0,'type_counts':dict(counts),'records':records}
+(PACK/'17_74条重点词参数与条件核对.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
+lines=['英俊姐妹日记｜74条重点词、参数与条件核对','日期：2026年11月2日',
+ result['scope'],'原始ASR与先前研究保留；本文件作为更正层。画面能确认片中写法，不等于原声逐字稿、独立产品测试或今天售价。',
+ '完整连续视听通过0／74；逐句原声听审通过0／74。','',
+ '本轮最应先记住：Reno16不是Windows16；华为MateBook不是MacBook；鸿蒙不是红魔；截图与即时回放分开；75小时续航有关闭降噪条件；3*99元不能补猜；OCR也会把二十漏成十。','']
+for r in records:
+    lines.extend([f"{r['index']:02d}｜{r['topic']}｜{r['type']}",r['video_url'],f"定位：约{r['sample_seconds']:.3f}秒",
+      '原线索：'+r['before'],'本处记录：'+r['after'],'依据与判断：'+r['finding'],'对你实操的影响：'+r['practical_effect'],
+      '仍需核实：'+r['remaining'],'画面：'+r['image_path']])
+    for c in r['additional_checks']:
+        lines.extend([f"追加核对：约{c['sample_seconds']:.3f}秒；{c['before']} → {c['after']}。{c['finding']}",
+                      '依据：'+(c.get('image_path') or '；'.join(c['public_source_urls']))])
+    lines.append('')
+(PACK/'17_74条重点词参数与条件核对.txt').write_text('\n'.join(lines))
+for row in manifest:
+    row['human_checked']=False;row['assistant_visual_frame_checked']=True;row['scope']='助手直接查看指定画面或画面板区域；没有人类用户核对，不代表原声或全片核准'
+(BASE/'原声核验/71条重点画面逐项核对清单.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
+print(json.dumps({'records':len(records),'type_counts':dict(counts),'additional_checks':sum(len(r['additional_checks']) for r in records)},ensure_ascii=False))

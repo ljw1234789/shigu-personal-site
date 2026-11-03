@@ -1,0 +1,6 @@
+{
+  "url": "https://sso.oceanengine.com/xingtu/login?role=1",
+  "observed": "2026-11-02",
+  "snapshot": "- heading \"登录\" [level=1]:\n  - strong: 登录\n- textbox:\n  - /placeholder: 请选择\n  - text: 客户\n- generic: 手机登录\n- generic: 邮箱登录\n- generic: 手机首次登录即自动注册\n- spinbutton \"请输入手机号码\"\n- spinbutton \"验证码\"\n- generic \"手机号码不能为空\": 获取验证码\n- text: 我已阅读并同意\n- link \"服务协议\":\n  - /url: https://www.xingtu.cn/protocol?id=20210530\n- text: 和\n- link \"隐私条款\":\n  - /url: https://www.xingtu.cn/protocol?id=20210529&enable_title=1\n- button \"登录\"\n- generic: 收不到验证码？\n- generic: 其他方式\n- generic: 达人营销\n- generic: 好内容成就好生意\n- generic: Good Business\n- generic: 找达人就在巨量星图",
+  "action": "仅点击客户入口；未输入信息、未登录或注册"
+}

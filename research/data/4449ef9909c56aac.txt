@@ -1,0 +1,72 @@
+"""全时间范围的机器联合视听辅助，保留输入记录；不计作逐句主观听审通过。"""
+from pathlib import Path
+import json,os,sys,time,subprocess,wave,math
+BASE=Path(__file__).resolve().parent;ROOT=BASE/'原声核验'
+sys.path[:0]=[str(ROOT/'Omni依赖'),str(ROOT/'依赖'),'/Users/ljw/Documents/ChatGPT/小工具/上戏搭子/runtime/voice-python',str(ROOT/'RapidOCR依赖')]
+os.environ.update(HF_HUB_OFFLINE='1',HF_HUB_DISABLE_TELEMETRY='1',HF_HUB_DISABLE_IMPLICIT_TOKEN='1',TOKENIZERS_PARALLELISM='false')
+from mlx_vlm import load,generate
+from mlx_vlm.prompt_utils import apply_chat_template
+from mlx_vlm.generate.video import processor_handles_video
+import importlib
+dispatch=importlib.import_module('mlx_vlm.generate.dispatch')
+import mlx.core as mx
+MODEL='/Users/ljw/.cache/huggingface/hub/models--LiquidAI--LFM3-Omni-2B-MLX-8bit/snapshots/f3b873aaa6b253e60eadb5f2388db53b84b9a5aa'
+FF='/Users/ljw/Documents/ChatGPT/小工具/batch-media-tool/bin/ffmpeg'
+mx.set_memory_limit(7*1024**3);mx.set_cache_limit(128*1024**2)
+model,processor=load(MODEL,trust_remote_code=False)
+assert processor_handles_video(processor)
+audit=[];original_prepare=dispatch.prepare_inputs
+def prepare_audited(*args,**kwargs):
+    result=original_prepare(*args,**kwargs)
+    audit.append({'provided_audio_count':len(kwargs.get('audio') or []),
+                  'provided_video_count':len(kwargs.get('videos') or []),
+                  'input_tensor_shapes':{k:list(v.shape) for k,v in result.items() if hasattr(v,'shape')}})
+    return result
+dispatch.prepare_inputs=prepare_audited
+rows=json.loads((BASE/'求职准备总包/09_74条研究覆盖与缺口.json').read_text())['items']
+priority={v:i for i,v in enumerate(['7669738424873635107','7593246079882136883','7670528824794254655'])}
+rows.sort(key=lambda r:(priority.get(r['video_id'],999),r['index']))
+if sys.argv[1:]:rows=[r for r in rows if r['video_id'] in sys.argv[1:]]
+for row in rows:
+    vid=row['video_id'];folder=BASE/'内部分析素材'/vid
+    target=folder/'联合视听机器线索-未听审.json'
+    result=json.loads(target.read_text()) if target.exists() else {
+        'video_id':vid,'model':MODEL,'library_version':'mlx-vlm 0.7.11',
+        'method':'每段最长60秒、相邻重叠2秒；完整原声加224×398分析画面，原生视频处理器2fps取样，文本仅作机器线索。',
+        'limits':'盲测能区分原版与静音版，但纯音漏检、专名转写有误；不能独立判定歌词、音效、语气和原声听审完成。',
+        'human_listened_and_approved':False,'full_subjective_audiovisual_review_complete':False,
+        'segments':[]}
+    if result.get('all_time_ranges_processed'):continue
+    source=next(folder.glob('*.mp4'))
+    with wave.open(str(folder/'audio.wav')) as w:
+        params=w.getparams();raw=w.readframes(w.getnframes());duration=len(raw)/(params.framerate*params.nchannels*params.sampwidth)
+    done={r['start_seconds'] for r in result['segments']}
+    work=ROOT/'联合输入'/vid;work.mkdir(parents=True,exist_ok=True)
+    starts=list(range(0,max(1,math.ceil(duration-2)),58))
+    for start in starts:
+        if start in done:continue
+        end=min(start+60,duration);name=f'{start:04d}-{end:.3f}'
+        video=work/(name+'.mp4');audio=work/(name+'.wav')
+        if not video.exists():subprocess.run([FF,'-nostdin','-v','error','-y','-ss',str(start),'-i',str(source),'-t',str(end-start),'-an','-vf','scale=224:398','-c:v','libx264','-crf','22','-preset','veryfast',str(video)],check=True)
+        if not audio.exists():
+            with wave.open(str(audio),'wb') as w:
+                w.setparams(params);w.writeframes(raw[int(start*params.framerate)*2:int(end*params.framerate)*2])
+        prompt='只依据本段画面和原声回答，用中文简短记录：1. 按先后列出主要可见动作或场景变化；2. 人声、音乐和可辨声音分别出现在何处；3. 不能确认的内容。声音判断不能由字幕推测。不猜曲名、歌词、调性、BPM、品牌规格或私人经历。'
+        formatted=apply_chat_template(processor,model.config,prompt,num_audios=1,video=[str(video)],fps=2.0)
+        audit.clear();started=time.time()
+        response=generate(model,processor,formatted,audio=[str(audio)],video=[str(video)],fps=2.0,
+                          max_tokens=220,temperature=0,verbose=False,prefill_step_size=256)
+        result['segments'].append({'start_seconds':start,'end_seconds':round(end,6),
+            'analysis_video':str(video),'source_audio_clip':str(audio),
+            'machine_observation':response.text,'prepared_input_audit':list(audit),
+            'inference_seconds':round(time.time()-started,2),'prompt_tokens':getattr(response,'prompt_tokens',None)})
+        result['segments'].sort(key=lambda r:r['start_seconds'])
+        result['all_time_ranges_processed']=False
+        target.write_text(json.dumps(result,ensure_ascii=False,indent=2))
+        print(json.dumps({'av_segment':vid,'start':start,'end':round(end,2),'seconds':round(time.time()-started,1)},ensure_ascii=False),flush=True)
+    result['source_audio_duration_seconds']=duration
+    result['all_time_ranges_processed']=all(start in {s['start_seconds'] for s in result['segments']} for start in starts)
+    assert result['segments'][0]['start_seconds']==0 and result['segments'][-1]['end_seconds']>=duration-.01
+    for a,b in zip(result['segments'],result['segments'][1:]):assert b['start_seconds']<=a['end_seconds']
+    target.write_text(json.dumps(result,ensure_ascii=False,indent=2))
+    print(json.dumps({'av_video_time_coverage_ready':vid,'segments':len(result['segments'])},ensure_ascii=False),flush=True)

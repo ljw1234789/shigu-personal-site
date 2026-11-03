@@ -1,0 +1,25 @@
+"""验收数据连接和证据完整性，不代替视听与事实核验。"""
+from pathlib import Path
+from collections import Counter
+import json,hashlib
+base=Path(__file__).resolve().parents[1];pack=base/'求职准备总包';doc=json.loads((pack/'19_全文字幕已核更正与待听项.json').read_text());rows=doc['records'];hashes={};bad=[];boards=set()
+for r in rows:
+ p=Path(r['image_path']);key=str(p)
+ if key not in hashes:hashes[key]=hashlib.sha256(p.read_bytes()).hexdigest()
+ if hashes[key]!=r['image_sha256']:bad.append(r['candidate_id'])
+ assert not r['audio_verbatim_approved'] and not r['raw_asr_overwritten']
+assert len(rows)==len(set(r['candidate_id'] for r in rows))==4003 and not bad
+for p in (base/'原声核验/全文字幕对照').glob('*.json'):
+ d=json.loads(p.read_text())
+ if isinstance(d,dict) and 'candidates' in d:
+  for c in d['candidates']:
+   assert c.get('assistant_image_checked') and c.get('decision'),c.get('candidate_id')
+   boards.update(c['decision'].get('review_board',[]))
+missing=[p for p in boards if not Path(p).is_file()];assert not missing,missing[:3]
+for r in doc['context_checks']:
+ p=Path(r['image_path']);assert p.is_file()
+ if r.get('image_sha256'):assert hashlib.sha256(p.read_bytes()).hexdigest()==r['image_sha256']
+counts=json.loads((pack/'18_全文字幕与参数校核进度.json').read_text())['counts']
+assert counts['pending_screen_difference_candidates']==0
+out=dict(scope='本阶段数据连接与证据文件检查，不是全片、原声或产品真实性验收',counts=counts,visible_resolution_counts=dict(Counter(x['visible_resolution'] for x in rows)),distinct_image_files=len(hashes),candidate_videos=len(set(x['video_id'] for x in rows)),linked_board_files=len(boards),image_hash_mismatches=bad,missing_board_files=missing,context_checks=len(doc['context_checks']),candidate_ids_unique=True,raw_asr_overwritten=False,audio_verbatim_approval_count=0,full_audiovisual_approval_count=0)
+(base/'原声核验/全文字幕差异阶段_数据验收.json').write_text(json.dumps(out,ensure_ascii=False,indent=2));print(json.dumps({k:out[k] for k in ['visible_resolution_counts','distinct_image_files','candidate_videos','linked_board_files','image_hash_mismatches','context_checks']},ensure_ascii=False))

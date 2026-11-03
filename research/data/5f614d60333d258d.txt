@@ -1,0 +1,57 @@
+"""本地音频理解能力的盲测；模型输出仅作机器证据，不冒充人工听审。"""
+from pathlib import Path
+import json
+import os
+import sys
+import time
+import wave
+import math
+import array
+
+BASE = Path(__file__).resolve().parent
+OUT = BASE / '原声核验'
+OUT.mkdir(exist_ok=True)
+os.environ.update(HF_HUB_OFFLINE='1', HF_HUB_DISABLE_TELEMETRY='1',
+                  HF_HUB_DISABLE_IMPLICIT_TOKEN='1', TOKENIZERS_PARALLELISM='false')
+sys.path.insert(0, '/Users/ljw/Documents/ChatGPT/小工具/上戏搭子/runtime/voice-python')
+sys.path.insert(0, str(OUT / '依赖'))
+MODEL = Path('/Users/ljw/.cache/huggingface/hub/models--mlx-community--Qwen2-Audio-7B-Instruct-4bit/snapshots/c65570002626f41b4dc08b7b54f42f99f3e82e7f')
+
+for name, tone in [('control_A.wav', False), ('control_B.wav', True)]:
+    path = OUT / name
+    if not path.exists():
+        samples = array.array('h', (int(7000 * math.sin(2 * math.pi * 440 * i / 16000)) if tone else 0 for i in range(48000)))
+        with wave.open(str(path), 'wb') as wav:
+            wav.setnchannels(1)
+            wav.setsampwidth(2)
+            wav.setframerate(16000)
+            wav.writeframes(samples.tobytes())
+
+import mlx.core as mx
+from mlx_audio.stt.utils import load_model
+mx.set_memory_limit(9 * 1024**3)
+mx.set_cache_limit(128 * 1024**2)
+start = time.time()
+print(json.dumps({'stage': 'loading_existing_model'}), flush=True)
+model = load_model(str(MODEL))
+print(json.dumps({'stage': 'loaded', 'seconds': round(time.time() - start, 1)}), flush=True)
+tasks = [('control_A', OUT / 'control_A.wav'), ('control_B', OUT / 'control_B.wav')]
+for vid in ['7610755319857286463', '7668353849878465818']:
+    tasks.append((vid, BASE / '内部分析素材' / vid / 'audio.wav'))
+results = []
+for key, path in tasks:
+    with wave.open(str(path)) as wav:
+        duration = wav.getnframes() / wav.getframerate()
+    started = time.time()
+    result = model.generate(str(path), max_tokens=180, temperature=0,
+        prompt='Describe only what is audible in this recording: intelligible speech, music, and other sounds. If speech is present, transcribe the audible words in their original language. If no intelligible speech is present, say so. Do not guess a visual scene or invent words.',
+        prefill_step_size=256, verbose=False)
+    row = {'sample': key, 'source_audio': str(path), 'source_duration_seconds': duration,
+           'model': str(MODEL), 'machine_hypothesis': result.text,
+           'inference_seconds': round(time.time() - started, 1),
+           'human_listened_and_approved': False,
+           'timestamp_note': '不使用模型segments的end作为源音频时间，源时长独立读取WAV。'}
+    results.append(row)
+    (OUT / '音频模型能力盲测_机器输出未听审.json').write_text(json.dumps(results, ensure_ascii=False, indent=2))
+    print(json.dumps(row, ensure_ascii=False), flush=True)
+print(json.dumps({'stage': 'finished', 'total_seconds': round(time.time() - start, 1)}), flush=True)

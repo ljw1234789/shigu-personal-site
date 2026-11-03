@@ -1,0 +1,198 @@
+"""把本轮经阅读的结构记录合并进总册索引；保留原始目录快照。"""
+from pathlib import Path
+from collections import Counter
+from statistics import median
+import json
+import re
+
+BASE = Path(__file__).resolve().parent
+PACK = BASE / '求职准备总包'
+MEDIA = BASE / '内部分析素材'
+
+def read(name):
+    return json.loads((PACK / name).read_text())
+
+def save(name, obj):
+    (PACK / name).write_text(json.dumps(obj, ensure_ascii=False, indent=2))
+
+cases = read('10_剩余32条结构研究.json')['cases']
+assert len(cases) == len({case['video_id'] for case in cases}) == 32
+cases.sort(key=lambda row: row['index'])
+by_id = {case['video_id']: case for case in cases}
+ledger = read('09_74条研究覆盖与缺口.json')
+metadata = {}
+for row in ledger['items']:
+    vid = row['video_id']
+    folder = MEDIA / vid
+    assert list(folder.glob('*.mp4')), vid
+    assert (folder / '自动转写-未听审.json').is_file(), vid
+    boards = sorted(folder.glob('类型研究画面-*.jpg'))
+    boards += sorted(folder.glob('画面索引-*.jpg'))
+    boards += sorted(folder.glob('短片2秒画面索引.jpg'))
+    assert boards, vid
+    meta_path = folder / '公开接口作品信息-2026-11-02.json'
+    meta = json.loads(meta_path.read_text())
+    assert meta['id'] == vid
+    assert str(meta['author'].get('unique_id') or meta['author'].get('short_id')) == '815387110'
+    metadata[vid] = meta
+    row.update(structured_research_complete=True,
+               review_status='结构研究：全时长自动文稿已读、间隔画面已检查；未完整连续视听或逐句听审',
+               automatic_transcript_path=str(folder / '自动转写-未听审.json'),
+               sampled_visual_paths=[str(path) for path in boards],
+               public_metadata_path=str(meta_path),
+               publish_time_Asia_Shanghai=meta['publish_time_Asia_Shanghai'],
+               duration_seconds=meta['duration'],
+               likes_exact_snapshot_20261102=meta['statistics_snapshot'].get('digg_count'),
+               fully_audiovisually_reviewed=False, transcript_listened_and_approved=False)
+    if vid in by_id:
+        row['analysis_path'] = str(PACK / '10_剩余32条结构研究.txt')
+        row['analysis_index'] = row['index']
+        row['topic_summary_original_catalog'] = row['topic_summary']
+        row['topic_summary'] = by_id[vid]['title']
+
+ledger['coverage'].update(structured_research_total=74, pending_structural_research=0,
+                          media_acquired_total=74, automatic_transcript_total=74,
+                          public_metadata_total=74, fully_audiovisually_reviewed=0,
+                          approved_verbatim_transcripts=0)
+ledger['pending_video_ids'] = []
+ledger['remaining_work'] = ['74条完整连续视听与逐句原声听审', '真实商业合同、报价与收入',
+                            '账号专属团队与内部制作版本链', '原创脚本实测拍摄和用户独立复述']
+ledger['acquisition_attempt']['remaining_missing_media_count'] = 0
+ledger['acquisition_attempt']['recovery_this_continuation'] = {
+    'recovered_video_ids': sorted(by_id),
+    'method': '官方公开接口提供的既有备用媒体地址；最后一条使用同一接口提供的HTTPS CDN地址；保留主机、重定向、类型与体积检查；未更改生产软件',
+    'historical_obstacles_resolved': True,
+}
+ledger['method'] = '74条均有全时长ASR与间隔画面结构记录；四条短片另检查2秒间隔画面。未把ASR、解码、播放至结尾或画面采样算作完整连续视听。'
+save('09_74条研究覆盖与缺口.json', ledger)
+
+evidence = read('05_证据与覆盖记录.json')
+evidence['coverage'].update(structured_case_unique_total=74, current_learning_subset=74,
+                           structured_video_ids=sorted(metadata), pending_structural_research=0,
+                           public_metadata_total=74, media_acquired_total=74,
+                           automatic_transcripts_total=74)
+evidence['coverage']['new_case_indices_20261102'] = sorted(set(evidence['coverage'].get('new_case_indices_20261102', []) + [case['index'] for case in cases]))
+evidence['coverage']['new_case_indices_this_continuation'] = [case['index'] for case in cases]
+evidence['remaining_work'] = ledger['remaining_work'] + ['固定底薪、实际拍剪权限和带教仍需团队说明']
+for row in evidence.get('new_cases', []):
+    row['review_status'] = '已做结构研究；未完整连续视听或逐句听审'
+known_new = {row['video_id'] for row in evidence.get('new_cases_20261102', [])}
+evidence.setdefault('new_cases_20261102', []).extend([
+    {'index': case['index'], 'video_id': case['video_id'],
+     'url': 'https://www.douyin.com/video/' + case['video_id'],
+     'analysis_path': str(PACK / '10_剩余32条结构研究.txt'),
+     'status': '文稿与间隔画面结构研究；未完整连续视听或逐句听审'}
+    for case in cases if case['video_id'] not in known_new])
+for filename in ['10_剩余32条结构研究.txt', '10_剩余32条结构研究.json',
+                 '11_公开发布时间与运营快照.json', '12_全账号方法与拍剪实操.txt',
+                 '13_各类高赞前三_2026-11-02.txt']:
+    path = str(PACK / filename)
+    if path not in evidence['additional_documents_20261102']:
+        evidence['additional_documents_20261102'].append(path)
+evidence['profile_recheck_20261102']['public_collections_present'] = False
+evidence['profile_recheck_20261102']['collections_observation'] = '本轮实际切换合集栏，显示该账号还未发布过合集；研究分类由研究者归纳。'
+save('05_证据与覆盖记录.json', evidence)
+
+taxonomy = read('06_74条分类与高赞候选_修订版.json')
+all_rows = {row['video_id']: dict(row) for cat in taxonomy['categories'] for row in cat['works']}
+for vid, row in all_rows.items():
+    row['review_status'] = '已做结构研究；未完整连续视听或逐句听审'
+    if vid in by_id:
+        row['topic_summary'] = by_id[vid]['title']
+categories = {cat['category']: cat for cat in taxonomy['categories']}
+cross_name = '跨产品比较、排行与选购' if '跨产品比较、排行与选购' in categories else '跨产品跨系统比较与选购'
+cross = categories[cross_name]
+cross['category'] = '跨产品比较、排行与选购'
+if not any(cat['category'] == '产品视觉短片' for cat in taxonomy['categories']):
+    taxonomy['categories'].append({'category': '产品视觉短片', 'total': 0, 'selected': [], 'works': []})
+categories = {cat['category']: cat for cat in taxonomy['categories']}
+moves = {50: '跨产品比较、排行与选购', 64: '多品清单与节点导购',
+         65: '跨产品比较、排行与选购', 21: '产品视觉短片', 52: '产品视觉短片', 56: '产品视觉短片'}
+for index, target in moves.items():
+    found = next(row for row in all_rows.values() if row['index'] == index)
+    vid = found['video_id']
+    for cat in taxonomy['categories']:
+        cat['works'] = [row for row in cat['works'] if row['video_id'] != vid]
+    categories[target]['works'].append(dict(found))
+for cat in taxonomy['categories']:
+    cat['works'] = [dict(all_rows[row['video_id']]) for row in cat['works']]
+    cat['works'].sort(key=lambda row: (-row['likes_rounded'], row['index']))
+    cat['total'] = len(cat['works'])
+    threshold = cat['works'][min(2, len(cat['works']) - 1)]['likes_rounded'] if cat['works'] else 0
+    cat['selected'] = [dict(row) for row in cat['works'] if row['likes_rounded'] >= threshold]
+taxonomy['status'] = '74条结构研究；按内容修订为12个主要形式，完整连续视听和原声听审未完成。'
+taxonomy['classification_note'] = '按主要叙事任务各归一类；同一片仍可兼具其他元素。分类依据全量文稿与间隔画面，可因听审和动态观看继续修订。排序保留11月1日展示赞快照及第三名并列，新的精确点赞排序见13文件。'
+taxonomy['selected_unique_count'] = len({row['video_id'] for cat in taxonomy['categories'] for row in cat['selected']})
+taxonomy.setdefault('revision_history', []).append({'date': '2026-11-02',
+    'revision': '补齐32条结构研究；拆出产品视觉短片3条；四款手柄改多品清单；苹果排名及WIN对照改跨产品比较；补正21与44主题。'})
+save('06_74条分类与高赞候选_修订版.json', taxonomy)
+
+ordered = sorted(metadata.values(), key=lambda row: row['create_time_unix'])
+gaps = [(right['create_time_unix'] - left['create_time_unix']) / 86400
+        for left, right in zip(ordered, ordered[1:])]
+brand_patterns = {'OPPO或ColorOS': r'OPPO|ColorOS', '苹果': r'苹果|iPhone|iPad|MacBook|Mac mini|AirPods|Apple',
+                  '华为或鸿蒙': r'华为|鸿蒙|MateBook|nova|Harmony', '荣耀': r'荣耀|HONOR',
+                  '一加': r'一加|OnePlus', 'vivo或iQOO': r'vivo|iQOO', '小米': r'小米',
+                  '拓竹': r'拓竹', '海信': r'海信'}
+stats = {'observed_on_local_America_New_York': '2026-11-02', 'publish_timezone': 'Asia/Shanghai',
+         'account': '英俊姐妹日记', 'douyin_id': '815387110', 'total_public_sample': 74,
+         'sampling_note': '从11月1日目录出发，11月2日逐条公开接口核对账号标识与作品；本轮主页仍为74条。不是全历史或已删私密作品的目录。',
+         'earliest_public_sample': {'id': ordered[0]['id'], 'published': ordered[0]['publish_time_Asia_Shanghai']},
+         'latest_public_sample': {'id': ordered[-1]['id'], 'published': ordered[-1]['publish_time_Asia_Shanghai']},
+         'monthly_public_posts': dict(sorted(Counter(row['publish_time_Asia_Shanghai'][:7] for row in ordered).items())),
+         'duration_median_seconds': median(row['duration'] for row in ordered),
+         'publish_gap_median_days': median(gaps), 'publish_gap_min_days': min(gaps), 'publish_gap_max_days': max(gaps),
+         'likes_sum_sample': sum(row['statistics_snapshot']['digg_count'] for row in ordered),
+         'likes_median_sample': median(row['statistics_snapshot']['digg_count'] for row in ordered),
+         'brand_words_in_titles': {brand: {'count': len(ids), 'video_ids': ids}
+              for brand, pattern in brand_patterns.items()
+              for ids in [[row['id'] for row in ordered if re.search(pattern, row['title'], re.I)]]},
+         'brand_word_limit': '仅标题／简介文字出现，不互斥，不是品牌客户数、付费单数或复投记录；未命名品牌仍可能出现在内容中。',
+         'commercial_flags_observation': '74条is_ads均返回false，无法据此确认全部无商单；接口默认标志不等于真实合同。',
+         'unavailable_playback_data': '接口play_count和exposure_count返回0，不作为真实零播放或零曝光使用；不计算完播、互动率和转化。',
+         'rows': [{'id': row['id'], 'url': row['url'], 'title': row['title'],
+                   'published': row['publish_time_Asia_Shanghai'], 'duration_seconds': row['duration'],
+                   'likes': row['statistics_snapshot'].get('digg_count'),
+                   'comments': row['statistics_snapshot'].get('comment_count'),
+                   'collects': row['statistics_snapshot'].get('collect_count'),
+                   'shares': row['statistics_snapshot'].get('share_count'),
+                   'source_path': str(MEDIA / row['id'] / '公开接口作品信息-2026-11-02.json')}
+                  for row in ordered]}
+save('11_公开发布时间与运营快照.json', stats)
+
+lines = ['英俊姐妹日记｜剩余32条结构研究', '更新：2026年11月2日',
+         '本轮32条均已通读全时长自动文稿并检查间隔画面；其中四条短片加看2秒间隔画面。',
+         '段落时间为近似位置。尚未完整连续视听或逐句听审，原声、音乐、精确切点及动态效果不作已核实结论。',
+         '商单付费、报价、测试原始数据和私人偏好不因内容出现而获得确认。', '']
+labels = [('topic_logic', '选题为什么成立'), ('outline', '骨架与段落'),
+          ('visual_evidence', '实际画面证据'), ('writing_and_edit_logic', '文案与剪辑组织'),
+          ('reproduction_advice', '你怎样拍剪'), ('verification_limits', '仍需核实')]
+for case in cases:
+    meta = metadata[case['video_id']]
+    lines += [f"目录{case['index']}｜{case['title']}", 'https://www.douyin.com/video/' + case['video_id'],
+              f"发布：中国时间{meta['publish_time_Asia_Shanghai']}；时长{meta['duration']:.1f}秒"]
+    for key, label in labels:
+        value = case[key]
+        lines.append(label + '：' + ('；'.join(value) if isinstance(value, list) else value))
+    lines += ['素材与自动文稿：' + str(MEDIA / case['video_id']), '']
+(PACK / '10_剩余32条结构研究.txt').write_text('\n'.join(lines))
+
+rank_lines = ['英俊姐妹日记｜各类高赞前三', '点赞来源：2026年11月2日本轮逐条公开接口快照。',
+              '这是74条当前公开样本的点赞排序，不代表全历史最火、播放量、自然流量或骨架因果效果。',
+              '12类为研究者按主要叙事形式归纳，账号公开合集栏为空；商业合作属性不单独充当叙事类型。',
+              '每类取前三条；类别不足三条全部列出。所有条目只有结构研究，完整连续视听未完成。', '']
+for cat in taxonomy['categories']:
+    current = sorted(cat['works'], key=lambda row: (-metadata[row['video_id']]['statistics_snapshot']['digg_count'], row['index']))
+    rank_lines.append(f"{cat['category']}｜共{len(current)}条")
+    for order, row in enumerate(current[:3], 1):
+        meta = metadata[row['video_id']]
+        rank_lines += [f"{order}. 目录{row['index']} {row['topic_summary']}｜{meta['statistics_snapshot']['digg_count']}赞｜{meta['duration']:.1f}秒",
+                       row['url']]
+    rank_lines.append('')
+(PACK / '13_各类高赞前三_2026-11-02.txt').write_text('\n'.join(rank_lines))
+
+assert len(ledger['items']) == len({row['video_id'] for row in ledger['items']}) == 74
+assert sum(cat['total'] for cat in taxonomy['categories']) == 74
+assert len({row['video_id'] for cat in taxonomy['categories'] for row in cat['works']}) == 74
+print(json.dumps({'structured_total': 74, 'new_cases': 32, 'categories': len(taxonomy['categories']),
+                  'monthly': stats['monthly_public_posts'], 'continuous_av_reviewed': 0}, ensure_ascii=False))

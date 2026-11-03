@@ -1,0 +1,35 @@
+from pathlib import Path
+import re
+
+root = Path(__file__).parent
+page = root / 'dist/index.html'
+html = page.read_text()
+
+cylinder = '''<svg class="case-object is-active cylinder-demo" data-object="0" viewBox="0 0 500 400" aria-hidden="true"><defs><linearGradient id="caseGlass" x1="0" x2="1"><stop stop-color="#d7e5ef" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity=".8"/><stop offset="1" stop-color="#bdcfdf" stop-opacity=".4"/></linearGradient><linearGradient id="caseWater" x1="0" x2="1"><stop stop-color="#a4c8ff"/><stop offset="1" stop-color="#5c91e5"/></linearGradient></defs><ellipse cx="147" cy="355" rx="72" ry="12" fill="#b4c5d3" opacity=".18"/><ellipse cx="354" cy="355" rx="82" ry="12" fill="#b4c5d3" opacity=".18"/><g id="pourCylinder"><path d="M103 63V330Q147 349 191 330V63" fill="url(#caseGlass)" stroke="#a5becf"/><g id="cylinderWater"><path d="M107 185V328Q147 345 187 328V185" fill="url(#caseWater)"/><ellipse cx="147" cy="185" rx="40" ry="9" fill="#b6d2ff" stroke="#7da7e5"/></g><path class="wall-water" d="M109 93V329Q147 343 185 329V93" fill="none" stroke="#81afe9" stroke-width="3"/><ellipse cx="147" cy="63" rx="44" ry="11" fill="#f6fbfe" fill-opacity=".6" stroke="#a5becf"/><path d="M115 81V315" stroke="white" stroke-width="3" opacity=".8"/><g stroke="#7f9db3"><path d="M177 93H190M182 116H190M177 139H190M182 162H190M177 185H190M182 208H190M177 231H190M182 254H190M177 277H190M182 300H190"/></g><text x="173" y="187" text-anchor="end" fill="#426587" font-size="11">100</text><text id="cylinderMark" x="145" y="111" text-anchor="middle" fill="#426587" font-size="15" font-weight="600">In</text></g><path id="pourStream" d="M251 154Q338 175 354 296" fill="none" stroke="#91b9f3" stroke-width="6" stroke-linecap="round"/><path d="M291 202L286 213V329Q352 357 420 329V207L405 198" fill="url(#caseGlass)" stroke="#a5becf"/><g id="beakerWater"><path d="M291 279V328Q352 350 415 328V279Z" fill="url(#caseWater)"/><ellipse cx="353" cy="279" rx="62" ry="13" fill="#b6d2ff" stroke="#7da7e5"/></g><path d="M300 222V323" stroke="white" stroke-width="3" opacity=".8"/><ellipse cx="353" cy="203" rx="62" ry="12" fill="none" stroke="#a5becf"/><g fill="#537998" font-size="13" text-anchor="middle"><text x="147" y="381" id="containedVolume">筒内 100mL</text><text x="353" y="381" id="deliveredVolume">烧杯里会有多少？</text></g></svg>'''
+html, n = re.subn(r'<svg class="case-object is-active" data-object="0"[\s\S]*?</svg>', cylinder, html, count=1)
+assert n == 1
+html = html.replace('从小问题，进入科学。</span>', '先判断，再动手。</span>', 1)
+html = html.replace('<span>选题对象示意</span>', '<span>互动原理示意</span>', 1)
+
+# The plate close-up is an observation diagram, not a simulated optical proof.
+grooves = ''.join(f'<ellipse cx="250" cy="245" rx="{r}" ry="{r * .80}"/>' for r in range(15, 182, 7))
+detail = '<g class="plate-detail" fill="none" stroke="#8fa4b5" stroke-width=".8">' + grooves + '</g><text class="plate-detail-label" x="250" y="423" text-anchor="middle" fill="#537998" font-size="13">细微同心圆划痕 · 纹路示意</text>'
+html = html.replace('<text x="70" y="88"', detail + '<text x="70" y="88"', 1)
+html = html.replace('<text x="68" y="93"', '<g class="comment-orbit"><path d="M306 250Q390 251 407 173" fill="none" stroke="#8aa7c0" stroke-dasharray="4 6"/><rect x="252" y="113" width="226" height="73" rx="5" fill="#fafcfd" stroke="#bfd0dd"/><text x="270" y="139" fill="#7590a4" font-size="10">评论中的旧题追问 / 归纳</text><text x="270" y="164" fill="#335774" font-size="14">水盆波纹，为什么是方的？</text></g><text x="68" y="93"', 1)
+
+a_intro = '标题直接让观众参与判断。开场人物对镜、清楚的大字号字幕与具体测量对象，把抽象的“读数问题”缩成一个可理解的场景。'
+a_new = '先问筒内到底有多少水，再称重、结合水的密度计算，最后解释“量入／量出”的区别。观众带着自己的判断，跟着实验校正答案。'
+a_control = '''<div class="case-interaction" id="cylinderInteraction"><span class="demo-label">动手试试 / 刻度都是100mL</span><p class="demo-question">倒出去，也会是100mL吗？</p><div class="demo-actions"><div class="demo-modes" role="group" aria-label="选择量筒标定方式"><button type="button" data-calibration="In" aria-pressed="true">量入 In</button><button type="button" data-calibration="Ex" aria-pressed="false">量出 Ex</button></div><button class="demo-action" id="pourButton" type="button">倒出看看 <span aria-hidden="true">↗</span></button></div><p class="demo-feedback" id="pourFeedback" aria-live="polite">先看量入式：刻度对应筒内的水量。你觉得倒出后会怎样？</p><small class="demo-note">原理示意，挂壁效果放大；不显示原视频实测值。实际操作须按器材规定。<a href="#s09">原理来源 ↗</a></small></div>'''
+assert a_intro in html
+html = html.replace('<p>' + a_intro + '</p>', '<p>' + a_new + '</p>' + a_control, 1)
+
+b_end = '这条以熟悉却少被注意的餐盘现象切入。标题里的“没人能说清”，同时承诺解释，也为观众提供讨论动机。'
+b_control = '''<div class="case-interaction"><span class="demo-label">仔细看看 / 盘子的表面</span><div class="demo-actions"><p class="demo-question">只看X，可能漏掉了什么？</p><button class="demo-action" id="plateDetailButton" type="button" aria-pressed="false">看近一点 <span aria-hidden="true">＋</span></button></div><p class="demo-feedback" id="plateFeedback" aria-live="polite">先看整体，再点开表面细节。熟悉的物件，也值得多看一眼。</p><small class="demo-note">纹路示意依据原视频01:29片段；完整光学解释请看原作品。</small></div>'''
+html = html.replace('<p>' + b_end + '</p>', '<p>' + b_end + '</p>' + b_control, 1)
+c_end = '标题继续采用生活疑问，页面含米其林品牌标签。可研究技术解释与产品关联怎样同场出现，但标签本身不能证明合同、报酬或广告投放效果。'
+c_control = '''<div class="case-interaction"><span class="demo-label">去评论里 / 观众接着问什么</span><div class="demo-actions"><p class="demo-question">看完足球，只讨论足球吗？</p><button class="demo-action" id="commentButton" type="button" aria-pressed="false">看看追问 <span aria-hidden="true">↗</span></button></div><p class="demo-feedback" id="commentFeedback" aria-live="polite">先看这条视频，再看看观众把话题带去了哪里。</p><small class="demo-note">本次可见评论的归纳，不代表全部观众；足球仅作选题对象示意。</small></div>'''
+html = html.replace('<p>' + c_end + '</p>', '<p>' + c_end + '</p>' + c_control, 1)
+
+source = '''<div class="source-row" id="s09"><span class="id">S09</span><div><a href="https://www.brand.de/brand/contentserv_data/Context/BRAND%20GMBH%20%2B%20CO%20KG/Dokumente/Produkte/Broschuere/volumetric_measurement_EN.pdf" target="_blank" rel="noopener">BRAND｜容量器具的量入／量出标定说明 ↗</a><p>器材厂商技术手册 · 2026.10.12读取。In／TC指容纳量，Ex／TD指按规定操作的交付量，标定已考虑残留液体。用于本页量筒互动的原理校核；动画不代表原视频测量数值。</p></div></div>'''
+html = html.replace('</div>\n<div class="downloads">', source + '</div>\n<div class="downloads">', 1)
+page.write_text(html)

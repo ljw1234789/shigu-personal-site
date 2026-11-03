@@ -1,0 +1,175 @@
+"""对全时段画面文字和两版转写建立句级覆盖、数字项分母与需回图的差异。"""
+from pathlib import Path
+from difflib import SequenceMatcher
+import json,re,hashlib,sys,statistics,shutil
+from collections import Counter
+from functools import lru_cache
+
+BASE=Path(__file__).resolve().parents[1]
+OUT=BASE/'原声核验/全文字幕对照';OUT.mkdir(exist_ok=True)
+from 字幕文本规则 import norm
+
+IMPORTANT=re.compile(r'\d|只有|前提|如果|但是|不过|最高|最长|最短|不支持|支持|需要|还未|并非|实测|至少|最多|同样|相同|相比|对比|更[快强好贵薄轻]|不能|关闭|仅为|示意|来源|截至|折扣|国补|免息|版本')
+WATERMARK=re.compile(r'^(李英俊的|数码日记|李英俊的数码日记|oppo|vivo|huawei|honor|rec|sdr|hdr)$',re.I)
+NUMBER=re.compile(r'\d+(?:\.\d+)?(?:万|亿)?(?:mah|wh|w|hz|db|gb|tb|mb|mm|cm|km|inch|元|块|倍|组|种|个|年|天|位|颗|核|%|h|min|s)?',re.I)
+SPEC=re.compile(r'\d[\d.,]*\s*(?:mAh|Wh|W|Hz|dB|GB|TB|MB|mm|cm|g|英寸|inch|尼特|nit|像素|fps|元|块|小时)|RMB\s*[\d,]+|[￥¥]\s*\d',re.I)
+CONDITION=re.compile(r'仅为|仅供|示意|数据来源|测试|实测|最大|最长|最短|关闭|基于|截至|不代表|可能|版本|更新|需.{0,5}支持')
+MODEL=re.compile(r'(?:OPPO|vivo|iQOO|HONOR|HUAWEI|iPhone|MateBook|MatePad|Magic|Reno|一加|荣耀|华为|小米).{0,14}(?:\d|Headphones|Pro|Ultra|Fold)',re.I)
+DISCLAIMER=re.compile(r'仅为|仅供|示意|数据来源|测试条件|仅限|效果以|实际.{0,6}为准|不同版本')
+
+def font_estimate(text,box):
+    bh=max(p[1] for p in box)-min(p[1] for p in box);bw=max(p[0] for p in box)-min(p[0] for p in box)
+    # 多行文档块的高不能冒充大字号字幕；以单字宽度估计字体上限。
+    units=sum(1 if '\u4e00'<=c<='\u9fff' else .55 for c in text if not c.isspace())
+    return min(bh,bw/max(1,units)*1.35)
+
+@lru_cache(maxsize=32)
+def load_rgb(path):
+    sys.path.insert(0,str(BASE/'原声核验/RapidOCR依赖'))
+    import numpy as np
+    from PIL import Image
+    return np.array(Image.open(path).convert('RGB'))
+
+def is_case4_red_clothing(line):
+    # 仅用于已经逐图确认有红褐手写衣物印花的第4条，不推广到其他片的彩色标题。
+    im=load_rgb(line['image_path'])
+    import numpy as np,cv2
+    box=line['box'];x1=int(min(p[0] for p in box));x2=int(max(p[0] for p in box));y1=int(min(p[1] for p in box));y2=int(max(p[1] for p in box))
+    crop=im[max(0,y1):y2,max(0,x1):x2]
+    if not crop.size:return False
+    gray=cv2.cvtColor(crop,cv2.COLOR_RGB2GRAY);_,mask=cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU);select=mask>0
+    if select.mean()>.5:select=~select
+    pixels=cv2.cvtColor(crop,cv2.COLOR_RGB2HSV)[select]
+    if not len(pixels):return False
+    h,s,v=np.median(pixels,axis=0)
+    return bool((h<20 or h>165) and s>45 and v<240)
+
+items=json.loads((BASE/'求职准备总包/09_74条研究覆盖与缺口.json').read_text())['items']
+if sys.argv[1:]:items=[x for x in items if x['video_id'] in sys.argv[1:]]
+summary=[]
+for row in items:
+    folder=BASE/'内部分析素材'/row['video_id'];file=folder/'全时段字幕带OCR-未逐图验收.json'
+    if not file.exists():continue
+    ocr=json.loads(file.read_text())
+    if not ocr.get('processing_complete'):continue
+    target=OUT/(row['video_id']+'.json')
+    previous_data=json.loads(target.read_text()) if target.exists() else None
+    if previous_data and previous_data.get('source_ocr_size')==file.stat().st_size and previous_data.get('alignment_version')==4:
+        old=json.loads(target.read_text());summary.append(old['counts']);continue
+    old_decisions={}
+    if previous_data:
+        for c in previous_data['candidates']:
+            if c.get('assistant_image_checked'):old_decisions[(c['image_path'],c['screen_text'],c['start'])]=c
+        archive=OUT/('历史对照v'+str(previous_data.get('alignment_version',1)));archive.mkdir(exist_ok=True)
+        if not (archive/target.name).exists():shutil.copy2(target,archive/target.name)
+    strong_file=folder/'自动转写-large-v3-turbo-未听审.json';small_file=folder/'自动转写-未听审.json'
+    strong=json.loads(strong_file.read_text())['result'].get('segments',[])
+    small=json.loads(small_file.read_text()).get('segments',[])
+    seg_norm=[norm(s['text']) for s in strong]
+    height=ocr.get('frame_height',960);width=ocr.get('frame_width',540)
+    landscape=width>height
+    # 从已与对应时间转写相符的长字幕学习字号；不把小字GUI菜单当整段旁白。
+    trusted=[]
+    for line in ocr['lines']:
+        b=norm(line['text'])
+        if len(b)<6 or line['score']<.9:continue
+        a=''.join(seg_norm[i] for i,s in enumerate(strong) if s['start']<=line['end']+.7 and s['end']>=line['start']-.7)
+        if b in a:
+            box=line['box'];bh=font_estimate(line['text'],box)
+            trusted.append((bh,sum(p[1] for p in box)/4))
+    median_font=statistics.median([h for h,y in trusted]) if trusted else height*(.025 if landscape else .035)
+    centers=Counter(round(y/height*40)/40 for h,y in trusted if h>=median_font*.72)
+    main_centers=[y for y,count in centers.items() if count>=max(3,max(centers.values(),default=0)*.05)]
+    lines=[];last={};excluded_small=0;excluded_clothing=[]
+    for original_index,line in enumerate(sorted(ocr['lines'],key=lambda x:(x['start'],x.get('center_y',0)))):
+        text=line['text'].strip();b=norm(text);score=line['score']
+        if score<.8 or not b:continue
+        box=line['box'];y1=min(p[1] for p in box);y2=max(p[1] for p in box);bh=font_estimate(text,box);center=(y1+y2)/2
+        near=any(abs(center/height-y)<.045 for y in main_centers)
+        main=bh>=max(8,median_font*.72) and (near or bh>=median_font*.9)
+        if WATERMARK.match(text) or (len(b)<2 and not re.search(r'^[不无没是否]$',b)):continue
+        if row['index']==4 and not (MODEL.search(text) or SPEC.search(text) or DISCLAIMER.search(text)):
+            if is_case4_red_clothing(line):
+                excluded_clothing.append({'start':line['start'],'text':text,'image_path':line['image_path'],'box':box});continue
+        if not main:
+            window=''.join(seg_norm[i] for i,s in enumerate(strong) if s['start']<=line['end']+.7 and s['end']>=line['start']-.7)
+            tokens=[m.group() for m in NUMBER.finditer(b)]
+            related_number=any(len(token)>1 and token in window for token in tokens)
+            related_model=bool(MODEL.search(text) and any(norm(m.group()) in window for m in MODEL.finditer(text)))
+            supplementary=bool(DISCLAIMER.search(text) or related_model or (related_number and (SPEC.search(text) or CONDITION.search(text))))
+            if not supplementary:
+                excluded_small+=1;continue
+        if len(b)<3 and re.fullmatch('[a-z0-9.*%+-]+',b):continue
+        key=(b,round(center/12))
+        prev=last.get(key)
+        if prev is not None and line['start']-prev['end']<=.55:
+            prev['end']=max(prev['end'],line['end']);prev['samples']+=line.get('sample_count',1);continue
+        entry={'line_id':len(lines),'start':line['start'],'end':line['end'],'text':text,'normalized':b,
+          'score':score,'box':box,'image_path':line['image_path'],'main_caption_shape':main,
+          'samples':line.get('sample_count',1),'raw_line_index':original_index}
+        lines.append(entry);last[key]=entry
+    candidates=[];agreement=0;coverage=[set() for s in strong];visible_ids=[set() for s in strong]
+    for line in lines:
+        b=line['normalized'];overlap=[i for i,s in enumerate(strong) if s['start']<=line['end']+.7 and s['end']>=line['start']-.7]
+        chunks=[seg_norm[i] for i in overlap];a=''.join(chunks)
+        exact=bool(b and a and b in a)
+        if exact:
+            agreement+=1;offset=a.find(b);cursor=0
+            for i,s in zip(overlap,chunks):
+                lo=max(0,offset-cursor);hi=min(len(s),offset+len(b)-cursor)
+                if hi>lo:coverage[i].update(range(lo,hi));visible_ids[i].add(line['line_id'])
+                cursor+=len(s)
+            line['status']='机器文字一致，未经逐图验收'
+            continue
+        if a:
+            matcher=SequenceMatcher(None,b,a);blocks=matcher.get_matching_blocks();matched=sum(x.size for x in blocks);fraction=matched/max(1,len(b));longest=max(x.size for x in blocks)
+        else:fraction=0;longest=0
+        # 只按文本相似度排列候选；不凭OCR或另一个ASR自动改原稿。
+        important=bool(IMPORTANT.search(line['text']))
+        if line['main_caption_shape']:
+            if fraction>=.5 and longest>=2:kind='字幕与转写差异候选'
+            elif len(b)>=5:kind='字幕未找到对应转写，可能漏句或屏幕字卡'
+            else:kind='短字幕或界面文字，需辨别'
+        elif important:kind='小字参数或条件，需辨别'
+        else:continue
+        small_matches=[s for s in small if s['start']<=line['end']+.7 and s['end']>=line['start']-.7]
+        candidate_id=f"{row['video_id']}_{line['line_id']:05d}"
+        candidate={'candidate_id':candidate_id,'index':row['index'],'video_id':row['video_id'],
+          'kind':kind,'start':line['start'],'end':line['end'],'screen_text':line['text'],'normalized_screen':b,
+          'large_segment_indices':overlap,'large_asr_window':' '.join(strong[i]['text'].strip() for i in overlap),
+          'small_asr_window':' '.join(s['text'].strip() for s in small_matches),'match_fraction':round(fraction,3),
+          'important':important,'image_path':line['image_path'],'box':line['box'],'ocr_score':line['score'],
+          'assistant_image_checked':False,'audio_listened_and_approved':False,'automatic_correction_applied':False}
+        old_c=old_decisions.get((line['image_path'],line['text'],line['start']))
+        if old_c:candidate['assistant_image_checked']=True;candidate['decision']=old_c['decision']
+        candidates.append(candidate)
+        line['status']='待回图检查'
+    segments=[];numbers=0;number_supported=0
+    for i,s in enumerate(strong):
+        n=seg_norm[i];tokens=[m.group() for m in NUMBER.finditer(n)];numbers+=len(tokens)
+        window=[l for l in lines if l['start']<=s['end']+.7 and l['end']>=s['start']-.7]
+        support=sum(any(token in l['normalized'] for l in window) for token in tokens);number_supported+=support
+        segments.append({'segment_index':i,'start':s['start'],'end':s['end'],'normalized_characters':len(n),
+          'exact_screen_supported_characters':len(coverage[i]),'exact_screen_line_ids':sorted(visible_ids[i]),
+          'number_unit_candidate_count':len(tokens),'number_unit_text_supported_count':support,
+          'visible_text_status':'有机器文字对应，仍非原声听审' if visible_ids[i] else '未找到完整对应，可能纯口述或漏OCR',
+          'full_audiovisual_approved':False,'audio_verbatim_approved':False})
+    counts={'index':row['index'],'video_id':row['video_id'],'topic':row['topic_summary'],
+      'large_asr_segments':len(strong),'small_asr_segments':len(small),'sampled_frames':ocr['samples_processed'],
+      'screen_line_groups':len(lines),'exact_machine_text_agreement_groups':agreement,'difference_candidates':len(candidates),
+      'important_candidates':sum(c['important'] for c in candidates),
+      'segments_with_some_exact_screen_text':sum(bool(s) for s in visible_ids),
+      'normalized_asr_characters':sum(len(n) for n in seg_norm),'exact_screen_supported_characters':sum(len(s) for s in coverage),
+      'number_unit_candidates_in_large_asr':numbers,'number_unit_text_supported':number_supported,
+      'assistant_image_checked_candidates':sum(c['assistant_image_checked'] for c in candidates),'approved_audio_segments':0,'source_time_processing_complete':True,
+      'visible_text_difference_audit_complete':all(c['assistant_image_checked'] for c in candidates),'full_parameter_review_complete':False}
+    result={'video_id':row['video_id'],'index':row['index'],'alignment_version':4,'source_ocr_path':str(file),'source_ocr_size':file.stat().st_size,
+      'strong_asr_path':str(strong_file),'small_asr_path':str(small_file),
+      'scope':'全时段采样字幕带与两版转写的机器对照。未匹配可能是纯口述、字卡、OCR错漏或ASR错漏；不得自动覆盖。',
+      'caption_classifier':{'basis':'同片文字对应长句估计单字字号和位置，防多行文档块冒充大字幕；对应转写的参数/型号及免责声明小字另行保留','median_caption_font_estimate':median_font,'dominant_centers_relative':main_centers,'trusted_long_lines':len(trusted),'excluded_small_or_unrelated_raw_lines':excluded_small,'case4_clothing_filter_enabled':row['index']==4,'clothing_filter_scope':'第4条已直接确认的红褐衣物印花，原记录另留，不推广到其他彩色标题','does_not_cover_every_GUI_label':True},
+      'excluded_case4_clothing_lines':excluded_clothing,
+      'counts':counts,'screen_lines':lines,'segments':segments,'candidates':candidates}
+    target.write_text(json.dumps(result,ensure_ascii=False,indent=2));summary.append(counts)
+    print(json.dumps({'index':row['index'],'segments':len(strong),'screen_groups':len(lines),'differences':len(candidates),'important':counts['important_candidates']}),flush=True)
+summary.sort(key=lambda r:r['index'])
+(OUT/'已对照作品汇总.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))

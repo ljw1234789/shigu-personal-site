@@ -1,0 +1,41 @@
+"""K十二张画面板及四幅整图已查看。"""
+from pathlib import Path
+import json,subprocess,sys,collections,hashlib
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';out={}
+non={14:[18,19,20,21,22,24,35,37,38,39,47,49,51,53,54,84,96,97,98,99,100,101,102,103],31:[9,11,13,14,15,16,38,56,57,59,61,69,72,79,82,84,85,86,87,88,89,91,92,110,112,114,115],9:[7,12,13,14,16,18,23,24,43,44,57,58,59,60,61,62,68,73,75,76,77,79,80,81,82,83,84,87,113,126,127,129,131,156,157,159],64:[12]}
+terms={14:{2:'不规律饮食',4:'轮番问候800遍',6:'支棱起来',9:'室内跳绳',10:'狂虐自己',16:'OPPO FatMax燃脂模式',28:'运动中心率踩对点',30:'有氧爬坡',32:'把心率稳稳锁在',36:'瞎冲高心率时好出一半',45:'特别戳我',55:'跑步机上看剧或者跟练',59:'跳绳',62:'支持网球、羽毛球等球类运动',63:'OPPO FatMax',64:'光燃脂猛还不够',70:'体征等信息',85:'时不时用一下',92:'没有落下',93:'跃动橙',94:'贴合手腕的双节表带',95:'旗舰同款拼色设计',104:'OOTD的绝佳点缀',106:'OOTD的绝佳点缀',107:'OOTD的绝佳点缀',111:'约34.3克',113:'手表卡袖问题',114:'减少佩戴时',116:'3000尼特的峰值亮度',122:'旅拍',124:'消息共享',132:'不是想让你走捷径'},
+31:{1:'一支口红长度',5:'120W超能舱超级闪充移动电源',7:'只比标准名片',8:'多出一圈的小体积',10:'120W＋15000mAh',12:'120W＋15000mAh',17:'黄金功容比',19:'甜点配置',26:'兼容PD/QC/UFCS等',31:'小巧实用',41:'3C认证',44:'不用担心被卡',50:'OPPO 100W小方瓶Pro',51:'小小一颗',52:'O加手机',55:'其他三方手机',58:'支持至高100W高功率快充',66:'成色依旧如新',71:'120W小方瓶双口充电器',75:'OPPO双口小方瓶',78:'高达125W',83:'7050mAh的Find X9 Ultra',90:'约半个小时',95:'不用来回拔线',97:'夸夸颜值',98:'16＋1TB绒纱峡谷配色',99:'OPPO Find X9 Ultra',102:'奶油小摆件',107:'尽显优雅',108:'星炬橙',111:'明媚暖阳',113:'玫雾柔纱',116:'奶呼呼的美拉德色系',118:'喷涂手感漆',120:'以前一堆线'},
+9:{10:'等等党',15:'围绕大家关心的',19:'握持体验',21:'影像素质等问题',25:'一点一点找出答案',27:'一点一点找出答案',28:'一点一点找出答案',36:'哑光金属质感的机身',40:'拉开差距',41:'握持体验',42:'219g的小米18 Fold',46:'常规直板机水平',47:'略重于',51:'iPhone Duo',54:'展开态比iPhone Air',64:'iPhone Duo搭载A20 Pro',69:'玄戒O3',70:'澎湃OS4',89:'iPhone Duo',91:'具体表现犹未可知',93:'此前竖折',95:'小米18 Fold',96:'和头部开发者',107:'小米18 Fold影像',109:'2亿徕卡主摄',120:'iPhone Duo',123:'劝退一部分',130:'小米18 Fold',132:'同形态下最大电池',133:'能耗比表现',139:'iPhone Duo',142:'iPhone Duo',154:'折叠领域'},
+64:{0:'游戏手柄只有御三家？',1:'便宜手柄都是工业垃圾？',2:'我不同意',5:'军火库',6:'4款宝藏手柄',9:'不让你多花一分钱',10:'李英俊',14:'带小屏幕',16:'检查手柄状态',18:'搓起来爽到飞起',19:'霍尔摇杆加霍尔扳机',21:'扳机锁一关',22:'两段式扳机锁',23:'2个自定义背键',25:'闭眼入',27:'飞智冰原狼4',29:'飞智旗舰级',30:'力调节合金摇杆',31:'转动轮盘',32:'调节摇杆力度',35:'线性霍尔',36:'霍尔线性扳机',40:'可以连SWITCH',41:'马车、喷喷、塞尔达',42:'充电底座',43:'随拿随玩',44:'200元档水桶机',46:'PS4手柄',47:'盖世小鸡九尾狐',49:'不同连接模式',50:'ABXY图标',51:'自动切换布局',53:'TMR摇杆',54:'精准又耐用',55:'最绝的',56:'9个自定义按键',57:'映射键盘',58:'PC游戏',60:'NFC与体感',61:'前旗舰手柄',63:'降价后',64:'不到200',65:'带充电底座套装',68:'微软XBOX官方授权手柄',69:'小鸡G7 Pro',71:'手小星人',72:'联动版接收器',73:'无线连接XBOX',74:'物理扳机振动',75:'地平线5',76:'飙车时',78:'油门细微震动',79:'颠簸路面震感',80:'沉浸感拉满',81:'虽然不能连Switch',87:'手柄败家总结',88:'你种草了哪一款',90:'李英俊的数码日记'}}
+for b in sorted(root.glob('*7d8285b9*.jpg.json')):
+ for c in json.loads(b.read_text()):
+  i=c['index'];n=int(c['candidate_id'].split('_')[-1]);d=dict(category='字幕措辞差异',after='本处字幕已查看，保留措辞差异',note='未据此批准原声逐字稿。',visible_resolution='wording_preserved_audio_pending',verified_screen_reading=None)
+  if n in non.get(i,[]):d.update(category='界面与实物文字',after='界面、测试读数、包装或背景板文字',note='不当作新增口述；数值对象须与相邻完整画面对应。',visible_resolution='non_speech_text')
+  if n in terms.get(i,{}):d.update(category='可见用词纠正',after=terms[i][n],note='确认画面词形；不因此独立确认产品性能、官方名称或当前价格。',visible_resolution='screen_correction_confirmed')
+  if i==14:
+   if n in (2,3,4,6,9,10):d['note']='开场饮食、同事、运动为叙事情境，不能据此补写本人健康史或团队成员。'
+   if n in (18,19,20,21,22,24):d.update(category='运动界面不同指标',after='运动时间40分02秒、平均坡度14%、累计上升383m分别记录',note='29秒整图另列距离2.56km、平均心率134bpm、卡路里337kcal、训练负荷39TL；这些不是同一指标，不据此确认真实本人运动。',visible_resolution='context_condition_confirmed')
+   elif n in (35,36,37,38,39):d.update(category='燃脂比较的范围待核',after='片中图表比较燃脂量与心率，台词称好出一半',note='46秒完整画面仍有图表遮挡；没有充分条件证明等时、等强度或因果关系，不采纳为通用运动结论。',visible_resolution='context_condition_confirmed')
+   elif n in (97,102):d['note']='表盘55%为剩余电量，不是识别准确率。'
+   elif n==116:d['note']='保留峰值亮度限定，不能替换为全局常亮。'
+  elif i==31:
+   if n==72:d.update(category='对照商品与主推型号分开',after='140W GaN是体积对比中的另一款充电器',note='完整画面字幕在说相比其他双口高功率，不把140W写到前述120W小方瓶上。',visible_resolution='context_condition_confirmed')
+   elif n in (78,79):d.update(category='双口功率分配',after='片中双口演示C1为80W MAX，C2为45W MAX，字幕称高达125W',note='与产品名120W、另款140W分开。这里只记录片中端口口径，未测试实际持续功率或协议条件。',visible_resolution='context_condition_confirmed')
+   elif n in (56,57,59,61):d['note']='97.51是仪表读数，100%是设备电量，100W为模式标识，不拼成充电效率100%。'
+   elif n==90:d['note']='约半小时须与片中对应机型、电量区间和协议条件一起核实，不能推广到所有手机。'
+   elif n==41:d['note']='3C而非三星认证；具体证书编号和认证有效性未独立核实。'
+  elif i==9:
+   if n in (64,69,70,89,91):d['note']='视频本身保留具体表现犹未可知；只记录其比较和预测，不当作已独立证实的Apple或小米规格。'
+   elif n==7:d['note']='15999是片中价格显示，时点、对应机型配置及实际成交条件未独立核实。'
+   elif n in (42,43,44):d['note']='219g字幕与秤面219.0对应；只能确认片中称量呈现，非独立校准测量。'
+   elif n in (127,129,131,132):d['note']='同形态下最大电池是有比较范围的宣传措辞；不省略同形态条件。'
+  elif i==64:
+   if n in (0,1):d['note']='开场反问而非博主认同该贬低判断。'
+   elif n in (40,81):d['note']='分别属于不同手柄：前述可连Switch，最后G7 Pro段不能连Switch；不要跨段混用。'
+   elif n in (63,64,65):d['note']='片中降价后不到200指该段九尾狐带底座套装，是历史活动口径，未作当前报价确认。'
+   elif n in (5,87):d['note']='军火库、败家总结为手柄内容比喻，不是现实军火或已核实的个人支出。'
+  out[c['candidate_id']]=d
+p=root.parent/'批次K已看画面决定.json';p.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for b in sorted(root.glob('*7d8285b9*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(b),str(p)],check=True)
+s={'batch':'K','total':len(out),'visible_resolution_counts':dict(collections.Counter(x['visible_resolution'] for x in out.values())),'audio_approved':0,'raw_asr_overwritten':False};(root.parent/'批次K验收计数.json').write_text(json.dumps(s,ensure_ascii=False,indent=2));print(json.dumps(s,ensure_ascii=False))
+p=root.parent/'整图补证决定.json';rows=json.loads(p.read_text());d=json.loads((root.parent/'7647037748498468115.json').read_text());c=next(c for c in d['candidates'] if c['candidate_id'].endswith('00072'));im=Path(c['image_path']);rows.append(dict(index=31,video_id='7647037748498468115',start=c['start'],category='体积对照物不等于主推型号',finding='完整画面140W GaN标在体积对比的另一款充电器上，字幕在说相比其他双口高功率；不能纠正主推120W型号为140W。',production_lesson='参数出现时先确认画面主体，是主角还是对照物，再把字幕与对象配对。',scope='仅核画面对象，未独立测试充电协议或功率。',image_path=str(im),image_sha256=hashlib.sha256(im.read_bytes()).hexdigest(),source_urls=[],audio_verbatim_approved=False));p.write_text(json.dumps(rows,ensure_ascii=False,indent=2))

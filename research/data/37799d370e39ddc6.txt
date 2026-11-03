@@ -1,0 +1,106 @@
+"""全时间范围2fps字幕带检测与逐行识别，保存变化、断点和帧依据；不是原声听审。"""
+from pathlib import Path
+import sys,json,time,subprocess,hashlib,math,logging
+BASE=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(BASE/'原声核验/RapidOCR依赖'))
+from rapidocr import RapidOCR
+import numpy as np
+import cv2
+from PIL import Image
+
+FF='/Users/ljw/Documents/ChatGPT/小工具/batch-media-tool/bin/ffmpeg'
+engine=RapidOCR()
+logging.getLogger('RapidOCR').setLevel(logging.ERROR)
+rows=json.loads((BASE/'求职准备总包/09_74条研究覆盖与缺口.json').read_text())['items']
+if sys.argv[1:]:rows=[r for r in rows if r['video_id'] in sys.argv[1:]]
+rows.sort(key=lambda r:r['index'])
+
+def read_exact(stream,size):
+    parts=[];got=0
+    while got<size:
+        block=stream.read(size-got)
+        if not block:return None
+        parts.append(block);got+=len(block)
+    return b''.join(parts)
+
+for row in rows:
+    vid=row['video_id'];folder=BASE/'内部分析素材'/vid
+    target=folder/'全时段字幕带OCR-未逐图验收.json'
+    if target.exists() and json.loads(target.read_text()).get('processing_complete'):continue
+    started=time.time();frames=folder/'全文字幕补证画面';frames.mkdir(exist_ok=True)
+    old=folder/'字幕画面OCR-未逐帧确认.json'
+    result={'video_id':vid,'index':row['index'],'topic':row['topic_summary'],'sample_rate_fps':2,
+      'scope':'全时段0.5秒网格；常规字幕带，特殊位置字幕另需按覆盖缺口补帧。短于采样间隔的文字可能漏检。',
+      'human_reviewed':False,'assistant_differences_reviewed':False,'audio_verbatim_approved':False,
+      'processing_complete':False,'samples_processed':0,'recognition_calls':0,'cache_hits':0,'lines':[]}
+    if old.exists():
+        original=json.loads(old.read_text())
+        if original['frames']:
+            with Image.open(original['frames'][0]['path']) as im:result.update(frame_width=im.width,frame_height=im.height,band_top=0,band_bottom=im.height)
+        for frame in original['frames']:
+            if 'error'in frame:continue
+            for text,score,box in zip(frame['lines'],frame['scores'],frame['boxes']):
+                result['lines'].append({'start':frame['sample_seconds'],'end':frame['sample_seconds']+.5,
+                  'text':text,'score':score,'box':box,'image_path':frame['path'],'method':'复用既有全画面2fpsOCR'})
+        result['samples_processed']=len(original['frames']);result['reused_existing_dense_ocr']=True
+        result['processing_complete']=True;result['elapsed_seconds']=round(time.time()-started,2)
+        target.write_text(json.dumps(result,ensure_ascii=False,indent=2))
+        print(json.dumps({'index':row['index'],'reused_frames':result['samples_processed'],'raw_lines':len(result['lines'])}),flush=True)
+        continue
+    p=folder/'重点参数画面初筛-未人工核对.json'
+    probe=json.loads(p.read_text())['candidates'][0]['image_path']
+    with Image.open(probe) as im:small_w,small_h=im.size
+    width=1280 if small_w>small_h else 640
+    height=small_h*(width//small_w)
+    y0=int(height*(.72 if width>height else .48))
+    result.update(frame_width=width,frame_height=height,band_top=y0,band_bottom=height)
+    source=next(folder.glob('*.mp4'))
+    proc=subprocess.Popen([FF,'-nostdin','-v','error','-i',str(source),'-vf',f'fps=2,scale={width}:-2','-pix_fmt','rgb24','-f','rawvideo','-'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cache={};last_by_text={};number=0
+    try:
+        while True:
+            raw=read_exact(proc.stdout,width*height*3)
+            if raw is None:break
+            image=np.frombuffer(raw,dtype=np.uint8).reshape(height,width,3)
+            t=number*.5;number+=1
+            detected=engine(image[y0:],use_det=True,use_cls=False,use_rec=False)
+            boxes=getattr(detected,'boxes',None)
+            if boxes is None:boxes=[]
+            frame_path=None
+            for box in boxes:
+                x1=max(0,int(np.min(box[:,0]))-2);x2=min(width,int(np.max(box[:,0]))+3)
+                a=max(0,int(np.min(box[:,1]))-2)+y0;b=min(height-y0,int(np.max(box[:,1]))+3)+y0
+                if x2-x1<8 or b-a<7:continue
+                crop=image[a:b,x1:x2]
+                # 仅跳过像素完全相同的行图，不以近似图像相似度吞掉一位数字变化。
+                key=hashlib.sha256(crop.tobytes()+str(crop.shape).encode()).hexdigest()
+                if key in cache:text,score=cache[key];result['cache_hits']+=1
+                else:
+                    recognized=engine(crop,use_det=False,use_cls=False,use_rec=True)
+                    txts=list(recognized.txts or []);scores=list(recognized.scores or [])
+                    text=txts[0] if txts else '';score=float(scores[0]) if scores else 0
+                    cache[key]=(text,score);result['recognition_calls']+=1
+                if not text.strip():continue
+                center=(a+b)/2
+                previous=last_by_text.get(text)
+                if previous is not None and t-previous['end']<=.51 and abs(center-previous['center_y'])<max(15,(b-a)):
+                    previous['end']=t+.5;previous['sample_count']+=1;previous['min_score']=min(previous['min_score'],score)
+                else:
+                    if frame_path is None:
+                        frame_path=frames/f'{t:09.3f}.jpg';Image.fromarray(image).save(frame_path,quality=94)
+                    entry={'start':t,'end':t+.5,'text':text,'score':score,'min_score':score,'box':[[x1,a],[x2,a],[x2,b],[x1,b]],
+                      'center_y':center,'image_path':str(frame_path),'sample_count':1,'method':'字幕带检测，原图行识别；相邻同字串合并'}
+                    result['lines'].append(entry);last_by_text[text]=entry
+            result['samples_processed']=number
+            if number%120==0:
+                result['last_sample_seconds']=t;result['elapsed_seconds']=round(time.time()-started,2)
+                target.write_text(json.dumps(result,ensure_ascii=False,indent=2))
+                print(json.dumps({'index':row['index'],'seconds_processed':t,'total_seconds':row['duration_seconds'],'lines':len(result['lines']),'elapsed':round(time.time()-started,1)}),flush=True)
+        error=proc.stderr.read().decode(errors='replace');code=proc.wait()
+        if code:raise RuntimeError(error)
+        result['processing_complete']=True;result['last_sample_seconds']=max(0,(number-1)*.5)
+        result['elapsed_seconds']=round(time.time()-started,2)
+        target.write_text(json.dumps(result,ensure_ascii=False,indent=2))
+        print(json.dumps({'index':row['index'],'done':number,'coalesced_lines':len(result['lines']),'recognition_calls':result['recognition_calls'],'cache_hits':result['cache_hits'],'elapsed':result['elapsed_seconds']}),flush=True)
+    except Exception:
+        proc.kill();proc.wait();target.write_text(json.dumps(result,ensure_ascii=False,indent=2));raise

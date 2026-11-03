@@ -1,0 +1,99 @@
+&&xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_user
+  - generic: 英俊姐妹日记
+- button "关注":
+  - generic: 关注
+- text: 2026年了，国产和苹果本质区别在哪？
+- link "#数码科技":
+  - /url: /search_result?keyword=%25E6%2595%25B0%25E7%25A0%2581%25E7%25A7%2591%25E6%258A%2580&type=54&source=web_note_detail_r10
+- link "#iPhone":
+  - /url: /search_result?keyword=iPhone&type=54&source=web_note_detail_r10
+- link "#国产手机":
+  - /url: /search_result?keyword=%25E5%259B%25BD%25E4%25BA%25A7%25E6%2589%258B%25E6%259C%25BA&type=54&source=web_note_detail_r10
+- link "#华为":
+  - /url: /search_result?keyword=%25E5%258D%258E%25E4%25B8%25BA&type=54&source=web_note_detail_r10
+- link "#小米":
+  - /url: /search_result?keyword=%25E5%25B0%258F%25E7%25B1%25B3&type=54&source=web_note_detail_r10
+- link "#手机选购指南":
+  - /url: /search_result?keyword=%25E6%2589%258B%25E6%259C%25BA%25E9%2580%2589%25E8%25B4%25AD%25E6%258C%2587%25E5%258D%2597&type=54&source=web_note_detail_r10
+- link "#数码大玩家":
+  - /url: /search_result?keyword=%25E6%2595%25B0%25E7%25A0%2581%25E5%25A4%25A7%25E7%258E%25A9%25E5%25AE%25B6&type=54&source=web_note_detail_r10
+- link "#手机推荐":
+  - /url: /search_result?keyword=%25E6%2589%258B%25E6%259C%25BA%25E6%258E%25A8%25E8%258D%2590&type=54&source=web_note_detail_r10
+- generic: 猜你想搜
+- generic: 2026年女性手机排行榜
+- generic: 08-25
+- generic: 共 7 条评论
+- link:
+  - /url: /user/profile/6148084c000000000201d0ee?channel_type=web_profile_page&&xsec_source=pc_comment
+- link "vv":
+  - /url: /user/profile/6148084c000000000201d0ee?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 除了苹果还有什么国产手机推荐的？嗯只要拍照清楚点就行
+- generic: 08-25浙江
+- generic: 赞
+- generic: "1"
+- link:
+  - /url: /user/profile/5d032746000000001000b4fb?channel_type=web_profile_page&&xsec_source=pc_comment
+- link "Misaya":
+  - /url: /user/profile/5d032746000000001000b4fb?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 拍照vivo演唱会最强的那款，手机没有对手，真的很厉害，其他旗舰拍照拍视频都比苹果强，苹果长焦太辣鸡了
+- generic: 08-25四川
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/5f3173f6000000000100b8c0?channel_type=web_profile_page&&xsec_source=pc_comment
+- link "P同学":
+  - /url: /user/profile/5f3173f6000000000100b8c0?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- link "@点点":
+  - /url: /user/profile/6183ecf0000000001000a284?xsec_source=pc_comment
+- text: 总结一下
+- generic: 08-25湖南
+- generic: 赞
+- generic: "1"
+- link:
+  - /url: /user/profile/6183ecf0000000001000a284?channel_type=web_profile_page&&xsec_source=pc_comment
+- link "点点":
+  - /url: /user/profile/6183ecf0000000001000a284?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 这篇主要是在对比2026年国产手机和iPhone的核心差异，结论是 没有谁全面碾压谁，更多是取向不同 。 国产手机优势： 快充和电池更激进，部分机型电池很大，短时补电后使用时长更占优 游戏相关堆料更足，散热、超分超帧、高刷普及度较高 信号在弱网场景下相对更稳 拍照硬件、长焦镜头、AI修图和可玩功能更多 系统功能更接地气，比如微信双开、NFC门禁、红外遥控等 价格段覆盖更全，中低价位选择更多 iPhone优势： 视频录制表现更强，流畅度、算法和变焦裁切损失控制较好 生态协同成熟，全家桶体验完整 系统相对省心，应用来源统一，广告和误下载干扰更少 保值率通常更高 笔记里的平衡判断： 喜欢硬件堆料、拍照玩法、功能丰富和性价比，更偏向国产 更看重视频、生态、省心和长期维护，更偏向iPhone 评论区里目前信息不多，有人提到更认可苹果的系统体验和手感。
+- generic: ...展开
+- generic: 08-25
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/6541e4950000000030031004?channel_type=web_profile_page&&xsec_source=pc_comment
+- link "月下行走":
+  - /url: /user/profile/6541e4950000000030031004?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- text: 不跟苹果风才有出路，从外仿到内
+- generic: 08-25广东
+- generic: "1"
+- generic: 回复
+- link:
+  - /url: /user/profile/65a4f4010000000003025b6b?channel_type=web_profile_page&&xsec_source=pc_comment
+- link "蒼樱拍子":
+  - /url: /user/profile/65a4f4010000000003025b6b?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: "1"
+- generic: 08-25上海
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/60e78ea1000000000101d7d6?channel_type=web_profile_page&&xsec_source=pc_comment
+- link "轻风（小芯）":
+  - /url: /user/profile/60e78ea1000000000101d7d6?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: "1"
+- generic: 08-25山东
+- generic: 赞
+- generic: 回复
+- generic: "- THE END -"
+- paragraph
+- generic: 说点什么...
+- generic: "26"
+- generic: "9"
+- generic: "7"
+- button "发送" [disabled]
+- button "取消"
+- button:
+- generic: 活动
+- button:
+- button:
+- iframe

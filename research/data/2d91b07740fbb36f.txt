@@ -1,0 +1,37 @@
+"""仅记录已实际查看的 b8dd8136 三张画面板；保留两版原稿。"""
+from pathlib import Path
+import json,subprocess,sys
+root=Path(__file__).resolve().parent/'全文字幕对照/差异画面板'
+overrides={}
+for board in sorted(root.glob('*b8dd8136*.jpg.json')):
+    for c in json.loads(board.read_text()):
+        i=c['index'];n=int(c['candidate_id'].split('_')[-1]);t=c['screen_text']
+        d={'category':'字幕措辞差异','after':'画面措辞已查看，原声说法待听。','note':'字幕可能删减、补充或改写口述，不自动覆盖ASR。'}
+        if i==44:d.update(category='字卡补充',after='OPPO礼盒',note='画面展示礼盒字卡；不采纳草稿中失真的开箱主题词。')
+        elif i==57:d.update(category='年份字卡',after='2026',note='为结尾年份字卡；不当作产品型号、售价或口述。')
+        elif i==47:
+            d.update(category='字幕纠词',after='华为小艺' if n==2 else '圈出手机即可消除',note='补全可见字幕；是否完整口述仍待原声确认。',verified_screen_reading=t)
+        elif i==52:
+            values={0:('字幕否定词','没有折痕','画面有否定词，没有折痕是作品中的展示表述，不据此独立证明物理零折痕。'),1:('字幕措辞差异','折叠屏开场设问','画面是设问句，保留画面与口述层次。'),2:('型号纠词','OPPO Find N6','型号包含N，不采纳Find6。'),3:('转场字卡','LATER','属于时间转场卡，不补进语音稿。')}
+            cat,a,note=values[n];d.update(category=cat,after=a,note=note,verified_screen_reading=t)
+        elif i==56:
+            d.update(category='型号纠词' if n==1 else '标题补全',after='荣耀Magic V6' if n==1 else '折叠大满贯',note='同一开场标题的多帧；Magic不是major。标题评价不是独立性能实测。',verified_screen_reading='荣耀Magic V6' if n==1 else '折叠大满贯')
+        elif i==21:
+            d.update(category='产品机身文字',after='机身标识／局部文字，未补进口述',note='HUAWEI、局部型号、键帽和ULTIMATE DESIGN均是实物上的字；局部或模糊片段不据此拼出完整型号。')
+            if n==5:d['verified_screen_reading']='ULTIMATE DESIGN'
+        elif i==23:
+            if n in (0,1):d.update(category='字幕补全',after='邪修P图' if n==0 else '到底有多邪',note='开场标题与设问补全；不由ASR鞋袖等同音词解释内容。',verified_screen_reading=t)
+            elif n==11:d.update(category='字幕同义差异',after='画面偏黄加蓝色',note='图中为黄，OCR繁简不改变调色指导；这只是本片示例，不能推广为所有照片的固定数值。',verified_screen_reading='画面偏黄加蓝色')
+            else:d.update(category='软件界面文字',after='界面标签或播放计时',note='大小及00:03前的计数来自操作界面；不是新增口述、视频成片时长或可推广参数。')
+        elif i==20:
+            d.update(category='衣服与道具印字',after='实物印字，排除口述纠错',note='已回图确认来自衣服或杯身；残缺英文OCR不补进语音稿。ASR反复我可以也不因这些印字得到支持，须保留待听。')
+        elif i==35:
+            vals={4:('字幕措辞差异','AI的设问'),7:('相机界面','1.8×是界面当时显示的变焦倍率'),14:('字幕纠词','变焦'),18:('字幕措辞差异','AI教您个高级的'),22:('字幕补全','嫌你不会拍照'),27:('功能名纠词','XMAGE智拍'),30:('字幕措辞差异','不需要很懂这些功能'),32:('字幕纠词','默认的XMAGE色卡'),33:('字幕纠词','调节选项丰富'),35:('功能名纠词','智拍'),37:('标题用词','AI智动档'),38:('字幕措辞差异','拍出来的作品算我的'),39:('字幕措辞差异','还是它的')}
+            cat,a=vals[n];d.update(category=cat,after=a,note='按实际画面记录短语；不将制拍、血腔等机器词采纳为功能名称。结尾作品归属是创作设问，不作为版权结论。')
+            if n==7:d['note']='仅为本帧界面的1.8倍；不是产品最大光学倍率或恒定拍摄参数。'
+            if n in (14,18,22,27,30,32,33,35,37,38,39):d['verified_screen_reading']=t
+        overrides[c['candidate_id']]=d
+target=root.parent/'批次A已看画面决定.json'
+target.write_text(json.dumps(overrides,ensure_ascii=False,indent=2))
+for board in sorted(root.glob('*b8dd8136*.jpg.json')):
+    subprocess.run([sys.executable,str(Path(__file__).parent/'保存画面板核对.py'),str(board),str(target)],check=True)

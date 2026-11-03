@@ -1,0 +1,37 @@
+"""研究者按主要叙事形式分类，非平台官方分类；原声听审未完成。"""
+from pathlib import Path
+import json
+BASE=Path(__file__).resolve().parent
+raw=json.loads((BASE/'74条公开作品目录.json').read_text())
+groups=[
+ ('单品体验与首发',[2,3,6,8,11,13,14,15,17,18,19,21,28,29,35,38,39,40,41,42,51,52,56,64,65,71,74]),
+ ('生活工作场景式种草',[1,27,34,36,37]),
+ ('功能讲解与操作教程',[12,23,25,26,45,49,63,67]),
+ ('跨产品跨系统比较与选购',[9,16,30,47,48,53,54,59,61]),
+ ('开箱与联名礼盒',[7,44,69,70,72,73]),
+ ('多品清单与节点导购',[4,31,32,33,50,58,60]),
+ ('行业趋势与观点',[5,22,24,55]),
+ ('展会现场与展会盘点',[43,66]),
+ ('创作过程与效果展示',[20,57]),
+ ('原理答疑与单问题验证',[10,46,62,68]),
+]
+assigned=[i for _,indices in groups for i in indices]
+assert sorted(assigned)==list(range(1,75)) and len(set(assigned))==74
+result=[]
+for name,indices in groups:
+    works=sorted([raw['items'][i-1] for i in indices],key=lambda x:x['likes_rounded'],reverse=True)
+    cutoff=works[min(2,len(works)-1)]['likes_rounded']
+    chosen=[w for w in works if w['likes_rounded']>=cutoff]
+    result.append(dict(category=name,total=len(works),selected=chosen,works=works,
+                       note='不足3条，全部保留' if len(works)<3 else '第三名展示值并列，均保留' if len(chosen)>3 else '按展示点赞选前三'))
+selected={w['video_id'] for g in result for w in g['selected']}
+out=dict(observed_date=raw['observed_date'],account=raw['account'],
+         status='研究者分类与最高赞候选；未完成原声听审，不是已核实播放量排名',
+         classification_note='按主要叙事形式归为一类，影片仍可兼具其他元素。未入选作品的归类主要依据标题简介，仍可能影响边界样本排名。',
+         commercial_note='商单是合作属性而非互斥形式；付费状态未核实，只列品牌推广内容候选。',
+         vlog_note='未确认独立生活Vlog；生活场景式种草另列，不直接当作日常Vlog。',
+         categories=result,selected_unique_count=len(selected))
+(BASE/'各类型前三候选与分类依据.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+for g in result:
+    print(g['category'],g['note'],[(w['index'],w['topic_summary'],w['likes_display']) for w in g['selected']])
+print('unique_selected',len(selected))

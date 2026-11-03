@@ -1,0 +1,50 @@
+"""十三张J画面板均已实际查看，另核三幅整图；只落画面结论。"""
+from pathlib import Path
+import json,subprocess,sys,collections,hashlib
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';out={}
+non={37:[6,8,20,22,23,25,26,31,33,47,74,128,130],16:[18,19,20,21,22,23,26,27,30,31,32,33,36,38,40,41,44,48,49,51,52,53,54,55,56,57,58,59,60,61,63,65,67,68,69,72,75,88,89,108,109,123,124,125,126,127],49:[25,26,31,69,70,72,73,75,87,92],12:[5,9,10,11,12,14,15,16,45,48,53,58,59,65,67,84,85,86,87,95,96,109,116,117,118,119],15:[32,33,35,37,41,93,99]}
+terms={37:{4:'做汇报PPT',7:'鸿蒙小圆本',9:'戳我',28:'华为MateBook14鸿蒙版',29:'小艺深度研究',30:'项目分析主题',32:'找资料、搭框架',34:'结合手头已有的文档',45:'一键生成PPT',53:'拿出试卷开始刷题',55:'翻一眼答案',60:'小艺深度解题',66:'一步一步',73:'点一下我不知道',75:'继续展开解释',81:'别到处乱放',82:'小艺帮记',89:'小艺慧记',94:'信息完整',105:'鸿蒙小圆本',114:'剪视频、写文案的人',115:'鸿蒙生态互联',126:'原野绿配色',127:'圆形波点键盘',136:'薄至14.5mm、轻至1.33kg',138:'薄至14.5mm',139:'轻至1.33kg',146:'鸿蒙小圆本',148:'把AI融入了',154:'分步讲解',159:'轻轻一碰',163:'MateBook14鸿蒙版',167:'MateBook14鸿蒙版',175:'超有AI的鸿蒙小圆本'},
+16:{6:'别急着下结论',34:'比它便宜的各有各的痛点',35:'iPhone17e',37:'iPhone17e',91:'挺香的',102:'渠道清库存',105:'等等党在标准版经常赢',106:'在Pro这里',111:'iPhone16系列',112:'iPhone16系列',131:'机型留评论区',132:'等等党'},
+49:{0:'三千多的MacBook neo',2:'哪儿哪儿不习惯',3:'别急着退货',4:'别急着退货',7:'别找任务栏',10:'程序坞',11:'程序坞和菜单栏',14:'程序坞固定',19:'左上角',21:'Wi-Fi蓝牙',22:'右上角',30:'Option再点',32:'最大化',33:'别找开始菜单',34:'程序坞',37:'Command＋空格',42:'iPhone',45:'办公软件',46:'这里都能找到',50:'把图标一拖',51:'仪式感',52:'访达',54:'特别爽功能',60:'千万不要点复制',63:'对应Windows',71:'Mac上大多交给Command',76:'怎么剪切',80:'Command＋Option＋V',81:'文件移动',84:'谜底就在谜面',86:'Mac中文键盘',88:'Caps Lock',89:'印上中/英切换',91:'大写锁定',95:'Fn键',96:'如果觉得桌面',97:'不顺手',102:'自定义',106:'右上角通知',112:'轻点以点按',120:'鼠标滚轮方向',121:'与触摸板反过来',122:'Windows老用户直觉',125:'可能是为了',131:'重新格式化为exFAT',132:'跨平台传文件',135:'Windows虚拟机'},
+12:{7:'盯价格这活交给AI',8:'习惯自己加班',13:'没事点进去看两眼',20:'ColorOS17',21:'AI主动帮你',27:'AI键',29:'ColorOS17',31:'意图推荐',32:'意图推荐',34:'蹲低价',35:'规划行程',40:'比自己去问省时间',44:'秒抢闹钟',46:'快递到了记取件码',51:'一键闪记',55:'场景',62:'一站式导航',64:'乘车码',70:'每个节点',77:'一支私人智囊团',88:'把任务分配给',90:'国庆出行需求',92:'何趣',93:'李理',94:'何趣',98:'李理',105:'时钟从锁屏到桌面动效',129:'凝光视效',130:'凝光视效',135:'按钮卡片风格统一',146:'彗星一样的指引光',147:'切歌',169:'OPPO Find X10',170:'OPPO Find X10'},
+15:{0:'高能片段',5:'首字母一个一个按',6:'进度条来回拖',8:'热情全耗在',11:'让电视自己找',14:'JUOS系统的海信电视',16:'巨简单更懂家',23:'给方案',26:'一整顿饭帮张罗',31:'海信JUOS底层大脑',54:'听懂',57:'海信小聚',58:'在呢',72:'无间道3',75:'那我可要过分了',78:'赵匡胤杯酒释兵权',79:'太平年：赵匡胤杯酒释兵权',80:'已找到',82:'跳转对应剧情片段',83:'动动嘴巴',86:'看它跟不跟得上',97:'欢迎来龙餐馆主演',103:'更有料',105:'快速识别剧中人物',113:'接二连三往下答',117:'小聚问屏',119:'换以前',122:'识图搜索',123:'查完回来',125:'剧情忘干净',126:'问小聚',128:'俩彩蛋',130:'息屏',131:'照样讲故事',139:'一会儿回家',140:'沙发上一瘫',141:'随口说',142:'海信小聚',143:'在呢',148:'回复',154:'不是机械回答',160:'还有功能',162:'对它说一句',163:'把我的声音复刻了',165:'用我的声音聊天',172:'千人千面',183:'JUOS',190:'评论区',191:'小聚猜'}}
+for board in sorted(root.glob('*1b8080e9*.jpg.json')):
+ for c in json.loads(board.read_text()):
+  i=c['index'];n=int(c['candidate_id'].split('_')[-1]);d=dict(category='字幕措辞差异',after='本处字幕已实际查看，保留与草稿措辞差异',note='不以同义、删补或字幕与口语的差别直接判原声错误。',visible_resolution='wording_preserved_audio_pending',verified_screen_reading=None)
+  if n in non.get(i,[]):d.update(category='界面或引用材料文字',after='画面中的界面、实物标识或引用材料',note='不拼接为博主新增口述，也不作为个人经历、收入或参数独立验证。',visible_resolution='non_speech_text')
+  if n in terms.get(i,{}):d.update(category='可见用词纠正',after=terms[i][n],note='只确认画面写法；原声逐字、功能真实性和使用条件未因此获准。',visible_resolution='screen_correction_confirmed')
+  if i==37:
+   if n in (20,22,23,25,26):d['note']='不安全入口是衣服印字，不能当成电脑软件安全提示或博主口述。'
+   elif n in (82,89):d['note']='小艺帮记与小艺慧记在片中为不同写法，不能合并为一个字幕词。'
+   elif n==114:d['note']='广告中剪视频写文案的用途举例，不据此确认账号实际制作分工、员工人数或她的真实日常。'
+   elif n in (133,134,136,138,139):d.update(category='尺寸重量与单位',after='薄至14.5mm、轻至1.33kg',note='同段清楚画面补齐截断的m/k；是片中薄至、轻至口径，未经独立测量。',visible_resolution='context_condition_confirmed')
+   elif n in (168,170,171,172):d.update(category='价格与权益对象分开',after='国补到手价、限时赠鼠标及500多元权益分别记录',note='500多元位于购机限时享权益段，不是电脑价格或商单费；片中活动和国补时效、资格未作当前确认。',visible_resolution='context_condition_confirmed')
+  elif i==16:
+   if n in (48,49,51,52,53,54,55,56,57,58,59,60,61,63,65,67,68,69,72,75):d.update(category='引用爆料与不同预测',after='片中新闻截图并列9GB与12GB等不同预测',note='41秒整图明确写爆料并不一致，并涉及不同机型。OCR有漏不是的情况；不以熟悉的规格统一数字，不当作苹果已公布或当前已验证参数。',visible_resolution='context_condition_confirmed')
+   elif n in (18,19,20,21,22,23,26,27):d['note']='引用表格中的机型、定位和开售节奏，不因此确认实际上市时间或官方规格。'
+   elif n==93:d.update(category='假设价位',after='涨价涨到10000元',note='本处为讨论中的价格情境，不统计成当前商品定价或博主收入。',visible_resolution='context_condition_confirmed')
+  elif i==49:
+   if n==0:d['note']='片中历史大致价位，不是当前核价或博主商单收入。'
+   elif n in (60,76,80,81):d.update(category='文件移动操作语境',after='Command＋Option＋V属于文件移动段',note='千万不要点复制不能截为所有场景禁用复制；只研究教程的步骤组织，未操作用户文件。具体系统和配置条件未独立测试。',visible_resolution='context_condition_confirmed')
+   elif n==71:d['note']='字幕保留大多，不能推广为所有Windows Ctrl快捷键均可直接换Command。'
+   elif n==131:d['note']='exFAT为作品中的跨平台处理建议，未在用户磁盘执行格式化，兼容性与数据迁移条件仍需单独核实。'
+   elif n in (120,121,122,125):d['note']='涉及配置和习惯差异，保留可能等限定；不据此声称所有macOS版本默认行为相同。'
+  elif i==12:
+   if n==24:d.update(category='版本适配限定',after='因机型版本不同，功能体验略有差异，以实际体验为准',note='30秒完整画面底部保留该条件，不能把所有功能概括为所有OPPO机型必然可用。',visible_resolution='context_condition_confirmed')
+   elif n in (10,12,14,16):d['note']='770、790、810等是界面蹲低价示例，不是手机售价或账号收入；日期时钟分别记录。'
+   elif n in (45,46,48):d.update(category='取件码演示',after='快递取件码与一键闪记示例',note='画面中的示例码不复刻进公开文本，不能当私人联系方式、订单证据或本人的真实包裹。',visible_resolution='context_condition_confirmed')
+   elif n in (44,53):d['note']='秒抢闹钟是提醒功能名称，不能改成已保证抢到票或自动购票。'
+   elif n in (77,92,93,94,98):d['note']='私人智囊团为AI功能比喻，何趣、李理是演示智能体名称，不是账号团队成员。'
+  elif i==15:
+   if n in (18,20,135,136,138,139,140,141,144):d.update(category='广告场景与个人事实分开',after='电视功能演示中的生活台词',note='天气、崴脚、点歌与回家等情节不足以确认本人住址、健康史或长期喜好。陈粒小半是片中点歌示例。',visible_resolution='context_condition_confirmed')
+   elif n==97:d['note']='只记录片中字幕欢迎来龙餐馆的写法；不凭记忆替换影片标题或独立核准演员名单。'
+   elif n in (130,131):d.update(category='息屏不等于关机',after='息屏后继续讲故事',note='字幕是息屏，不能写成电源关闭后仍能使用；这里只确认演示表述。',visible_resolution='context_condition_confirmed')
+   elif n in (163,165):d.update(category='声音功能演示',after='本段宣传复刻声音及以该声音聊天',note='未凭图片确认克隆音色准确性，也未实际执行声音克隆；与本人私下习惯和团队声优分工无关。',visible_resolution='context_condition_confirmed')
+  out[c['candidate_id']]=d
+p=root.parent/'批次J已看画面决定.json';p.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for board in sorted(root.glob('*1b8080e9*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(board),str(p)],check=True)
+stats={'batch':'J','total':len(out),'visible_resolution_counts':dict(collections.Counter(d['visible_resolution'] for d in out.values())),'audio_approved':0,'raw_asr_overwritten':False};(root.parent/'批次J验收计数.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2));print(json.dumps(stats,ensure_ascii=False))
+p=root.parent/'整图补证决定.json';rows=json.loads(p.read_text())
+for idx,vid,t,cat,finding,lesson,scope in [(16,'7682363831254912282',41,'引用材料的预测冲突','片中新闻整图写明内存爆料并不一致，9GB与12GB分别涉及不同报告、机型；OCR漏不是会反转意义。','新闻截图先看来源性质、否定词和对应机型，不能选一个熟悉数字覆盖其他预测。','只确认画面引用的内容，未独立核准报道或当前实际规格。'),(12,'7686414672605531434',30,'系统功能适配条件','完整画面底部注明因机型版本不同功能体验有差异，以实际体验为准。','功能脚本可用具体任务、操作和结果组织，同时将适配条件留在可读位置。','没有独立测试每个机型和版本。')]:
+ im=base/'内部分析素材'/vid/'全文字幕补证画面'/f'{t:09.3f}.jpg';rows=[r for r in rows if (r['video_id'],r['start'],r['category'])!=(vid,t,cat)];rows.append(dict(index=idx,video_id=vid,start=t,category=cat,finding=finding,production_lesson=lesson,scope=scope,image_path=str(im),image_sha256=hashlib.sha256(im.read_bytes()).hexdigest(),source_urls=[],audio_verbatim_approved=False))
+p.write_text(json.dumps(rows,ensure_ascii=False,indent=2))

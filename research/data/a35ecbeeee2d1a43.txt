@@ -1,0 +1,56 @@
+from pathlib import Path
+r=Path(__file__).resolve().parents[1]
+p=r/'dist/index.html'
+s=p.read_text()
+start=s.index('<section class="section wrap" id="opportunity">')
+end=s.index('<section class="section wrap" id="exam">',start)
+section='''<section class="section wrap" id="opportunity">
+<div class="section-head"><span class="kicker">05 / MY ROLE</span><div><h2>作为毕导的IP助理，<br>我把问号推进到成片。</h2><p>不只整理资料。我需要把争论拆清、把解释拍清、把下一步交到团队手上。</p></div></div>
+<div class="role-equation" aria-label="我的工作：问题、证据、画面、交付"><span>问题</span><i>＋</i><span>证据</span><i>＋</i><span>画面</span><i>＝</i><strong>能执行的方案</strong></div>
+<div class="workbench" id="my-work">
+<div class="workbench-heading"><div><span class="kicker">一个具体选题 / 工作样稿</span><h3>“100 mL”，<br>到底在说哪一份水？</h3></div><p>以量筒作品为例，<br>点开四步，看我怎么接住这个任务。</p></div>
+<div class="workbench-layout">
+<div class="work-tabs" role="tablist" aria-label="我的选题工作步骤" aria-orientation="vertical">
+<button id="work-tab-0" type="button" role="tab" aria-selected="true" aria-controls="work-panel-0" data-work-tab="0"><span>01</span><b>拆问题</b><small>一张研究卡</small><i aria-hidden="true">↗</i></button>
+<button id="work-tab-1" type="button" role="tab" aria-selected="false" aria-controls="work-panel-1" tabindex="-1" data-work-tab="1"><span>02</span><b>做验证</b><small>一个拍摄方案</small><i aria-hidden="true">↗</i></button>
+<button id="work-tab-2" type="button" role="tab" aria-selected="false" aria-controls="work-panel-2" tabindex="-1" data-work-tab="2"><span>03</span><b>讲清楚</b><small>一份双栏脚本</small><i aria-hidden="true">↗</i></button>
+<button id="work-tab-3" type="button" role="tab" aria-selected="false" aria-controls="work-panel-3" tabindex="-1" data-work-tab="3"><span>04</span><b>交给团队</b><small>一张执行清单</small><i aria-hidden="true">↗</i></button>
+</div>
+<div class="work-panels">
+<article id="work-panel-0" role="tabpanel" aria-labelledby="work-tab-0" tabindex="0" class="work-panel">
+<div class="work-panel-top"><span>RESEARCH CARD / 01</span><span class="work-symbol" aria-hidden="true">?</span></div><h4>先分清，我们在问什么。</h4><p class="work-lead">刻度读数、筒内体积、倒出体积，是三个需要分开说的量。</p>
+<dl class="work-facts"><div><dt>观众争论</dt><dd>看到100 mL，就等于能倒出100 mL吗？</dd></div><div><dt>关键线索</dt><dd>原作品涉及In / Ex标定和挂壁水。先看器具标识，再谈读数代表什么。</dd></div><div><dt>研究动作</dt><dd>逐句记录视频解释；查对应器具说明，把“已核实、待核实、需实验”分开。</dd></div><div><dt>表达边界</dt><dd>不把一个器具的残留量套到所有量筒；量出式读数要连同规定操作一起说明。</dd></div></dl>
+<div class="work-output"><span>我的交付</span><strong>研究卡：一个主问题、三个概念、待验证项。</strong><a href="https://www.douyin.com/video/7690946606966770953" target="_blank" rel="noopener">对应作品 ↗</a></div>
+</article>
+<article id="work-panel-1" role="tabpanel" aria-labelledby="work-tab-1" tabindex="0" class="work-panel" hidden>
+<div class="work-panel-top"><span>TEST PLAN / 02</span><span class="work-symbol wide" aria-hidden="true">In / Ex</span></div><h4>用一个对照，把区别拍出来。</h4><p class="work-lead">先确认标定，再比较同一器具的筒内水量与按规定操作交付的水量。</p>
+<dl class="work-facts"><div><dt>准备什么</dt><dd>标识清楚的器具、接水容器、精度适配的天平、温度计和水。</dd></div><div><dt>怎样验证</dt><dd>分别记录空器具与装水质量、空接水容器与接水后质量，用质量差和实际温度对应的水密度估算体积。</dd></div><div><dt>固定什么</dt><dd>读数视线、液面位置、器具状态，以及说明书要求的流出和等待操作；重复测量，保留原始记录。</dd></div><div><dt>怎样拍清</dt><dd>标识特写 → 平视读数 → 同框拍倾倒与接水 → 天平数值 → 挂壁水近景。差异不足以分辨时，先调整测量方案。</dd></div></dl>
+<div class="work-output"><span>我的交付</span><strong>验证方案＋道具表＋镜头清单；实测后再填写数值。</strong></div>
+</article>
+<article id="work-panel-2" role="tabpanel" aria-labelledby="work-tab-2" tabindex="0" class="work-panel" hidden>
+<div class="work-panel-top"><span>SCRIPT / 03</span><span class="work-symbol" aria-hidden="true">→</span></div><h4>先让人猜，再让人看懂。</h4><p class="work-lead">保留毕导“一本正经研究小问题”的气质，让每一句解释都有对应画面。</p>
+<div class="script-pairs"><div class="script-label"><span>旁白样稿</span><span>画面任务</span></div><div><p>“这儿写着100 mL。倒出来，也一定是100 mL吗？”</p><p>刻度特写，停顿留给观众判断。</p></div><div><p>“先别急着倒，看看筒上写的是In还是Ex。”</p><p>推近标识，分别标注“量入 / 量出”。</p></div><div><p>“里面有多少，和按规定能倒出多少，要分开说。”</p><p>筒内水、接水、挂壁水分色图解；叠加实际测量记录。</p></div><div><p>“所以下次读量筒，别只盯着刻度，也看看它怎么标定。”</p><p>回到开场画面，突出标识与操作条件。</p></div></div>
+<div class="work-output"><span>我的交付</span><strong>双栏脚本＋字幕重点；幽默服务理解，结论对照实测。</strong></div>
+</article>
+<article id="work-panel-3" role="tabpanel" aria-labelledby="work-tab-3" tabindex="0" class="work-panel" hidden>
+<div class="work-panel-top"><span>HANDOFF / 04</span><span class="work-symbol" aria-hidden="true">✓</span></div><h4>让团队知道，下一步做什么。</h4><p class="work-lead">我把任务交成能判断、能拍、能剪的材料，再把发布后的问题接回来。</p>
+<dl class="work-facts"><div><dt>交给毕导</dt><dd>选题研究卡、关键解释与未决问题，请确认科学表述和个人表达。</dd></div><div><dt>交给拍摄</dt><dd>道具及器具标识、对照操作、镜头顺序和测量记录表。数据不足，先补测。</dd></div><div><dt>交给剪辑</dt><dd>双栏脚本、原始测量片段、图解层次和字幕重点。关键条件跟着结论出现。</dd></div><div><dt>发布后接回</dt><dd>归纳“我的器具是哪种”“为什么会残留”等待观察的追问，记录同时间窗的赞评藏转，再决定补解释还是做新题。</dd></div></dl>
+<div class="work-output"><span>验收标准</span><strong>问题说得清、证据对得上、条件看得见、镜头拍得出来。</strong></div>
+</article>
+</div></div>
+<div class="workbench-bottom"><span id="workStepCount" aria-live="polite">01 / 04 · 拆问题</span><button type="button" id="workNext">下一步：做验证 <span aria-hidden="true">→</span></button></div>
+</div>
+<div class="assistant-tools"><div class="subsection-head"><span class="kicker">AI / MY METHOD</span><h3>AI接哪一步，<br>我把关哪一步。</h3><p>围绕这条选题使用工具，输入具体材料，拿回具体交付。</p></div>
+<div class="tool-row"><span class="tool-name">ChatGPT / 豆包<small>问题拆解与脚本备选</small></span><div><p><b>我给：</b>原视频笔记、器具说明摘录、实测记录。</p><p><b>AI做：</b>拆概念、列矛盾、整理双栏脚本，不补造数据。</p><p><b>我核：</b>逐条回到原材料，确认科学解释、限制条件与语气。</p><details class="prompt-sheet"><summary>查看我的调研指令 <span aria-hidden="true">＋</span></summary><div><p id="researchPrompt">只依据我提供的视频笔记、器具说明和测量记录，整理一张研究卡：①观众争论的问题；②刻度读数、筒内体积、倒出体积的区别；③每条解释对应的材料位置；④缺少证据和需要实验的项目。不要编造来源、条件或测量结果。证据不足请标记“待核实”。</p><button type="button" class="prompt-copy" data-copy-prompt="researchPrompt">复制指令</button></div></details></div></div>
+<div class="tool-row"><span class="tool-name">剪映<small>转写与粗剪</small></span><div><p><b>我给：</b>已确认脚本、口播和实验素材。</p><p><b>工具做：</b>辅助转写、对齐字幕，整理可比较的剪辑版本。</p><p><b>我核：</b>In / Ex、单位与数字不能转错；实验过程不因剪辑省略关键条件。</p></div></div>
+<div class="tool-row"><span class="tool-name">飞书<small>协作与验收</small></span><div><p><b>我放：</b>研究卡、脚本、镜头表、原始记录与负责人。</p><p><b>团队看：</b>哪个结论已确认、哪个镜头待拍、哪个版本待审核。</p><p><b>我跟：</b>每轮修改落到具体材料，发布后把评论问题接回选题库。</p></div></div>
+</div>
+<div class="assistant-abilities"><div class="subsection-head"><span class="kicker">WHAT I BRING</span><h3>做这类视频，<br>我需要练成的三项能力。</h3></div><div class="ability-grid"><article><span>01</span><h4>科学判断</h4><p>能拆概念、读原材料、设计对照。知道什么时候可以下结论，什么时候需要补测。</p></article><article><span>02</span><h4>视觉翻译</h4><p>把抽象解释变成物件、动作和图解。先安排观众看什么，再决定字幕怎么写。</p></article><article><span>03</span><h4>执行与复盘</h4><p>把研究交成脚本和镜头表。能跟进版本、记录测量、从评论追问中提出下一步。</p></article></div></div>
+<a class="chapter-next" href="#exam"><span>看完了，能讲明白他是谁吗？</span><span aria-hidden="true">→</span></a></section>
+
+'''
+s=s[:start]+section+s[end:]
+s=s.replace('<a href="#business">团队</a><a href="#exam">','<a href="#business">团队</a><a href="#opportunity">我的工作</a><a href="#exam">')
+s=s.replace('report.css?v=20261014-2','report.css?v=20261014-4').replace('lab.js?v=20261014-3','lab.js?v=20261014-4')
+s=s.replace('  </div>\n</section>\n<header','  </div>\n  <div class="entry-route" aria-label="从生活问题到科学解释"><span><small>01</small>看见问题</span><i aria-hidden="true">→</i><span><small>02</small>动手验证</span><i aria-hidden="true">→</i><strong><small>03</small>讲清原理</strong></div>\n</section>\n<header',1)
+p.write_text(s)

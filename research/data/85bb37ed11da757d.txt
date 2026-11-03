@@ -1,0 +1,44 @@
+#import <Foundation/Foundation.h>
+#import <Vision/Vision.h>
+
+int main(int argc, const char *argv[]) {
+  @autoreleasepool {
+    if (argc != 3) return 2;
+    NSError *error = nil;
+    NSData *input = [NSData dataWithContentsOfFile:@(argv[1])];
+    NSArray *paths = [NSJSONSerialization JSONObjectWithData:input options:0 error:&error];
+    if (![paths isKindOfClass:[NSArray class]]) return 3;
+    NSMutableArray *rows = [NSMutableArray array];
+    NSUInteger count = 0;
+    for (NSString *path in paths) {
+      @autoreleasepool {
+        VNRecognizeTextRequest *request = [[VNRecognizeTextRequest alloc] init];
+        request.revision = VNRecognizeTextRequestRevision2;
+        request.usesCPUOnly = YES;
+        request.recognitionLevel = VNRequestTextRecognitionLevelAccurate;
+        request.recognitionLanguages = @[@"zh-Hans", @"en-US"];
+        request.usesLanguageCorrection = NO;
+        VNImageRequestHandler *handler = [[VNImageRequestHandler alloc] initWithURL:[NSURL fileURLWithPath:path] options:@{}];
+        NSError *frameError = nil;
+        BOOL ok = [handler performRequests:@[request] error:&frameError];
+        NSMutableArray *lines = [NSMutableArray array];
+        if (ok) {
+          for (VNRecognizedTextObservation *observation in request.results) {
+            VNRecognizedText *candidate = [[observation topCandidates:1] firstObject];
+            if (candidate) [lines addObject:candidate.string];
+          }
+          [rows addObject:@{@"path":path, @"lines":lines}];
+        } else {
+          [rows addObject:@{@"path":path, @"error":frameError.localizedDescription ?: @"unknown"}];
+        }
+        count++;
+        if (count % 50 == 0) fprintf(stdout, "OCR_PROGRESS %lu\n", (unsigned long)count);
+        fflush(stdout);
+      }
+    }
+    NSData *result = [NSJSONSerialization dataWithJSONObject:rows options:NSJSONWritingPrettyPrinted | NSJSONWritingSortedKeys error:&error];
+    if (![result writeToFile:@(argv[2]) atomically:YES]) return 4;
+    fprintf(stdout, "OCR_COMPLETE %lu\n", (unsigned long)rows.count);
+  }
+  return 0;
+}

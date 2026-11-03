@@ -1,0 +1,9 @@
+Browser tab: 1715492982, Title: "【冬季推荐】别顶了，你顶不住的！_哔哩哔哩_bilibili", URL: "https://www.bilibili.com/zh-Hans/video/BV1V7BTBBEfF/?vd_source=e8c77ec2745c52a64a4b171735b072f7".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 34
++								278 container
++									279 image
++									280 image
++									281 text 关注
++									282 text 00:59 / 09:26
+The focused UI element is 32 button 播放/暂停

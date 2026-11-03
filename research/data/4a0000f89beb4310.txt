@@ -1,0 +1,21 @@
+from pathlib import Path
+
+root = Path(__file__).parent
+file = root / 'dist/index.html'
+html = file.read_text()
+html = html.replace('<ellipse cx="147" cy="185" rx="40" ry="9"', '<ellipse class="liquid-surface" cx="147" cy="185" rx="40" ry="9"', 1)
+html = html.replace('<ellipse cx="353" cy="279" rx="62" ry="13"', '<ellipse class="liquid-surface beaker-surface" cx="353" cy="279" rx="62" ry="13"', 1)
+html = html.replace('<path d="M115 81V315"', '<path class="glass-shine" d="M115 81V315"', 1)
+html = html.replace('<g class="plate-object">', '<g class="plate-object"><g class="plate-idle">', 1)
+plate_end = 'stroke-linecap="round"/></g><g class="plate-detail"'
+assert plate_end in html
+html = html.replace(plate_end, 'stroke-linecap="round"/><path class="plate-glint" d="M120 218C140 168 220 133 305 156" fill="none" stroke="white" stroke-width="11" stroke-linecap="round"/></g></g><g class="plate-detail"', 1)
+html = html.replace('<ellipse cx="250" cy="390" rx="115"', '<ellipse class="ball-shadow" cx="250" cy="390" rx="115"', 1)
+html = html.replace('<g class="ball-object">', '<g class="ball-object"><g class="ball-idle">', 1)
+ball_end = 'stroke-width="8" opacity=".75"/></g><g class="comment-orbit">'
+assert ball_end in html
+html = html.replace(ball_end, 'stroke-width="8" opacity=".75"/></g></g><g class="comment-orbit">', 1)
+footer = '<div class="case-visual-footer"><span id="caseVisualName">01 / 量筒读数</span><span>互动原理示意</span></div>'
+assert footer in html
+html = html.replace(footer, '<button class="object-hit-area" id="caseObjectAction" type="button" aria-label="点击量筒倒水" aria-describedby="caseActionHint"></button><button class="motion-toggle" id="caseMotionToggle" type="button" aria-label="暂停图形动效" aria-pressed="false">暂停动效 <span aria-hidden="true">Ⅱ</span></button><div class="case-visual-footer"><span id="caseVisualName">01 / 量筒读数</span><span id="caseActionHint">点量筒，倒出看看 ↗</span></div>', 1)
+file.write_text(html)

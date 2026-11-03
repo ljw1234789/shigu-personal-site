@@ -1,0 +1,48 @@
+"""4ed2dd45十一张画面板及五幅整图均已实际查看。"""
+from pathlib import Path
+import json,subprocess,sys,collections,hashlib
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';out={}
+non={22:[14,16,24,25,27,38,78,79,117,119,120,126,129,130,134,141,142,143,144,146,147],26:[8,9,11,19,23,25,26,27,28,29,30,31,32,33,34,36,37,39,40,41,42,48,50,51,54,57,61,63],27:[72,75,76,77,78,79],60:[10,14,16,41,42,44,45,47,48,50,51,53,55,59,70],36:[37,39,92,103,106,108,116]}
+terms={22:{8:'苹果卖得好',9:'折叠屏成为大众品类',12:'折叠屏成为大众品类',39:'软件不适配',51:'公摊',53:'方形内屏',67:'直板机',77:'阔折方案',98:'AI姿势推荐',105:'Pura X Max',118:'折痕和转轴',136:'销量'},
+26:{3:'五杀',13:'Win＋Shift＋S',15:'剪贴板',45:'装波大的',49:'N卡用户Alt＋F10',55:'过去最长20分钟屏幕内容',56:'过去最长20分钟屏幕内容',60:'NVIDIA信息浮窗',62:'Alt＋Z；即时回放',65:'A卡Ctrl＋Shift＋S'},
+27:{3:'双桌面平板',25:'10000多mAh',27:'反向充电',31:'华为星跃键盘',32:'桌面模式',33:'咖啡店',36:'鸿蒙平板系统',37:'鸿蒙电脑同源',42:'20多个网页',45:'剪映专业版',46:'粗剪素材',53:'两个生态',55:'平板生态',61:'PC级应用',66:'OLED云晰柔光屏',67:'高低音分频6扬声器',69:'沉浸感',81:'和平精英',93:'四指从右往左滑',99:'学而思学习中心',106:'华为MatePad Pro Max'},
+60:{3:'女生的思维选礼物',13:'沃尔沃1∶16还原款',17:'操作逻辑',19:'挖掘机',26:'施工梦想',39:'宣示主权',43:'别的男孩子有的',46:'我的男孩也一定要有',49:'我的男孩也一定要有',52:'彻底杀死比赛',54:'彻底杀死比赛',58:'谁扛得住',61:'二十毫米导轨',62:'瞄具',63:'枪把保险开关',66:'扣动扳机',74:'口袋打印机（相片）',75:'口袋打印机（相片）',89:'通往过去的船票'},
+36:{8:'3D打印小摆件',17:'五金、胶水',20:'紫藤花装饰摆件',21:'紫藤花装饰摆件',25:'摇杆键帽',29:'装饰性摆件',33:'下沉式奶酪纸巾盒',36:'MakerWorld',44:'板烧鸡腿堡纸巾盒',47:'板烧鸡腿堡',49:'实用类模型',51:'耳环、戒指',66:'食品接触级耗材',78:'X2D',80:'蝴蝶结丝带首饰托盘',83:'拆支撑',85:'给模型留疤',87:'主辅双喷嘴挤出系统',89:'辅助喷嘴打印支撑结构',91:'拆除支撑',97:'废料',101:'废料更少',115:'减少打印异味'}}
+for board in sorted(root.glob('*4ed2dd45*.jpg.json')):
+    for c in json.loads(board.read_text()):
+        i=c['index'];n=int(c['candidate_id'].split('_')[-1])
+        d=dict(category='字幕措辞差异',after='已查看本处实际字幕，保留与草稿措辞差异',note='不把口语删补、繁简和同义差异自动判为原声错误。',visible_resolution='wording_preserved_audio_pending',verified_screen_reading=None)
+        if n in non.get(i,[]):d.update(category='界面实物或引用文字',after='实物、界面、纸条或引用资料文字',note='不补成口述；残字不猜全，不由纸条推断真实关系。',visible_resolution='non_speech_text')
+        if n in terms.get(i,{}):d.update(category='可见用词纠正',after=terms[i][n],note='按实际画面记录写法；原声与独立产品事实未核准。',visible_resolution='screen_correction_confirmed')
+        if i==22:
+            if n in (18,19,21,22):d.update(category='市场信息来源与时态',after='片中供应链消息、预测或历史市场数',note='1000万台是片中消息口径，不能改成实际已售或当前实时销量；1000万不是1000方。引用来源、期别和最终出货尚未独立核实。',visible_resolution='context_condition_confirmed')
+            elif n==77:d['note']='画面保留大概率，是作品当时推测，不改成苹果已确定方案或当前事实。'
+            elif n==58:d.update(category='词形待核',after='本处空间利用比喻的字形仍待确认',note='不按熟悉的四字词直接重写画面；不作为技术参数或事实。',visible_resolution='uncertain_screen_text')
+        elif i==26:
+            if n==13:d['note']='12.5秒完整画面为截图Win＋Shift＋S；不是51.5秒的A卡即时回放组合。'
+            elif n in (49,62,65):d.update(category='操作归属与前置条件',after=terms[i][n],note='N卡保存回放、打开浮窗及A卡回放分开；片中须开启对应即时回放。只记当时教程，当前驱动及自定义键位未核实。',visible_resolution='context_condition_confirmed')
+            elif n in (55,56):d.update(category='时长上限与混行',after='片中称过去最长20分钟',note='最长不是始终保存固定20分钟；帧速率、分辨率和60FPS字样来自后方设置，不拼成同一句。',visible_resolution='context_condition_confirmed')
+        elif i==27:
+            if n==23:d.update(category='重量比喻与容量分开',after='500ml快乐水是重量联想',note='500ml不是平板电池容量、尺寸或设备实测重量。',visible_resolution='context_condition_confirmed')
+            elif n in (42,43,45,46):d['note']='本片展示多任务及剪映粗剪；不能由广告演示认定账号团队全部成片均用剪映或是出镜者独立完成。'
+            elif n in (73,74):d.update(category='适配提示被裁切',after='字幕写144帧，界面另有正在……的提示未完整入镜',note='104.5秒完整画面仍截掉提示后半，不能补猜适配状态，也不当作所有版本稳定144帧的证据。',visible_resolution='uncertain_screen_text')
+            elif n==101:d.update(category='学习应用与实物赠品分开',after='画面是平板内课程播放，不证明赠送第二台学习机',note='送学而思学习机为该段体验比喻，不能仅据此宣传买一送一实物。',visible_resolution='context_condition_confirmed')
+            elif n in (102,103,104):d.update(category='会员活动条件',after='7月前、新用户7天体验、会员五折',note='均为当时学习服务权益；会员五折不是平板硬件五折，当前期限、资格与条款未核实。',visible_resolution='context_condition_confirmed')
+        elif i==60:
+            if n==13:d['note']='1∶16为还原比例，不写成1.16或售价。'
+            elif n in (43,46,49):d['note']='是礼物纸条示例，不据此确认现实男友、收礼对象或已发生的赠礼。'
+            elif n in (52,54):d['note']='是网络夸张修辞，不是实际伤害事件。'
+            elif n==61:d['note']='已直接读图为二十毫米；保留20，不采纳前轮OCR掉二变十。仅核可见规格，不提供实际改装说明。'
+            elif n in (93,94,95):d.update(category='脚本概括与调查证据分开',after='片中用意义与场景对照男女送礼思维',note='没有公开抽样方法、样本量和问卷；不能作为普遍性别心理结论。',visible_resolution='context_condition_confirmed')
+        elif i==36:
+            if n==42:d.update(category='作品公开自称',after='本条自称麦当劳女孩',note='记录此片公开表达，不据此推断麦当劳员工身份、长期饮食或私人消费记录。',visible_resolution='context_condition_confirmed')
+            elif n in (66,68):d.update(category='耗材与成品条件分开',after='片中称食品接触级耗材',note='没有因此核准整个打印成品的接触食物条件、工艺或检测报告；不把耗材一句话替代成品依据。',visible_resolution='context_condition_confirmed')
+            elif n in (105,109,110):d.update(category='软件估时与实测分开',after='双喷嘴8h54m、单喷嘴13h44m为软件时间预估',note='143秒完整画面还分别列准备和模型打印等时间；不能说这是团队秒表实测或把软件成本值当博主收入。设置与计入项目的可比性未核准。',visible_resolution='context_condition_confirmed')
+        out[c['candidate_id']]=d
+target=root.parent/'批次H已看画面决定.json';target.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for board in sorted(root.glob('*4ed2dd45*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(board),str(target)],check=True)
+stats={'batch':'H','total':len(out),'visible_resolution_counts':dict(collections.Counter(d['visible_resolution'] for d in out.values())),'audio_approved':0,'raw_asr_overwritten':False}
+(root.parent/'批次H验收计数.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2));print(json.dumps(stats,ensure_ascii=False))
+p=root.parent/'整图补证决定.json';rows=json.loads(p.read_text());vid='7642176494382370054';im=base/'内部分析素材'/vid/'全文字幕补证画面/00143.000.jpg'
+rec=dict(index=36,video_id=vid,start=143,category='软件时间预估与成片效率论述',finding='完整软件画面明确时间预估；双喷嘴总时间8h54m，单喷嘴总时间13h44m，准备、模型打印与延时摄影项目也分别出现。不能改写成团队现场计时实测，成本18.91也不是本账号报价或收入。',production_lesson='效率题的数字先记录来源与包含项目，再决定能做什么比较；软件估时、实际计时和商业报价分开。',scope='确认片中软件表格及字段，未验证两次切片配置公平性、实际成品结果或当前产品性能。',image_path=str(im),image_sha256=hashlib.sha256(im.read_bytes()).hexdigest(),source_urls=[],audio_verbatim_approved=False)
+rows=[r for r in rows if (r['video_id'],r['start'],r['category'])!=(vid,143,rec['category'])];rows.append(rec);p.write_text(json.dumps(rows,ensure_ascii=False,indent=2))

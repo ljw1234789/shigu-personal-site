@@ -1,0 +1,27 @@
+"""按公开作品ID补充类型候选；不会把ASR标记为原声听审。"""
+from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor
+import sys, json, threading
+from 分析样片 import transcribe, BASE, ENGINE
+sys.path.insert(0,str(ENGINE))
+from engine.resolver import resolve,download
+
+def prepare(vid):
+    folder=BASE/'内部分析素材'/vid
+    folder.mkdir(parents=True,exist_ok=True)
+    try:
+        if not list(folder.glob('*.mp4')):
+            url='https://www.douyin.com/video/'+vid
+            info=resolve(url)
+            files=download(url,info,folder,lambda p:None,threading.Event())
+            metadata={k:info.get(k) for k in ['title','duration','width','height']}
+            metadata.update(id=vid,url=url,files=[str(p) for p in files])
+            (folder/'来源.json').write_text(json.dumps(metadata,ensure_ascii=False,indent=2))
+            print(json.dumps({'downloaded':vid,'duration':info.get('duration')},ensure_ascii=False),flush=True)
+        transcribe(vid)
+    except Exception as e:
+        print(json.dumps({'id':vid,'error':str(e)},ensure_ascii=False),flush=True)
+
+if __name__=='__main__':
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        list(pool.map(prepare,sys.argv[1:]))

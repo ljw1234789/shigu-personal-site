@@ -1,0 +1,190 @@
+- link:
+  - /url: /explore?channel_type=web_note_detail_r10
+- list:
+  - link "首页":
+    - /url: /explore?channel_id=homefeed_recommend
+    - generic: 首页
+  - link "点点 ai":
+    - /url: /ai_chat?from=sidebar&conversationId=
+    - generic: 点点
+    - generic: ai
+  - link "RED":
+    - /url: /red_video
+    - generic: RED
+  - link "直播":
+    - /url: /livelist?channel_id=&channel_type=web_note_detail_r10
+    - generic: 直播
+  - link "发布":
+    - /url: https://creator.xiaohongshu.com/publish/publish?source=official
+    - generic: 发布
+  - link "通知":
+    - /url: /notification
+    - generic: 通知
+  - link "消息":
+    - /url: /chat?channel_id=&channel_type=web_note_detail_r10
+    - generic: 消息
+  - link "我":
+    - /url: /user/profile/67639317000000001801dee5
+    - generic: 我
+  - paragraph:
+    - link "沪ICP备13030189号":
+      - /url: //beian.miit.gov.cn/
+    - text: "|"
+    - link "营业执照":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323gtfdq87a0690nvj5qg0000000003rivl690
+    - text: "|"
+    - link "2026沪公网安备31010102002533号":
+      - /url: //www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533
+    - text: "|"
+    - link "增值电信业务经营许可证：沪B2-20150021":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnu0anu7690nvj5qg0000000003pqm217o
+    - text: "|"
+    - link "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf
+    - text: "|"
+    - link "互联网药品信息服务资格证书：(沪)-经营性-2023-0144":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf
+    - text: "|"
+    - link "药品网络交易服务第三方平台备案：(沪)网药平台备字[2023]第000007-001号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b83267hojcdl6062u7au7rdm9g007pkcqrshk5s8.pdf
+    - text: "|"
+    - link "违法不良信息举报电话：4006676810":
+      - /url: //www.shjbzx.cn
+    - text: "|"
+    - link "上海市互联网举报中心":
+      - /url: //www.shjbzx.cn
+    - text: "|"
+    - link "网上有害信息举报专区":
+      - /url: //www.12377.cn
+    - text: "|"
+    - link "自营经营者信息":
+      - /url: //dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf
+    - text: "|"
+    - link "网络文化经营许可证：沪网文[2021]1545-113号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnuec7u0690nvj5qg0000000003o78obkg
+    - text: "| 个性化推荐算法 网信算备310101216601302230019号"
+  - paragraph: © 2014-2026
+  - paragraph: 行吟信息科技（上海）有限公司
+  - paragraph: 地址：上海市黄浦区马当路388号C座
+  - paragraph: 电话：9501-3888
+- generic "更多":
+  - generic: 更多
+- generic "关于我们":
+  - generic: 关于我们
+- paragraph:
+  - link "沪ICP备13030189号":
+    - /url: //beian.miit.gov.cn/
+  - text: "|"
+  - link "营业执照":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323gtfdq87a0690nvj5qg0000000003rivl690
+  - text: "|"
+  - link "2026沪公网安备31010102002533号":
+    - /url: //www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533
+  - text: "|"
+  - link "增值电信业务经营许可证：沪B2-20150021":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnu0anu7690nvj5qg0000000003pqm217o
+  - text: "|"
+  - link "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf
+  - text: "|"
+  - link "互联网药品信息服务资格证书：(沪)-经营性-2023-0144":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf
+  - text: "|"
+  - link "药品网络交易服务第三方平台备案：(沪)网药平台备字[2023]第000007-001号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b83267hojcdl6062u7au7rdm9g007pkcqrshk5s8.pdf
+  - text: "|"
+  - link "违法不良信息举报电话：4006676810":
+    - /url: //www.shjbzx.cn
+  - text: "|"
+  - link "上海市互联网举报中心":
+    - /url: //www.shjbzx.cn
+  - text: "|"
+  - link "网上有害信息举报专区":
+    - /url: //www.12377.cn
+  - text: "|"
+  - link "自营经营者信息":
+    - /url: //dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf
+  - text: "|"
+  - link "网络文化经营许可证：沪网文[2021]1545-113号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnuec7u0690nvj5qg0000000003o78obkg
+  - text: "| 个性化推荐算法 网信算备310101216601302230019号"
+- paragraph: © 2014-2026
+- paragraph: 行吟信息科技（上海）有限公司
+- paragraph: 地址：上海市黄浦区马当路388号C座
+- paragraph: 电话：9501-3888
+- textbox:
+  - /placeholder: 搜索小红书
+- textbox "大冰职场观点"
+- button:
+- button "问点点 ai":
+  - generic: 问点点
+  - generic: ai
+- generic: 推荐
+- generic: 推荐
+- generic: 穿搭
+- generic: 穿搭
+- generic: 美食
+- generic: 美食
+- generic: 彩妆
+- generic: 彩妆
+- generic: 影视
+- generic: 影视
+- generic: 职场
+- generic: 职场
+- generic: 情感
+- generic: 情感
+- generic: 家居
+- generic: 家居
+- generic: 游戏
+- generic: 游戏
+- generic: 旅行
+- generic: 旅行
+- generic: 健身
+- generic: 健身
+- generic: 视频
+- generic: 视频
+- generic: 00:00 / 02:41
+- paragraph: 倍速
+- paragraph: 2K 高帧率
+- link:
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_note_detail_r10&&xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_note_detail_r10&parent_page_channel_type=web_profile_board&&xsec_source=pc_user
+  - generic: 英俊姐妹日记
+- button "关注":
+  - generic: 关注
+- heading "荣耀Magic9首发评测" [level=1]
+- text: ARRL X 荣耀，会擦出什么火花？
+- link "#荣耀magic9":
+  - /url: /search_result?keyword=%25E8%258D%25A3%25E8%2580%2580magic9&type=54&source=web_note_detail_r10
+- link "#荣耀magic9掌中阿莱电影机":
+  - /url: /search_result?keyword=%25E8%258D%25A3%25E8%2580%2580magic9%25E6%258E%258C%25E4%25B8%25AD%25E9%2598%25BF%25E8%258E%25B1%25E7%2594%25B5%25E5%25BD%25B1%25E6%259C%25BA&type=54&source=web_note_detail_r10
+- link "#肖战荣耀旗舰手机全球代言人":
+  - /url: /search_result?keyword=%25E8%2582%2596%25E6%2588%2598%25E8%258D%25A3%25E8%2580%2580%25E6%2597%2597%25E8%2588%25B0%25E6%2589%258B%25E6%259C%25BA%25E5%2585%25A8%25E7%2590%2583%25E4%25BB%25A3%25E8%25A8%2580%25E4%25BA%25BA&type=54&source=web_note_detail_r10
+- link "#荣耀Magic9首发评测":
+  - /url: /search_result?keyword=%25E8%258D%25A3%25E8%2580%2580Magic9%25E9%25A6%2596%25E5%258F%2591%25E8%25AF%2584%25E6%25B5%258B&type=54&source=web_note_detail_r10
+- generic: 猜你想搜
+- generic: 荣耀magic9价格
+- generic: 09-29
+- generic: 共 1 条评论
+- link:
+  - /url: /user/profile/5d1dfa2b000000001602447d?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "橘猫":
+  - /url: /user/profile/5d1dfa2b000000001602447d?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 荣耀好物局
+- generic: 10-21天津
+- generic: 赞
+- generic: 回复
+- generic: "- THE END -"
+- paragraph
+- generic: 说点什么...
+- generic: "31"
+- generic: "4"
+- generic: "1"
+- button "发送" [disabled]
+- button "取消"
+- button:
+- generic: 活动
+- button:
+- button:
+- iframe

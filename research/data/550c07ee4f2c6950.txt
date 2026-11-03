@@ -1,0 +1,20 @@
+import re
+DIGITS={'零':0,'〇':0,'一':1,'二':2,'两':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9}
+
+def cn_number(text):
+    if all(c in DIGITS for c in text):return ''.join(str(DIGITS[c]) for c in text)
+    total=0;part=0;number=0
+    for c in text:
+        if c in DIGITS:number=DIGITS[c]
+        elif c in '十百千':part+=(number or 1)*{'十':10,'百':100,'千':1000}[c];number=0
+        elif c in '万亿':total+=(part+number)*{'万':10000,'亿':100000000}[c];part=number=0
+    return str(total+part+number)
+
+def norm(s):
+    s=s.lower().replace('ｏ','o').replace('＋','+').replace('×','x').replace('—','-').replace('～','-')
+    s=re.sub(r'([零〇一二两三四五六七八九十百千]+)(?=万|亿|元|块|毫米|厘米|分钟|小时|秒|倍|英寸|组|种|个|核|颗|位|天|年|赫兹|毫安)',lambda m:cn_number(m[1]),s)
+    for a,b in [('毫安时','mah'),('毫安','mah'),('赫兹','hz'),('毫米','mm'),('厘米','cm'),('英寸','inch'),('小时','h'),('分钟','min'),('加','+'),('到','-')]:
+        if a in ['加','到']:s=re.sub(r'(?<=[a-z0-9])'+a+r'(?=[a-z0-9])',b,s)
+        else:s=s.replace(a,b)
+    return re.sub(r'[^a-z0-9\u4e00-\u9fff.*%+-]','',s)
+

@@ -1,0 +1,60 @@
+"""建立可逐项追溯的分母，不把OCR对应或单一差异回图升级为全句／事实批准。"""
+from pathlib import Path
+import json,re,sys
+base=Path(__file__).resolve().parent;pack=base/'求职准备总包'
+sys.path.insert(0,str(base/'原声核验'))
+from 字幕文本规则 import norm
+rx=re.compile(r'\d+(?:\.\d+)?(?:万|亿)?(?:mah|wh|w|hz|db|gb|tb|mb|mm|cm|km|inch|元|块|倍|组|种|个|年|天|位|颗|核|%|h|min|s)?',re.I)
+catalog=json.loads((pack/'09_74条研究覆盖与缺口.json').read_text())['items']
+sentence_rows=[];number_rows=[];summary=[]
+for item in catalog:
+    vid=item['video_id'];folder=base/'内部分析素材'/vid
+    raw=json.loads((folder/'自动转写-large-v3-turbo-未听审.json').read_text())['result']['segments']
+    alignment_path=base/'原声核验/全文字幕对照'/(vid+'.json')
+    alignment=json.loads(alignment_path.read_text());support={r['segment_index']:r for r in alignment['segments']}
+    local_number_count=0;local_related=0
+    for sid,s in enumerate(raw):
+        near=[c for c in alignment['candidates'] if sid in c['large_segment_indices']]
+        checked=[c for c in near if c.get('assistant_image_checked')]
+        sid_key=f'{vid}:S{sid+1:04d}';text=norm(s['text']);matches=list(rx.finditer(text))
+        sentence_rows.append(dict(sentence_id=sid_key,index=item['index'],video_id=vid,
+          segment_index=sid,start=s['start'],end=s['end'],normalized_characters=len(text),
+          machine_screen_supported_characters=support[sid]['exact_screen_supported_characters'],
+          linked_difference_ids=[c['candidate_id'] for c in near],checked_difference_ids=[c['candidate_id'] for c in checked],
+          numeric_occurrences=len(matches),full_sentence_visual_text_approved=False,audio_verbatim_approved=False,
+          scope='相邻差异回图不等于整个语音段审校通过；无文字对应也不能直接判定纯口述。'))
+        for ordinal,m in enumerate(matches,1):
+            token=m.group();matching=[c for c in near if token in c.get('normalized_screen','')]
+            reviewed=[c for c in matching if c.get('assistant_image_checked')]
+            local_number_count+=1;local_related+=bool(reviewed)
+            number_rows.append(dict(occurrence_id=f'{sid_key}:N{ordinal:02d}',sentence_id=sid_key,
+              index=item['index'],video_id=vid,start=s['start'],end=s['end'],asr_normalized_candidate=token,
+              normalized_character_range=[m.start(),m.end()],
+              matching_machine_screen_candidates=[c['candidate_id'] for c in matching],
+              checked_matching_screen_candidates=[c['candidate_id'] for c in reviewed],
+              adjacent_checked_decision_ids=[c['candidate_id'] for c in checked],
+              parameter_object_and_conditions_approved=False,current_product_fact_approved=False,audio_verbatim_approved=False,
+              note='数字来自机器草稿，可含型号、重复、计时、幻觉或错数；需要回看相邻决定及整图，不能自动当作独立参数。'))
+    summary.append(dict(index=item['index'],video_id=vid,topic=item['topic_summary'],sentences=len(raw),
+      numeric_occurrences=local_number_count,numeric_occurrences_with_checked_matching_image_candidate=local_related,
+      full_sentence_visual_text_approved=0,full_parameter_facts_approved=0))
+counts=dict(sentence_segments=len(sentence_rows),numeric_occurrences=len(number_rows),
+  numeric_occurrences_with_checked_matching_image_candidate=sum(bool(r['checked_matching_screen_candidates']) for r in number_rows),
+  full_sentence_visual_text_approved=0,full_parameter_facts_approved=0,audio_verbatim_approved=0)
+assert counts['sentence_segments']==4875 and counts['numeric_occurrences']==980
+obj=dict(updated_on='2026-11-02',counts=counts,
+  scope='只做逐项定位和证据关联；不展示完整作者逐字稿。数字来源为large草稿，另有画面独有数字未计入此分母。',
+  definition='语音段不是人审句；每次数字出现不是独立事实。已看对应差异只说明图像证据被查看，未据此批准全部参数或原声。',
+  per_video=summary,sentences=sentence_rows,numeric_occurrences=number_rows)
+dest=pack/'20_逐句与数字参数对照索引.json';dest.write_text(json.dumps(obj,ensure_ascii=False,indent=2))
+lines=['英俊姐妹日记｜逐句与数字参数对照索引','日期：2026年11月2日',obj['scope'],obj['definition'],'',
+  f"已建立{len(sentence_rows)}个语音段和{len(number_rows)}次数字出现的唯一编号；详细JSON关联到相邻画面决定。",
+  f"其中{counts['numeric_occurrences_with_checked_matching_image_candidate']}次数字的相邻同值画面差异已回图；这不是已核准参数数。",
+  '全句画面批准、完整参数事实批准与原声听审批准均为0。画面独有参数、对象、版本、峰值、起价和适用条件仍需补证。','']
+for row in summary:lines.append(f"{row['index']:02d}｜{row['topic']}：语音段{row['sentences']}；数字出现{row['numeric_occurrences']}；同值差异回图关联{row['numeric_occurrences_with_checked_matching_image_candidate']}。")
+(pack/'20_逐句与数字参数对照索引.txt').write_text('\n'.join(lines))
+p=pack/'05_证据与覆盖记录.json';data=json.loads(p.read_text())
+for f in [dest,pack/'20_逐句与数字参数对照索引.txt']:
+    if str(f) not in data['additional_documents_20261102']:data['additional_documents_20261102'].append(str(f))
+data['sentence_numeric_index_20261102']=counts;p.write_text(json.dumps(data,ensure_ascii=False,indent=2))
+print(json.dumps(counts,ensure_ascii=False))

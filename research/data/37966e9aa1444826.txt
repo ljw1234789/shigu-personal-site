@@ -1,0 +1,75 @@
+- banner:
+  - link "bilibili":
+    - /url: //www.bilibili.com/zh-Hans
+    - img "bilibili"
+  - generic: 下载客户端
+  - textbox
+  - link:
+    - /url: //space.bilibili.com/zh-Hans/1820524742
+  - link "1 消息":
+    - /url: //message.bilibili.com/zh-Hans
+    - generic: "1"
+    - generic: 消息
+  - link "动态":
+    - /url: //t.bilibili.com/zh-Hans
+    - generic: 动态
+  - link "收藏":
+    - /url: //space.bilibili.com/zh-Hans/1820524742/favlist
+    - generic: 收藏
+  - link "历史":
+    - /url: //www.bilibili.com/zh-Hans/history
+    - generic: 历史
+  - link "创作中心":
+    - /url: //member.bilibili.com/zh-Hans/platform/home
+    - generic: 创作中心
+  - link "投稿":
+    - /url: //member.bilibili.com/zh-Hans/platform/upload/video/frame
+    - generic: 投稿
+- generic: 搞机所
+- generic: 
+- text: 关注
+- link "发消息":
+  - /url: //message.bilibili.com/zh-Hans#/whisper/mid178690106
+- generic: 
+- link " 主页":
+  - /url: /zh-Hans/178690106
+  - generic: 
+  - generic: 主页
+- link " 动态":
+  - /url: /zh-Hans/178690106/dynamic
+  - generic: 
+  - generic: 动态
+- link " 投稿 999+":
+  - /url: /zh-Hans/178690106/upload
+  - generic: 
+  - generic: 投稿
+  - generic: 999+
+- link " 合集和系列 7":
+  - /url: /zh-Hans/178690106/lists
+  - generic: 
+  - generic: 合集和系列
+  - generic: "7"
+- textbox " ":
+  - /placeholder: 搜索视频、动态
+  - text: 英俊
+- generic: 
+- generic: 
+- generic: 关注数
+- generic "530"
+- generic: 粉丝数
+- generic "2,610,156": 261万
+- generic: 获赞数
+- generic "截至2026.11.2, 视频、动态、专栏累计获赞15,694,202": 1569.4万
+- generic: 播放数
+- generic "截止昨天，累计播放数为534,546,710": 5.3亿
+- main:
+  - generic: 视频
+  - generic: "0"
+  - generic: 动态
+  - generic: "0"
+  - generic: TA的视频
+  - img "nothing"
+  - generic: 没有找到任何关于”英俊”的视频
+  - button "搜索全站"
+  - button "查看全部视频"
+  - generic: 

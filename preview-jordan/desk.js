@@ -108,7 +108,7 @@ function setInspection(){
       '<a href="'+esc(t.url)+'" target="_blank" rel="noopener">打开'+esc(t.name)+' ↗</a>';
   }else if(a.kind==='about'){
     name='刘俊威 · 短视频内容策划与剪辑';description='工科背景，曾在毕导团队参与科普视频制作。用 AI 辅助选题、脚本、剪辑与发布复盘。';
-    html='<a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a>';
+    html='<a href="../research/">我的内容研究 ↗</a><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a>';
   }
   actions.innerHTML=html+'<button data-inspect="close">收回桌面 ×</button>';
   $('#inspection-title').textContent=name;
@@ -475,6 +475,7 @@ function notebook(x,z){
     c.font='65px DeskSerif,serif';c.fillText('刘俊威',140,810);c.font='45px DeskSerif,serif';c.fillText('短视频内容策划与剪辑',140,920);
     c.fillStyle='#5e6470';c.font='43px DeskSerif,serif';let y=wrap(c,'工科背景让我习惯追问原理，做内容则让我学习如何把它讲清楚。',140,1110,1240,80)+90;
     wrap(c,'曾在毕导团队参与科普视频制作，用 AI 辅助选题和脚本，也参与剪辑、发布与复盘。',140,y,1240,80);
+    c.fillStyle='#52718c';c.font='35px DeskSerif,serif';c.fillText('内容研究 / 英俊姐妹日记 · 毕导',140,1710);
   });return paper(t,null,x,z,-.12,{kind:'about'},'认识刘俊威',3.8,4.63);
 }
 function floorText(text,x,z,w,color='#b39d50',size=84){

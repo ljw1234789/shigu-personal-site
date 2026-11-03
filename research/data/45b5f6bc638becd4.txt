@@ -1,0 +1,256 @@
+- link:
+  - /url: /explore?channel_type=web_note_detail_r10
+- list:
+  - link "首页":
+    - /url: /explore?channel_id=homefeed_recommend
+    - generic: 首页
+  - link "点点 ai":
+    - /url: /ai_chat?from=sidebar&conversationId=
+    - generic: 点点
+    - generic: ai
+  - link "RED":
+    - /url: /red_video
+    - generic: RED
+  - link "直播":
+    - /url: /livelist?channel_id=&channel_type=web_note_detail_r10
+    - generic: 直播
+  - link "发布":
+    - /url: https://creator.xiaohongshu.com/publish/publish?source=official
+    - generic: 发布
+  - link "通知":
+    - /url: /notification
+    - generic: 通知
+  - link "消息":
+    - /url: /chat?channel_id=&channel_type=web_note_detail_r10
+    - generic: 消息
+  - link "我":
+    - /url: /user/profile/67639317000000001801dee5
+    - generic: 我
+  - paragraph:
+    - link "沪ICP备13030189号":
+      - /url: //beian.miit.gov.cn/
+    - text: "|"
+    - link "营业执照":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323gtfdq87a0690nvj5qg0000000003rivl690
+    - text: "|"
+    - link "2026沪公网安备31010102002533号":
+      - /url: //www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533
+    - text: "|"
+    - link "增值电信业务经营许可证：沪B2-20150021":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnu0anu7690nvj5qg0000000003pqm217o
+    - text: "|"
+    - link "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf
+    - text: "|"
+    - link "互联网药品信息服务资格证书：(沪)-经营性-2023-0144":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf
+    - text: "|"
+    - link "药品网络交易服务第三方平台备案：(沪)网药平台备字[2023]第000007-001号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b83267hojcdl6062u7au7rdm9g007pkcqrshk5s8.pdf
+    - text: "|"
+    - link "违法不良信息举报电话：4006676810":
+      - /url: //www.shjbzx.cn
+    - text: "|"
+    - link "上海市互联网举报中心":
+      - /url: //www.shjbzx.cn
+    - text: "|"
+    - link "网上有害信息举报专区":
+      - /url: //www.12377.cn
+    - text: "|"
+    - link "自营经营者信息":
+      - /url: //dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf
+    - text: "|"
+    - link "网络文化经营许可证：沪网文[2021]1545-113号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnuec7u0690nvj5qg0000000003o78obkg
+    - text: "| 个性化推荐算法 网信算备310101216601302230019号"
+  - paragraph: © 2014-2026
+  - paragraph: 行吟信息科技（上海）有限公司
+  - paragraph: 地址：上海市黄浦区马当路388号C座
+  - paragraph: 电话：9501-3888
+- generic "更多":
+  - generic: 更多
+- generic "关于我们":
+  - generic: 关于我们
+- paragraph:
+  - link "沪ICP备13030189号":
+    - /url: //beian.miit.gov.cn/
+  - text: "|"
+  - link "营业执照":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323gtfdq87a0690nvj5qg0000000003rivl690
+  - text: "|"
+  - link "2026沪公网安备31010102002533号":
+    - /url: //www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533
+  - text: "|"
+  - link "增值电信业务经营许可证：沪B2-20150021":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnu0anu7690nvj5qg0000000003pqm217o
+  - text: "|"
+  - link "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf
+  - text: "|"
+  - link "互联网药品信息服务资格证书：(沪)-经营性-2023-0144":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf
+  - text: "|"
+  - link "药品网络交易服务第三方平台备案：(沪)网药平台备字[2023]第000007-001号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b83267hojcdl6062u7au7rdm9g007pkcqrshk5s8.pdf
+  - text: "|"
+  - link "违法不良信息举报电话：4006676810":
+    - /url: //www.shjbzx.cn
+  - text: "|"
+  - link "上海市互联网举报中心":
+    - /url: //www.shjbzx.cn
+  - text: "|"
+  - link "网上有害信息举报专区":
+    - /url: //www.12377.cn
+  - text: "|"
+  - link "自营经营者信息":
+    - /url: //dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf
+  - text: "|"
+  - link "网络文化经营许可证：沪网文[2021]1545-113号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnuec7u0690nvj5qg0000000003o78obkg
+  - text: "| 个性化推荐算法 网信算备310101216601302230019号"
+- paragraph: © 2014-2026
+- paragraph: 行吟信息科技（上海）有限公司
+- paragraph: 地址：上海市黄浦区马当路388号C座
+- paragraph: 电话：9501-3888
+- textbox:
+  - /placeholder: 搜索小红书
+- textbox "搜索小红书"
+- button:
+- button "问点点 ai":
+  - generic: 问点点
+  - generic: ai
+- generic: 推荐
+- generic: 推荐
+- generic: 穿搭
+- generic: 穿搭
+- generic: 美食
+- generic: 美食
+- generic: 彩妆
+- generic: 彩妆
+- generic: 影视
+- generic: 影视
+- generic: 职场
+- generic: 职场
+- generic: 情感
+- generic: 情感
+- generic: 家居
+- generic: 家居
+- generic: 游戏
+- generic: 游戏
+- generic: 旅行
+- generic: 旅行
+- generic: 健身
+- generic: 健身
+- generic: 视频
+- generic: 视频
+- text: /
+- link:
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_note_detail_r10&&xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_note_detail_r10&parent_page_channel_type=web_profile_board&&xsec_source=pc_user
+  - generic: 英俊姐妹日记
+- button "关注":
+  - generic: 关注
+- text: 游戏手机也做机圈灯厂？一加 16 明日星光上手体验
+- link "#一加16":
+  - /url: /search_result?keyword=%25E4%25B8%2580%25E5%258A%25A016&type=54&source=web_note_detail_r10
+- link "#一加16明日星光":
+  - /url: /search_result?keyword=%25E4%25B8%2580%25E5%258A%25A016%25E6%2598%258E%25E6%2597%25A5%25E6%2598%259F%25E5%2585%2589&type=54&source=web_note_detail_r10
+- link "#游戏手机":
+  - /url: /search_result?keyword=%25E6%25B8%25B8%25E6%2588%258F%25E6%2589%258B%25E6%259C%25BA&type=54&source=web_note_detail_r10
+- generic: 猜你想搜
+- generic: 一加16预计价格
+- generic: 09-20
+- generic: 共 12 条评论
+- link:
+  - /url: /user/profile/5919028d82ec3979b4d6baa8?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "泡沫":
+  - /url: /user/profile/5919028d82ec3979b4d6baa8?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 很久没出原神限定了
+- generic: 09-23安徽
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/61bc2fbf000000000201fc8e?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "cfj":
+  - /url: /user/profile/61bc2fbf000000000201fc8e?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 背面灯不会浪费电量吗[捂脸R]
+- generic: 09-22江苏
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/61bc2fbf000000000201fc8e?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "cfj":
+  - /url: /user/profile/61bc2fbf000000000201fc8e?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 一加16顶配1t内存大概多少价位
+- generic: 09-22江苏
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/61128f8e00000000010014a6?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "皖枫zgr":
+  - /url: /user/profile/61128f8e00000000010014a6?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 什么时候能增强磁吸呀？
+- generic: 09-22江西
+- generic: "1"
+- generic: 回复
+- link:
+  - /url: /user/profile/5b880b2cd6544a0001481e08?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "天~子":
+  - /url: /user/profile/5b880b2cd6544a0001481e08?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 不喜欢这种花里胡哨的设计，鬼火少年，还有我喜欢带壳，所以我要黑色的[doge][doge]
+- generic: 09-21四川
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/565fd8c49eb57836c65ffadd?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "嘟嘟元宝":
+  - /url: /user/profile/565fd8c49eb57836c65ffadd?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 左边的是蓝牙音箱吗？
+- generic: 09-21上海
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/565fd8c49eb57836c65ffadd?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "嘟嘟元宝":
+  - /url: /user/profile/565fd8c49eb57836c65ffadd?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 可是玻璃背板 不带壳容易碎啊[哭惹R] 要不做个耐摔测试[doge]
+- generic: 09-21上海
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/61025743000000002002bdbb?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "请君沉淀":
+  - /url: /user/profile/61025743000000002002bdbb?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 博主好像丁点儿啊[石化R]
+- generic: 09-20重庆
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/5cb9cb0d000000001203bdc7?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "Nina Williams":
+  - /url: /user/profile/5cb9cb0d000000001203bdc7?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 这就跟汽车底盘下面设计了一圈超牛逼好看的呼吸灯一样，谁会趴到地汽车底盘去看，你拿着这手机出去只能套透明壳或者不套壳。要不你怎么装逼后背的那呼吸灯啊？[偷笑R]
+- generic: 09-24山西
+- generic: 赞
+- generic: 回复
+- link:
+  - /url: /user/profile/64633c76000000002a0090ba?channel_type=web_note_detail_r10&&xsec_source=pc_comment
+- link "混也是一种生活":
+  - /url: /user/profile/64633c76000000002a0090ba?channel_type=web_note_detail_r10&parent_page_channel_type=web_user_board&&xsec_source=pc_comment
+- generic: 还是没有vivox500pm好看
+- generic: 09-21云南
+- generic: 赞
+- generic: 回复
+- paragraph
+- generic: 说点什么...
+- generic: "77"
+- generic: "26"
+- generic: "12"
+- button "发送" [disabled]
+- button "取消"
+- button:
+- generic: 活动
+- button:
+- button:
+- iframe

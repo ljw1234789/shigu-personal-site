@@ -1,0 +1,30 @@
+import Foundation
+import Vision
+import AppKit
+
+// 只识别调用方指定的研究画面，不截屏、不读取浏览器。
+let args = Array(CommandLine.arguments.dropFirst())
+guard args.count == 2,
+      let input = try? Data(contentsOf: URL(fileURLWithPath: args[0])),
+      let paths = try? JSONSerialization.jsonObject(with: input) as? [String]
+else { exit(2) }
+var rows = [[String: Any]]()
+for path in paths {
+    autoreleasepool {
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = .accurate
+        request.recognitionLanguages = ["zh-Hans", "en-US"]
+        request.usesLanguageCorrection = false
+        do {
+            let handler = VNImageRequestHandler(url: URL(fileURLWithPath: path), options: [:])
+            try handler.perform([request])
+            let text = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }
+            rows.append(["path": path, "lines": text])
+        } catch {
+            rows.append(["path": path, "error": String(describing: error)])
+        }
+    }
+}
+let data = try JSONSerialization.data(withJSONObject: rows, options: [.prettyPrinted, .sortedKeys])
+try data.write(to: URL(fileURLWithPath: args[1]), options: [.atomic])
+print("OCR_COMPLETE \(rows.count)")

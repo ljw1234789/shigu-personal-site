@@ -1,0 +1,11 @@
+from pathlib import Path
+import hashlib,re
+r=Path(__file__).resolve().parents[1];p=r/'dist/index.html';s=p.read_text()
+for name in ['report.css','lab.js','editorial-motion.js','poster-edition.css']:
+ src=r/'dist'/name
+ if not src.exists():continue
+ stem,ext=name.rsplit('.',1);digest=hashlib.sha256(src.read_bytes()).hexdigest()[:10]
+ new=f'{stem}.{digest}.{ext}'
+ (r/'dist'/new).write_bytes(src.read_bytes())
+ s=re.sub(re.escape(stem)+r'(?:\.[a-f0-9]{10})?\.'+ext+r'(?:\?[^\"]*)?',new,s)
+p.write_text(s)

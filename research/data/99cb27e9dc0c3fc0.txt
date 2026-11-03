@@ -1,0 +1,46 @@
+- list:
+  - link "首页":
+    - /url: //www.bilibili.com
+    - text: 首页
+- list:
+  - generic: 投稿
+- heading "nova x Hirono小野联名礼盒怎么玩？" [level=1]
+- generic: "258"
+- generic: "0"
+- generic: 2026-09-30 09:54:00
+- generic "哔哩哔哩播放器"
+- generic "点赞（Q）":
+  - generic: "6"
+- generic "投币（W）":
+  - generic: "2"
+- generic "收藏（E）":
+  - generic: "3"
+- generic: 分享
+- generic: 这一次被华为和泡泡玛特联名礼盒给萌住了
+- link "数码":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E6%95%B0%E7%A0%81&from_source=video_tag
+- link "华为":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%8D%8E%E4%B8%BA&from_source=video_tag
+- link "开箱":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%BC%80%E7%AE%B1&from_source=video_tag
+- link "科技":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E7%A7%91%E6%8A%80&from_source=video_tag
+- link "体验":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E4%BD%93%E9%AA%8C&from_source=video_tag
+- link "华为 nova16":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%8D%8E%E4%B8%BA%20nova16&from_source=video_tag
+- link "和nova小野一下":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%92%8Cnova%E5%B0%8F%E9%87%8E%E4%B8%80%E4%B8%8B&from_source=video_tag
+- link "去野去远航":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%8E%BB%E9%87%8E%E5%8E%BB%E8%BF%9C%E8%88%AA&from_source=video_tag
+- link "礼盒":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E7%A4%BC%E7%9B%92&from_source=video_tag
+- link:
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.head.click
+- link "英俊姐妹日记":
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.detail.click
+- link " 发消息":
+  - /url: //message.bilibili.com/zh-Hans?spm_id_from=333.788.upinfo.detail.click#whisper/mid3706983859358214
+  - generic: 
+  - text: 发消息
+- generic "记录让人心动的新玩意"

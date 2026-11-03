@@ -1,0 +1,285 @@
+- banner:
+  - link "巨量星图":
+    - /url: /ad/
+    - img "巨量星图"
+  - link "首页":
+    - /url: /ad/creator/index
+    - generic: 首页
+  - link "我的星图":
+    - /url: /ad/creator/user/task/management
+    - generic: 我的星图
+  - link "找灵感":
+    - /url: /ad/creator/insight/content-market
+    - generic: 找灵感
+  - link "找达人":
+    - /url: /ad/creator/market
+    - generic: 找达人
+  - link "找活动":
+    - /url: /ad/creator/activity
+    - generic: 找活动
+  - link "助投放":
+    - /url: /ad/creator/boost-group
+    - generic: 助投放
+  - link "达人清单" [disabled]:
+    - /url: /ad/creator/user/author-lists
+    - button "达人清单" [disabled]:
+      - generic: 达人清单
+  - text: "+1"
+  - button "发布任务":
+    - generic: 发布任务
+  - 'link "瑞 瑞埃拓标识 ID: 1860700389291209"':
+    - /url: /ad/user-center/user/account
+    - generic: 瑞
+    - generic: 瑞埃拓标识
+    - text: "ID:"
+    - generic: "1860700389291209"
+- generic: 内容找人
+- generic: 昵称找人
+- generic: 抖音
+- textbox "输入达人昵称、抖音号或星图ID": 毕导
+- textbox "请选择"
+- generic: 我的清单：
+- table:
+  - row "合作诉求 合作对象 不限 明星 题材类型 短视频达人 短剧演员  短直达人  其它题材  适配行业 不限  营销目标 品牌曝光 破圈种草  行动转化 匹配人群 不限 八大人群  自定义人群 ":
+    - cell "合作诉求"
+    - cell "合作对象 不限 明星 题材类型 短视频达人 短剧演员  短直达人  其它题材  适配行业 不限  营销目标 品牌曝光 破圈种草  行动转化 匹配人群 不限 八大人群  自定义人群 ":
+      - generic: 合作对象
+      - generic: 不限
+      - generic: 明星
+      - generic: 题材类型
+      - generic: 短视频达人
+      - button "短剧演员 ":
+        - generic: 短剧演员
+        - generic: 
+      - button "短直达人 ":
+        - generic: 短直达人
+        - generic: 
+      - button "其它题材 ":
+        - generic: 其它题材
+        - generic: 
+      - generic: 适配行业
+      - button "不限 ":
+        - generic: 不限
+        - generic: 
+      - generic: 营销目标
+      - generic: 品牌曝光
+      - button "破圈种草 ":
+        - generic: 破圈种草
+        - generic: 
+      - generic: 行动转化
+      - generic: 匹配人群
+      - button "不限":
+        - generic: 不限
+      - button "八大人群 " [disabled]:
+        - generic: 八大人群
+        - generic: 
+      - button "自定义人群 " [disabled]:
+        - generic: 自定义人群
+        - generic: 
+  - row "匹配度 达人类型 不限 达人人设 行业特色人设 美妆  母婴宠物  服装配饰  3C及电器  食品饮料  家居家装  本地  职业爱好 职业  爱好  达人调性  主要出镜人物  内容主题 不限 背景信息 达人性别  所在地域  学历  黄v认证  受众画像 连接用户数  粉丝量级  观众画像  粉丝画像 ":
+    - cell "匹配度"
+    - cell "达人类型 不限 达人人设 行业特色人设 美妆  母婴宠物  服装配饰  3C及电器  食品饮料  家居家装  本地  职业爱好 职业  爱好  达人调性  主要出镜人物  内容主题 不限 背景信息 达人性别  所在地域  学历  黄v认证  受众画像 连接用户数  粉丝量级  观众画像  粉丝画像 ":
+      - generic: 达人类型
+      - generic: 不限
+      - generic: 达人人设
+      - generic: 行业特色人设
+      - button "美妆 ":
+        - generic: 美妆
+        - generic: 
+      - button "母婴宠物 ":
+        - generic: 母婴宠物
+        - generic: 
+      - button "服装配饰 ":
+        - generic: 服装配饰
+        - generic: 
+      - button "3C及电器 ":
+        - generic: 3C及电器
+        - generic: 
+      - button "食品饮料 ":
+        - generic: 食品饮料
+        - generic: 
+      - button "家居家装 ":
+        - generic: 家居家装
+        - generic: 
+      - button "本地 ":
+        - generic: 本地
+        - generic: 
+      - generic: 职业爱好
+      - button "职业 ":
+        - generic: 职业
+        - generic: 
+      - button "爱好 ":
+        - generic: 爱好
+        - generic: 
+      - button "达人调性 ":
+        - generic: 达人调性
+        - generic: 
+      - button "主要出镜人物 ":
+        - generic: 主要出镜人物
+        - generic: 
+      - generic: 内容主题
+      - generic: 不限
+      - generic: 背景信息
+      - button "达人性别 ":
+        - generic: 达人性别
+        - generic: 
+      - button "所在地域 ":
+        - generic: 所在地域
+        - generic: 
+      - button "学历 ":
+        - generic: 学历
+        - generic: 
+      - button "黄v认证 ":
+        - generic: 黄v认证
+        - generic: 
+      - generic: 受众画像
+      - button "连接用户数 ":
+        - text: 连接用户数
+        - generic: 
+      - button "粉丝量级 ":
+        - generic: 粉丝量级
+        - generic: 
+      - button "观众画像 ":
+        - generic: 观众画像
+        - generic: 
+      - button "粉丝画像 ":
+        - generic: 粉丝画像
+        - generic: 
+  - row "性价比 合作信息 近期合作行业/品牌  合作数据 达人报价  预期播放量  预期CPM  预期CPE  互动率  完播率  爆文率  进行中的任务数 ":
+    - cell "性价比"
+    - cell "合作信息 近期合作行业/品牌  合作数据 达人报价  预期播放量  预期CPM  预期CPE  互动率  完播率  爆文率  进行中的任务数 ":
+      - generic: 合作信息
+      - button "近期合作行业/品牌 ":
+        - generic: 近期合作行业/品牌
+        - generic: 
+      - generic: 合作数据
+      - button "达人报价 ":
+        - text: 达人报价
+        - generic: 
+      - button "预期播放量 ":
+        - generic: 预期播放量
+        - generic: 
+      - button "预期CPM ":
+        - generic: 预期CPM
+        - generic: 
+      - button "预期CPE ":
+        - generic: 预期CPE
+        - generic: 
+      - button "互动率 ":
+        - generic: 互动率
+        - generic: 
+      - button "完播率 ":
+        - generic: 完播率
+        - generic: 
+      - button "爆文率 ":
+        - generic: 爆文率
+        - generic: 
+      - button "进行中的任务数 ":
+        - generic: 进行中的任务数
+        - generic: 
+  - row "主题推荐":
+    - cell "主题推荐"
+    - cell
+- generic: 找到 2 个达人
+- button "自定义指标":
+  - generic: 自定义指标
+- button "导出" [disabled]:
+  - generic: 导出
+- generic: 已选条件
+- generic: 搜索词：毕导
+- button "清空"
+- generic: 达人信息
+- generic: 代表视频
+- generic: 达人类型
+- generic: 内容主题
+- generic: 连接用户数
+- generic: 
+- generic: 粉丝
+- generic: 
+- generic: 预期CPM
+- generic: 
+- generic: 
+- generic: 预期播放量
+- generic: 
+- generic: 
+- generic: 互动率
+- generic: 
+- generic: 完播率
+- generic: 
+- generic: 爆文率
+- generic: 
+- generic: 植入视频报价
+- generic: 
+- generic: 
+- generic: 操作
+- generic: 毕导
+- generic: 男
+- generic: 杭州市
+- generic: 头部必选榜·周榜·科普·第8名
+- generic: 大隐毕导青训
+- generic: 男
+- generic: 杭州
+- generic: 共创
+- generic: 艺术文化
+- generic: 运动健身
+- generic: AI应用
+- generic: 科技资讯
+- generic: 5+
+- generic: "-"
+- generic: 1,538.7w
+- generic: "-"
+- generic: 410.7w
+- generic: 1.1w
+- generic: "49.3"
+- generic: "-"
+- generic: 106.5w
+- generic: 1,843
+- generic: 6.1%
+- generic: 0.9%
+- generic: 7.6%
+- generic: 13.3%
+- generic: 25%
+- generic: "-"
+- generic: ¥52,500
+- generic: 暂无报价
+- button
+- button "下单":
+  - generic: 下单
+- button
+- button "下单":
+  - generic: 下单
+- button "" [disabled]:
+  - generic: 
+- list:
+  - listitem: "1"
+- button "" [disabled]:
+  - generic: 
+- generic: 跳转
+- spinbutton "请输入": "1"
+- generic: 您导出的达人榜单已完成，请点击链接查看
+- generic: 
+- link "https://bytedance.larkoffice.com/sheets/KAZqs9Vt0hZnQrt3RX2cUlW8n5b":
+  - /url: https://bytedance.larkoffice.com/sheets/KAZqs9Vt0hZnQrt3RX2cUlW8n5b
+- generic: 1011_22:01
+- button "查看详情"
+- link "帮助":
+  - /url: /help-center/demander
+  - text: 帮助
+- superscript: "1"
+- text: 联系
+- generic: 客服
+- text: 
+- generic: 反馈
+- contentinfo:
+  - link "用户协议":
+    - /url: "#"
+  - separator
+  - generic: 联系方式：star-QA@xingtu.bytedance.com
+  - text: "官方账号:"
+  - generic: 
+  - paragraph:
+    - text: © 2026 武汉巨量星图科技有限公司 |
+    - link "鄂ICP备2021002083号-1":
+      - /url: https://beian.miit.gov.cn/
+    - link "鄂公网安备 42018502005245号":
+      - /url: http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42018502005245

@@ -1,0 +1,349 @@
+- banner:
+  - textbox "凌小寒病亡"
+  - img "搜索"
+- link:
+  - /url: /explore?channel_type=web_user_page
+- list:
+  - link "首页":
+    - /url: /explore?channel_id=homefeed_recommend
+    - generic: 首页
+  - link "点点 ai":
+    - /url: /ai_chat?from=sidebar&conversationId=
+    - generic: 点点
+    - generic: ai
+  - link "RED":
+    - /url: /red_video
+    - generic: RED
+  - link "直播":
+    - /url: /livelist?channel_id=&channel_type=web_user_page
+    - generic: 直播
+  - link "发布":
+    - /url: https://creator.xiaohongshu.com/publish/publish?source=official
+    - generic: 发布
+  - link "通知":
+    - /url: /notification
+    - generic: 通知
+  - link "消息":
+    - /url: /chat?channel_id=&channel_type=web_user_page
+    - generic: 消息
+  - link "我":
+    - /url: /user/profile/67639317000000001801dee5
+    - generic: 我
+  - paragraph:
+    - link "沪ICP备13030189号":
+      - /url: //beian.miit.gov.cn/
+    - text: "|"
+    - link "营业执照":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323gtfdq87a0690nvj5qg0000000003rivl690
+    - text: "|"
+    - link "2026沪公网安备31010102002533号":
+      - /url: //www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533
+    - text: "|"
+    - link "增值电信业务经营许可证：沪B2-20150021":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnu0anu7690nvj5qg0000000003pqm217o
+    - text: "|"
+    - link "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf
+    - text: "|"
+    - link "互联网药品信息服务资格证书：(沪)-经营性-2023-0144":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf
+    - text: "|"
+    - link "药品网络交易服务第三方平台备案：(沪)网药平台备字[2023]第000007-001号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b83267hojcdl6062u7au7rdm9g007pkcqrshk5s8.pdf
+    - text: "|"
+    - link "违法不良信息举报电话：4006676810":
+      - /url: //www.shjbzx.cn
+    - text: "|"
+    - link "上海市互联网举报中心":
+      - /url: //www.shjbzx.cn
+    - text: "|"
+    - link "网上有害信息举报专区":
+      - /url: //www.12377.cn
+    - text: "|"
+    - link "自营经营者信息":
+      - /url: //dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf
+    - text: "|"
+    - link "网络文化经营许可证：沪网文[2021]1545-113号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnuec7u0690nvj5qg0000000003o78obkg
+    - text: "| 个性化推荐算法 网信算备310101216601302230019号"
+  - paragraph: © 2014-2026
+  - paragraph: 行吟信息科技（上海）有限公司
+  - paragraph: 地址：上海市黄浦区马当路388号C座
+  - paragraph: 电话：9501-3888
+- generic "更多":
+  - generic: 更多
+- generic "关于我们":
+  - generic: 关于我们
+- paragraph:
+  - link "沪ICP备13030189号":
+    - /url: //beian.miit.gov.cn/
+  - text: "|"
+  - link "营业执照":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323gtfdq87a0690nvj5qg0000000003rivl690
+  - text: "|"
+  - link "2026沪公网安备31010102002533号":
+    - /url: //www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533
+  - text: "|"
+  - link "增值电信业务经营许可证：沪B2-20150021":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnu0anu7690nvj5qg0000000003pqm217o
+  - text: "|"
+  - link "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf
+  - text: "|"
+  - link "互联网药品信息服务资格证书：(沪)-经营性-2023-0144":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf
+  - text: "|"
+  - link "药品网络交易服务第三方平台备案：(沪)网药平台备字[2023]第000007-001号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b83267hojcdl6062u7au7rdm9g007pkcqrshk5s8.pdf
+  - text: "|"
+  - link "违法不良信息举报电话：4006676810":
+    - /url: //www.shjbzx.cn
+  - text: "|"
+  - link "上海市互联网举报中心":
+    - /url: //www.shjbzx.cn
+  - text: "|"
+  - link "网上有害信息举报专区":
+    - /url: //www.12377.cn
+  - text: "|"
+  - link "自营经营者信息":
+    - /url: //dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf
+  - text: "|"
+  - link "网络文化经营许可证：沪网文[2021]1545-113号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnuec7u0690nvj5qg0000000003o78obkg
+  - text: "| 个性化推荐算法 网信算备310101216601302230019号"
+- paragraph: © 2014-2026
+- paragraph: 行吟信息科技（上海）有限公司
+- paragraph: 地址：上海市黄浦区马当路388号C座
+- paragraph: 电话：9501-3888
+- generic: 英俊姐妹日记
+- generic: 小红书号：95856364979
+- generic: IP属地：广东
+- generic: 哈哈哈哈哈我叫李英俊 一枚刚毕业的00后 勇闯数码圈 ✨商务合作：gjsffff
+- generic: "0"
+- generic: 关注
+- generic: "175"
+- generic: 粉丝
+- generic: "2532"
+- generic: 获赞与收藏
+- button "关注":
+  - generic: 关注
+- button "发消息":
+- generic: 笔记
+- generic: 收藏
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6ae0402a0000000003021fbe?xsec_source=pc_user
+- link "双11选OPPO全家桶，用着不烧心oppo双十一省心焕新季 拍照手机 数码大玩家":
+  - /url: /user/profile/6a290739000000000103f002/6ae0402a0000000003021fbe?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "10"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6abccae0000000001303c590?xsec_source=pc_user
+- link "荣耀Magic9，好看好握的影像旗舰":
+  - /url: /user/profile/6a290739000000000103f002/6abccae0000000001303c590?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "31"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6abc6b63000000000a01f833?xsec_source=pc_user
+- link "nova x Hirono小野联名礼盒怎么玩？":
+  - /url: /user/profile/6a290739000000000103f002/6abc6b63000000000a01f833?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "32"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6abb5e9a000000000a026c40?xsec_source=pc_user
+- link "荣耀Magic9首发评测":
+  - /url: /user/profile/6a290739000000000103f002/6abb5e9a000000000a026c40?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "31"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6ab0a0bc00000000110385c7?xsec_source=pc_user
+- link "游戏手机也做机圈灯厂？一加 16 明日星光上手体验一加16一加16明日星光游戏手":
+  - /url: /user/profile/6a290739000000000103f002/6ab0a0bc00000000110385c7?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "77"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6aac9d3e000000002602089b?xsec_source=pc_user
+- link "OPPO 的 ColorOS 系统全新升级，有什么新的变化？OPPO Color":
+  - /url: /user/profile/6a290739000000000103f002/6aac9d3e000000002602089b?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "3"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6aaa5eec00000000280392b2?xsec_source=pc_user
+- link "手机摄影新方向？OPPO Find X10系列带你找回真实自然oppofindx":
+  - /url: /user/profile/6a290739000000000103f002/6aaa5eec00000000280392b2?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "23"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6aa8a42a0000000012037f5a?xsec_source=pc_user
+- link "脂肪克星？减脂利器！？OPPOWatchS2OPPO手表":
+  - /url: /user/profile/6a290739000000000103f002/6aa8a42a0000000012037f5a?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "7"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6aa0f458000000002b01dbfd?xsec_source=pc_user
+- link "有一台懂你的电视是一种什么体验？":
+  - /url: /user/profile/6a290739000000000103f002/6aa0f458000000002b01dbfd?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "2"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6aa0ba430000000026008e73?xsec_source=pc_user
+- link "你还在纠结iPhone17/18系列到底该怎么选吗？这期视频给你讲明白！数码科技":
+  - /url: /user/profile/6a290739000000000103f002/6aa0ba430000000026008e73?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "29"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a8d0850000000002802bf85?xsec_source=pc_user
+- link "2026年了，国产和苹果本质区别在哪？数码科技 iPhone 国产手机 华为 小":
+  - /url: /user/profile/6a290739000000000103f002/6a8d0850000000002802bf85?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "26"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a89312e0000000033020f43?xsec_source=pc_user
+- link "腕上微运动？随时随地随心动！华为 Fit 5 Pro 上手体验华为 华为Fit5":
+  - /url: /user/profile/6a290739000000000103f002/6a89312e0000000033020f43?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "7"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a7c596a0000000005033840?xsec_source=pc_user
+- link "手机新物种？！上手体验第一台机器人手机！荣耀RobotPhone荣耀机器人手机测":
+  - /url: /user/profile/6a290739000000000103f002/6a7c596a0000000005033840?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "52"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a7450aa00000000050327fc?xsec_source=pc_user
+- link "一支笔，改变了新款华为MateBook Fold 非凡大师点睛之笔大有妙用超大折":
+  - /url: /user/profile/6a290739000000000103f002/6a7450aa00000000050327fc?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "30"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a70820600000000050304dd?xsec_source=pc_user
+- link "OPPO A7 Pro Max首发体验":
+  - /url: /user/profile/6a290739000000000103f002/6a70820600000000050304dd?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "44"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a6c86a70000000005032bfa?xsec_source=pc_user
+- link "画画搭子已就位：天生会画帮你拯救废片折叠屏 阔折叠 华为 华为PuraXMax":
+  - /url: /user/profile/6a290739000000000103f002/6a6c86a70000000005032bfa?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "8"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a617e3900000000050398f2?xsec_source=pc_user
+- link "折叠屏真的有那么不好用吗？折叠屏 iPhone 华为":
+  - /url: /user/profile/6a290739000000000103f002/6a617e3900000000050398f2?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "28"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a583714000000000100edc0?xsec_source=pc_user
+- link "苹果AI 国行版来了！！！苹果手机appleintelligence AI 数码":
+  - /url: /user/profile/6a290739000000000103f002/6a583714000000000100edc0?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "8"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a56e714000000001702d87f?xsec_source=pc_user
+- link "你不会还在这样修图吧？？":
+  - /url: /user/profile/6a290739000000000103f002/6a56e714000000001702d87f?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "38"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a4b78ff0000000008003002?xsec_source=pc_user
+- link "你对 iPhone 的输入法，开发可能还不到 10% iPhone 苹果 小技巧":
+  - /url: /user/profile/6a290739000000000103f002/6a4b78ff0000000008003002?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "94"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a4b23720000000006037cfd?xsec_source=pc_user
+- link "一招学会✅｜苹果原相机也能拍出高质量大片！iPhone 原相机 苹果 拍照教程":
+  - /url: /user/profile/6a290739000000000103f002/6a4b23720000000006037cfd?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "801"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a45cd7a0000000008032b4c?xsec_source=pc_user
+- link "带风扇的鸿蒙手机，它的性能表现到底如何？华为 华为Mate80promax 数码":
+  - /url: /user/profile/6a290739000000000103f002/6a45cd7a0000000008032b4c?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "11"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a41de3a000000001702f85b?xsec_source=pc_user
+- link "200多个PC级应用！鸿蒙平板已经这么卷了吗？华为MatePadProMax 随":
+  - /url: /user/profile/6a290739000000000103f002/6a41de3a000000001702f85b?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "2"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a38e82d0000000015027e31?xsec_source=pc_user
+- link "毕业季换机黑马？小米17T 系列来啦小米手机 小米17T 小米 数码科技":
+  - /url: /user/profile/6a290739000000000103f002/6a38e82d0000000015027e31?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "52"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a31ff20000000000f01de72?xsec_source=pc_user
+- link "超级大？超能打！拓竹A2L上手体验拓竹 3D打印机 拓竹A2L":
+  - /url: /user/profile/6a290739000000000103f002/6a31ff20000000000f01de72?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "35"
+- link:
+  - /url: /user/profile/6a290739000000000103f002/6a290c38000000001702e72e?xsec_source=pc_user
+- link "OPPO 充电宝新品":
+  - /url: /user/profile/6a290739000000000103f002/6a290c38000000001702e72e?xsec_source=pc_user
+- link "英俊姐妹日记":
+  - /url: /user/profile/6a290739000000000103f002?channel_type=web_user_page&parent_page_channel_type=web_user_board&&xsec_source=pc_note
+  - generic: 英俊姐妹日记
+- generic: "19"
+- generic: 笔记・0
+- generic: 专辑・0
+- generic: 文件・0
+- generic: TA 还没有收藏任何内容哦
+- button:
+- generic: 活动
+- button:
+- button:
+- iframe

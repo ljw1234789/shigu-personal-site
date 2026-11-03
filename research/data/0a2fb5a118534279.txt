@@ -1,0 +1,278 @@
+"""合并2026-11-02夜至11-03凌晨公开补证；保留原始分母和未核实状态。"""
+import json
+import re
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+PKG = ROOT / '求职准备总包'
+E = ROOT / '原声核验/公开资料扩查_2026-11-02'
+
+def get(path):
+    return json.loads(path.read_text())
+
+def put(path, data):
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+
+dy = get(PKG / '11_公开发布时间与运营快照.json')['rows']
+byid = {r['id']: r for r in dy}
+catalog = get(PKG / '09_74条研究覆盖与缺口.json')['items']
+byindex = {r['index']: r for r in catalog}
+cats = get(PKG / '06_74条分类与高赞候选_修订版.json')['categories']
+catbyid = {w['video_id']: c['category'] for c in cats for w in c['works']}
+xs = get(E / '小红书26篇页面核查.json')
+xcards = get(E / '小红书26条公开目录.json')['items']
+bs = get(E / 'B站29篇页面核查.json')
+assert len(xs) == 26 and len({r['id'] for r in xs}) == 26
+assert len(bs) == 29 and len({r['bvid'] for r in bs}) == 29
+assert all('英俊姐妹日记' in r['visibleText'] for r in bs)
+assert len(catalog) == 74
+match_indices = [4, 8, 7, 10, 11, 12, 13, 14, 15, 16, None, 18, 19, 1, 2, 20, 22, None, 23, 25, None, 40, 27, 29, 28, 31]
+xmatches = []
+for row, match in zip(xs, match_indices, strict=True):
+    item = {'index': row['index'], 'note_id': row['id'], 'url': f'https://www.xiaohongshu.com/explore/{row["id"]}',
+            'description': row['description'], 'duration_seconds': row['media'][0]['duration'],
+            'content_identity_approved': False, 'status': 'title_topic_duration_candidate' if match else 'not_matched_in_74_catalog',
+            'ai_content_label_observed': '可能含AI生成内容' in row['noteText']}
+    if match:
+        original = byindex[match]
+        item['douyin_candidate'] = {'index': match, 'video_id': original['video_id'], 'url': original['url']}
+        item['duration_difference_seconds'] = round(item['duration_seconds'] - byid[original['video_id']]['duration_seconds'], 3)
+    xmatches.append(item)
+
+new_sources = [
+    ('S24', '小红书同名账号公开简介', 'https://www.xiaohongshu.com/user/profile/6a290739000000000103f002', '自述李英俊、刚毕业的00后及同商务入口；属于公开自述，不是学历或管理权认证'),
+    ('S25', '小红书26篇公开页面逐篇核查', 'https://www.xiaohongshu.com/user/profile/6a290739000000000103f002', '标题、正文、视频时长、默认可见评论及标记；23条与抖音对应候选，3条暂未匹配；不是26条完整视听'),
+    ('S26', 'B站29篇公开作品页逐篇核查', 'https://space.bilibili.com/zh-Hans/3706983859358214', '29条均有账号名及正文、标签等公开页面记录；仍未确认账号控制主体'),
+    ('S27', '跨平台国产手机与苹果比较补充研究', 'https://www.bilibili.com/video/BV1UAh36ZEZc/', '97个ASR段和24张间隔画面已用于结构研究；未听审；不将观点当产品事实'),
+    ('S28', '小红书国行AI资讯短片', 'https://www.xiaohongshu.com/explore/6a583714000000000100edc0', '约30.5秒，16段机器初稿和8张间隔画面；未验证片中新闻当前状态'),
+    ('S29', '小红书原相机拍照教程', 'https://www.xiaohongshu.com/explore/6a4b23720000000006037cfd', '约76.3秒，40段机器初稿和13张间隔画面；页面展示801赞、721收藏，非播放转化'),
+    ('S30', '公司抖音拍摄剪辑岗位详情', 'https://www.tanzhi.cn/job-detail/98ce4284-219f-4656-9f5d-6c6ee3559cb2/', '展示10—12K、专科、经验不限和拍剪职责；第三方招聘页面，未确认当前空缺、服务本号或固定底薪'),
+    ('S31', '深圳特区报公开发布账号2026-10-24报道', 'https://m.sohu.com/a/1091989852_121384255', '实际浏览器展开全文：公司已入光明区保障性租赁住房库；不代表具体员工获房或公司包住'),
+    ('S32', '公司企业档案搜索索引与登录限制', 'https://www.baidu.com/s?wd=深圳藏宝阁广告传媒有限公司', '第三方索引的曾用名、地址、投资方数量仅作线索；爱企查、企查查原始明细需登录，未核股东'),
+    ('S33', '抖音喜欢、推荐、合集与短剧页面', 'https://www.douyin.com/user/MS4wLjABAAAAppXo8oulxaX8g8cTj4vtYeVSNyI4Gpm0Z783ydkD1nc', '喜欢明确私密、推荐不可见；页面显示未发布合集及短剧；不据此推断没有其他业务'),
+    ('S34', '快手站内用户搜索', 'https://www.kuaishou.com/', '实际站内搜英俊姐妹日记并选用户，内容区未返回可核结果；不等于账号不存在'),
+    ('S35', '微信公开文章精确名称检索', 'https://weixin.sogou.com/weixin?type=2&query=%22英俊姐妹日记%22', '精确名称显示未找到相关文章；不是视频号身份核验或全网不存在证明'),
+    ('S36', '微博公开搜索访问情况', 'https://s.weibo.com/weibo?q=英俊姐妹日记', '跳到登录页，未获得可靠归属账号'),
+    ('S37', '公司B站公开投稿站内搜索', 'https://space.bilibili.com/zh-Hans/178690106', '英俊与搬家两项定向搜索未命中；检索范围有限，不证明无相关员工、基地或内容'),
+    ('S38', '公司面试评价及账号争议检索', 'https://www.baidu.com/s?wd=%22英俊姐妹日记%22%20争议%20抄袭', '本轮未取得具体可核实的本号争议或本雇主员工投诉；拒绝搜索AI摘要、无关同名结果与泛行业吐槽，不作零风险结论'),
+    ('S39', '飞瓜本号公开数据原页', 'https://dy.feigua.cn/bloggeropen/D3764ED6840C0B16', '抖音号匹配；公开近7天窗口显示粉丝增量-504等。第三方口径，画像、MCN、电商明细触发登录；完整历史与转折点未取得'),
+]
+sources = [{'id': sid, 'title': title, 'url': url, 'observed_period_local': '2026-11-02夜至2026-11-03凌晨', 'scope': scope} for sid,title,url,scope in new_sources]
+
+cases = [
+    {'case_id': 'EX01', 'title': '2026年了，国产和苹果本质区别在哪？', 'source': 'S27', 'url': 'https://www.bilibili.com/video/BV1UAh36ZEZc/', 'folder': str(E/'新增作品_BV1UAh36ZEZc'), 'duration_approx_seconds': 190, 'machine_segments': 97, 'sample_frames_viewed': 24,
+     'category': '比较与选择', 'skeleton': '反常识矛盾→承诺比较维度→逐维给画面→保留双方取舍→按需求选择→评论反问',
+     'analysis': '选题把品牌站队换成购买决策。机器稿与间隔画面对应续航、游戏、信号、影像、AI、系统生态、预算保值七组内容。人物中景串联，功能实拍、样片和资料画面承担不同论据，七组内容没有被剪成七段同样的参数朗读。约100秒处让观众比较自己手机的照片体积，结尾再问是否会重新选择，把评论入口嵌进具体任务。',
+     'practice': '先做七行比较表，每行只放一个判断、一个可拍证据和适用条件。拍人物承接、两机同条件操作、样片及资料出处四组素材；后期按问题—证据—取舍组接，再统一字幕。信号图标、资料片段不能替代受控实测；片中的数据和技术结论仍须另查出处。',
+     'boundaries': '完整连续视听及原声逐句听审未完成；未确认付费合作，也未把同名发布者的控制权升级为事实。'},
+    {'case_id': 'EX02', 'title': '苹果AI 国行版来了！！！', 'source': 'S28', 'url': 'https://www.xiaohongshu.com/explore/6a583714000000000100edc0', 'folder': str(E/'EX02_国行AI短片'), 'duration_approx_seconds': 30.5, 'machine_segments': 16, 'sample_frames_viewed': 8,
+     'category': '行业资讯', 'skeleton': '公告画面→解释与用户的关系→约定后续实测→征集关注功能',
+     'analysis': '这是资讯承接片：约前半段用公告与多品牌资料画面建立话题，再切回人物，承诺后续测评并收集评论需求。画面可见不同来源提示和强调文字。它提供的是新信息与后续观看理由，不能按已经完成的产品测评拆解。页面仅显示07-15，未单独标年；旧片的“刚刚”不作今天新闻。',
+     'practice': '写稿先准备原始公告、发布日期、涉及对象和用户可获得什么；再决定哪一项值得实测。拍一段人物承接，按论点配资料并标来源，最后只问一个具体功能需求。备案、公示与用户实际可以使用哪些功能应分别核实，不能只凭标题判断已全面上线。',
+     'boundaries': '未核实片中新闻及技术当前状态；未听审原声、音乐与节拍。'},
+    {'case_id': 'EX03', 'title': '一招学会｜苹果原相机也能拍出高质量大片', 'source': 'S29', 'url': 'https://www.xiaohongshu.com/explore/6a4b23720000000006037cfd', 'folder': str(E/'EX03_原相机教程'), 'duration_approx_seconds': 76.3, 'machine_segments': 40, 'sample_frames_viewed': 13,
+     'category': '功能教程', 'skeleton': '先展示成片→解释调节方向→阴雨/日间/夜景三个任务→旧图补救→效果互动',
+     'analysis': '先给观众想拍出的结果，再解释界面调节，然后按天气与光线换场景、造型和样片。人物讲解、相机界面与结果图交替，最后补充已有照片也可编辑。26篇目录中它的展示赞最高：801赞、721收藏。评论有人问保存模糊、不同机型是否通用；这些是后续教程线索，不能当成整个受众的比例。',
+     'practice': '先实拍三组可复现的前后对比，再补人物和界面。交付“地点光线、机型系统、操作路径、设置、原始样片”记录。夜景段同时出现风格设置与闪光灯，不能把用光改变的效果全部归给滤镜；“万能参数”只是评论者用语，不应直接变成你的承诺。剪辑优先让每个动作对应清晰结果。',
+     'boundaries': '801赞不是播放量或转化率；不确定自然流量与投放；未听审原声和精确切点。'},
+]
+for c in cases:
+    c.update(structural_research_complete=True, full_audiovisual_approved=False, audio_verbatim_approved=False, paid_cooperation_verified=False)
+put(PKG/'24_跨平台新增三条选写拍剪拆解.json', {'updated_on':'2026-11-03', 'method':'机器稿全文阅读及45张间隔画面查看，不是连续视听', 'cases':cases})
+text24 = '英俊姐妹日记｜跨平台新增三条：选写拍剪补充研究\n更新：2026年11月3日\n\n依据为153个机器转写段与45张间隔画面；未完成连续视听和逐句听审。三条是现有74条目录中暂未匹配的补充样本，不直接重设抖音分母，也不宣称全历史仅77条。\n\n'
+for c in cases:
+    text24 += f'{c["case_id"]} {c["title"]}｜约{c["duration_approx_seconds"]}秒｜{c["category"]}\n{c["url"]}\n骨架：{c["skeleton"]}\n成片观察：{c["analysis"]}\n你怎样复现：{c["practice"]}\n验收边界：{c["boundaries"]}\n原始依据：{c["folder"]}\n\n'
+text24 += '三条共同点：先给观看收益，再安排能说明问题的画面；人物是承接者，产品、操作、样片与资料各有作用；结尾评论问题承接前文。差别在于决策片交代取舍，资讯片交代变化与后续，教程片交代动作与结果。你的练习应按任务选骨架，并保存事实表、拍摄表、素材和修改记录。\n'
+(PKG/'24_跨平台新增三条选写拍剪拆解.txt').write_text(text24)
+
+# 高低赞比较沿用同一日期的74条精确快照，不与新平台混算。
+ranked = sorted(dy, key=lambda r:r['likes'], reverse=True)
+def rankrow(r):
+    return {**{k:r[k] for k in ['id','url','published','duration_seconds','likes','comments','collects','shares']}, 'title':' '.join(r['title'].split('#')[0].split()), 'category':catbyid[r['id']]}
+top = [rankrow(r) for r in ranked[:10]]
+bottom = [rankrow(r) for r in reversed(ranked[-10:])]
+stats = {'top10_category_counts':dict(Counter(r['category'] for r in top)), 'bottom10_category_counts':dict(Counter(r['category'] for r in bottom))}
+put(PKG/'25_高低赞各十条对照与增长证据.json', {'updated_on':'2026-11-03','data_snapshot':'2026-11-02','sample':74,'rank_metric':'公开点赞；非播放、完播、自然流量或收益','top10':top,'bottom10':bottom,'statistics':stats,'growth_turning_point_verified':False,'feigua_public_7day':{'url':sources[-1]['url'],'followers_increment_display':-504,'new_posts_display':1,'new_likes_display':'3.1w','new_comments_display':46,'new_shares_display':211,'new_live_display':'--','exact_window_dates_not_obtained':True,'backend_verified':False}})
+t25='英俊姐妹日记｜高低赞各十条对照与增长证据\n更新：2026年11月3日；排名数据采用11月2日74条精确快照。\n\n低赞是可见数据位置，不等于内容失败。不同发布时间、发布资源、投流与受众基数未对齐，不能由这张榜确定因果。\n\n'
+for label, rows in [('高赞十条',top),('低赞十条',bottom)]:
+    t25+=label+'\n'
+    for i,r in enumerate(rows,1):
+        t25+=f'{i}. {r["title"]}｜赞{r["likes"]:,}／评{r["comments"]:,}／藏{r["collects"]:,}｜{r["category"]}\n{r["url"]}\n'
+    t25+='\n'
+t25+='''对照后能提出的判断
+
+高赞样本里，A7的防护演示、拼图的成品效果、手写笔的多任务，都让抽象卖点变成能直接看到的结果。可迁移的是“结果是否足够具体、证据是否能拍出来”，不能直接得出某骨架保证爆款。
+
+低赞集合包含单品体验、行业趋势、比较、清单与视觉短片。荣耀影像、机器人手机虽然赞较低，评论并不少；轻薄手机的取舍题也没有因此变成无效选题。要看评论具体追问、收藏用途和实际曝光，不能只按赞判定专业程度或需求大小。
+
+建议做同类配对：先比较同类单品的开场结果、卖点数量、操作证据和适用判断；教程与教程比较能否复现；新品资讯与资讯比较信息增量。先写可验证的修改假设，再用获授权的留存与流量数据检验。
+
+增长证据补到哪里
+
+飞瓜原页抖音号匹配，公开概览显示89.9万粉丝、74作品、140.7万总赞；近7天按钮处于选中状态，该窗口粉丝增量-504、最新作品1、新增点赞3.1万、新增评论46、新增转发211，新增直播为“--”。这是第三方展示口径，未取得确切起止日期与完整原始日序列。“--”不当作零直播。
+https://dy.feigua.cn/bloggeropen/D3764ED6840C0B16
+
+画像、MCN和电商明细触发登录，长窗口数据未取得。不能把短窗负增量解释成长期衰退，更不能把两个无统一日期的搜索快照相减写成涨粉曲线；搜索AI生成的“近期下降”说明不作为证据。
+
+目前仍不能确定“哪条视频使账号起飞”、粉丝性别年龄比例、真实曝光互动率、自然流量与投放占比、购买转化或水军。公开发布节奏见11文件；后台留存和来源未取得。\n'''
+(PKG/'25_高低赞各十条对照与增长证据.txt').write_text(t25)
+
+matrix = [
+    ('人','新增公开自述，履历仍缺','小红书自述李英俊、刚毕业的00后；学历、毕业年份、过往任职未核实。长内容也属于公开表达，不能自动证明私下管理观。'),
+    ('内容','74条抖音结构研究＋3条跨平台补充','29篇B站与26篇小红书公开页面已核；23篇小红书提出抖音对应候选。素材同一性、全片原声和所有历史版本未全部验收。'),
+    ('数据','补到第三方近7天展示','高低赞各10条已对照；完整增长序列、粉丝画像、转折点因果及投放真实性未取得。'),
+    ('商业','有广告业务方向，金额未核','商务入口和雇主广告业务自述有据；付费订单、报价权益、收入成本分账未确认；星图客户入口需现有账号。'),
+    ('团队','公开岗位关系已知，实际编制未知','编导、出镜、摄像灯光、剪辑运营协作有JD依据；未取得本号人数、人员稳定性、带教、实际薪酬兑现和拍剪权限。'),
+    ('人际','只记录公开业务关联','公司账号矩阵、共享商务入口及报道可作业务线索；私交、上下级、股权和合同关系不据同框或同入口认定。'),
+    ('风险','已作定向检索，未取得可核实案件','本轮未取得明确指向该雇主或本号、含时间岗位与具体事实的员工投诉或争议材料。搜索无命中、泛行业吐槽和AI摘要都不能证明无风险。'),
+    ('一手信息','公开页面有据，员工访谈未做','账号自述、雇主JD、媒体自身发布账号均分开标注。员工／合作方访谈未联系；仅提供提纲，未发消息或加人。'),
+]
+put(PKG/'26_求职背调验收与检索记录.json', {'updated_on':'2026-11-03','user_checklist_applied':True,'matrix':[{'dimension':a,'status':b,'finding_and_gap':c} for a,b,c in matrix], 'all_public_materials_collected':False,'outreach_sent':False,'user_has_xingtu_or_enterprise_query_accounts':False,'feigua_login_status':'待用户登录后核对；用户另问是否缺飞瓜登录，已说明','sources':sources})
+t26='英俊姐妹日记｜按求职背调清单逐项验收\n2026年11月3日\n\n'
+for a,b,c in matrix: t26+=f'{a}｜{b}\n{c}\n\n'
+t26+='''本轮查询范围与限制
+
+微博搜索进入登录页；快手用户搜索未返回可核内容；微信精确名称文章搜索无结果；公司B站“英俊”“搬家”两项站内搜索未命中。它们均有实际页面记录，只说明本次入口和关键词结果，不作账号不存在或没有相关内容的结论。
+
+公司登记：官方公示系统前轮读取403，浏览器停环境检查；本轮爱企查、企查查明细进入登录页。搜索索引出现曾用名和地址，仍按第三方线索保留，不把索引升级为官方登记或股东明细。没有据此认定李英俊为公司老板，也没有给出“无劳动纠纷、无经营异常”的结论。
+
+员工与争议：网页服务检索公司全名＋面试离职评价、搞机所＋拖欠工资、账号名＋争议抄袭、公司全名＋劳动判决；另实际核查小红书“搞机所 面试”及百度精确账号名争议检索。返回的泛面试文章、其他公司的吐槽、无关同名内容与搜索AI总结均排除。未取得可核实的本雇主员工个案或本号抄袭材料，不写成没有问题。
+
+第三方数据：飞瓜公开概览已匹配抖音号；MCN、电商及粉丝明细未取得。未订阅监控、创建追踪、认领账号、注册或付费。用户已说明没有星图和企业查询账号，相关核实项保留；飞瓜另待现有账号登录。
+
+适合向团队核实的问题（未发送）
+1. 请按最近一条本号视频介绍：谁定题、谁审稿、谁拍板改稿、谁对最终效果负责？
+2. 摄影灯光、剪辑运营是本号固定岗位，还是多个账号共享？新人由谁带？
+3. 编导能否实际操作相机与剪辑，能否完整跟进一条片，比例和验收怎么安排？
+4. 固定底薪、绩效公式、试用期待遇、发薪主体分别是什么？能否在录用条件中写清？
+5. 一周通常交几条、改几轮，突发加拍和加班怎样安排？
+6. 能否提供一个可公开或脱敏的brief—脚本—拍摄表—改稿—成片交接样例？
+7. 发布后能获得哪些复盘数据，谁解释流量来源和投放，怎样决定下一次修改？
+8. 试岗或试稿的范围、周期、成果用途及录用评价标准是什么？
+
+本轮没有联系员工、前员工、合作方或HR，也未以任何身份套取非公开资料。\n'''
+(PKG/'26_求职背调验收与检索记录.txt').write_text(t26)
+
+summary = {'updated_on':'2026-11-03','observed_period':'2026-11-02夜至11-03凌晨（纽约）','all_public_materials_collected':False,'douyin_catalog_total_unchanged':74,'douyin_structure_complete':74,'bili_pages_checked':29,'xhs_pages_checked':26,'publishing_entries_across_platforms':129,'entries_are_not_unique_originals':True,'xhs_profile':{'uid':'6a290739000000000103f002','red_id':'95856364979','followers_display':175,'likes_and_collects_display':2532,'public_self_description':'自称李英俊、刚毕业的00后，商务gjsffff','identity_level':'公开自述与同商务入口支持关联；管理主体、学历与毕业年份未认证'},'xhs_candidate_matches':xmatches,'new_structural_cases':[c['case_id'] for c in cases],'full_audiovisual_approved':0,'audio_verbatim_approved':0,'sources':sources}
+put(PKG/'23_跨平台补证与公开资料总档.json',summary)
+t23='''英俊姐妹日记｜跨平台补证与公开资料总档
+更新：2026年11月3日；本轮观察跨11月2日夜间与11月3日凌晨。旧数据快照保留原日期。
+
+结论：本轮补查了更多公开资料，仍未达到全部资料已查完。当前可以使用的成果如下，受限和未取得事项另见26文件。
+
+一、关于人和账号，新增了什么
+
+小红书号95856364979，主页UID 6a290739000000000103f002，显示175粉丝、2532获赞与收藏，26篇笔记。简介自称李英俊、刚毕业的00后，并使用与抖音相同的商务入口gjsffff。这些是账号公开自述；学历、毕业年份、本人对账号的控制权及公司权益仍未确定。简介可能沿用旧文案，不据此认定她此刻刚毕业。
+https://www.xiaohongshu.com/user/profile/6a290739000000000103f002
+
+B站同名账号29篇作品页已逐篇读取，账号名与简介均有记录；页面文字检查只确认可见内容，未将“个人观点”等声明作为有无商单的证明。跨平台内容与账号关联有线索，法律管理主体仍未验证。
+https://space.bilibili.com/zh-Hans/3706983859358214
+
+抖音74＋B站29＋小红书26，共129个发布条目，存在大量对应内容，不是129条不同原创，更不是129条完整看完。小红书23篇按标题题材和时长提出抖音对应候选，余3篇加入补充研究。3个补充样本的机器稿和45张间隔画面已读、已看；原声听审仍未完成。
+
+二、多平台不是机械复制标题
+
+手表同主题：抖音以运动搭子切入，小红书用减脂提问；修图同主题：小红书卡片用反问吸引点击，正文再交代照片补救。两条荣耀影像在B站出现相同标题，但BV号不同；小红书的正文又分别强调小机身与ARRI影像，不能只按标题去重。
+
+部分视频时长与抖音很接近，华为平板也存在约3秒差异候选；仍须逐镜核对，不能只凭容器时长断言具体删了什么。可迁移的方法是先明确平台标题要回应的具体需求，再保留操作、样片与事实条件。
+
+本次至少4篇小红书页面可见“可能含AI生成内容”标记。标记不说明具体用了哪种工具、哪一段生成，也不能证明人物为AI。部分评论来自平台AI摘要或营销账号，不能全当真实粉丝需求。
+
+三、钱和公司，新增了什么
+
+公司抖音拍摄剪辑页面展示10—12K、专科、经验不限，职责涉及现场拍摄、后期与花字。它证明有对应岗位描述，不证明岗位当前空缺、专属英俊、固定底薪或你能同时承担编导拍剪。详情引用Premiere、Edius、Photoshop是岗位能力描述，不能当作本号固定软件配置。
+https://www.tanzhi.cn/job-detail/98ce4284-219f-4656-9f5d-6c6ee3559cb2/
+
+11月2日补到的本号文案主笔、3C编导等继续保留于22文件；公开薪酬区间不可合并成一个岗位或固定工资。王先生为平台公开职位发布者，gjsffff为共享商务入口，均未获实际招聘或报价回复。
+
+深圳特区报10月24日公开发布的报道提到，深圳藏宝阁广告传媒有限公司已入光明区保障性租赁住房库。已通过浏览器展开全文核实。它支持公司有公开机构活动记录，不证明你入职即可获得住房、补贴或任何指定福利。
+https://m.sohu.com/a/1091989852_121384255
+
+本账号仍以品牌内容和广告制作作为最有依据的变现研究方向：公司自述经营新媒体广告、主页提供商务入口，作品有产品体验与营销节点。真实付费订单量、成交价、成本、利润、个人分账和带货收入未取得；不以粉丝数乘行业均价回答她赚多少钱。
+
+四、数据和公开偏好，新增了什么
+
+飞瓜原页已匹配抖音号，补到公开近7天展示口径，详情见25文件。受众画像、MCN和电商页需要登录。增长转折点、真实投流和后台留存仍未知。
+https://dy.feigua.cn/bloggeropen/D3764ED6840C0B16
+
+实际点开抖音喜欢页，页面明确设为私密；推荐不可见；合集和短剧页面显示未发布。不能根据成片服装、布景或私密喜欢页猜她私人喜欢什么。你可学习的是公开表达和制作选择。
+
+五、现在先读哪几份
+
+24文件：新增三条的选题、骨架、画面证据与拍剪复现。
+25文件：高低赞各十条、同类对照、第三方增长证据的适用范围。
+26文件：按你提供的八个背调维度验收、查询结果和待团队回答的问题。
+27文件：可用于准备面试的简要判断与前30天方案，所有行动均为计划，不冒充已完成经历。
+
+全部原始页面、26篇小红书与29篇B站正文记录、截图及新增原片均保存在“原声核验／公开资料扩查_2026-11-02”。精确出处和跨平台候选对应见本文件同名JSON。\n'''
+(PKG/'23_跨平台补证与公开资料总档.txt').write_text(t23)
+
+(PKG/'27_求职判断与前30天工作方案.txt').write_text('''英俊姐妹日记｜面试前判断与前30天方案
+2026年11月3日；求职者：2025年6月毕业、专科，希望在广东成熟团队实际参与选写拍剪，固定底薪至少8000元。
+
+适配判断
+
+值得优先研究和接触。公开JD把本号与公司团队直接关联，编导职责涉及脚本、现场导演和后期协作；也存在大专门槛的文案／编导职位及公司拍剪岗位。你仍须用真实经历核对至少1年相关经验要求，毕业时间不代替工作经验。
+
+目前无法确认这份工作已经满足你：本号固定团队、带教、亲自拍剪比例和8000元以上固定底薪都没有落实。李英俊是否老板或最终决策者也未核实。面试时应先问项目交接和岗位责任，再谈你怎样补位。
+
+我观察到的三个亮点（成片研究判断）
+1. 把功能转成具体结果：拼图成品、手写任务、原相机样片都有可见观看收益。
+2. 同类产品能拆成体验、教程、比较、资讯与视觉短片，篇幅随任务变化。
+3. 人物与操作、样片、资料互相配合；跨平台有标题调整，值得训练同题不同表达。
+
+我提出的三个优化假设（建议，尚未实验）
+1. 将评论里“能否通用、保存模糊、怎么选”的问题写成下一条题，先做真实验证。
+2. 做拍前事实和条件表：版本、价格日期、样片设备、测试条件与来源都落到镜头，不靠后期补猜。
+3. 把三场景教程拆成可复用拍摄清单，用相同顺序交付任务、动作、结果；以获授权的留存数据检验解释是否清楚。
+
+前30天计划（须根据入职职责、设备与产品资源确认）
+
+第1—7天：与负责人核对分工、审稿与交接；整理已核事实表和20个候选题；跟完一条片子的脚本、拍摄与后期流程，明确自己实际负责什么。
+第8—14天：提交两条脚本及分镜；先验证最关键的操作或样片；承担约定的现场与后期任务，保存素材和修改记录。
+第15—21天：在允许的职责内完整负责一条内容，交付选题卡、事实表、拍摄表、原始素材、成片及版本说明。
+第22—30天：复盘授权范围内的留存、流量来源和互动问题；提出两个可检验的开头／解释改进方案，形成下一轮选题，而非承诺涨粉或爆款。
+
+面试时可以这样说
+
+“我研究了这个账号的公开内容，看到它经常先给一个具体结果，再通过人物、操作和样片解释产品价值。我准备了同类高低赞对照和三个补充样本，也把机器稿与已核画面分开标注。我想确认这个岗位能否真正参与现场拍摄和剪辑；如果职责允许，我会用完整的脚本、素材和修改记录证明自己能把一条片子做完。”
+
+以上是研究和计划，不能写成你已经为该账号工作、运营出这些数据或完成了全部原声审阅。\n''')
+
+ledger = get(PKG/'05_证据与覆盖记录.json')
+oldids = {s['id'] for s in ledger['sources']}
+ledger['sources'].extend(s for s in sources if s['id'] not in oldids)
+ledger['updated_on']='2026-11-03'
+ledger['public_expansion_20261103']={k:summary[k] for k in ['all_public_materials_collected','douyin_catalog_total_unchanged','bili_pages_checked','xhs_pages_checked','publishing_entries_across_platforms','entries_are_not_unique_originals','new_structural_cases','full_audiovisual_approved','audio_verbatim_approved']}
+ledger['public_expansion_20261103']['report_path']=str(PKG/'23_跨平台补证与公开资料总档.txt')
+ledger['public_expansion_20261103']['audit_path']=str(PKG/'26_求职背调验收与检索记录.json')
+put(PKG/'05_证据与覆盖记录.json',ledger)
+
+master=PKG/'00_从这里看_账号研究总册.txt'; text=master.read_text()
+entry='''
+最新补证入口（2026年11月3日，旧快照日期保留）：
+23_跨平台补证与公开资料总档.txt／.json：新增小红书26篇、B站29篇页面核查；人物自述、标题版本、公司拍剪岗位及媒体全文；仍未全部查齐。
+24_跨平台新增三条选写拍剪拆解.txt／.json：比较、资讯、教程三种任务；153个机器段与45张间隔画面，未听审。
+25_高低赞各十条对照与增长证据.txt／.json：同日公开赞排序及飞瓜近7天展示口径；完整增长转折和画像未取得。
+26_求职背调验收与检索记录.txt／.json：按用户八个维度验收，记录口碑争议检索、登录限制与团队核实提纲；未联系第三方。
+27_求职判断与前30天工作方案.txt：面试前简要判断、三个亮点、三个改进假设与真实可执行的计划。
+抖音研究分母仍74；跨平台发布条目129存在重复，不等于129条不同原创或完整看完。报价、股权、人员、工资兑现和原声听审仍有缺口。
+'''
+if '最新补证入口（2026年11月3日' not in text: text=text.replace('本轮新增入口（2026年11月2日）：',entry+'\n本轮新增入口（2026年11月2日）：',1)
+master.write_text(text)
+for filename in ['07_人物公司商业与评论证据档案.txt','12_全账号方法与拍剪实操.txt','22_全部公开资料范围与本轮补证.txt']:
+    path=PKG/filename; text=path.read_text()
+    note='\n2026年11月3日后续补证：新发现小红书账号公开自述与26篇页面，B站29篇页面已逐篇读取；增加三条跨平台结构样本、飞瓜公开近7天展示和高低赞对照。跨平台控制主体、人物完整履历、内部人数和金额仍未全部核实。最新结果以23—27文件为准，旧文的“未找到”按当时范围理解。\n'
+    if note not in text: path.write_text(text+note)
+
+reader=ROOT/'原片联动学习/看片与逐句核对.html'; html=reader.read_text()
+link=' · <a href="../求职准备总包/23_跨平台补证与公开资料总档.txt" target="_blank">最新跨平台补证</a> · <a href="../求职准备总包/24_跨平台新增三条选写拍剪拆解.txt" target="_blank">新增三条拍剪拆解</a>'
+if '>最新跨平台补证</a>' not in html: html=html.replace('>全部公开资料覆盖账</a></p>','>全部公开资料覆盖账</a>'+link+'</p>',1)
+reader.write_text(html)
+assert ledger['coverage']['catalog_total']==74
+assert ledger['full_caption_audit_20261102']['approved_full_audiovisual_videos']==0
+assert sum('douyin_candidate' in r for r in xmatches)==23
+assert sum(c['machine_segments'] for c in cases)==153 and sum(c['sample_frames_viewed'] for c in cases)==45
+assert len(set(s['id'] for s in ledger['sources']))==len(ledger['sources'])
+print(json.dumps({'created_reports':list(range(23,28)),'bili_pages':len(bs),'xhs_pages':len(xs),'xhs_candidates':23,'additional_structural_samples':3,'original_douyin_denominator':74,'all_public_materials_collected':False},ensure_ascii=False))

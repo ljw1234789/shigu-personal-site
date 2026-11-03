@@ -1,0 +1,202 @@
+from pathlib import Path
+import json,re
+
+BASE=Path(__file__).resolve().parent
+catalog=json.loads((BASE/'74条公开作品目录.json').read_text())
+ranking=json.loads((BASE/'各类型前三候选与分类依据.json').read_text())
+text=(BASE/'分类案例分析素材.txt').read_text()
+parts=re.split(r'^\[(\d+)\]\s*$',text,flags=re.M)
+fields=['选题与开头','文案推进','拍摄','剪辑','商业承接','你怎么练','需要补核']
+cases={}
+for i in range(1,len(parts),2):
+    index=int(parts[i])
+    values=dict(line.split('：',1) for line in parts[i+1].strip().splitlines() if '：' in line)
+    assert set(values)==set(fields),(index,values.keys())
+    work=catalog['items'][index-1].copy()
+    folder=BASE/'内部分析素材'/work['video_id']
+    source=json.loads((folder/'来源.json').read_text())
+    transcript=json.loads((folder/'自动转写-未听审.json').read_text())
+    assert transcript.get('segments')
+    work.update(analysis=values,duration_seconds=source['duration'],
+                evidence_status='全时长自动转写与间隔画面结构分析；没有完成原声听审',
+                transcript_path=str(folder/'自动转写-未听审.json'))
+    if (folder/'短片细读画面.jpg').exists():
+        visuals=[str(folder/'短片细读画面.jpg')]
+    elif index in [1,67]:
+        visuals=[str(p) for p in sorted(folder.glob('画面索引-*.jpg'))]
+    else:
+        visuals=[str(p) for p in sorted(folder.glob('类型研究画面-*.jpg'))]
+    assert visuals,index
+    work['visual_index_paths']=visuals
+    cases[index]=work
+selected={x['index'] for g in ranking['categories'] for x in g['selected']}
+assert selected==set(cases),(selected-set(cases),set(cases)-selected)
+
+def duration(value):
+    n=round(value)
+    return f'{n//60}:{n%60:02d}'
+
+header='''英俊姐妹日记｜每类高赞候选前三：逐条拆解与练习
+观察日期：2026年11月1日
+范围：抖音号815387110，当时公开可见的74条作品。
+状态：已整理10类、31条不同视频的结构研究；未完成完整原声听审。
+
+先看选片口径
+
+1. “最火”在本文件具体指公开展示点赞，不能替代播放量、自然流量、投流效果或商业收益。
+2. 按主要叙事形式归类。分类是研究者的判断，不是平台或博主官方栏目；一条影片仍可兼具其他元素。
+3. 每类选展示点赞最高的三名候选，第三名显示值并列时全部保留；不足三条就照实保留。
+4. 候选已经结合内容复核；未入选作品主要按标题简介归类，边界样本仍可能影响类别排名。因此称“高赞候选”，不声称已经证明不可变的绝对前三。
+5. 本轮已阅读31条全时长自动转写，并结合长片约10秒间隔、部分短片约2秒间隔的画面索引分析。折叠电脑与实况拼图沿用此前更密的5秒索引。
+6. 这些材料不等于完整看完并逐句听过原声。转写有错误；配音语速、BGM、音效与声音剪辑节奏未完成核验。
+7. 每条的“商业承接”分析作品怎样形成营销路径，不是确认收了广告费。全部报价、合同金额、转化和分账仍未核实。
+8. 这里概括叙事与画面、给出原创练习，不交付未经听审的逐字稿。技术和优惠属于视频当时的表达，不作为当前产品购买建议。
+
+商单和Vlog，单独说清楚
+
+商单是合作属性，开箱、教程、测评、Vlog是呈现方式，可以重叠。目前没有足够公开证据给全部作品确认付费状态。
+先研究三条全账号最高赞的品牌推广候选：OPPO A7 Pro Max约7.7万赞、OPPO实况拼图约7.2万赞、华为折叠电脑与手写笔约5.8万赞。
+它们分别展示“效果证明产品卖点”“玩法激发购买兴趣”“场景扩展产品价值”。具体分析见正文，不重复算三条新视频。
+以上不是已确认的真实商单前三榜单，也不能根据点赞反推报价。
+
+独立日常Vlog：目前未确认到能据以排名的样本，不虚构三条。
+生活/工作场景式种草单列。户外拍摄、换场景、穿插工作生活，或稿子提到“拍Vlog”，都不足以证明这条就在记录真实的一天。
+当前来源没有完成其他平台的身份对应与全量检索，不混入同名账号的数据。
+
+类型总览
+'''
+
+summary=[]
+for no,g in enumerate(ranking['categories'],1):
+    selection='；'.join(f"{x['topic_summary']}（{x['likes_display']}赞）" for x in g['selected'])
+    summary.append(f"{no:02d}. {g['category']}｜归类{g['total']}条｜{g['note']}\n    {selection}")
+
+category_methods=[
+ '先锁定一个最值得展示的差异，用实际演示建立记忆，再补整机适用条件；不平均分配每个参数的篇幅。',
+ '从具体生活任务进入，先拍原有困扰，再拍动作与成果。拓竹X2D复核后归入此类，因此排在鸿蒙职场校园片之前。',
+ '看完要能复述步骤；成品、入口、动作、结果和限制各有画面。两条1.3万赞并列，无法凭展示值强行区分第三和第四。',
+ '比较维度相同，不代表证据相同。实机测试、资料判断、概念演示须分开。两条约1万赞并列保留。',
+ '按发现次序或主题身份组织，而非每条都逐个念配件；长开箱与短联名展示可以采用不同结构。',
+ '先确定一件共同的事，再给每个产品分工；最后解释组合使用和活动条件。两条2.3万赞并列保留。',
+ '提出可讨论的判断，再接原始事实、具体例子和反例；预测需要明确标注。',
+ '现场探展与资料盘点分开分析。标题列表中只找到两条明确展会主题，没有硬凑第三条。',
+ '复核后只保留两条以创作过程和成品展示为主要推进方式的独立作品。“春日拍照”实际含参数与步骤，归到教程。',
+ '以一个具体问题组织解释，用演示或类比降低门槛，再交代适用条件和不能证明的部分。'
+]
+
+body=[]
+for no,(g,method) in enumerate(zip(ranking['categories'],category_methods),1):
+    body.extend(['', '='*54, f"{no:02d}｜{g['category']}",method,''])
+    for rank,w in enumerate(g['selected'],1):
+        c=cases[w['index']]
+        actual_rank=1+sum(x['likes_rounded']>w['likes_rounded'] for x in g['selected'])
+        body.extend([f"第{actual_rank}名候选｜{c['topic_summary']}",
+                     f"展示点赞：{c['likes_display']}｜文件时长约{duration(c['duration_seconds'])}",
+                     f"原视频：{c['url']}"])
+        for field in fields:
+            body.append(field+'：'+c['analysis'][field])
+        body.extend(['画面索引：'+c['visual_index_paths'][0],''])
+
+footer='''
+======================================================
+把十类结构变成你的工作模板
+
+以下是为你整理的练习模板，不是声称拿到了博主公司的内部SOP。
+
+单品体验：一个差异→可见演示→用户收益→补充条件→适用人群。
+场景种草：一个任务→原有阻碍→产品参与→完成结果→仍有的成本。
+操作教程：先给成品→最短步骤→替换案例→失败边界→引导动手。
+横向对比：共同任务→明确条件→并置结果→差异解释→按需求选择。
+开箱联名：悬念或主题身份→逐层发现→使用和彩蛋→定制深度→取舍。
+多品清单：共同目标→产品各自分工→连接关系→组合使用→购买条件。
+行业观点：一句判断→原始事实→解释与案例→反例→保留的不确定性。
+现场探展：到场证据→核心展品→现场演示→资料解释→体验限制。
+展会盘点：共同主题→若干有差异的产品→各自一个动作或用途→来源与状态。
+创作展示：任务→原素材→关键变化→成品揭示→说明哪些属于再创作。
+知识答疑：具体问题→看得见的现象→简明解释→应用条件→简短归纳。
+
+商单怎么拆，才能用于求职
+
+对三条品牌推广候选，再加一张商业分析卡：
+1. 品牌希望观众记住哪一个价值？这是研究推断，不冒充拿到了客户brief。
+2. 开头给观众什么看下去的理由？
+3. 哪个镜头能证明卖点？哪个只是装饰或态度？
+4. 操作门槛、价格门槛、使用成本分别在哪里交代？
+5. 结尾引导的是尝试、搜索、到店、购买，还是互动？
+6. 产品、场地、道具、出镜和素材依赖是什么？
+7. 付费标识、价格与效果有哪些可靠证据？没有就写未知。
+
+三条候选的区别：
+OPPO A7：强演示让耐用成为记忆点，后续补完整卖点。
+OPPO实况拼图：想要成片是入口，步骤和玩法降低尝试难度，末段承接整机与活动。
+华为折叠电脑：从书写疑问进入，以多个任务扩大使用价值。
+这些结构可以学，不能用来证明它们的付费金额或自然流量效果。
+
+Vlog该怎样继续核实
+
+先看是否以“人物实际经历的过程”为主线：时间、行动、遇到的问题、选择和变化是否连续。
+若只是换多个场景介绍产品，按场景式种草分析更准确。
+若以后找到独立Vlog，仍需按同一账号身份、公开点赞、时间与作品来源重新排名；本版不以别人的Vlog补齐。
+已经整理出的生活场景类有三个候选，可先学习任务怎样被写成可拍摄的场景。
+
+你的实操顺序
+
+第一条先练教程：选自己确实用过的一项功能，用原素材做出结果；拍清入口、操作与完成画面。
+第二条练对比：固定同一份素材与任务，先定义条件，再拍两种方法；保留不利结果。
+第三条练场景：拍一次真实任务从开始到完成，产品只在有用的位置出现。
+不用为了作业购买礼盒、手机或打印机。选择自己手边能用、能借、能验证的工具即可。
+
+每条交付五样东西：
+一页选题卡：给谁、解决什么、结果是什么、证据是什么、为什么此时发布。
+一份带画面栏脚本：口播意图、动作、界面、素材来源、需要证明的事。
+一份镜头与道具表：每句关键判断都有相应镜头或资料。
+一条成片：让没看过脚本的人也能看懂过程与结果。
+一页复盘：哪里看不懂，哪句超出了证据，改了什么，下一次怎样做。
+
+审稿问题
+
+开头的结果是否真实？步骤能否照做？画面是否证明了口播？
+把某一台设备的表现推广到整类产品了吗？
+把预测、厂家资料、网络素材和个人实测混在一起了吗？
+优惠是否写明时间和条件？哪些主张还需要来源？
+有没有因为某条高赞，就把个人猜测写成了它变火的确定原因？
+
+本轮仍未完成的事项
+
+原声逐句听审、完整动态画面审阅和声音剪辑分析。
+全部74条作品按同样深度复核后的最终类别边界。
+独立Vlog样本及其他平台账号身份对应。
+真实商单范围、挂牌报价、实际成交、月接单量、收益和团队专属人数。
+
+来源索引
+
+账号：
+https://www.douyin.com/user/MS4wLjABAAAAppXo8oulxaX8g8cTj4vtYeVSNyI4Gpm0Z783ydkD1nc
+抖音号815387110；点赞快照来自本次实际主页作品列表。
+每条的原视频链接已列在正文；本地来源信息、未听审自动转写和画面索引保存在同目录“内部分析素材”。
+全部74条的归类与第三名并列计算见“各类型前三候选与分类依据.json”。
+'''
+
+report=header+'\n'.join(summary)+'\n\n'+'\n'.join(body)+footer
+(BASE/'每类前三候选_31条详细拆解_未完成原声听审.txt').write_text(report,encoding='utf-8')
+(BASE/'31条结构拆解.json').write_text(json.dumps({
+    'observed_date':'2026-11-01','status':'自动转写与间隔画面结构研究；原声听审未完成',
+    'account':catalog['account'],'account_id':'815387110','analyzed_unique_videos':31,
+    'total_media_minutes':round(sum(c['duration_seconds'] for c in cases.values())/60,2),
+    'cases':list(cases.values())},ensure_ascii=False,indent=2),encoding='utf-8')
+
+top=['英俊姐妹日记｜每类前三候选速查','2026-11-01｜74条公开作品｜主要形式归类，非官方分类',
+     '依据公开展示点赞；不能替代播放量。边界样本仍可能调整。','',
+     '品牌推广候选：A7 Pro Max 7.7万、实况拼图7.2万、华为折叠电脑5.8万；均未核实付费状态。',
+     '独立日常Vlog：未确认，暂不排名。','']
+for g in ranking['categories']:
+    top.extend([g['category']+'｜'+g['note']])
+    for w in g['selected']:
+        c=cases[w['index']]
+        top.extend([f"{c['topic_summary']}｜{c['likes_display']}赞｜约{duration(c['duration_seconds'])}",c['url']])
+    top.append('')
+top.extend(['逐条分析及练习见：每类前三候选_31条详细拆解_未完成原声听审.txt',
+            '本版不是完整视听审阅；转写和间隔画面不能冒充完整观看与听审。'])
+(BASE/'每类前三候选_原视频链接速查.txt').write_text('\n'.join(top),encoding='utf-8')
+print(json.dumps({'cases':len(cases),'report_chars':len(report),'minutes':round(sum(c['duration_seconds'] for c in cases.values())/60,2),
+                  'files':['每类前三候选_31条详细拆解_未完成原声听审.txt','每类前三候选_原视频链接速查.txt','31条结构拆解.json']},ensure_ascii=False))

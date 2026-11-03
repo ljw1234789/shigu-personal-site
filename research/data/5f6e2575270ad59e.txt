@@ -1,0 +1,56 @@
+"""28383641十二张画面板及七幅完整画面已实际查看。"""
+from pathlib import Path
+import json,subprocess,sys,collections,hashlib
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';out={}
+non={18:[39,40,41,43,44,45,48,49,50,52,53,54,55,56,60,62,64,65,67,69,74,76,77,101,102,105,106,107],24:[9,20,22,23,25,26,28,29,32,33,82,116,118,119,121,122,124,125,127,128,129,130,131,132,133],74:[60,61,62,63,64,66,69,70,71],28:[24,29,43,76,78,80,81,87,90,91,92,93],39:[49,59,60,61,92,93,103,104,105,106,107,108,109,111,112,113,114,145,149,150]}
+terms={18:{21:'圆滚滚的大熊猫',27:'30组动作',31:'较真运动',36:'碎片化骑行',47:'智能码表',51:'智能码表',66:'踏频',71:'实时监看',75:'填油工艺',81:'OOTD',82:'OOTD',83:'3000nits全局激发最高亮度',98:'随地大小练'},
+24:{4:'扎克伯格',5:'重仓元宇宙',7:'成功突围',39:'Meta雷朋二代',42:'功能上做减法',64:'小艺',71:'小艺',73:'收款码',78:'同声传音',90:'比如是不是可以内置一个'},
+74:{0:'李英俊',9:'电竞少女',10:'电竞少女',14:'一加Ace6T',17:'电光紫',19:'许嵩',20:'紫色很有韵味',21:'玻纤背板',22:'ACE字样',24:'AG磨砂掠影绿',25:'闪速黑',28:'1.5K屏',40:'骁龙8gen5',42:'灵犀触控芯片',47:'电竞三芯',49:'电竞三芯',52:'天河散热系统',58:'ColorOS16',73:'ColorOS',74:'Ace6T',76:'8300mAh',78:'充得快',80:'考研',82:'一加Ace6T',84:'大底主摄',86:'高光处理',90:'一加Ace6T',94:'一加Ace6T',96:'李英俊的数码日记'},
+28:{9:'拓竹A2L',11:'A2L',15:'330×320mm热床',17:'4人食12寸披萨',19:'Z轴325mm打印高度',22:'325mm',25:'尽情实现',31:'分件打印',38:'拓竹A2L',51:'i3架构',53:'质量能有保障吗',57:'两个颗粒阻尼器',58:'晃动龙门架',61:'阻尼器',63:'打印机框架振动',64:'拓竹',66:'PMSM伺服挤出机',67:'A2L',69:'我们用A2L打印模型',84:'Bambu Suite',88:'手残党',96:'A2L',100:'没有堆上多喷头',102:'打印体积、实用玩法',105:'量大管饱',106:'A2L与前辈A1',111:'拓竹A2L'},
+39:{1:'王者、吃鸡、QQ飞车',12:'60s体检',13:'闭环无感血压检测',18:'太懂年轻人',19:'懂',27:'有氧',28:'峡谷散步',29:'无氧',30:'海岛钢枪心跳加速',42:'王者荣耀',44:'推送提醒',54:'Polar H10心率带',55:'户外3km跑步',56:'OPPO Watch X3心率',58:'平均绝对误差0.81',65:'双频五星GPS',66:'搜星',69:'户外健走模式',70:'健走3km',72:'每公里偏差',73:'10米每公里',97:'拉伸放松',110:'乳酸阈心率、乳酸阈配速',116:'OPPO Watch X3',126:'十二边切割',136:'腕温'}}
+for board in sorted(root.glob('*28383641*.jpg.json')):
+    for c in json.loads(board.read_text()):
+        i=c['index'];n=int(c['candidate_id'].split('_')[-1])
+        d=dict(category='字幕措辞差异',after='本处字幕已实际查看，保留与草稿措辞差异',note='不以删补、同义或口语差异自动判定原声错误。',visible_resolution='wording_preserved_audio_pending',verified_screen_reading=None)
+        if n in non.get(i,[]):d.update(category='界面或标识文字',after='表盘、界面、坐标、年份或实物文字',note='不是新增口述；时钟、血氧、剩余电量等分别记录，不当作准确率或账号收入。',visible_resolution='non_speech_text')
+        if n in terms.get(i,{}):d.update(category='可见用词纠正',after=terms[i][n],note='按图纠正写法；原声、独立参数性能与适配条件仍待核。',visible_resolution='screen_correction_confirmed')
+        if i==18:
+            if 39<=n<=60 and n not in (47,51):d['note']='46秒整图中130标心率bpm，00:11:56是运动时间，2.18为距离km等；不把界面数值当手表型号、售价或统一运动目标。'
+            elif n==83:d['note']='完整限定是全局激发最高亮度；不改成默认常亮3000nits，也没有独立亮度测试。'
+            elif n==9:d.update(category='开场泛指价格',after='大几千块买的手表为开场泛指',note='未因此确认本片新款的零售定价、博主购买支出或商单费。',visible_resolution='context_condition_confirmed')
+        elif i==24:
+            if n in (18,27,30,31):d.update(category='动画终值与年份分开',after='片中2023／2024／2025为24／146／766万副',note='24秒完整柱状图注明全球AI眼镜出货量及wellsennXR来源；年份不能拼进766万，过渡数字不当终值。这里核图，不等于核准原报告定义和数据。',visible_resolution='context_condition_confirmed')
+            elif n in (117,120,126):d.update(category='另一张历史市场图',after='片中从2020年3700多万到2025年1400多万',note='与前面AI眼镜增长图分开；图中另标RUNTO来源。不是本账号销量或收入，期别、产品范围与原报告尚未独立核准。',visible_resolution='context_condition_confirmed')
+            elif n in (90,92,95):d.update(category='设想与已上线功能分开',after='本段提出内置记忆等可能功能',note='前面是不是可以为设问，不把随后会记住见过的人当成所有眼镜现成可用能力或博主实际收集了他人数据。',visible_resolution='context_condition_confirmed')
+            elif n==78:d['note']='片中字幕写同声传音，保留该写法；不静默替换成官方功能名，具体实现与适用语言未核实。'
+        elif i==74:
+            if n==57:d.update(category='系统演示账单',after='−¥47.00是零食支出界面示例',note='79.5秒整图标零食支出；不是设备售价、商单金额或已核实的本人真实账目。',visible_resolution='context_condition_confirmed')
+            elif n==76:d['note']='图中为8300mAh，不采纳漏掉8的300mAh；只确认作品参数写法。'
+            elif n in (19,20):d['note']='是作品中借歌词描述配色，不据此认定长期音乐喜好或家庭中另有妹妹。'
+        elif i==28:
+            if n in (15,19,20,21,22):d.update(category='尺寸单位与动画终值',after='热床330×320mm，Z轴打印高度325mm',note='29.5秒稳定整图清楚325mm，ASR的3.25mm与过渡帧698mm均不能采纳；不同轴和热床对象分开。',visible_resolution='context_condition_confirmed')
+            elif n==17:d['note']='12寸披萨是尺寸联想，不是机器外形尺寸或额外测量结果。'
+            elif n==84:d['note']='本片明确Bambu Suite，与另一条Bambu Studio分开，不能按熟悉软件名强行统一。'
+            elif n==37:d.update(category='历史价位与对照对象',after='小一万指此前对照的旗舰款',note='不是本片A2L报价，更不是博主个人预算。',visible_resolution='context_condition_confirmed')
+        elif i==39:
+            if n in (13,136):d['note']='只确认本片宣传用词；不同于另一条风险评估口径，医学用途、精度与注册范围未独立核实，不能据界面推断本人健康状态。'
+            elif n in (25,27,28,29,30):d.update(category='游戏与运动类比',after='有氧／无氧是本段游戏场景调侃',note='不是把玩游戏等同正式有氧或无氧运动的生理学证明。',visible_resolution='context_condition_confirmed')
+            elif n in (54,55,58,62):d.update(category='一次对照与误差指标',after='片中一组3km跑步，对比Polar H10，平均绝对误差0.81',note='78.5秒整图展示两条心率曲线。平均绝对误差不是最大误差或准确率；单位、原始数据、样本和同步方法未完整核准，不推广到所有人。',visible_resolution='context_condition_confirmed')
+            elif n in (69,70,72,73):d.update(category='距离偏差与条件',after='该段户外健走3km，每公里偏差10m',note='不是总偏差10m或10%误差；路线、参考距离与卫星环境未独立核实。',visible_resolution='context_condition_confirmed')
+            elif n==110:d.update(category='不同配速字段',after='乳酸阈配速5分45秒／km；平均配速6分41秒',note='140.5秒整图还列乳酸阈心率171次/分、恢复时间1天08小时04分钟；不是一个相同指标。只确认示例界面，未核实真实个人测量或医疗意义。',visible_resolution='context_condition_confirmed')
+            elif n==117:d.update(category='反问语境',after='只支持跑步是随后拓展项目的反问',note='不能截此句就得出产品仅支持跑步的结论，仍需下一段上下文。',visible_resolution='context_condition_confirmed')
+        out[c['candidate_id']]=d
+target=root.parent/'批次I已看画面决定.json';target.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for board in sorted(root.glob('*28383641*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(board),str(target)],check=True)
+stats={'batch':'I','total':len(out),'visible_resolution_counts':dict(collections.Counter(d['visible_resolution'] for d in out.values())),'audio_approved':0,'raw_asr_overwritten':False}
+(root.parent/'批次I验收计数.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2));print(json.dumps(stats,ensure_ascii=False))
+p=root.parent/'整图补证决定.json';rows=json.loads(p.read_text())
+extras=[(24,'7660098252204788992',24,'图表终值与来源标签','完整图的三根柱是2023年24、2024年146、2025年766，单位万副，标题全球AI眼镜出货量，标注wellsennXR来源。年份与过渡数字不能拼进终值。','数据动效以稳定终态核数，先确认年份、单位、范围和来源，再检查增长说法。','只确认作品图表，原报告口径、数据和当前市场未核实。'),
+ (74,'7579610408735018283',79.5,'系统演示里的金额归属','完整分屏将−¥47.00标为零食支出，是系统记账界面演示；不能统计成账号广告费、手机售价或博主已确认消费。','金额旁先留交易类型和对象；收入研究只用与商业合同或账号结算直接对应的证据。','示例界面不证明真实交易。'),
+ (28,'7651889492843842868',29.5,'动画数字与Z轴尺寸','完整稳定图及字幕为Z轴325mm打印高度，卷尺同框；前面数字动画过渡及ASR的3.25mm不采纳。','参数动画结束后核数字与单位，再核它对应的轴和尺寸对象。','未独立测量产品尺寸或校准卷尺。'),
+ (39,'7634100680457948479',78.5,'平均绝对误差与测试范围','两条曲线标OPPO Watch X3和Polar H10，字幕为平均绝对误差0.81；前面交代一组户外3km跑步。该值不等于最大误差、准确率或所有用户普遍表现。','测评脚本给指标定义和测试范围，误差指标不与百分比互换；保留原始数据和同步方法的待核项。','只确认片中对照，未独立重算原始样本或验证健康效能。')]
+for idx,vid,start,cat,finding,lesson,scope in extras:
+    im=base/'内部分析素材'/vid/'全文字幕补证画面'/f'{start:09.3f}.jpg'
+    rec=dict(index=idx,video_id=vid,start=start,category=cat,finding=finding,production_lesson=lesson,scope=scope,image_path=str(im),image_sha256=hashlib.sha256(im.read_bytes()).hexdigest(),source_urls=[],audio_verbatim_approved=False)
+    rows=[r for r in rows if (r['video_id'],r['start'],r['category'])!=(vid,start,cat)];rows.append(rec)
+p.write_text(json.dumps(rows,ensure_ascii=False,indent=2))

@@ -1,0 +1,81 @@
+"""本机研究：使用官方公开接口已返回的、通过既有校验的备用媒体地址。
+
+不更改生产工具，不修改水印参数，不读取浏览器登录信息。
+自动转写和间隔画面不代表完整连续视听。
+"""
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone, timedelta
+from pathlib import Path
+from urllib.parse import urlencode, urlsplit
+import json
+import sys
+import threading
+
+from 分析样片 import BASE, ENGINE, transcribe
+
+sys.path.insert(0, str(ENGINE))
+from engine.resolver import open_public, download
+from engine.platforms import allowed_media, payload_info
+
+
+def fetch_item(vid):
+    endpoint = 'https://www.douyin.com/web/api/v2/aweme/slidesinfo/?' + urlencode({'aweme_ids': '[' + vid + ']'})
+    with open_public(endpoint, headers={'Referer': 'https://www.douyin.com/'}) as response:
+        data = json.loads(response.read(10 * 1024 * 1024))
+    items = data.get('aweme_details') or []
+    item = next((item for item in items if str(item.get('aweme_id')) == vid), None)
+    if item is None:
+        raise ValueError('公开接口未返回该作品')
+    author = item.get('author') or {}
+    if str(author.get('unique_id') or author.get('short_id')) != '815387110':
+        raise ValueError('账号标识不符，停止归入研究对象')
+    return item, endpoint
+
+
+def prepare(vid):
+    folder = BASE / '内部分析素材' / vid
+    folder.mkdir(parents=True, exist_ok=True)
+    try:
+        item, endpoint = fetch_item(vid)
+        video = item.get('video') or {}
+        metadata = {
+            'id': vid, 'url': 'https://www.douyin.com/video/' + vid,
+            'official_public_endpoint': endpoint, 'observed_on': '2026-11-02',
+            'title': item.get('desc'), 'author': {k: (item.get('author') or {}).get(k) for k in ['nickname', 'unique_id', 'short_id']},
+            'create_time_unix': item.get('create_time'),
+            'publish_time_Asia_Shanghai': datetime.fromtimestamp(item['create_time'], timezone(timedelta(hours=8))).isoformat() if item.get('create_time') else None,
+            'statistics_snapshot': item.get('statistics'),
+            'duration': (video.get('duration') or 0) / 1000,
+            'width': video.get('width'), 'height': video.get('height'),
+            'public_labels': {k: item.get(k) for k in ['is_ads', 'aweme_type', 'commerce_info', 'anchors', 'ad_aweme_source', 'enterprise_verify_reason'] if k in item},
+            'commercial_status_note': '接口标志与商品入口不等于核实实际付费合同或收入。',
+        }
+        (folder / '公开接口作品信息-2026-11-02.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2))
+        if not list(folder.glob('*.mp4')):
+            address = video.get('play_addr_h264') or video.get('play_addr') or {}
+            candidates = [url for url in address.get('url_list', []) if allowed_media(url, '抖音') and '/playwm/' not in url.lower()]
+            candidates.sort(key=lambda url: 0 if (urlsplit(url).hostname or '').startswith('api-hl.') else 1)
+            if not candidates:
+                raise ValueError('没有通过既有校验的现成备用媒体地址')
+            payload = {key: metadata[key] for key in ['title', 'duration', 'width', 'height']}
+            payload['assets'] = [{'url': candidates[0], 'kind': 'video', 'ext': 'mp4'}]
+            info = payload_info(payload, '抖音')
+            files = download(metadata['url'], info, folder, lambda p: None, threading.Event())
+            provenance = dict(metadata)
+            provenance.update(files=[str(p) for p in files], acquisition='官方公开接口提供的既有备用播放地址；未修改水印参数', media_entry_host=urlsplit(candidates[0]).hostname)
+            (folder / '来源.json').write_text(json.dumps(provenance, ensure_ascii=False, indent=2))
+            print(json.dumps({'downloaded': vid, 'bytes': sum(p.stat().st_size for p in files)}, ensure_ascii=False), flush=True)
+        transcribe(vid)
+        return vid
+    except Exception as error:
+        print(json.dumps({'id': vid, 'error': str(error)}, ensure_ascii=False), flush=True)
+        return None
+
+
+if __name__ == '__main__':
+    ids = sys.argv[1:]
+    if not ids:
+        ledger = json.loads((BASE / '求职准备总包/09_74条研究覆盖与缺口.json').read_text())
+        ids = [item['video_id'] for item in ledger['items'] if not item['structured_research_complete']]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        list(pool.map(prepare, ids))

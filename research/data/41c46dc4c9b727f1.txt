@@ -1,0 +1,30 @@
+from pathlib import Path
+r=Path(__file__).resolve().parents[1]
+p=r/'dist/index.html';s=p.read_text();old=s
+# Keep the previously published design available for direct comparison.
+classic=old.replace('<span>趣味科学 · 生活实验</span></div>','<div style="display:flex;align-items:center;gap:20px"><span>趣味科学 · 生活实验</span><a href="./" style="font-size:11px;color:#3478ff">查看新一版 ↗</a></div></div>',1)
+classic=classic.replace('<title>毕导｜锚定IP深度调研</title>','<title>毕导｜IP调研 · 上一版</title>')
+(r/'dist/classic.html').write_text(classic)
+start=s.index('<section class="entry-cover"');end=s.index('<header class="top">',start)
+question_start=s.index('<div class="entry-question">',start);question_end=s.index('<a class="btn primary entry-enter"',question_start)
+question=s[question_start:question_end]
+orbit_start=s.index('<div class="entry-orbit"',start);orbit_end=s.index('<div class="entry-portrait-motion">',orbit_start)
+orbit=s[orbit_start:orbit_end]
+portrait_start=orbit_end;portrait_end=s.index('</figure>',portrait_start)
+portrait=s[portrait_start:portrait_end]
+cover='''<section class="entry-cover poster-cover" id="personEntry" role="dialog" aria-modal="true" aria-label="先认识毕导">
+<div class="entry-bar"><div class="entry-brand"><span class="brand-glyph" aria-hidden="true">b.</span> 毕导 <small>/ IP 研究</small></div><div class="entry-tools"><span>趣味科学 · 生活实验</span><a class="edition-compare" href="classic.html">查看上一版 ↗</a></div></div>
+<div class="entry-layout">
+<div class="entry-copy"><span class="kicker entry-eyebrow">小问题，值得大研究。</span><h1 aria-label="毕导"><span class="entry-name-mask" aria-hidden="true"><span>毕</span></span><span class="entry-name-mask" aria-hidden="true"><span>导</span></span></h1><p class="entry-identity">毕啸天 · 清华大学化学工程系博士</p><p class="entry-line"><span class="entry-line-mask"><span>一本正经，</span></span><span class="entry-line-mask"><span>研究点<span class="entry-fun">好玩的</span>。</span></span></p>'''+question+'''<a class="btn primary entry-enter" id="enterLab" href="#top">进入实验 <span aria-hidden="true">↗</span></a></div>
+<figure class="entry-portrait"><div class="poster-shape" aria-hidden="true"><svg viewBox="0 0 500 500"><path d="M250 5 300 50 367 31 390 94 460 104 451 175 495 225 450 276 466 345 401 369 383 438 312 433 263 490 210 443 142 463 115 399 45 384 52 313 6 262 51 212 33 143 100 118 118 49 189 56Z"/></svg></div>'''+orbit+portrait+'''<figcaption class="poster-photo-label"><span>毕导</span><span>生活，是实验的起点。</span></figcaption></figure>
+</div>
+<div class="entry-route" aria-label="从生活问题到科学解释"><span><small>01</small>看见问题</span><i aria-hidden="true">→</i><span><small>02</small>动手验证</span><i aria-hidden="true">→</i><strong><small>03</small>讲清原理</strong></div>
+</section>
+'''
+s=s[:start]+cover+s[end:]
+s=s.replace('<body class="entry-pending">','<body class="entry-pending edition-two">')
+s=s.replace('<meta name="theme-color" content="#fafcfd">','<meta name="theme-color" content="#f3f1e9">')
+s=s.replace('</head>','<link rel="stylesheet" href="poster-edition.css">\n</head>',1)
+s=s.replace('<span>毕导 IP 研究 / 2026.10.11</span>','<span>毕导 / IP 研究</span>')
+s=s.replace('<a href="#personEntry" data-open-cover>返回封面 ↑</a></footer>','<div class="footer-links"><a href="classic.html">查看上一版 ↗</a><a href="#personEntry" data-open-cover>返回封面 ↑</a></div></footer>')
+p.write_text(s)

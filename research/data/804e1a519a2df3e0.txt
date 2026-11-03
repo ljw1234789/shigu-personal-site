@@ -1,0 +1,16 @@
+from pathlib import Path
+import json,sys,hashlib
+BASE=Path(__file__).resolve().parents[1];ROOT=BASE/'原声核验/全文字幕对照'
+source=Path(sys.argv[1]);batch=json.loads(source.read_text());video_id=batch['video_id']
+file=ROOT/(video_id+'.json');data=json.loads(file.read_text());by={c['candidate_id'].split('_')[-1]:c for c in data['candidates']}
+assert batch.get('alignment_version',1)==data.get('alignment_version',1),'画面板版本不同，不能把旧编号套到新候选。'
+for suffix,record in batch['decisions'].items():
+    c=by[suffix];assert Path(c['image_path']).is_file()
+    c['assistant_image_checked']=True;c['decision']=record;c['decision']['audio_verbatim_approved']=False
+    c['decision']['source_image_sha256']=hashlib.sha256(Path(c['image_path']).read_bytes()).hexdigest()
+    c['decision']['review_board']=batch['review_boards'];c['decision']['raw_asr_overwritten']=False
+data['counts']['assistant_image_checked_candidates']=sum(c['assistant_image_checked'] for c in data['candidates'])
+data['counts']['visible_text_difference_audit_complete']=all(c['assistant_image_checked'] for c in data['candidates'])
+data['counts']['full_parameter_review_complete']=False
+file.write_text(json.dumps(data,ensure_ascii=False,indent=2))
+print(json.dumps({'index':data['index'],'candidates':len(data['candidates']),'checked':data['counts']['assistant_image_checked_candidates'],'sampled_text_difference_review_complete':data['counts']['visible_text_difference_audit_complete'],'approved_audio':0},ensure_ascii=False))

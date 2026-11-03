@@ -1,0 +1,449 @@
+- link "欢迎进入 百度一下，你就知道，盲人用户进入读屏幕模式请按快捷键Ctrl加Alt加R；阅读详细操作说明请按快捷键Ctrl加Alt加问号键。":
+  - /url: javascript:void(0)
+- link "到百度首页":
+  - /url: /
+  - img "到百度首页"
+- textbox: 深圳藏宝阁广告传媒有限公司
+- button "百度一下"
+- link "百度首页":
+  - /url: /
+- link "设置":
+  - /url: javascript:;
+- link "登录":
+  - /url: https://passport.baidu.com/v2/?login&tpl=mn&u=http%3A%2F%2Fwww.baidu.com%2F
+- link:
+  - /url: https://chat.baidu.com/search?word=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&dyTabStr=MTIsMCwzLDEsMiwxMyw3LDYsNSw5&pd=csaitab&setype=csaitab&extParamsJson=%7B%22enter_type%22%3A%22search_a_tab%22%2C%22sa%22%3A%22vs_tab%22%2C%22apagelid%22%3A%2212491622603267643068%22%2C%22ori_lid%22%3A%2212491622603267643068%22%7D
+- generic: 网页
+- link "图片":
+  - /url: http://image.baidu.com/i?tn=baiduimage&ps=1&ct=201326592&lm=-1&cl=2&nc=1&ie=utf-8&lid=ad5b2893000216bc&dyTabStr=MTIsMCwzLDEsMiwxMyw3LDYsNSw5&word=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8
+- link "资讯":
+  - /url: https://www.baidu.com/s?rtt=1&bsst=1&cl=2&tn=news&ie=utf-8&word=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8
+- link "视频":
+  - /url: /sf/vsearch?pd=video&tn=vsearch&lid=ad5b2893000216bc&ie=utf-8&wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_spt=7&rsv_bp=1&f=8&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k
+- link "笔记":
+  - /url: https://www.baidu.com/s?pd=note&rpf=pc&dyTabStr=MTIsMCwzLDEsMiwxMyw3LDYsNSw5&word=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8
+- link "地图":
+  - /url: https://map.baidu.com/?newmap=1&ie=utf-8&from=pstab&s=s%26wd%3D%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8
+- link "贴吧":
+  - /url: http://tieba.baidu.com/f?fr=wwwt&ie=utf-8&dyTabStr=MTIsMCwzLDEsMiwxMyw3LDYsNSw5&kw=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8
+- link "文库":
+  - /url: http://wenku.baidu.com/search?lm=0&od=0&ie=utf-8&dyTabStr=MTIsMCwzLDEsMiwxMyw3LDYsNSw5&word=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8
+- link "更多":
+  - /url: http://www.baidu.com/more/
+- generic: 搜索工具
+- table:
+  - rowgroup:
+    - row "相关搜索  深圳有什么传媒公司  深圳迁喜传媒有限公司  深圳市寻梦文化传媒有限公司  金桥广告传媒有限公司  深圳星动广告  深圳星动广告文化 深圳藏宝阁广告传媒有限公司关系图_爱企查 投资方(2) 法定代表人：刘岳峰 主要人员(1) 深圳藏宝阁广告传媒有限公司 分支机构(0) 对外投资(0) 疑似控股(0)    换一换 热搜榜 财经榜 民生榜  让母亲河永续惠泽子孙后代 1 最强厄尔尼诺要来了 2 警方回应九寨沟冲突：年轻一方先动手 新 3 一组数据看黄河治理80年 4 男子被拐30余年认亲后拉黑养家断联 热 5 “卖导弹的小姐姐”有新消息 6 “一个成功的黄牛起码亏十几万” 7 补办身份证得先刷身份证 新 8 许飞演唱会已售罄 新 9 高启强陈书婷AI跳热舞火出圈 10 詹姆斯冲出场外喝球迷饮料 11 “举报共治 护企远航”倡议明日发布 12 结婚当天离世新郎主动脉夹层破裂 13 爸爸魔改电视 儿子看10分钟弹1道题 14 九寨沟游客冲突 热 15 张一鸣被超越 亚洲首富换人了 新":
+      - cell "相关搜索  深圳有什么传媒公司  深圳迁喜传媒有限公司  深圳市寻梦文化传媒有限公司  金桥广告传媒有限公司  深圳星动广告  深圳星动广告文化 深圳藏宝阁广告传媒有限公司关系图_爱企查 投资方(2) 法定代表人：刘岳峰 主要人员(1) 深圳藏宝阁广告传媒有限公司 分支机构(0) 对外投资(0) 疑似控股(0)    换一换 热搜榜 财经榜 民生榜  让母亲河永续惠泽子孙后代 1 最强厄尔尼诺要来了 2 警方回应九寨沟冲突：年轻一方先动手 新 3 一组数据看黄河治理80年 4 男子被拐30余年认亲后拉黑养家断联 热 5 “卖导弹的小姐姐”有新消息 6 “一个成功的黄牛起码亏十几万” 7 补办身份证得先刷身份证 新 8 许飞演唱会已售罄 新 9 高启强陈书婷AI跳热舞火出圈 10 詹姆斯冲出场外喝球迷饮料 11 “举报共治 护企远航”倡议明日发布 12 结婚当天离世新郎主动脉夹层破裂 13 爸爸魔改电视 儿子看10分钟弹1道题 14 九寨沟游客冲突 热 15 张一鸣被超越 亚洲首富换人了 新":
+        - generic: 相关搜索
+        - link " 深圳有什么传媒公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%A0%E5%AA%92%E5%85%AC%E5%8F%B8&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=0f2dHHt0mBwFD13ZzNHo18nX5AjwOMSU0tapEJgRBEX3zZCfYLtq0L6yI7A&rfqid=ad5b2893000216bc&rsv_dl=0_prs_28616_7&rq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsf=100631203
+          - generic: 
+          - generic: 深圳有什么传媒公司
+        - link " 深圳迁喜传媒有限公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%BF%81%E5%96%9C%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=0f2dHHt0mBwFD13ZzNHo18nX5AjwOMSU0tapEJgRBEX3zZCfYLtq0L6yI7A&rfqid=ad5b2893000216bc&rsv_dl=0_prs_28616_8&rq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsf=100633803
+          - generic: 
+          - generic: 深圳迁喜传媒有限公司
+        - link " 深圳市寻梦文化传媒有限公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%B8%82%E5%AF%BB%E6%A2%A6%E6%96%87%E5%8C%96%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=7b89GltodanMVy6i0Dl%2BOaEm3inmnVfHz0D%2FJibmKG7lWV1LlgwD5sOv0ns&rfqid=ad5b2893000216bc&rsv_dl=0_prs_28616_9&rq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsf=100633803
+          - generic: 
+          - generic: 深圳市寻梦文化传媒有限公司
+        - link " 金桥广告传媒有限公司":
+          - /url: /s?wd=%E9%87%91%E6%A1%A5%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=7b89GltodanMVy6i0Dl%2BOaEm3inmnVfHz0D%2FJibmKG7lWV1LlgwD5sOv0ns&rfqid=ad5b2893000216bc&rsv_dl=0_prs_28616_10&rq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsf=100633803
+          - generic: 
+          - generic: 金桥广告传媒有限公司
+        - link " 深圳星动广告":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E6%98%9F%E5%8A%A8%E5%B9%BF%E5%91%8A&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=7b89GltodanMVy6i0Dl%2BOaEm3inmnVfHz0D%2FJibmKG7lWV1LlgwD5sOv0ns&rfqid=ad5b2893000216bc&rsv_dl=0_prs_28616_11&rq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsf=100631203
+          - generic: 
+          - generic: 深圳星动广告
+        - link " 深圳星动广告文化":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E6%98%9F%E5%8A%A8%E5%B9%BF%E5%91%8A%E6%96%87%E5%8C%96&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=7b89GltodanMVy6i0Dl%2BOaEm3inmnVfHz0D%2FJibmKG7lWV1LlgwD5sOv0ns&rfqid=ad5b2893000216bc&rsv_dl=0_prs_28616_12&rq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsf=100631203
+          - generic: 
+          - generic: 深圳星动广告文化
+        - generic: 深圳藏宝阁广告传媒有限公司关系图_爱企查
+        - link "投资方(2) 法定代表人：刘岳峰 主要人员(1) 深圳藏宝阁广告传媒有限公司 分支机构(0) 对外投资(0) 疑似控股(0)":
+          - /url: https://aiqicha.baidu.com/relations?pid=42035296065163&pd=atlas&from=ps&query=深圳藏宝阁广告传媒有限公司
+          - generic: 投资方(2)
+          - generic: 法定代表人：刘岳峰
+          - generic: 主要人员(1)
+          - generic: 深圳藏宝阁广告传媒有限公司
+          - generic: 分支机构(0)
+          - generic: 对外投资(0)
+          - generic: 疑似控股(0)
+        - generic "百度热搜":
+          - link " ":
+            - /url: https://top.baidu.com/board?platform=pc&sa=pcindex_a_right
+            - generic: 
+            - generic: 
+          - link " 换一换":
+            - /url: javascript:void(0);
+            - generic: 
+            - text: 换一换
+        - generic: 热搜榜
+        - generic: 财经榜
+        - generic: 民生榜
+        - generic: 
+        - link "让母亲河永续惠泽子孙后代":
+          - /url: /s?wd=%E8%AE%A9%E6%AF%8D%E4%BA%B2%E6%B2%B3%E6%B0%B8%E7%BB%AD%E6%83%A0%E6%B3%BD%E5%AD%90%E5%AD%99%E5%90%8E%E4%BB%A3&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=1dd5YjiJl%2FO0BzMHPAdsvMa1KOSVmCSy%2Bka8TZFbTU76vtgxq9HKNi6lCks&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_1&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "1"
+        - link "最强厄尔尼诺要来了":
+          - /url: /s?wd=%E6%9C%80%E5%BC%BA%E5%8E%84%E5%B0%94%E5%B0%BC%E8%AF%BA%E8%A6%81%E6%9D%A5%E4%BA%86&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=1dd5YjiJl%2FO0BzMHPAdsvMa1KOSVmCSy%2Bka8TZFbTU76vtgxq9HKNi6lCks&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_2&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "2"
+        - link "警方回应九寨沟冲突：年轻一方先动手":
+          - /url: /s?wd=%E8%AD%A6%E6%96%B9%E5%9B%9E%E5%BA%94%E4%B9%9D%E5%AF%A8%E6%B2%9F%E5%86%B2%E7%AA%81%EF%BC%9A%E5%B9%B4%E8%BD%BB%E4%B8%80%E6%96%B9%E5%85%88%E5%8A%A8%E6%89%8B&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=1dd5YjiJl%2FO0BzMHPAdsvMa1KOSVmCSy%2Bka8TZFbTU76vtgxq9HKNi6lCks&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_3&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: 新
+        - generic: "3"
+        - link "一组数据看黄河治理80年":
+          - /url: /s?wd=%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9C%8B%E9%BB%84%E6%B2%B3%E6%B2%BB%E7%90%8680%E5%B9%B4&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=cc5dAIx6T8zuliwMb8HBkVXJA%2FHVcUzWVcrhZNrp%2F3YFSh49QeRRjNrRnL4&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_4&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "4"
+        - link "男子被拐30余年认亲后拉黑养家断联":
+          - /url: /s?wd=%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8B%9030%E4%BD%99%E5%B9%B4%E8%AE%A4%E4%BA%B2%E5%90%8E%E6%8B%89%E9%BB%91%E5%85%BB%E5%AE%B6%E6%96%AD%E8%81%94&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=cc5dAIx6T8zuliwMb8HBkVXJA%2FHVcUzWVcrhZNrp%2F3YFSh49QeRRjNrRnL4&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_5&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: 热
+        - generic: "5"
+        - link "“卖导弹的小姐姐”有新消息":
+          - /url: /s?wd=%E2%80%9C%E5%8D%96%E5%AF%BC%E5%BC%B9%E7%9A%84%E5%B0%8F%E5%A7%90%E5%A7%90%E2%80%9D%E6%9C%89%E6%96%B0%E6%B6%88%E6%81%AF&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=cc5dAIx6T8zuliwMb8HBkVXJA%2FHVcUzWVcrhZNrp%2F3YFSh49QeRRjNrRnL4&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_6&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "6"
+        - link "“一个成功的黄牛起码亏十几万”":
+          - /url: /s?wd=%E2%80%9C%E4%B8%80%E4%B8%AA%E6%88%90%E5%8A%9F%E7%9A%84%E9%BB%84%E7%89%9B%E8%B5%B7%E7%A0%81%E4%BA%8F%E5%8D%81%E5%87%A0%E4%B8%87%E2%80%9D&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=cc5dAIx6T8zuliwMb8HBkVXJA%2FHVcUzWVcrhZNrp%2F3YFSh49QeRRjNrRnL4&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_7&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "7"
+        - link "补办身份证得先刷身份证":
+          - /url: /s?wd=%E8%A1%A5%E5%8A%9E%E8%BA%AB%E4%BB%BD%E8%AF%81%E5%BE%97%E5%85%88%E5%88%B7%E8%BA%AB%E4%BB%BD%E8%AF%81&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=cc5dAIx6T8zuliwMb8HBkVXJA%2FHVcUzWVcrhZNrp%2F3YFSh49QeRRjNrRnL4&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_8&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: 新
+        - generic: "8"
+        - link "许飞演唱会已售罄":
+          - /url: /s?wd=%E8%AE%B8%E9%A3%9E%E6%BC%94%E5%94%B1%E4%BC%9A%E5%B7%B2%E5%94%AE%E7%BD%84&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=cc5dAIx6T8zuliwMb8HBkVXJA%2FHVcUzWVcrhZNrp%2F3YFSh49QeRRjNrRnL4&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_9&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: 新
+        - generic: "9"
+        - link "高启强陈书婷AI跳热舞火出圈":
+          - /url: /s?wd=%E9%AB%98%E5%90%AF%E5%BC%BA%E9%99%88%E4%B9%A6%E5%A9%B7AI%E8%B7%B3%E7%83%AD%E8%88%9E%E7%81%AB%E5%87%BA%E5%9C%88&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=cc5dAIx6T8zuliwMb8HBkVXJA%2FHVcUzWVcrhZNrp%2F3YFSh49QeRRjNrRnL4&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_10&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "10"
+        - link "詹姆斯冲出场外喝球迷饮料":
+          - /url: /s?wd=%E8%A9%B9%E5%A7%86%E6%96%AF%E5%86%B2%E5%87%BA%E5%9C%BA%E5%A4%96%E5%96%9D%E7%90%83%E8%BF%B7%E9%A5%AE%E6%96%99&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=cc5dAIx6T8zuliwMb8HBkVXJA%2FHVcUzWVcrhZNrp%2F3YFSh49QeRRjNrRnL4&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_11&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "11"
+        - link "“举报共治 护企远航”倡议明日发布":
+          - /url: /s?wd=%E2%80%9C%E4%B8%BE%E6%8A%A5%E5%85%B1%E6%B2%BB%20%E6%8A%A4%E4%BC%81%E8%BF%9C%E8%88%AA%E2%80%9D%E5%80%A1%E8%AE%AE%E6%98%8E%E6%97%A5%E5%8F%91%E5%B8%83&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=aacfHJQamnx%2B3ZyksBAiL5BHZY4B1TW2sW00hjMRUy3TMh211%2BFUnLc7O5I&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_12&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "12"
+        - link "结婚当天离世新郎主动脉夹层破裂":
+          - /url: /s?wd=%E7%BB%93%E5%A9%9A%E5%BD%93%E5%A4%A9%E7%A6%BB%E4%B8%96%E6%96%B0%E9%83%8E%E4%B8%BB%E5%8A%A8%E8%84%89%E5%A4%B9%E5%B1%82%E7%A0%B4%E8%A3%82&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=aacfHJQamnx%2B3ZyksBAiL5BHZY4B1TW2sW00hjMRUy3TMh211%2BFUnLc7O5I&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_13&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "13"
+        - link "爸爸魔改电视 儿子看10分钟弹1道题":
+          - /url: /s?wd=%E7%88%B8%E7%88%B8%E9%AD%94%E6%94%B9%E7%94%B5%E8%A7%86%20%E5%84%BF%E5%AD%90%E7%9C%8B10%E5%88%86%E9%92%9F%E5%BC%B91%E9%81%93%E9%A2%98&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=aacfHJQamnx%2B3ZyksBAiL5BHZY4B1TW2sW00hjMRUy3TMh211%2BFUnLc7O5I&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_14&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: "14"
+        - link "九寨沟游客冲突":
+          - /url: /s?wd=%E4%B9%9D%E5%AF%A8%E6%B2%9F%E6%B8%B8%E5%AE%A2%E5%86%B2%E7%AA%81&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=aacfHJQamnx%2B3ZyksBAiL5BHZY4B1TW2sW00hjMRUy3TMh211%2BFUnLc7O5I&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_1_15_15&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: 热
+        - generic: "15"
+        - link "张一鸣被超越 亚洲首富换人了":
+          - /url: /s?wd=%E5%BC%A0%E4%B8%80%E9%B8%A3%E8%A2%AB%E8%B6%85%E8%B6%8A%20%E4%BA%9A%E6%B4%B2%E9%A6%96%E5%AF%8C%E6%8D%A2%E4%BA%BA%E4%BA%86&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=aacfHJQamnx%2B3ZyksBAiL5BHZY4B1TW2sW00hjMRUy3TMh211%2BFUnLc7O5I&rqid=ad5b2893000216bc&rsf=2ca9bee44721b86051c46a6a8b81682a_16_30_16&rsv_dl=0_right_fyb_pchot_20811&sa=0_right_fyb_pchot_20811
+        - generic: 新
+- heading "标题:深圳藏宝阁广告传媒有限公司-企业信息" [level=3]:
+  - link "标题:深圳藏宝阁广告传媒有限公司-企业信息":
+    - /url: https://aiqicha.baidu.com/detail/compinfo?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+    - emphasis: 深圳藏宝阁广告传媒有限公司
+    - text: "-企业信息"
+- link:
+  - /url: https://aiqicha.baidu.com/detail/compinfo?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+- paragraph: 法定代表人：刘岳峰
+- paragraph: 注册资本：200万元
+- paragraph: 成立时间：2023-02-21
+- generic: 小微企业
+- generic: 开业
+- generic: 企业待认领
+- link "咨询":
+  - /url: http://aiqicha.baidu.com/company_detail_42035296065163?fr=ald-lx&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+  - button "咨询":
+    - generic: 咨询
+- paragraph:
+  - emphasis: 深圳藏宝阁广告传媒有限公司
+  - text: 地址位于深圳市光明区马田街道石围社区石围油麻岗工业区18号A栋301，经营范围一般经营项目：技术服务、技术开发、技术咨询、技术交流、技术转让、技术推广；信息技术咨询服务；信息咨询服务（不含许可类信息咨询服务）；工程和技术研究和试验发展；国内贸易代理；数据处理和存储支持服务；软件开发；电子产品销售；网络技术服务；销售代理；日用百货销售；照相机及器材销售；移动通信设备销售；家具销售；互联网销售（除销售需要许可的商品）；家具零配件销售；工艺美术品及礼仪用品销售（象牙及其制品除外）；工艺美术品及收藏品零售（象牙及其制品除外）；日用品批发；日用品销售；体育用品及器材零售；文具用品零售；服装辅料销售；服装服饰零售；计算机软硬件及辅助设备零售；广告发布；数字广告发布；平面设计；广告制作；数字广告制作；广告设计、代理；数字广告设计、代理；数字内容制作服务（不含出版发行）；仪器仪表销售；办公服务；图文设计制作；办公设备销售；办公用品销售；通讯设备销售；通信设备销售；信息系统集成服务；专业设计服务；电影摄制服务；个人互联网直播服务；实验分析仪器销售；其他文化艺术经纪代理；数字文化创意内容应用服务；数字创意产品展览展示服务；文化娱乐经纪人服务；日用家电零售；办公设备耗材销售；照相器材及望远镜零售；绘图、计算及测量仪器销售；智能车载设备销售；汽车装饰用品销售；导航终端销售；卫星移动通信终端销售；音响设备销售；会议及展览服务；家居用品销售；安防设备销售；新能源汽车电附件销售；泵及真空设备销售；照明器具销售；卫星技术综合应用系统集成；化妆品零售；机动车
+- table:
+  - rowgroup:
+    - row "工商信息 认领企业 企业风险 企业年报 企业股东":
+      - cell "工商信息":
+        - link "工商信息":
+          - /url: https://aiqicha.baidu.com/detail/compinfo?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=ald_zl_jbxx&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司&tab=basic&subtab=business
+      - cell "认领企业":
+        - link "认领企业":
+          - /url: http://aiqicha.baidu.com/claiminterest/index?fr=ald_rlqy&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+      - cell "企业风险":
+        - link "企业风险":
+          - /url: https://aiqicha.baidu.com/detail/compinfo?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=ald_zl_qyfx&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司&anchor=risk
+      - cell "企业年报":
+        - link "企业年报":
+          - /url: https://aiqicha.baidu.com/detail/compinfo?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=ald_zl_nb&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司&tab=basic&subtab=annual
+      - cell "企业股东":
+        - link "企业股东":
+          - /url: https://aiqicha.baidu.com/detail/compinfo?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=ald_zl_qygd&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司&tab=basic&subtab=shareholders
+- link "1位相关人员":
+  - /url: https://aiqicha.baidu.com/detail/compinfo?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=personlist_alad&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司&subtab=directors
+  - generic: 1位相关人员
+- list:
+  - link "刘岳峰 董事，经理":
+    - /url: https://aiqicha.baidu.com/human_lTM-TogKuTw8ak2w4prBXQ-KaLas-lJ--QcOI9T*Fdy?fr=persondetail_alad&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+    - generic: 刘岳峰
+    - paragraph: 董事，经理
+- paragraph:
+  - link "【企业动态】：2026-09-23 新增 其他工商信息 变更":
+    - /url: http://aiqicha.baidu.com/riskv2/intel?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=risk_alad_pc&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+- paragraph:
+  - link "【企业动态】：2026-09-23 新增 其他工商信息 变更":
+    - /url: http://aiqicha.baidu.com/riskv2/intel?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=risk_alad_pc&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+- paragraph:
+  - link "【企业动态】：2026-09-23 新增 经营范围 变更":
+    - /url: http://aiqicha.baidu.com/riskv2/intel?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=risk_alad_pc&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+- paragraph:
+  - link "【企业动态】：2026-09-23 新增 经营范围 变更":
+    - /url: http://aiqicha.baidu.com/riskv2/intel?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=risk_alad_pc&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+- paragraph:
+  - link "【企业动态】：2026-09-23 新增 经营范围 变更":
+    - /url: http://aiqicha.baidu.com/riskv2/intel?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=risk_alad_pc&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+- paragraph:
+  - link "【企业动态】：2026-09-23 新增 其他工商信息 变更":
+    - /url: http://aiqicha.baidu.com/riskv2/intel?pid=xlTM-TogKuTwuunjeH*VZ-emG5Wvtk7xZQmd&fr=risk_alad_pc&&pd=aen&from=ps&query=深圳藏宝阁广告传媒有限公司
+- link "来源：以上信息来源爱企查，一个专业免费的企业信息查询平台":
+  - /url: https://aiqicha.baidu.com
+  - text: 爱企查
+- generic: 
+- heading "深圳藏宝阁广告传媒有限公司怎么样 - 职友集" [level=3]:
+  - link "深圳藏宝阁广告传媒有限公司怎么样 - 职友集":
+    - /url: http://www.baidu.com/link?url=Wjj7XbH1-lRNNmtjQYW1nhgfylpcmYRMhKj-VhySVrnW1T_13HQo7jGAUmMIvzlEOtMivuvb9hMFOvnmR64juq
+    - emphasis: 深圳藏宝阁广告传媒有限公司
+    - text: 怎么样 - 职友集
+- link:
+  - /url: http://www.baidu.com/link?url=Wjj7XbH1-lRNNmtjQYW1nhgfylpcmYRMhKj-VhySVrnW1T_13HQo7jGAUmMIvzlEOtMivuvb9hMFOvnmR64juq
+- text: 2024年8月6日
+- emphasis: 深圳藏宝阁广告传媒有限公司
+- text: :规模100-499人。招聘需求增长:2025较上年+275%。技术人才需求:计算机/网络/技术类最多占81.3%。招聘地区分布在1个地区,深圳最多。上职友集,少走弯路。
+- link "头像 职友集":
+  - /url: http://www.baidu.com/link?url=Wjj7XbH1-lRNNmtjQYW1nhgfylpcmYRMhKj-VhySVrnW1T_13HQo7jGAUmMIvzlEOtMivuvb9hMFOvnmR64juq
+  - img "头像"
+  - generic: 职友集
+  - generic: 
+- heading "深圳藏宝阁广告传媒有限公司_主要人员 - 企查查" [level=3]:
+  - link "深圳藏宝阁广告传媒有限公司_主要人员 - 企查查":
+    - /url: http://www.baidu.com/link?url=wI8-_j_2hQs0mRgzBZ1L_j2X3SMGIvc1ZpgROiIo_CuH0TSM8GlJEhONMskcxFzgK2U1bzkgTgQwQYT0Hg0VW7yyB6tHuDeYRH_1T1ToKvK
+    - emphasis: 深圳藏宝阁广告传媒有限公司
+    - text: _主要人员 - 企查查
+- link:
+  - /url: http://www.baidu.com/link?url=wI8-_j_2hQs0mRgzBZ1L_j2X3SMGIvc1ZpgROiIo_CuH0TSM8GlJEhONMskcxFzgK2U1bzkgTgQwQYT0Hg0VW7yyB6tHuDeYRH_1T1ToKvK
+- text: 2026年10月10日
+- emphasis: 深圳藏宝阁广告传媒有限公司
+- text: (曾用名:深圳市如禾广告传媒有限公司、深圳市宝阁科技有限公司)是⼀家成⽴于2023年02月21日的有限责任公司,属于以从事文化、体育和娱乐业为主的企业。位于深圳市光明区,法定代表人为刘岳峰,目前处于存续状态,公司电话:17645080994,邮箱:17645080994@139.com,地址:深圳市光明区马田街道石...
+- link "头像 企查查":
+  - /url: http://www.baidu.com/link?url=wI8-_j_2hQs0mRgzBZ1L_j2X3SMGIvc1ZpgROiIo_CuH0TSM8GlJEhONMskcxFzgK2U1bzkgTgQwQYT0Hg0VW7yyB6tHuDeYRH_1T1ToKvK
+  - img "头像"
+  - generic: 企查查
+  - generic: 
+- heading "深圳藏宝阁广告传媒有限公司怎么样 - 职友集" [level=3]:
+  - link "深圳藏宝阁广告传媒有限公司怎么样 - 职友集":
+    - /url: http://www.baidu.com/link?url=Wjj7XbH1-lRNNmtjQYW1nhgfylpcmYRMhKj-VhySVrnW1T_13HQo7jGAUmMIvzlEeoAawjD0MusTfcUFw1AeqK
+    - emphasis: 深圳藏宝阁广告传媒有限公司
+    - text: 怎么样 - 职友集
+- link:
+  - /url: http://www.baidu.com/link?url=Wjj7XbH1-lRNNmtjQYW1nhgfylpcmYRMhKj-VhySVrnW1T_13HQo7jGAUmMIvzlEeoAawjD0MusTfcUFw1AeqK
+- text: 2024年8月6日
+- text: "公司概况 性质: 民营公司 规模: 100-499人 成立: 3年 行业: 影视/媒体/艺术/文化传播 、 娱乐/休闲/体育 、 广告 、 公关/市场推广/会展 全称:"
+- emphasis: 深圳藏宝阁广告传媒有限公司
+- text: "。 发展阶段 排名: 深圳自媒体运营公司人气排名第12名 深圳自媒体公司人气排名第13名 深圳电竞公司人气排名第20名 深圳多媒体视频公司..."
+- link "头像 职友集":
+  - /url: http://www.baidu.com/link?url=Wjj7XbH1-lRNNmtjQYW1nhgfylpcmYRMhKj-VhySVrnW1T_13HQo7jGAUmMIvzlEeoAawjD0MusTfcUFw1AeqK
+  - img "头像"
+  - generic: 职友集
+  - generic: 
+- generic: 大家还在搜
+- link "深圳十大广告传媒公司":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%8D%81%E5%A4%A7%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E5%85%AC%E5%8F%B8&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=1107IRrciVNbuRTgv1QNh7554NikVK0g8Pne%2BMOunTIV4Kx7Zc3tqjvx23I&rsf=101631203&rsv_dl=0_prs_28608_1
+  - generic: 深圳十大广告传媒公司
+- link "深圳广告公司排名及联系方式":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%B9%BF%E5%91%8A%E5%85%AC%E5%8F%B8%E6%8E%92%E5%90%8D%E5%8F%8A%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=1107IRrciVNbuRTgv1QNh7554NikVK0g8Pne%2BMOunTIV4Kx7Zc3tqjvx23I&rsf=101632008&rsv_dl=0_prs_28608_2
+  - generic: 深圳广告公司排名及联系方式
+- link "深圳发现资源广告公司靠谱吗":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%8F%91%E7%8E%B0%E8%B5%84%E6%BA%90%E5%B9%BF%E5%91%8A%E5%85%AC%E5%8F%B8%E9%9D%A0%E8%B0%B1%E5%90%97&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=5ea474VMz2epBzqqGjcJ4PsxACEzKJxGCunee6kr4S2yzi9VFneXi21%2FhqY&rsf=101632008&rsv_dl=0_prs_28608_3
+  - generic: 深圳发现资源广告公司靠谱吗
+- link "藏宝天下的市值多少亿":
+  - /url: /s?wd=%E8%97%8F%E5%AE%9D%E5%A4%A9%E4%B8%8B%E7%9A%84%E5%B8%82%E5%80%BC%E5%A4%9A%E5%B0%91%E4%BA%BF&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=5ea474VMz2epBzqqGjcJ4PsxACEzKJxGCunee6kr4S2yzi9VFneXi21%2FhqY&rsf=101635700&rsv_dl=0_prs_28608_4
+  - generic: 藏宝天下的市值多少亿
+- link "深圳潜云品牌传媒有限公司":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E6%BD%9C%E4%BA%91%E5%93%81%E7%89%8C%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=5ea474VMz2epBzqqGjcJ4PsxACEzKJxGCunee6kr4S2yzi9VFneXi21%2FhqY&rsf=100633803&rsv_dl=0_prs_28608_5
+  - generic: 深圳潜云品牌传媒有限公司
+- link "深圳智优传媒怎么样":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E6%99%BA%E4%BC%98%E4%BC%A0%E5%AA%92%E6%80%8E%E4%B9%88%E6%A0%B7&usm=2&ie=utf-8&rsv_pq=ad5b2893000216bc&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&rsv_t=5ea474VMz2epBzqqGjcJ4PsxACEzKJxGCunee6kr4S2yzi9VFneXi21%2FhqY&rsf=100631203&rsv_dl=0_prs_28608_6
+  - generic: 深圳智优传媒怎么样
+- heading "藏宝阁传媒 - 百度地图" [level=3]:
+  - link "藏宝阁传媒 - 百度地图":
+    - /url: http://www.baidu.com/link?url=EQxYF_9y3cByZM8DaDC_KwBWEWmB-3f6LMjAgGKlY2iTofGNSlwovi6_fo0Qhc60hDYmyZHyQ8Ps350WbVaSCulZktmGHum-IuKhwAPerZ8Z3f5QljtOnWC_0bME4dKOy7UKXyRSey9XIy7-NM6vM84o-MBy1ZHROZTn_yulZzjsamCQ2b7Sp8rBbsmq2Ipcil5OoJEQMfXNzMQxyu3Q3uN2wmJHt7QZZ2wYs2vyDQK4AWo1QDP_b_HQlT2xMFWT
+    - emphasis: 藏宝阁传媒
+    - text: "- 百度地图"
+- link:
+  - /url: http://www.baidu.com/link?url=EQxYF_9y3cByZM8DaDC_KwBWEWmB-3f6LMjAgGKlY2iTofGNSlwovi6_fo0Qhc60hDYmyZHyQ8Ps350WbVaSCulZktmGHum-IuKhwAPerZ8Z3f5QljtOnWC_0bME4dKOy7UKXyRSey9XIy7-NM6vM84o-MBy1ZHROZTn_yulZzjsamCQ2b7Sp8rBbsmq2Ipcil5OoJEQMfXNzMQxyu3Q3uN2wmJHt7QZZ2wYs2vyDQK4AWo1QDP_b_HQlT2xMFWT
+- generic: 到这里去
+- generic: 从这里出发
+- textbox "输入起点"
+- button "公交":
+  - generic: 公交
+- button "驾车":
+  - generic: 驾车
+- generic: "地址 : 广东省深圳市光明区马田街道深圳光明国际汽车城"
+- generic: map.baidu.com
+- generic: 
+- heading "伍文远(哔哩哔哩“搞机所”创... - 百度百科" [level=3]:
+  - link "伍文远(哔哩哔哩“搞机所”创... - 百度百科":
+    - /url: http://www.baidu.com/link?url=ZJcLCYZImrFMUqhHWPNxWXQml1iKr7jXmuEcjnc34XsAMxicSZ6PbUCwQE_CkB6IfnT1JmieIzEbR7YRTry-uulLy9vknqv8C9h7Tb5zaOG
+    - paragraph:
+      - generic: 伍文远(哔哩哔哩“搞机所”创... - 百度百科
+- paragraph:
+  - text: 伍文远，深圳市分光镜传媒和
+  - emphasis: 深圳藏宝阁广告传媒有限公司
+  - text: 创始人，哔哩哔哩平台账号“搞机所”创始人。伍文远曾任贵州网吧夜班网管，2020年与朋友创建B站账号“搞机所”，专注数码设备测评和知识分享。2021年1月发布一条技术视频。2023年将公司迁入深圳市光明区中集智园。2025年9月办公场地投用。
+- link "大事记":
+  - /url: http://www.baidu.com/link?url=47ai33_QVeHnUoPqKoPjDoEy7_lblx-xBXiJ57c9Z9uzEVIawEBR9Hvzw6g8U0YOSmJI02171yVczUxPB8x10WFGfsZ237ColVvJt6-b5gmVgua33WFCb5JgwtACpjYp
+  - generic: 大事记
+- link "人物经历":
+  - /url: http://www.baidu.com/link?url=47ai33_QVeHnUoPqKoPjDoEy7_lblx-xBXiJ57c9Z9uzEVIawEBR9Hvzw6g8U0YOSmJI02171yVczUxPB8x10WFGfsZ237ColVvJt6-b5gp3ostodZ_YeoaYGfFL_Owc
+  - generic: 人物经历
+- link "主要作品":
+  - /url: http://www.baidu.com/link?url=47ai33_QVeHnUoPqKoPjDoEy7_lblx-xBXiJ57c9Z9uzEVIawEBR9Hvzw6g8U0YOSmJI02171yVczUxPB8x10WFGfsZ237ColVvJt6-b5gmmVB9ahx5PNEsDKWpQRsBU
+  - generic: 主要作品
+- link "荣誉奖项":
+  - /url: http://www.baidu.com/link?url=47ai33_QVeHnUoPqKoPjDoEy7_lblx-xBXiJ57c9Z9uzEVIawEBR9Hvzw6g8U0YOSmJI02171yVczUxPB8x10WFGfsZ237ColVvJt6-b5goVq5zsifkX2xe2zThowshA
+  - generic: 荣誉奖项
+- link "百度百科":
+  - /url: http://www.baidu.com/link?url=ZJcLCYZImrFMUqhHWPNxWXQml1iKr7jXmuEcjnc34XsAMxicSZ6PbUCwQE_CkB6IfnT1JmieIzEbR7YRTry-uulLy9vknqv8C9h7Tb5zaOG
+  - generic: 百度百科
+- generic: 
+- heading "游戏视频剪辑是做什么的_搞机所2026年游戏视频剪辑岗位职责-BOSS直聘" [level=3]:
+  - link "游戏视频剪辑是做什么的_搞机所2026年游戏视频剪辑岗位职责-BOSS直聘":
+    - /url: http://www.baidu.com/link?url=-KoCLeaxhn16se9WEh8jUZtY4HOLziySJYON4urwtxdpps9TVMzq6IKrmPg_7i6MyOikR6omQz8TNZaQYq98NQrCZrzaBkC9FNfjYAy158_
+    - generic: 游戏视频剪辑是做什么的_搞机所2026年游戏视频剪辑岗位职责-BOSS直聘
+- link:
+  - /url: http://www.baidu.com/link?url=-KoCLeaxhn16se9WEh8jUZtY4HOLziySJYON4urwtxdpps9TVMzq6IKrmPg_7i6MyOikR6omQz8TNZaQYq98NQrCZrzaBkC9FNfjYAy158_
+- link:
+  - /url: http://www.baidu.com/link?url=-KoCLeaxhn16se9WEh8jUZtY4HOLziySJYON4urwtxdpps9TVMzq6IKrmPg_7i6MyOikR6omQz8TNZaQYq98NQrCZrzaBkC9FNfjYAy158_
+- text: 2026年10月21日
+- text: "1."
+- emphasis: 深圳藏宝阁广告传媒有限公司
+- text: ",又名搞机所,主要经营新媒体广告业务。专注于创造高质量的频..."
+- link "BOSS直聘":
+  - /url: http://www.baidu.com/link?url=-KoCLeaxhn16se9WEh8jUZtY4HOLziySJYON4urwtxdpps9TVMzq6IKrmPg_7i6MyOikR6omQz8TNZaQYq98NQrCZrzaBkC9FNfjYAy158_
+  - generic: BOSS直聘
+  - generic: 
+- heading "「搞机所招聘」-BOSS直聘" [level=3]:
+  - link "「搞机所招聘」-BOSS直聘":
+    - /url: http://www.baidu.com/link?url=gfT-6Jfuc6gpQKaNkrSG9k5NfGlAfdMnC6v3pildluzcvhBYm33wBEQalbm_p5znc_NtV8FKb1sH9T0tf1mhv4BpuWIZQS-SxE5Ww9ZZBWG
+    - generic: 「搞机所招聘」-BOSS直聘
+- link:
+  - /url: http://www.baidu.com/link?url=gfT-6Jfuc6gpQKaNkrSG9k5NfGlAfdMnC6v3pildluzcvhBYm33wBEQalbm_p5znc_NtV8FKb1sH9T0tf1mhv4BpuWIZQS-SxE5Ww9ZZBWG
+- link:
+  - /url: http://www.baidu.com/link?url=gfT-6Jfuc6gpQKaNkrSG9k5NfGlAfdMnC6v3pildluzcvhBYm33wBEQalbm_p5znc_NtV8FKb1sH9T0tf1mhv4BpuWIZQS-SxE5Ww9ZZBWG
+- text: 2026年3月16日
+- emphasis: 深圳藏宝阁广告传媒有限公司
+- text: "法定代表人: 刘岳峰 成立时间: 2023-02-21 企业类型: 有限..."
+- link "BOSS直聘":
+  - /url: http://www.baidu.com/link?url=gfT-6Jfuc6gpQKaNkrSG9k5NfGlAfdMnC6v3pildluzcvhBYm33wBEQalbm_p5znc_NtV8FKb1sH9T0tf1mhv4BpuWIZQS-SxE5Ww9ZZBWG
+  - generic: BOSS直聘
+  - generic: 
+- heading "深圳藏宝阁广告传媒有限公司官网_深圳藏宝阁广告传媒有限公司最新招聘_·一览·一览英才网" [level=3]:
+  - link "深圳藏宝阁广告传媒有限公司官网_深圳藏宝阁广告传媒有限公司最新招聘_·一览·一览英才网":
+    - /url: http://www.baidu.com/link?url=KFrLlfs7411QbP9m3rnGAMxwhaw0yLkyQTpX-CKJfYr0UszawlFw5qg-jOUv8grzQtkYiLe_SMG_7vOnSI6uSa
+    - emphasis: 深圳藏宝阁广告传媒有限公司
+    - text: 官网_深圳藏宝阁广告传媒有限公司最新招聘_·一览·一览英才网
+- link:
+  - /url: http://www.baidu.com/link?url=KFrLlfs7411QbP9m3rnGAMxwhaw0yLkyQTpX-CKJfYr0UszawlFw5qg-jOUv8grzQtkYiLe_SMG_7vOnSI6uSa
+- text: 地址:深圳市光明区凤凰街道东坑社区科能路中集低轨卫星物联网产业园B座1002-1
+- emphasis: 深圳藏宝阁广告传媒有限公司
+- text: "公司规模: 100-499人 公司性质: 0 所属行业: 电力、电气、自动化、热力、锅炉、照明、电池、电源、电缆、光电等 工作地址 地址:深圳市光明区凤凰街道东坑社区科能路中集低轨卫星物联网产业园B座1002-1 ..."
+- link "塑料英才网":
+  - /url: http://www.baidu.com/link?url=KFrLlfs7411QbP9m3rnGAMxwhaw0yLkyQTpX-CKJfYr0UszawlFw5qg-jOUv8grzQtkYiLe_SMG_7vOnSI6uSa
+  - generic: 塑料英才网
+  - generic: 
+- generic: 相关搜索
+- table:
+  - rowgroup:
+    - row "深圳十大广告传媒公司 深圳广告公司排名及联系方式":
+      - cell "深圳十大广告传媒公司":
+        - link "深圳十大广告传媒公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%8D%81%E5%A4%A7%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E5%85%AC%E5%8F%B8&tn=baidu&rsf=101631203&rsp=0&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_1
+          - generic: 深圳十大广告传媒公司
+      - cell "深圳广告公司排名及联系方式":
+        - link "深圳广告公司排名及联系方式":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%B9%BF%E5%91%8A%E5%85%AC%E5%8F%B8%E6%8E%92%E5%90%8D%E5%8F%8A%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F&tn=baidu&rsf=101632008&rsp=1&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_2
+          - generic: 深圳广告公司排名及联系方式
+    - row "深圳发现资源广告公司靠谱吗 藏宝天下的市值多少亿":
+      - cell "深圳发现资源广告公司靠谱吗":
+        - link "深圳发现资源广告公司靠谱吗":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%8F%91%E7%8E%B0%E8%B5%84%E6%BA%90%E5%B9%BF%E5%91%8A%E5%85%AC%E5%8F%B8%E9%9D%A0%E8%B0%B1%E5%90%97&tn=baidu&rsf=101632008&rsp=2&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_3
+          - generic: 深圳发现资源广告公司靠谱吗
+      - cell "藏宝天下的市值多少亿":
+        - link "藏宝天下的市值多少亿":
+          - /url: /s?wd=%E8%97%8F%E5%AE%9D%E5%A4%A9%E4%B8%8B%E7%9A%84%E5%B8%82%E5%80%BC%E5%A4%9A%E5%B0%91%E4%BA%BF&tn=baidu&rsf=101635700&rsp=3&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_4
+          - generic: 藏宝天下的市值多少亿
+    - row "深圳潜云品牌传媒有限公司 深圳有什么传媒公司":
+      - cell "深圳潜云品牌传媒有限公司":
+        - link "深圳潜云品牌传媒有限公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E6%BD%9C%E4%BA%91%E5%93%81%E7%89%8C%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&tn=baidu&rsf=100633803&rsp=4&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_5
+          - generic: 深圳潜云品牌传媒有限公司
+      - cell "深圳有什么传媒公司":
+        - link "深圳有什么传媒公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%A0%E5%AA%92%E5%85%AC%E5%8F%B8&tn=baidu&rsf=100631203&rsp=5&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_6
+          - generic: 深圳有什么传媒公司
+    - row "深圳市寻梦文化传媒有限公司 深圳迁喜传媒有限公司":
+      - cell "深圳市寻梦文化传媒有限公司":
+        - link "深圳市寻梦文化传媒有限公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%B8%82%E5%AF%BB%E6%A2%A6%E6%96%87%E5%8C%96%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&tn=baidu&rsf=100633803&rsp=6&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_7
+          - generic: 深圳市寻梦文化传媒有限公司
+      - cell "深圳迁喜传媒有限公司":
+        - link "深圳迁喜传媒有限公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%BF%81%E5%96%9C%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&tn=baidu&rsf=100633803&rsp=7&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_8
+          - generic: 深圳迁喜传媒有限公司
+    - row "深圳圆创广告有限公司 深圳星动广告":
+      - cell "深圳圆创广告有限公司":
+        - link "深圳圆创广告有限公司":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E5%9C%86%E5%88%9B%E5%B9%BF%E5%91%8A%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&tn=baidu&rsf=100633803&rsp=8&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_9
+          - generic: 深圳圆创广告有限公司
+      - cell "深圳星动广告":
+        - link "深圳星动广告":
+          - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E6%98%9F%E5%8A%A8%E5%B9%BF%E5%91%8A&tn=baidu&rsf=100631203&rsp=9&f=1&rs_src=0&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&rsv_dl=brs_28338_10
+          - generic: 深圳星动广告
+- link:
+  - /url: ""
+- strong:
+  - generic: "1"
+- link "2":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=10&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "2"
+- link "3":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=20&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "3"
+- link "4":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=30&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "4"
+- link "5":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=40&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "5"
+- link "6":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=50&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "6"
+- link "7":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=60&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "7"
+- link "8":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=70&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "8"
+- link "9":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=80&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "9"
+- link "10":
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=90&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=
+  - generic: "10"
+- link:
+  - /url: /s?wd=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&pn=10&oq=%E6%B7%B1%E5%9C%B3%E8%97%8F%E5%AE%9D%E9%98%81%E5%B9%BF%E5%91%8A%E4%BC%A0%E5%AA%92%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&ie=utf-8&usm=2&rsv_pq=ad5b2893000216bc&rsv_t=f26aQ1TOYJZeLVFu9iG%2BXhbEpcEOG0nG4rGXjxgBm4CGUTQZVKxGD%2FeUQ3k&topic_pn=&rsv_page=1
+- generic: 下载
+- generic: 辅助
+- link "帮助":
+  - /url: https://help.baidu.com/question?prod_id=1
+- link "举报":
+  - /url: https://help.baidu.com/jubao?source=search
+- link "用户反馈":
+  - /url: javascript:;
+- link "企业推广":
+  - /url: https://e.baidu.com/lp/search/?refer=1298

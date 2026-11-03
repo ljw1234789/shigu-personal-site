@@ -1,0 +1,18 @@
+"""仅落已实际查看画面板的人工决定，不自动判图或判音。"""
+from pathlib import Path
+import json,subprocess,sys,collections
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';spec=json.loads(Path(sys.argv[1]).read_text());out={}
+for b in sorted(root.glob('*'+spec['hash']+'*.jpg.json')):
+ for c in json.loads(b.read_text()):
+  i=str(c['index']);n=int(c['candidate_id'].split('_')[-1]);d=dict(category='字幕措辞差异',after='本处字幕已实际查看，保留与草稿措辞差异',note='未凭同义、删补或字幕与口语不同自动判定原声错误。',visible_resolution='wording_preserved_audio_pending',verified_screen_reading=None)
+  if n in spec.get('non',{}).get(i,[]):d.update(category='界面或实物文字',after='界面、背景、物品标识或演示文字',note='不是新增口述，不作个人经历、收入或参数独立验证。',visible_resolution='non_speech_text')
+  word=spec.get('terms',{}).get(i,{}).get(str(n))
+  if word:d.update(category='可见用词纠正',after=word,note='只确认画面写法；原声逐字、官方名称和真实性仍须分别核实。',visible_resolution='screen_correction_confirmed')
+  for e in spec.get('contexts',[]):
+   if i==str(e['index']) and n in e['ids']:
+    d.update({k:v for k,v in e.items() if k not in ('index','ids')})
+  out[c['candidate_id']]=d
+assert len(out)==spec['actually_viewed_count'],(len(out),spec['actually_viewed_count'])
+p=root.parent/('批次'+spec['batch']+'已看画面决定.json');p.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for b in sorted(root.glob('*'+spec['hash']+'*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(b),str(p)],check=True)
+s={'batch':spec['batch'],'total':len(out),'visible_resolution_counts':dict(collections.Counter(x['visible_resolution'] for x in out.values())),'audio_approved':0,'raw_asr_overwritten':False};(root.parent/('批次'+spec['batch']+'验收计数.json')).write_text(json.dumps(s,ensure_ascii=False,indent=2));print(json.dumps(s,ensure_ascii=False))

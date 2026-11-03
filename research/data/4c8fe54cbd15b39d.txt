@@ -1,0 +1,44 @@
+from pathlib import Path
+from difflib import SequenceMatcher
+import json,sys,hashlib
+from PIL import Image,ImageDraw,ImageFont
+BASE=Path(__file__).resolve().parents[1];ROOT=BASE/'原声核验/全文字幕对照'
+sys.path.insert(0,str(BASE/'原声核验'))
+from 字幕文本规则 import norm
+OUT=ROOT/'差异画面板';OUT.mkdir(exist_ok=True)
+font=ImageFont.truetype('/System/Library/Fonts/STHeiti Medium.ttc',18)
+small=ImageFont.truetype('/System/Library/Fonts/STHeiti Light.ttc',14)
+
+def closest_window(b,a):
+    if not a:return '无对应转写'
+    match=SequenceMatcher(None,b,a)
+    starts={max(0,x.b-x.a+delta) for x in match.get_matching_blocks() if x.size for delta in [-2,-1,0,1,2]}
+    best=(0,'')
+    for start in starts:
+        for length in range(max(1,len(b)-5),len(b)+6):
+            piece=a[start:start+length];ratio=SequenceMatcher(None,b,piece).ratio()
+            if ratio>best[0]:best=(ratio,piece)
+    return best[1] or a[:len(b)+10]
+
+def wrap(text,width=34):return [text[i:i+width] for i in range(0,len(text),width)] or ['']
+
+ids=sys.argv[1:]
+all=[]
+for vid in ids:
+    d=json.loads((ROOT/(vid+'.json')).read_text())
+    all.extend(c for c in d['candidates'] if not c.get('assistant_image_checked'))
+version=d.get('alignment_version',1) if ids else 0
+batch_key=hashlib.sha256(','.join(c['candidate_id'] for c in all).encode()).hexdigest()[:8]
+for offset in range(0,len(all),24):
+    chunk=all[offset:offset+24];board=Image.new('RGB',(1280,((len(chunk)+1)//2)*132),'#f5f1e9');draw=ImageDraw.Draw(board)
+    for k,c in enumerate(chunk):
+        x=k%2*640;y=k//2*132
+        draw.text((x+8,y+3),f"#{c['index']} {c['start']:.1f}-{c['end']:.1f}s | {c['candidate_id'].split('_')[-1]}",font=small,fill='#294c3c')
+        excerpt=closest_window(c['normalized_screen'],norm(c['large_asr_window']))
+        draw.text((x+8,y+22),'稿：'+excerpt[:33],font=font,fill='#252820')
+        im=Image.open(c['image_path']).convert('RGB');box=c['box'];left=max(0,int(min(p[0] for p in box))-4);right=min(im.width,int(max(p[0] for p in box))+5);top=max(0,int(min(p[1] for p in box))-4);bottom=min(im.height,int(max(p[1] for p in box))+5)
+        patch=im.crop((left,top,right,bottom));patch.thumbnail((620,74));board.paste(patch,(x+8,y+48))
+        c['review_excerpt']=excerpt
+    name=f"{'-'.join(ids)}_v{version}_{batch_key}_{offset//24+1:03d}.jpg";path=OUT/name;board.save(path,quality=96)
+    (OUT/(name+'.json')).write_text(json.dumps(chunk,ensure_ascii=False,indent=2))
+    print(str(path))

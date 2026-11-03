@@ -1,0 +1,218 @@
+- link "欢迎进入 英俊姐妹日记的相关微信公众号文章 – 搜狗微信搜索,盲人用户进入智能盲道请按快捷键Ctrl+Alt+R；阅读详细操作说明请按快捷键Ctrl+Alt+问号键。":
+  - /url: javascript:void(0)
+- link "无障碍":
+  - /url: javascript:void(0)
+- link "登录":
+  - /url: javascript:void(0);
+- link "回到搜狗首页":
+  - /url: /
+- list:
+  - link "资讯":
+    - /url: https://www.sogou.com/sogou?ie=utf8&p=40230447&interation=1728053249&interV=&pid=sogou-wsse-7050094b04fd9aa3&query=英俊姐妹日记
+  - link "网页":
+    - /url: http://www.sogou.com/web?ie=utf8&query=英俊姐妹日记
+  - link "微信":
+    - /url: javascript:void(0)
+  - link "知乎":
+    - /url: http://zhihu.sogou.com/zhihu?ie=utf8&p=73351201&query=英俊姐妹日记
+  - link "图片":
+    - /url: http://pic.sogou.com/pics?ie=utf8&p=40230504&query=英俊姐妹日记
+  - link "视频":
+    - /url: https://v.sogou.com/v?ie=utf8&p=40230608&query=英俊姐妹日记
+  - link "医疗":
+    - /url: https://www.sogou.com/web?m2web=mingyi.sogou.com&ie=utf8&query=英俊姐妹日记
+  - link "汉语":
+    - /url: https://hanyu.sogou.com/result?query=英俊姐妹日记
+  - link "翻译":
+    - /url: https://fanyi.sogou.com/text?ie=utf8&keyword=英俊姐妹日记
+  - link "问问":
+    - /url: http://wenwen.sogou.com/s/?ch=weixinsearch&w=英俊姐妹日记
+  - link "百科":
+    - /url: https://www.sogou.com/sogou?ie=utf8&insite=baike.sogou.com&pid=sogou-wsse-17737832ac17be52&query=英俊姐妹日记
+  - link "更多>>":
+    - /url: http://www.sogou.com/docs/more.htm?v=1
+- textbox: 英俊姐妹日记
+- link:
+  - /url: javascript:void(0)
+- button "搜文章"
+- generic: 以下内容来自微信公众平台
+- list:
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9lhmJsKOIIEqbkpdbJbUrFqwMuAEMh_WszsaCPRQzmoFLpbbEQLtBen11AY_BlWLG9LUM2yF0tMMLSFXbn3kBlt52iX3v-9kATiSRCgiU4GD9CI4n7nDYsqlqep067e1wW3Gy8n0iqaGJqURn7rvzcMkOgusbrCaMl5SO0t2HW9hCy6umSSPEsg..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "丸子书评:金丝雀驯主日记by归芜绿,贫穷坚韧女大学生vs英俊多金资本大佬,久别重逢,破镜重圆文!" [level=3]:
+    - link "丸子书评:金丝雀驯主日记by归芜绿,贫穷坚韧女大学生vs英俊多金资本大佬,久别重逢,破镜重圆文!":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9lhmJsKOIIEqbkpdbJbUrFqwMuAEMh_WszsaCPRQzmoFLpbbEQLtBen11AY_BlWLG9LUM2yF0tMMLSFXbn3kBlt52iX3v-9kATiSRCgiU4GD9CI4n7nDYsqlqep067e1wW3Gy8n0iqaGJqURn7rvzcMkOgusbrCaMl5SO0t2HW9hCy6umSSPEsg..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+      - text: 丸子书评:金丝雀驯主
+      - emphasis: 日记
+      - text: by归芜绿,贫穷坚韧女大学生vs
+      - emphasis: 英俊
+      - text: 多金资本大佬,久别重逢,破镜重圆文!
+  - paragraph:
+    - text: 小丸子推文馆金丝雀驯主
+    - emphasis: 日记
+    - text: 作者:归芜绿初见时,黎若茗是贫穷貌美的A大学生,空有野心没有资本.而沈司聿是刚开始接手家族事...
+  - text: 小丸子推文馆
+  - generic: 2024-5-7
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9T1gGFM1u0fQQvVdN5MdMxhNTmvIlSKseDdnjoQbfTjcLqur_4XrdldV_B2TgYDP5ViuYbxdd1uW0NoM71eBYPOlQ9d41jcJf_fVfN-RvSID6Uw1fW23YpIGuA9C7s8rsq4aGBll4mLm9Oqcs4KMHVZy3ypmcMBh_HSkYhAgs2ZD6zvkPgoArRQ..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "姐妹情就得拿来消费" [level=3]:
+    - link "姐妹情就得拿来消费":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9T1gGFM1u0fQQvVdN5MdMxhNTmvIlSKseDdnjoQbfTjcLqur_4XrdldV_B2TgYDP5ViuYbxdd1uW0NoM71eBYPOlQ9d41jcJf_fVfN-RvSID6Uw1fW23YpIGuA9C7s8rsq4aGBll4mLm9Oqcs4KMHVZy3ypmcMBh_HSkYhAgs2ZD6zvkPgoArRQ..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+      - emphasis: 姐妹
+      - text: 情就得拿来消费
+  - paragraph:
+    - text: 之前看过我昨天
+    - emphasis: 日记
+    - text: 的
+    - emphasis: 姐妹
+    - text: 应该知道,和徐老师约饭,除了吃饭时间没有保障,其它(比如说谁点菜谁买单)都很有保障.我吃了个半...
+  - text: 豆哥老大我老二
+  - generic: 2020-6-4
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6ft3wfAVofsP5Peu-UiA4DJJ8DpnFfHwFj72nDOSI3_WVgrFeYQugDqikR7sDs1fpIRk0P28bI9L8C93f9AFjSCU8ZJ6EdNzaxmPC_1gY8wuba332eTSPwwIOzMYQ5BLJGHRYy06arAHXC053ZwVBPn4GWGA2VdWsOL3B0YETRL-3jaDOHMQZmPpHAOf-PS3gLzUtugVUzkUkgel1BM-qmO_AZNwLq3NczVxi0gIbTNUUNXJSwLgLyuUTpi3pkWdH_jxMkpz7Uo4.&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "月亮姐姐这是要给他们录一本成长日记么?" [level=3]:
+    - link "月亮姐姐这是要给他们录一本成长日记么?":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6ft3wfAVofsP5Peu-UiA4DJJ8DpnFfHwFj72nDOSI3_WVgrFeYQugDqikR7sDs1fpIRk0P28bI9L8C93f9AFjSCU8ZJ6EdNzaxmPC_1gY8wuba332eTSPwwIOzMYQ5BLJGHRYy06arAHXC053ZwVBPn4GWGA2VdWsOL3B0YETRL-3jaDOHMQZmPpHAOf-PS3gLzUtugVUzkUkgel1BM-qmO_AZNwLq3NczVxi0gIbTNUUNXJSwLgLyuUTpi3pkWdH_jxMkpz7Uo4.&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+      - text: 月亮姐姐这是要给他们录一本成长
+      - emphasis: 日记
+      - text: 么?
+  - paragraph:
+    - text: 哈哈,看来月亮姐姐是要为俩小
+    - emphasis: 姐妹
+    - text: 录一本“成长
+    - emphasis: 日记
+    - text: ”啦!刘韫心 这是一个喜欢泡泡的小女孩,她喜欢泡泡在阳光下飞起来的感...
+  - text: 音乐快递
+  - generic: 2016-3-1
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd91EVQBc5itJFTNOoN-IJsYYxF_4g0zoK2XZvRQdkcOJLJRUdqJJPxt4BomROlIE-v_q4tfQJSnFzw7lOi1duNO1lAZEwaiTZLIJNyLiSGzWbnuYfSGcGM5m_WytXFipz786qjKgiwfabk3PXKkWAbfs2nu8NnQBS_xGLs6pTMQ0g89kyxDwoXvg..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "整理| r描写的也是很符合年轻大男孩的横冲直撞,看得我斯哈斯哈斯哈的,笑死了哈哈哈!!!" [level=3]:
+    - link "整理| r描写的也是很符合年轻大男孩的横冲直撞,看得我斯哈斯哈斯哈的,笑死了哈哈哈!!!":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd91EVQBc5itJFTNOoN-IJsYYxF_4g0zoK2XZvRQdkcOJLJRUdqJJPxt4BomROlIE-v_q4tfQJSnFzw7lOi1duNO1lAZEwaiTZLIJNyLiSGzWbnuYfSGcGM5m_WytXFipz786qjKgiwfabk3PXKkWAbfs2nu8NnQBS_xGLs6pTMQ0g89kyxDwoXvg..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - paragraph:
+    - emphasis: 姐妹
+    - text: 们推荐的《女医生谋杀
+    - emphasis: 日记
+    - text: 》真的好看,层层展开的故事,各有特色的可爱人物,以爱之名自强自立,对现实不平的反思,不圆满...
+  - text: 拖延症少女的种蘑菇日记
+  - generic: 2022-4-6
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd96NLqEy-PowrbRMj8EPufhx4qUdyRBGNQAHRMNFHcQZxVFlAhnvV4ga3_AwZNP4qU4Zhp5y1AO-HaG_GcV2rqPYsgFyukqvusiryiC1lCejRGoIu0ui3W6qXTV_8sW5T4rNeF9Fkj8y8MUazAjLxsBEXov9aXI1yI9wcvB2sVVx7RtmyIGw2VAg..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "【驰援日记】我们在光谷:上岗第一天,萧山中医院的“小黄人”们很给力!" [level=3]:
+    - link "【驰援日记】我们在光谷:上岗第一天,萧山中医院的“小黄人”们很给力!":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd96NLqEy-PowrbRMj8EPufhx4qUdyRBGNQAHRMNFHcQZxVFlAhnvV4ga3_AwZNP4qU4Zhp5y1AO-HaG_GcV2rqPYsgFyukqvusiryiC1lCejRGoIu0ui3W6qXTV_8sW5T4rNeF9Fkj8y8MUazAjLxsBEXov9aXI1yI9wcvB2sVVx7RtmyIGw2VAg..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+      - text: 【驰援
+      - emphasis: 日记
+      - text: 】我们在光谷:上岗第一天,萧山中医院的“小黄人”们很给力!
+  - paragraph:
+    - text: 2月11
+    - emphasis: 日记
+    - text: 录人:边铁群今天上班给我的感受:第一是危险,这是你没有身临其境感受不到的恐惧;第二就是心痛,看着
+    - emphasis: 英俊
+    - text: 的他、美...
+  - text: 杭州市萧山区中医院
+  - generic: 2020-2-12
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9x9w7etDe2jKYy3M5k0zK2s-I53jeOH0n1yvy98JkO4Ns4nWZHvvXETIEfacK1aZIUEI0sBXSKqhZxOa92e4L0ESASvv-rF1XTP7wBPPCNUlVGIyqZhaFxL-ZhWvNsZM1yx1XAhz6YOGevbCU5NBwKtmj2Zn-gOHLMDatHtrv5RR5LU3lqtPw9g..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "文明其精神 | 埃贡•席勒高清作品442幅(文末附下载链接)" [level=3]:
+    - link "文明其精神 | 埃贡•席勒高清作品442幅(文末附下载链接)":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9x9w7etDe2jKYy3M5k0zK2s-I53jeOH0n1yvy98JkO4Ns4nWZHvvXETIEfacK1aZIUEI0sBXSKqhZxOa92e4L0ESASvv-rF1XTP7wBPPCNUlVGIyqZhaFxL-ZhWvNsZM1yx1XAhz6YOGevbCU5NBwKtmj2Zn-gOHLMDatHtrv5RR5LU3lqtPw9g..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - paragraph:
+    - text: 两
+    - emphasis: 姐妹
+    - text: 同时爱上了这位
+    - emphasis: 英俊
+    - text: 潇洒的艺术家.而风流才子席勒也娶了两
+    - emphasis: 姐妹
+    - text: 之一为妻.瓦莉得知后悲痛欲绝,两人分开前,席勒亲自为她...
+  - text: 收藏级顽主圈儿
+  - generic: 2020-8-28
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9JiFJupdA6NDa_WML1dQDjc07H7KXkx7KUikyoyZvucI5jOHfmNvFFHGajoQfkX1MEkrkDY5cAYlmZh1MPaD-NxVZQ-VVrHBNdOkFTBsCkbrkTZ3sxbT2OX0j33KouBEhxKQ8Ys5w3BdFVCosvnpE0WaiQlv_dEOQM8tpvaltJWSq3X8EKMKOIA..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "活埋第三者!玩命三姐妹" [level=3]:
+    - link "活埋第三者!玩命三姐妹":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9JiFJupdA6NDa_WML1dQDjc07H7KXkx7KUikyoyZvucI5jOHfmNvFFHGajoQfkX1MEkrkDY5cAYlmZh1MPaD-NxVZQ-VVrHBNdOkFTBsCkbrkTZ3sxbT2OX0j33KouBEhxKQ8Ys5w3BdFVCosvnpE0WaiQlv_dEOQM8tpvaltJWSq3X8EKMKOIA..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+      - text: 活埋第三者!玩命三
+      - emphasis: 姐妹
+  - paragraph:
+    - text: 01《玩命三
+    - emphasis: 姐妹
+    - text: "》导演: 劳伦·帕尔米贾诺编剧: Ellen Rapoport... 在前往意大利的船上,维克多偶遇"
+    - emphasis: 英俊
+    - text: 、自由、奔放的德国男人马...
+  - text: 懒猫电影院
+  - generic: 2022-7-17
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6ft3wfAVofsP5Peu-UiA4DJJ8DpnFfHwFj72nDOSI3_WVgrFeYQugDqCvEdG57nTc0zwJOkabwdyv8xrxKFpE6ORDVEn2h7Dksf7vr3Nyu7HVVpgx0Ciun3LS9gNpqja7u8EdUs6TGBi-IggKwIzhEQGC2aUKvcsLKNtJnpNDCzQ0fWOXvM6u9ibvv9BCmnD38EXOAtBNBLU_aaE8TMyzut0UjxVtLhyvkYr-ylfASbcdAaiRvzTDvMAOUHj2m3nM40YK5jaDo6actXnDF1aWHJBxC4t5qrSuiZqwg0yoRFw.&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "能环诞生日记——从此,与你牵手共度" [level=3]:
+    - link "能环诞生日记——从此,与你牵手共度":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6ft3wfAVofsP5Peu-UiA4DJJ8DpnFfHwFj72nDOSI3_WVgrFeYQugDqCvEdG57nTc0zwJOkabwdyv8xrxKFpE6ORDVEn2h7Dksf7vr3Nyu7HVVpgx0Ciun3LS9gNpqja7u8EdUs6TGBi-IggKwIzhEQGC2aUKvcsLKNtJnpNDCzQ0fWOXvM6u9ibvv9BCmnD38EXOAtBNBLU_aaE8TMyzut0UjxVtLhyvkYr-ylfASbcdAaiRvzTDvMAOUHj2m3nM40YK5jaDo6actXnDF1aWHJBxC4t5qrSuiZqwg0yoRFw.&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+      - text: 能环诞生
+      - emphasis: 日记
+      - text: ——从此,与你牵手共度
+  - paragraph:
+    - text: 能源一个
+    - emphasis: 英俊
+    - text: 潇洒的工科男神 能源系,最初来自贝壳冶金学院,1996年,回到了大机械的怀抱,在那里,他受到了很好的培养,他知...
+  - text: 甜蜜的小辣椒
+  - generic: 2016-4-16
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9nZrFs5xGxrzV-x8ee25GQiPrfIDgRNiANekgHw4pA97OwZQUBDAIFT7YO5mqzsFYrcwXE9htcJiv0-SWDv-GrfuFzWwtKwugl5YDoEHUihDoYa5URWWTnuyIOHHQSqkMzpmBs4Uz0pJND_AVA7TJE36tbwBUHBS-9GPULvPq8Y-E8RsmObDbtQ..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "斋月日记(三十一)" [level=3]:
+    - link "斋月日记(三十一)":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9nZrFs5xGxrzV-x8ee25GQiPrfIDgRNiANekgHw4pA97OwZQUBDAIFT7YO5mqzsFYrcwXE9htcJiv0-SWDv-GrfuFzWwtKwugl5YDoEHUihDoYa5URWWTnuyIOHHQSqkMzpmBs4Uz0pJND_AVA7TJE36tbwBUHBS-9GPULvPq8Y-E8RsmObDbtQ..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+      - text: 斋月
+      - emphasis: 日记
+      - text: (三十一)
+  - paragraph:
+    - text: 她的丈夫生得
+    - emphasis: 英俊
+    - text: ",初次见面,他自我介绍说是汉族,我半开玩笑道:“我们俩倒是一个民族.”满座皆笑.由此,我想起保山的一位..."
+  - text: 聆听一种声音
+  - generic: 2026-3-20
+  - link:
+    - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9Re8StSYnA3w8c3kpv0EhVABO6HtkpNUW7oTM7wfALLyglstDA-_5oFx8s78JWB-DKrcmqLpsa6eU20jtiMlLt2SeWGbrSd5z44d_fxsKQOVnq0nnnPwB2M2pKIL6Lt_Zp2ZFHjiJUz1xDAkBXa-G9byX1e8S46RBhd8J9yYAY_9j32-j2KiwUw..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - heading "【护士手记】你若安好,便是晴天" [level=3]:
+    - link "【护士手记】你若安好,便是晴天":
+      - /url: /link?url=dn9a_-gY295K0Rci_xozVXfdMkSQTLW6cwJThYulHEtVjXrGTiVgS222jsLHund6vYQ-sZQLY9uT7PxuvZF4pVqXa8Fplpd9Re8StSYnA3w8c3kpv0EhVABO6HtkpNUW7oTM7wfALLyglstDA-_5oFx8s78JWB-DKrcmqLpsa6eU20jtiMlLt2SeWGbrSd5z44d_fxsKQOVnq0nnnPwB2M2pKIL6Lt_Zp2ZFHjiJUz1xDAkBXa-G9byX1e8S46RBhd8J9yYAY_9j32-j2KiwUw..&type=2&query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&token=F04CBAA3CBDA4F9132346C6B63622CC3331783476AE96D62
+  - paragraph:
+    - text: 见过护士
+    - emphasis: 姐妹
+    - text: 们游刃有余掌握着患者情绪,哄着、安慰着,即便上一秒撑着各种不顺利和不公平的委屈;见过大家每日晨会,一起学习...
+  - text: 大连市友谊医院
+  - generic: 2020-8-27
+- generic: "1"
+- link "2":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=2&ie=utf8"
+- link "3":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=3&ie=utf8"
+- link "4":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=4&ie=utf8"
+- link "5":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=5&ie=utf8"
+- link "6":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=6&ie=utf8"
+- link "7":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=7&ie=utf8"
+- link "8":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=8&ie=utf8"
+- link "9":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=9&ie=utf8"
+- link "10":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=10&ie=utf8"
+- link "下一页":
+  - /url: "?query=%E8%8B%B1%E4%BF%8A%E5%A7%90%E5%A6%B9%E6%97%A5%E8%AE%B0&type=2&page=2&ie=utf8"
+- generic: 找到约353条结果
+- textbox: 英俊姐妹日记
+- link:
+  - /url: javascript:void(0)
+- button "搜文章"
+- link "搜索帮助":
+  - /url: http://help.sogou.com/
+- link "意见反馈及投诉":
+  - /url: https://fankui.sogou.com/index.php/web/web/index/type/4
+- text: © 2026 SOGOU.COM
+- link "免责声明":
+  - /url: http://www.sogou.com/docs/terms.htm
+- link "隐私政策":
+  - /url: http://corp.sogou.com/private.html

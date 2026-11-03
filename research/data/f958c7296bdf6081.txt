@@ -1,0 +1,13 @@
+#!/bin/zsh
+TASK_DIR="${0:A:h}"
+TASK_PYTHON="/Users/ljw/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+if [[ ! -x "$TASK_PYTHON" ]]; then
+  TASK_PYTHON="/usr/bin/python3"
+fi
+"$TASK_PYTHON" "$TASK_DIR/打开学习页.py"
+TASK_RESULT=$?
+if [[ "$TASK_RESULT" -ne 0 ]]; then
+  printf '\n启动失败。按回车关闭窗口。'
+  read -r
+fi
+exit "$TASK_RESULT"

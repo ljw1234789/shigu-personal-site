@@ -1,0 +1,853 @@
+- button "开启读屏标签":
+  - generic: 开启读屏标签
+- generic: 读屏标签已关闭
+- link:
+  - /url: //www.douyin.com/jingxuan
+- link "精选":
+  - /url: https://www.douyin.com/jingxuan?from_nav=1
+  - generic: 精选
+- link "推荐":
+  - /url: https://www.douyin.com/?recommend=1&from_nav=1
+  - generic: 推荐
+- link "AI抖音":
+  - /url: https://www.douyin.com/aisearch?from_nav=1
+  - generic: AI抖音
+- link "关注":
+  - /url: https://www.douyin.com/follow?from_nav=1
+  - generic: 关注
+- link "朋友":
+  - /url: https://www.douyin.com/friend?from_nav=1
+  - generic: 朋友
+- link "我的":
+  - /url: https://www.douyin.com/user/self?from_nav=1
+  - generic: 我的
+- link "直播":
+  - /url: https://live.douyin.com/?from_nav=1
+  - generic: 直播
+- link "放映厅":
+  - /url: https://www.douyin.com/vs?from_nav=1
+  - generic: 放映厅
+- link "短剧":
+  - /url: https://www.douyin.com/series?from_nav=1
+  - generic: 短剧
+- banner:
+  - generic: 米其林
+  - textbox
+  - button "搜索":
+    - generic: 搜索
+  - paragraph:
+    - generic: 更多
+  - generic: 壁纸
+  - list:
+    - paragraph:
+      - generic: 通知
+  - list:
+    - paragraph:
+      - generic: 消息
+  - paragraph:
+    - generic: 投稿
+  - link:
+    - /url: //www.douyin.com/user/self
+- generic: 00:51
+- generic: /
+- generic: 08:11
+- generic: 倍速
+- generic: 智能
+- button
+- generic: 清屏
+- button
+- generic: 连播
+- heading "#科普#欢迎问我任何问题#知识党前沿#米其林大材就该小用#米其林创新不止于道路" [level=1]:
+  - link "#科普":
+    - /url: //www.douyin.com/search/%E7%A7%91%E6%99%AE?enter_from=video_detail&source=pc_click_hashtag_feed
+    - generic: "#科普"
+  - link "#欢迎问我任何问题#知识":
+    - /url: //www.douyin.com/search/%E6%AC%A2%E8%BF%8E%E9%97%AE%E6%88%91%E4%BB%BB%E4%BD%95%E9%97%AE%E9%A2%98?enter_from=video_detail&source=pc_click_hashtag_feed
+    - generic: "#欢迎问我任何问题#知识"
+  - generic: 党
+  - link "前沿":
+    - /url: //www.douyin.com/search/%E7%9F%A5%E8%AF%86%E5%89%8D%E6%B2%BF%E6%B4%BE%E5%AF%B9?enter_from=video_detail&source=pc_click_hashtag_feed
+    - generic: 前沿
+  - link "#米其林大材就该小用":
+    - /url: //www.douyin.com/search/%E7%B1%B3%E5%85%B6%E6%9E%97%E5%A4%A7%E6%9D%90%E5%B0%B1%E8%AF%A5%E5%B0%8F%E7%94%A8?enter_from=video_detail&source=pc_click_hashtag_feed
+    - generic: "#米其林大材就该小用"
+  - link "#米其林创新不止于道路":
+    - /url: //www.douyin.com/search/%E7%B1%B3%E5%85%B6%E6%9E%97%E5%88%9B%E6%96%B0%E4%B8%8D%E6%AD%A2%E4%BA%8E%E9%81%93%E8%B7%AF?enter_from=video_detail&source=pc_click_hashtag_feed
+    - generic: "#米其林创新不止于道路"
+  - link:
+    - /url: //www.douyin.com/search/%E6%AC%A2%E8%BF%8E%E9%97%AE%E6%88%91%E4%BB%BB%E4%BD%95%E9%97%AE%E9%A2%98?enter_from=video_detail&source=pc_click_hashtag_feed
+  - link:
+    - /url: //www.douyin.com/search/%E7%9F%A5%E8%AF%86%E5%89%8D%E6%B2%BF%E6%B4%BE%E5%AF%B9?enter_from=video_detail&source=pc_click_hashtag_feed
+  - link:
+    - /url: //www.douyin.com/search/%E7%B1%B3%E5%85%B6%E6%9E%97%E5%A4%A7%E6%9D%90%E5%B0%B1%E8%AF%A5%E5%B0%8F%E7%94%A8?enter_from=video_detail&source=pc_click_hashtag_feed
+  - link:
+    - /url: //www.douyin.com/search/%E7%B1%B3%E5%85%B6%E6%9E%97%E5%88%9B%E6%96%B0%E4%B8%8D%E6%AD%A2%E4%BA%8E%E9%81%93%E8%B7%AF?enter_from=video_detail&source=pc_click_hashtag_feed
+- generic: 7.1万
+- generic: "1131"
+- generic: "3066"
+- generic: "1427"
+- generic: 举报
+- generic: 发布时间：
+- generic: 2026-09-27 17:02
+- link "毕导":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA26unzRl4eTG2pAGnxD1pS3kMvjaUIcNxvLGr3VJOiKU
+  - img "毕导"
+- link "毕导":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA26unzRl4eTG2pAGnxD1pS3kMvjaUIcNxvLGr3VJOiKU
+  - generic: 毕导
+- paragraph:
+  - generic: 粉丝
+  - generic: 452.3万
+  - generic: 获赞
+  - generic: 4352.5万
+- button "关注":
+  - generic: 关注
+- generic: 下载客户端，桌面快捷访问
+- link "下载":
+  - /url: https://www.douyin.com/download/pc/obj/douyin-pc-web/douyin-pc-client/7044145585217083655/releases/495279540/8.7.0/darwin-universal/douyin-v8.7.0-darwin-universal.dmg
+  - generic: 下载
+- heading "推荐视频" [level=2]:
+  - generic: 推荐视频
+- list:
+  - link "抽纸选来选去，不如认准得宝，质量好同时品质也有保障#得宝抽纸#tempo得宝纸巾#生活用纸#抽纸 00:26":
+    - /url: //www.douyin.com/video/7680558357719043364
+    - img "抽纸选来选去，不如认准得宝，质量好同时品质也有保障#得宝抽纸#tempo得宝纸巾#生活用纸#抽纸"
+    - generic: 00:26
+  - heading "抽纸选来选去，不如认准得宝，质量好同时品质也有保障#得宝抽纸#tempo得宝纸巾#生活用纸#抽纸" [level=3]:
+    - link "抽纸选来选去，不如认准得宝，质量好同时品质也有保障#得宝抽纸#tempo得宝纸巾#生活用纸#抽纸":
+      - /url: //www.douyin.com/video/7680558357719043364
+      - generic: 抽纸选来选去，不如认准得宝，质量好同时品质也有保障#得宝抽纸#tempo得宝纸巾#生活用纸#抽纸
+  - generic: "607"
+  - link "得宝官方旗舰店":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAGNs2QQUFrfGrB21tVryDyE0Ys-1mpkxnOGhnCRldjWNEyftPXlzf1JzN7IKdoC-N?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 得宝官方旗舰店
+  - 'link "健身之后明显怎么踢球了，慢慢再把状态找回来吧 #足球 #业余足球 #恢复训练 01:20"':
+    - /url: //www.douyin.com/video/7687420319720457189
+    - 'img "健身之后明显怎么踢球了，慢慢再把状态找回来吧 #足球 #业余足球 #恢复训练"'
+    - generic: 01:20
+  - 'heading "健身之后明显怎么踢球了，慢慢再把状态找回来吧 #足球 #业余足球 #恢复训练" [level=3]':
+    - 'link "健身之后明显怎么踢球了，慢慢再把状态找回来吧 #足球 #业余足球 #恢复训练"':
+      - /url: //www.douyin.com/video/7687420319720457189
+      - generic: 健身之后明显怎么踢球了，慢慢再把状态找回来吧
+      - generic: "#足球 #业余足球 #恢复训练"
+  - generic: 1.6万
+  - link "努力工作":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAm7EcK38MEoc3-CVQxzoCafuvdnJwVvPajw4dBexpWRc?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 努力工作
+  - link "倪老师讲解“机锋”知识，文化科普#倪海他们#天纪#传统文化#国学文化#科普注：本视频所有内容系列中华传统文化科普分享，仅用于民俗文化交流与学习，不构成任何人生决策建议。请大家相信科学，理性看待传统文化。 00:20":
+    - /url: //www.douyin.com/video/7694615458327541477
+    - img "倪老师讲解“机锋”知识，文化科普#倪海他们#天纪#传统文化#国学文化#科普注：本视频所有内容系列中华传统文化科普分享，仅用于民俗文化交流与学习，不构成任何人生决策建议。请大家相信科学，理性看待传统文化。"
+    - generic: 00:20
+  - heading "倪老师讲解“机锋”知识，文化科普#倪海他们#天纪#传统文化#国学文化#科普 注：本视频所有内容系列中华传统文化科普分享，仅用于民俗文化交流与学习，不构成任何人生决策建议。请大家相信科学，理性看待传统文化。" [level=3]:
+    - link "倪老师讲解“机锋”知识，文化科普#倪海他们#天纪#传统文化#国学文化#科普 注：本视频所有内容系列中华传统文化科普分享，仅用于民俗文化交流与学习，不构成任何人生决策建议。请大家相信科学，理性看待传统文化。":
+      - /url: //www.douyin.com/video/7694615458327541477
+      - generic: 倪老师讲解“机锋”知识，文化科普#倪海他们#天纪#传统文化#国学文化#科普
+      - generic: 注：本视频所有内容系列中华传统文化科普分享，仅用于民俗文化交流与学习，不构成任何人生决策建议。请大家相信科学，理性看待传统文化。
+  - generic: 1.7万
+  - link "光城🔥":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAa7SafrvroBUtEXkPsWTNUud-hehrOG-xeYrA1Ane4M8?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 光城
+    - img "🔥"
+  - 'link "你认为液压机液压机会出现什么结果？ #军迷订票#涨知识#科普 01:47"':
+    - /url: //www.douyin.com/video/7694606048209065146
+    - 'img "你认为液压机液压机会出现什么结果？ #军迷订票#涨知识#科普"'
+    - generic: 01:47
+  - 'heading "你认为液压机液压机会出现什么结果？ #军迷订票#涨知识#科普" [level=3]':
+    - 'link "你认为液压机液压机会出现什么结果？ #军迷订票#涨知识#科普"':
+      - /url: //www.douyin.com/video/7694606048209065146
+      - generic: "你认为液压机液压机会出现什么结果？ #军迷订票#涨知识#科普"
+  - generic: 8.3万
+  - link "格温军科":
+    - /url: //www.douyin.com/user/MS4wLjABAAAA-ZbWiGkCGL5Kl1dLCG8J-gtxR_26iZpPnDb8xkkb_ziXplnSuvBEuCST9_2GPUi1?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 格温军科
+  - 'link "物理给老师人体“充电” 循环同种植物相互间原理 网友：知识点也跟着跑了出来了 #科普 #物理实验 00:28"':
+    - /url: //www.douyin.com/video/7684963622615005427
+    - 'img "物理给老师人体“充电” 循环同种植物相互间原理 网友：知识点也跟着跑了出来了 #科普 #物理实验"'
+    - generic: 00:28
+  - 'heading "物理给老师人体“充电” 循环同种彩虹相互原理原理 网友：知识点也跟着跑了出来 #科普#物理实验" [level=3]':
+    - 'link "物理给老师人体“充电” 循环同种彩虹相互原理原理 网友：知识点也跟着跑了出来 #科普#物理实验"':
+      - /url: //www.douyin.com/video/7684963622615005427
+      - generic: 物理给老师人体“充电”
+      - generic: 循环同种彩虹相互原理原理
+      - generic: 网友：知识点也跟着跑了出来
+      - generic: "#科普#物理实验"
+  - generic: 274.4万
+  - link "科教熊":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAm1M8ZVryJiqzZXKk7Gw6CgufKPUJn3LJ2vRvgs5_9Tryj-e6UEL45N41HmEDkaSW?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 科教熊
+  - link "你家厨房这几样常见东西，居然藏着健康#居家做饭日常#生活小妙招#科普#厨房#ai 00:47":
+    - /url: //www.douyin.com/video/7694452248713799907
+    - img "你家厨房这几样常见东西，居然藏着健康#居家做饭日常#生活小妙招#科普#厨房#ai"
+    - generic: 00:47
+  - heading "你家厨房这几样常见东西，居然藏着健康#居家做饭日常#生活小妙招#科普#厨房#ai" [level=3]:
+    - link "你家厨房这几样常见东西，居然藏着健康#居家做饭日常#生活小妙招#科普#厨房#ai":
+      - /url: //www.douyin.com/video/7694452248713799907
+      - generic: 你家厨房这几样常见东西，居然藏着健康#居家做饭日常#生活小妙招#科普#厨房#ai
+  - generic: "9539"
+  - link "科普一下":
+    - /url: //www.douyin.com/user/MS4wLjABAAAA22pd_TbwvXUIyU5GlBKSkMsARTZD7p2MLZ3VkVAUFwTMg-Pw7yMAJB-0ooeqWtNf?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 科普一下
+  - 'link "全部都是泡沫 #拜仁#足球#啤酒节 00:20"':
+    - /url: //www.douyin.com/video/7687946498902672761
+    - 'img "全部都是泡沫 #拜仁#足球#啤酒节"'
+    - generic: 00:20
+  - 'heading "全部都是泡沫 #拜仁#足球#啤酒节" [level=3]':
+    - 'link "全部都是泡沫 #拜仁#足球#啤酒节"':
+      - /url: //www.douyin.com/video/7687946498902672761
+      - generic: "全部都是泡沫 #拜仁#足球#啤酒节"
+  - generic: 6.8万
+  - link "拜仁慕尼黑足球俱乐部":
+    - /url: //www.douyin.com/user/MS4wLjABAAAA3NPrNANF56QVo_b6OJ_FDpxtdPj3tWs3R72xyNsg8mk?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 拜仁慕尼黑足球俱乐部
+  - link "湘超第十轮：上演疯狂的黑色6分钟！#湘超#湘超联赛#永州队#益阳队#唐梓铨短短6分钟两度西红柿！看永州队如何强势收下八强入场券！超精彩的攻防大战！@抖音小助手@DOU+小助手 07:31":
+    - /url: //www.douyin.com/video/7695290725801544970
+    - img "湘超第十轮：上演疯狂的黑色6分钟！#湘超#湘超联赛#永州队#益阳队#唐梓铨短短6分钟两度西红柿！看永州队如何强势收下八强入场券！超精彩的攻防大战！@抖音小助手@DOU+小助手"
+    - generic: 07:31
+  - heading "湘超第十轮：上演疯狂的黑色6分钟！#湘超#湘超联赛#永州队#益阳队#唐梓铨短短6分钟两度西红柿！看永州队如何强势收下八强入场券！超精彩的攻防大战！@抖音小助手@DOU+小助手" [level=3]:
+    - link "湘超第十轮：上演疯狂的黑色6分钟！#湘超#湘超联赛#永州队#益阳队#唐梓铨短短6分钟两度西红柿！看永州队如何强势收下八强入场券！超精彩的攻防大战！@抖音小助手@DOU+小助手":
+      - /url: //www.douyin.com/video/7695290725801544970
+      - generic: 湘超第十轮：上演疯狂的黑色6分钟！#湘超#湘超联赛#永州队#益阳队#唐梓铨短短6分钟两度西红柿！看永州队如何强势收下八强入场券！超精彩的攻防大战！@抖音小助手@DOU+小助手
+  - generic: 1.9万
+  - link "杨哥说球":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAtBi-Ef54osy67t2sj8dSkqXecwjeSTzDOc8XDJFuT6M?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 杨哥说球
+  - link "退游了也忘不了绫华#神里绫华cos 00:11":
+    - /url: //www.douyin.com/video/7667487678859281396
+    - img "退游了也忘不了绫华#神里绫华cos"
+    - generic: 00:11
+  - heading "退游了也忘不了绫华#神里绫华cos" [level=3]:
+    - link "退游了也忘不了绫华#神里绫华cos":
+      - /url: //www.douyin.com/video/7667487678859281396
+      - generic: 退游了也忘不了绫华#神里绫华cos
+  - generic: 8.1万
+  - link "egg258":
+    - /url: //www.douyin.com/user/MS4wLjABAAAA77Nm1dBZOClFM4U2t0E2WgnM7KfNQSIeN0XvQgBE_oguV2-wv6uLWyQlfPGeRhu3?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: egg258
+  - 'link "有活动什么东西天天不囤，但是得宝的经典抽纸一定得屯呀！#抽纸 #tempo得宝纸巾#生活用纸 00:26"':
+    - /url: //www.douyin.com/video/7678346814923312419
+    - 'img "有活动什么东西天天不囤，但是得宝的经典抽纸一定得屯呀！#抽纸 #tempo得宝纸巾#生活用纸"'
+    - generic: 00:26
+  - 'heading "有活动什么东西天天不囤，但是得宝的经典抽纸一定得屯呀！#抽纸 #tempo得宝纸巾#生活用纸" [level=3]':
+    - 'link "有活动什么东西天天不囤，但是得宝的经典抽纸一定得屯呀！#抽纸 #tempo得宝纸巾#生活用纸"':
+      - /url: //www.douyin.com/video/7678346814923312419
+      - generic: "有活动什么东西天天不囤，但是得宝的经典抽纸一定得屯呀！#抽纸 #tempo得宝纸巾#生活用纸"
+  - generic: "1022"
+  - link "得宝官方旗舰店":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAGNs2QQUFrfGrB21tVryDyE0Ys-1mpkxnOGhnCRldjWNEyftPXlzf1JzN7IKdoC-N?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690099402740273658&log_pb=%7B%22impr_id%22%3A%2220261011221805CA083E44386DD0CAD7F7%22%7D&relation=0
+    - generic: 得宝官方旗舰店
+- button "点击加载更多":
+  - generic: 点击加载更多
+- generic: 全部评论
+- link "阿威头像":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAopTTrbOcwuHeURIvXNaGJldD81fCbtMI8PHdXg2xC-OBHg189olfZ68fyGbo9T6c
+  - img "阿威头像"
+- generic: 留下你的精彩评论吧
+- link "续霜眠头像":
+  - /url: //www.douyin.com/user/MS4wLjABAAAACikEg4i0WerrOF6z_Dxt1fk2iQN3kOOwt2XoGHlVY93wUTVtgNOojiTM9RgCYRro
+  - img "续霜眠头像"
+- link "续霜眠":
+  - /url: //www.douyin.com/user/MS4wLjABAAAACikEg4i0WerrOF6z_Dxt1fk2iQN3kOOwt2XoGHlVY93wUTVtgNOojiTM9RgCYRro
+  - generic: 续霜眠
+- generic: ...
+- link "敲水盆为啥是方的":
+  - /url: //www.douyin.com/search/%E6%95%B2%E6%B0%B4%E7%9B%86%E4%B8%BA%E5%95%A5%E6%98%AF%E6%96%B9%E7%9A%84?aweme_id=7690099402740273658&enter_from=video_detail&gid=7690099402740273658&source=comment_named_entity_search
+  - generic: 敲水盆为啥是方的
+- generic: ，搞明白了吗
+- img "[钱]"
+- generic: 2周前·安徽
+- paragraph:
+  - generic: "994"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开20条回复":
+  - generic: 展开
+  - generic: "20"
+  - generic: 条回复
+- link "谁家小伙zzz头像":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAyGty77yOMsszgi8FKKB2spDAHDWCx2u6KXx6u-5ms7y6zCkPv2TdOelehab6HeKB
+  - img "谁家小伙zzz头像"
+- link "谁家小伙zzz":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAyGty77yOMsszgi8FKKB2spDAHDWCx2u6KXx6u-5ms7y6zCkPv2TdOelehab6HeKB
+  - generic: 谁家小伙zzz
+- generic: ...
+- generic: 所以为什么水盆里的水是方的
+- img "[钱]"
+- generic: 2周前·江苏
+- paragraph:
+  - generic: "286"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开9条回复":
+  - generic: 展开
+  - generic: "9"
+  - generic: 条回复
+- link "略略略略":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAiqhwR83Ng8VXS3hV5fYeIjpCsAFv4O233lmVCyeybaHuvN0kQdTaGg9YwwgEPxTX
+  - generic: 略略略略
+- generic: ...
+- generic: 毕导都不知道，说明
+- link "水盆问题":
+  - /url: //www.douyin.com/search/%E6%B0%B4%E7%9B%86%E9%97%AE%E9%A2%98?aweme_id=7690099402740273658&enter_from=video_detail&gid=7690099402740273658&source=comment_named_entity_search
+  - generic: 水盆问题
+- generic: 是小学三年级的知识点
+- generic: 2周前·江苏
+- paragraph:
+  - generic: "250"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开5条回复":
+  - generic: 展开
+  - generic: "5"
+  - generic: 条回复
+- link "月生":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAqXlIU4scVzcYKrM6mQqlhmGiwbKYkGaQ-5jy7Wo51os
+  - generic: 月生
+- generic: ...
+- link "水盆":
+  - /url: //www.douyin.com/search/%E6%B0%B4%E7%9B%86?aweme_id=7690099402740273658&enter_from=video_detail&gid=7690099402740273658&source=comment_named_entity_search
+  - generic: 水盆
+- generic: 研究好了叫我
+- img "[哭泣不成声]"
+- generic: 2周前·安徽
+- paragraph:
+  - generic: "738"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开23条回复":
+  - generic: 展开
+  - generic: "23"
+  - generic: 条回复
+- link "空城":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAxKhGx9scAuEsEnTOn5NXXMamrtAzVBy8mR6i6z4fLKp49s5iZowKwpqmqwX6n0lk
+  - generic: 空城
+- generic: ...
+- generic: 这个颤音指定带点表述
+- generic: 2周前·江西
+- paragraph:
+  - generic: "11"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开
+  - generic: "1"
+  - generic: 条回复
+- link "贴纸":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAgxCg-tgDKDBFFoyypGRgZOXqY5-grFUwMfR3GQFwZFnOZsUiu8UltrePCEUJZ-8u
+  - generic: 贴纸
+- generic: ...
+- text: 敲水盆为啥是方的啥时候搞明白
+- img "[猪头]"
+- generic: 1周前·安徽
+- paragraph:
+  - generic: "32"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开3条回复":
+  - generic: 展开3条回复
+- link "十一点":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAdBbtQfpFZelGUEHhZvYUuuxrnGdRMLQgndde7l0x5mIiG07APDyJ-zYYyQpemHzb
+  - generic: 十一点
+- generic: ...
+- generic: 为什么水盆里的水是方的？
+- generic: 2周前·陕西
+- paragraph:
+  - generic: "250"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开7条回复":
+  - generic: 展开7条回复
+- link "莉•̩̩̩̩ᯅ•̩̩̩":
+  - /url: //www.douyin.com/user/MS4wLjABAAAATICEGPGAmu_4vQAzNnpxL-okY1T9x0IYBZ-KIMOA68sd62_-pcPBAGSel6waTFxb
+  - generic: 莉•̩̩̩̩ᯅ•̩̩̩
+- generic: ...
+- text: 所以到底为啥水盆中间的波是方的
+- img "[捂脸]"
+- generic: 2周前·山东
+- paragraph:
+  - generic: "8"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "鱼尾巴":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAYvybmoEmJq9Wh7Gnr6lOqPfibEJHINf59HWcIrl1y38
+  - generic: 鱼尾巴
+- generic: ...
+- generic: 2周前·广西
+- paragraph:
+  - generic: "138"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开6条回复":
+  - generic: 展开6条回复
+- link "DGJGG":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAZHze_L58pTGEanIAx1xJGr79CfR8No8I0wR15wOlZlw
+  - generic: DGJGG
+- generic: ...
+- generic: 足球里放弹簧就行
+- generic: 2周前·湖南
+- paragraph:
+  - generic: "713"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开9条回复":
+  - generic: 展开9条回复
+- link "长歌":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAE248u7wX2bSgCLOXiZi0YNaWLpy3GLoOxDCGswrlqDY
+  - generic: 长歌
+- generic: ...
+- generic: 里面进脏东西了怎么清理
+- generic: 1周前·湖南
+- paragraph:
+  - generic: "0"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "英俊小宇":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAZ0Lt8Xt0At4GCT8pxR12jgIntc95yVZZs8DFPnIHYis
+  - generic: 英俊小宇
+- generic: ...
+- generic: 掰开冲一下，然后晒干，然后再弄回去就行了。
+- generic: 1周前·陕西
+- paragraph:
+  - generic: "4"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "为什么要禁言我？":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAYmv1MktJ0ZELyya0evWxs4h8bgyKouMztY3v7hkwsCs
+  - generic: 为什么要禁言我？
+- generic: ...
+- generic: 我知道你为何而来。
+- generic: 1周前·江西
+- paragraph:
+  - generic: "162"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开4条回复":
+  - generic: 展开4条回复
+- link "Mar":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAS34BQ74GWHqdhUVDNXSKvU8y-SVZmYNlL3dn6euiTvg
+  - generic: Mar
+- generic: ...
+- generic: 这个足球好像几百年前就已经出现了，那时候好像叫蹴鞠吧
+- generic: 1周前·福建
+- paragraph:
+  - generic: "10"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "清风已过万重山":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAgDJKgWUrgBad8xfsxROp14LeZl-h_JPa5JUPf9AtbSs
+  - generic: 清风已过万重山
+- generic: ...
+- generic: 蹴鞠是运动名称吧。藤球是球的叫法吧？
+- generic: 1周前·河南
+- paragraph:
+  - generic: "13"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "又一年":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAr3bbByV6iJhLZUyUkhA1XjzHDbhjpEZNbZp7Tq971sM
+  - generic: 又一年
+- generic: ...
+- generic: "@略略略略: 毕导都不知道，说明水盆问题是小学三年级的知识点"
+- generic: 1周前·江苏
+- paragraph:
+  - generic: "1"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "反半夜嗦脚趾头被霸总蟑螂发现的白蛋🥵":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA5qTItY0w9XjPnEcgLQ9pBRRnKNuJ7njJfuVLgnQWVug
+  - text: 反半夜嗦脚趾头被霸总蟑螂发现的白蛋
+  - img "🥵"
+- generic: ...
+- generic: 从这刷过来的
+- generic: 2周前·江西
+- paragraph:
+  - generic: "16"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "孤独患者":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAe-j4aMLVQHX4Jbxvoj_RU4NgiK0bM_gh7DZLF271sS-GO77U0EQSKHRmr1uyH9pm
+  - generic: 孤独患者
+- generic: ...
+- text: 为啥拍水盆里面是方的
+- img "[捂脸]"
+- generic: 2周前·湖北
+- paragraph:
+  - generic: "307"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开12条回复":
+  - generic: 展开12条回复
+- link "一路向赜":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAh3Q8v-S5JWgPRydk3wVgNi5RpjwaGA9_r5cKynNDsU1mpkqPkZoc9AhbfxXhCwb0
+  - generic: 一路向赜
+- generic: ...
+- text: 因为镂空设计应该风阻不一样吧
+- img "[戳手手]"
+- generic: 2周前·湖南
+- paragraph:
+  - generic: "11"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开2条回复":
+  - generic: 展开2条回复
+- link "明天你好👋":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAIpAG-T8mHyeNLVg-rnJ_n6GpANLywmxARcVCEJFol0g
+  - text: 明天你好
+  - img "👋"
+- generic: ...
+- text: 所以水盆中间的波是方的是什么原因
+- img "[流泪]"
+- generic: 2周前·上海
+- paragraph:
+  - generic: "10"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "旅程":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAW3V3CYcukQoix0GoVcPeNOUqEU5kRJMIqkAS-EpGjdfF4xP7OVunci5fzLxvZ-gj
+  - generic: 旅程
+- generic: ...
+- text: 我等这个
+- img "[杀马特]"
+- generic: 1周前·安徽
+- paragraph:
+  - generic: "51"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "李白":
+  - /url: //www.douyin.com/user/MS4wLjABAAAACZr6hS4apxrYFgw3A__zrEouKLIOWiHHjQAwgHgUJyq7Ezdca1Tgh1gJvExGRvAG
+  - generic: 李白
+- generic: ...
+- text: 耐心等待
+- img "[钱]"
+- generic: 2周前·广东
+- paragraph:
+  - generic: "18"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "毕导 作者":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA26unzRl4eTG2pAGnxD1pS3kMvjaUIcNxvLGr3VJOiKU
+  - generic: 毕导
+  - generic: 作者
+- generic: ...
+- text: 朋友们，先放下那个方波的水盆，先让我们把目光投向这期视频中的足球吧
+- img "⚽"
+- img "⚽"
+- img "⚽"
+- img "[宕机]"
+- generic: 2周前·广东
+- paragraph:
+  - generic: "236"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开19条回复":
+  - generic: 展开19条回复
+- link "猴王吉吉":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA5uKj-ntmb_Vd7gYB27FMsV12jGXcrhHJbyqX5V27XgF2pczZqol844Xym1ri6c7F
+  - generic: 猴王吉吉
+- generic: ...
+- generic: 之前我看免充气篮球会有镂空部分飞行过程中影响路径的问题，这个会不会有相同的情况
+- generic: 2周前·北京
+- paragraph:
+  - generic: "6"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开2条回复":
+  - generic: 展开2条回复
+- link "老希儿":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAfUC729YIWiJrrlm9ehkhWM2di4zFYh_0PAKARniILXEaBZgzOTP-OoFXDv_pKHar
+  - generic: 老希儿
+- generic: ...
+- text: 这个不用充气
+- img "[憨笑]"
+- generic: 2周前·云南
+- paragraph:
+  - generic: "68"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开2条回复":
+  - generic: 展开2条回复
+- link "编号":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAOyl-c-1ti06hFP0jyx7k1dyQsJOtMpPvJPGJ_TT0mVk
+  - generic: 编号
+- generic: ...
+- link "@毕导":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA26unzRl4eTG2pAGnxD1pS3kMvjaUIcNxvLGr3VJOiKU
+- text: 为什么火在自然点燃时是向上的？
+- img "[耶]"
+- generic: 2周前·福建
+- paragraph:
+  - generic: "0"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开2条回复":
+  - generic: 展开2条回复
+- link "冰冰冰":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA3n51fcxR0puV6EXU0iGYQUQfjYeDHPyzOrrLMLHolakw4uQRrNyEiWvNNDGtWgOJ
+  - generic: 冰冰冰
+- generic: ...
+- text: 快做这个，我真想知道
+- img "[憨笑]"
+- generic: 2周前·安徽
+- paragraph:
+  - generic: "20"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "玩游戏的猫":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAxiNJdOwYRSkBy84O78VgzCR_9T5l9gdzr4aL_wIFMnvpBSIeDx1RXbXQsjOAbJWU
+  - generic: 玩游戏的猫
+- generic: ...
+- text: 敲水盆为啥是方的？
+- img "[笑哭]"
+- generic: 2周前·宁夏
+- paragraph:
+  - generic: "2"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "敬卫":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAfagKIWg3xxVARCeOkai1BLJe8wuQWxsT31UBaAO34fUNiDkmdsiRB_22YQR0GQSj
+  - generic: 敬卫
+- generic: ...
+- generic: 为什么水盆波纹是方的？
+- generic: 2周前·广东
+- paragraph:
+  - generic: "14"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开2条回复":
+  - generic: 展开2条回复
+- link "哦哦哦":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAacwe7HSQc7o9PHCnDzgmxUpqX3Bp0jEbmcfOjCHDAhVbNGuZ64ftj6JLNc_AY9tx
+  - generic: 哦哦哦
+- generic: ...
+- generic: 为啥水波是方的？
+- generic: 2周前·浙江
+- paragraph:
+  - generic: "6"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "我是愤怒的":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAk5znSgbrXasUJfS4CCexGKgeaOcYhgD6KVWOuZQlQECAQkZnWFbJQrqypqrcNief
+  - generic: 我是愤怒的
+- generic: ...
+- generic: 为什么是方的?
+- generic: 2周前·内蒙古
+- paragraph:
+  - generic: "0"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "喜欢早起所以没见过你":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA6DH4VQ7GP7GoGQ9i5g--KLiSJ0azrw4v-z4s8Ss20sw
+  - generic: 喜欢早起所以没见过你
+- generic: ...
+- text: 大数据的魅力
+- img "[捂脸]"
+- generic: 2周前·江苏
+- paragraph:
+  - generic: "5"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "让我毛一眼":
+  - /url: //www.douyin.com/user/MS4wLjABAAAADkGkqdqlWGA4X2f_DVuUs6JXOG9FYYJ3Jj_JPbK5QSgPobcqEm-hlPTZbrSPOjmn
+  - generic: 让我毛一眼
+- generic: ...
+- img "[钱]"
+- img "[钱]"
+- img "[钱]"
+- text: 抱歉毕导我要挑刺了，作为一名足球爱好者我看到这个球飞行的画面不多，我想问这个球的空气动力学没有考虑怎么办，之前在b站看过有人科普以前世界杯的球是几乎完美的圆球形，因表面过于光滑会产生阻力灾难，容易踢出轨迹飘忽不定（以急坠最为明显）的球，后来主流联赛和世界杯吸取教训，通过表面纹路和微小的不规则设计使得球的空中运行轨迹更加稳定，所以这里我有两个问题：1.如果这个球进行封闭并以主流足球表面的纹路设计会发生什么？或者换个问法，是否可以通过封闭实现充气足球类似的空气动力学效果？2.地球的形状也不是完美的圆球形，而是一个类似椭球的形状，这个形状和它保持近似的匀速圆周运动有什么关联？期待您的回复！
+- link "@毕导":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA26unzRl4eTG2pAGnxD1pS3kMvjaUIcNxvLGr3VJOiKU
+- text: （
+- img "[泪奔]"
+- img "[泪奔]"
+- text: 虽然我本来应该在B站刷到您的）
+- generic: 2周前·甘肃
+- paragraph:
+  - generic: "63"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开3条回复":
+  - generic: 展开3条回复
+- link "柏绝音":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAsW__Lx9OKCsOYzLLc6MJ-Luz79kII96w2uAcugJduIE
+  - generic: 柏绝音
+- generic: ...
+- generic: 都这样来的?
+- generic: 2周前·山东
+- paragraph:
+  - generic: "2"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "J亽":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAIVDRAqHXVvRhh_A2EBppRWKO0Igoyg4SCIxm4Hjk_ODTUt2zj_caMugIYY9RY774
+  - generic: J亽
+- generic: ...
+- generic: 2周前·贵州
+- paragraph:
+  - generic: "3"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- link "三九幸运灵":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAR5oxf1FHy-pajXaOAgTR2hc7siBQyvWmubbgPPw7erOlCIWWd5NJkLIwc3tmhRNg
+  - generic: 三九幸运灵
+- generic: ...
+- img "[捂脸]"
+- text: 抖音有说法的
+- generic: 2周前·安徽
+- paragraph:
+  - generic: "7"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "别暃心":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAAkk-IcmkVyPPialXzNK2GliMbS39sR33Z3HOTRmsFfk80mcfxnjy8qOSzoYMlWhI
+  - generic: 别暃心
+- generic: ...
+- text: 我会一直等
+- img "[钱]"
+- generic: 2周前·广东
+- paragraph:
+  - generic: "241"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开13条回复":
+  - generic: 展开13条回复
+- generic: 加载中
+- contentinfo:
+  - link "广告投放":
+    - /url: https://www.oceanengine.com/resource/douyin
+    - generic: 广告投放
+  - link "用户服务协议":
+    - /url: https://www.douyin.com/agreements/?id=6773906068725565448
+    - generic: 用户服务协议
+  - link "隐私政策":
+    - /url: https://www.douyin.com/agreements/?id=6773901168964798477
+    - generic: 隐私政策
+  - link "账号找回":
+    - /url: https://www.douyin.com/recovery_account/
+    - generic: 账号找回
+  - link "联系我们":
+    - /url: https://www.douyin.com/aboutus/
+    - generic: 联系我们
+  - link "加入我们":
+    - /url: https://www.douyin.com/aboutus/
+    - generic: 加入我们
+  - link "友情链接":
+    - /url: https://www.douyin.com/friend_links
+    - generic: 友情链接
+  - link "站点地图":
+    - /url: https://www.douyin.com/htmlmap/hotauthor_0_1
+    - generic: 站点地图
+  - link "下载抖音":
+    - /url: https://www.douyin.com/downloadpage/pc
+    - generic: 下载抖音
+  - link "抖音电商":
+    - /url: https://mix.jinritemai.com/falcon/mix_page/index.html
+    - generic: 抖音电商
+  - link "网络谣言曝光台｜":
+    - /url: https://www.piyao.org.cn/yybgt/index.htm
+    - generic: 网络谣言曝光台｜
+  - link "网上珊瑚信息报告":
+    - /url: https://www.12377.cn/
+    - generic: 网上珊瑚信息报告
+  - generic: ｜ 违法和不良信息举报：400-140-2108 Feedback@douyin.com ｜ 算法推荐针对性举报：sfjubao@bytedance.com | 体育饭圈专项举报：tyfq@bytedance.com
+  - link "京ICP备16016397号-3":
+    - /url: https://beian.miit.gov.cn/
+    - generic: 京ICP备16016397号-3
+  - generic: ｜信息网络传播视听节目许可证0126733
+  - generic: ｜ 广播电视节目制作经营许可证（京）字第11313号
+  - generic: ｜增值电信业务经营许可证京B2-20170846
+  - generic: ｜ 网络文化经营许可证 京网文〔2025〕0181-061号 ｜
+  - img "图标"
+  - link "京公网安备11010802050006号":
+    - /url: https://beian.mps.gov.cn/
+    - generic: 京公网安备11010802050006号
+  - generic: ｜ 互联网宗教信息服务许可证 京（2025）0000017 ｜
+  - img "图标"
+  - link "电子商业模式":
+    - /url: https://zzlz.gsxt.gov.cn/businessCheck/verifKey.do
+    - generic: 电子商业模式
+  - link "｜（京）人服证字〔2026〕第0600005023号":
+    - /url: https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/d1cb34abe8ebb5600b51bac36ce3247f.jpg
+    - generic: ｜（京）人服证字〔2026〕第0600005023号
+  - generic: 热门：
+  - link "抖音网页版入口":
+    - /url: https://www.douyin.com/jingxuan
+  - link "抖音知识":
+    - /url: https://www.douyin.com/jingxuan/knowledge
+  - link "当贝":
+    - /url: https://www.douyin.com/user/MS4wLjABAAAAgsC3lFs4bnpP6spPQu83v9RKrkt0C7YCOO6Um6C5sHM
+  - 'link "单招最容易上的五所公办大学！容易捡漏的公办 #河北单招网课 #河北单招 #27河北单招 #河北单招资料站 #河北高职单招 成绩中等的宝贝必看！！！捡漏的大学."':
+    - /url: https://www.douyin.com/video/7695012624592801059
+  - link "为天津高考学子加油":
+    - /url: https://www.douyin.com/topic/7509889538878261248
+  - link "湖北一本分数线 官方":
+    - /url: https://www.douyin.com/shipin/7509919450494339124
+  - link "2025内蒙古高考出档线":
+    - /url: https://www.douyin.com/search/2025%E5%86%85%E8%92%99%E5%8F%A4%E9%AB%98%E8%80%83%E5%87%BA%E6%A1%A3%E7%BA%BF
+  - link "国际奥委会主席送新春祝福":
+    - /url: https://www.douyin.com/video/7606350602955689259?source=Baiduspider
+  - 'link "东京-大阪的日间长途巴士！（2）更多内容请进主页#巴士#旅行#美食 #日本 #减压#沉浸式体验 #第一人称"':
+    - /url: https://www.douyin.com/video/7231125656870948153?source=Baiduspider
+  - 'link "今天也是极简风，你们喜欢上午还是下午的呢？#每天穿搭分享喜欢美衣请关注我 #普通人的生活是什么样子的 #vlog我的日常生活"':
+    - /url: https://www.douyin.com/video/7231564443132448032?source=Baiduspider
+  - 'link "DVF冬日色彩 开启摩登派对季! 霓虹星月夜 她自有光🌟 #今天穿什么#dvf#dianevonfurstenberg#DVF2026早春度假系列#DVF霓虹星月我自有光@抖音小助手 @抖音创作小助手 @Diane von Furstenberg官方旗舰店"':
+    - /url: https://www.douyin.com/video/7575465376093431467?source=Baiduspider-sdc
+  - link "时间可以沉淀很多往事，同时也可以回答所有问题☕️☕️#原创#自律#加油#传递正能量#人生感悟":
+    - /url: https://www.douyin.com/video/7140105345552207143?source=Baiduspider
+  - 'link "🇰🇷Oliveyoung护肤品必购指南（2025年版） 5年在韩留子无广强推（2025年版）❗️ #oliveyoung #韩国oliveyoung #好物推荐 #护肤分享 #韩国购物"':
+    - /url: https://www.douyin.com/video/7553592328919190836?source=Baiduspider
+  - 'link "微恐图《人间诡视-窥》攻略，改编自同名恐怖游戏，地图共有三种结局 #蛋仔派对 #蛋仔派对恐怖地图 #在抖音找蛋搭子"':
+    - /url: https://www.douyin.com/video/7307070955434577163?source=Baiduspider-sdc

@@ -1,0 +1,27 @@
+"""10秒间隔画面，仅作分镜研究，不声称全片视听审阅。"""
+from pathlib import Path
+import subprocess,math,json,sys
+from PIL import Image,ImageDraw,ImageFont
+BASE=Path(__file__).resolve().parent/'内部分析素材'
+FFMPEG=Path('/Users/ljw/Documents/ChatGPT/小工具/batch-media-tool/bin/ffmpeg')
+font=ImageFont.truetype('/System/Library/Fonts/Monaco.ttf',16)
+for folder in sorted(BASE.iterdir()):
+    if not folder.is_dir() or not (folder/'自动转写-未听审.json').exists():continue
+    if sys.argv[1:] and folder.name not in sys.argv[1:]:continue
+    if (folder/'类型研究画面-1.jpg').exists():continue
+    source=next(folder.glob('*.mp4'))
+    frames=folder/'10秒间隔画面'
+    frames.mkdir(exist_ok=True)
+    subprocess.run([str(FFMPEG),'-nostdin','-v','error','-y','-i',str(source),'-vf','fps=1/10:start_time=0,scale=224:398','-q:v','3',str(frames/'%03d.jpg')],check=True)
+    files=sorted(frames.glob('*.jpg'))
+    for start in range(0,len(files),30):
+        batch=files[start:start+30]
+        sheet=Image.new('RGB',(5*236,math.ceil(len(batch)/5)*428),(25,25,25))
+        draw=ImageDraw.Draw(sheet)
+        for i,p in enumerate(batch):
+            x=(i%5)*236+6;y=(i//5)*428+26;t=(start+i)*10
+            draw.text((x,y-23),f'~{t//60:02d}:{t%60:02d}',font=font,fill='white')
+            sheet.paste(Image.open(p),(x,y))
+        target=folder/f'类型研究画面-{start//30+1}.jpg'
+        sheet.save(target,quality=90)
+    print(json.dumps({'id':folder.name,'frames':len(files)},ensure_ascii=False),flush=True)

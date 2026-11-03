@@ -1,0 +1,115 @@
+from pathlib import Path
+from urllib.parse import quote
+import json,re
+BASE=Path(__file__).resolve().parent
+PACK=BASE/'求职准备总包'
+OUT=BASE/'原片联动学习'
+catalog=json.loads((PACK/'09_74条研究覆盖与缺口.json').read_text())
+taxonomy=json.loads((PACK/'06_74条分类与高赞候选_修订版.json').read_text())
+categories={row['video_id']:cat['category'] for cat in taxonomy['categories'] for row in cat['works']}
+check_file=PACK/'17_74条重点词参数与条件核对.json'
+checks=json.loads(check_file.read_text()) if check_file.exists() else {'records':[],'type_counts':{}}
+checks_by_id={row['video_id']:row for row in checks['records']}
+audit_file=PACK/'18_全文字幕与参数校核进度.json'
+full_audit=json.loads(audit_file.read_text()) if audit_file.exists() else {'counts':{},'items':[]}
+audit_by_id={row['video_id']:row for row in full_audit['items']}
+audit_changes_file=PACK/'19_全文字幕已核更正与待听项.json'
+audit_changes=json.loads(audit_changes_file.read_text())['records'] if audit_changes_file.exists() else []
+context_checks=json.loads(audit_changes_file.read_text()).get('context_checks',[]) if audit_changes_file.exists() else []
+notes={row['video_id']:row['analysis'] for row in json.loads((BASE/'31条结构拆解.json').read_text())['cases']}
+labels={'topic_logic':'选题为什么成立','outline':'段落骨架','visual_evidence':'画面观察','writing_and_edit_logic':'文案与剪辑组织','reproduction_advice':'拍剪练习','verification_limits':'仍需核实'}
+for row in json.loads((PACK/'10_剩余32条结构研究.json').read_text())['cases']:
+    notes[row['video_id']]={label:row[key] for key,label in labels.items()}
+# 将此前另外十一条的原有分析接入同一学习页，保留其原始证据边界。
+for filename,pattern in [
+    (PACK/'08_新增7条视频_文案拍摄剪辑拆解.txt',r'(?m)^\d{2}｜'),
+    (PACK/'01_补充两条视频拆解与分类更正.txt',r'(?m)^[一二三]、'),
+    (BASE/'研究与实操手册_视听审阅未完成.txt',r'(?m)^样片[A-D]：')]:
+    for chunk in re.split(pattern,filename.read_text())[1:]:
+        match=re.search(r'https://www\.douyin\.com/video/(\d+)',chunk)
+        if match and match[1] not in notes:
+            if filename.name.startswith('研究与'):
+                chunk=chunk.split('\n五、')[0]
+            notes[match[1]]={'既有逐条研究':chunk.strip(),'证据状态':'结构研究基于自动文稿与间隔画面；未完成完整连续视听和逐句原声听审。'}
+def url(path):return '../'+quote(str(path.relative_to(BASE)),safe='/')
+items=[];strong=0
+for row in catalog['items']:
+    vid=row['video_id'];folder=BASE/'内部分析素材'/vid
+    meta=json.loads((folder/'公开接口作品信息-2026-11-02.json').read_text())
+    newer=folder/'自动转写-large-v3-turbo-未听审.json'
+    if newer.exists():
+        draft=json.loads(newer.read_text())['result'];label='large-v3-turbo全长机器初稿 · 未逐句听审';strong+=1
+    else:
+        draft=json.loads((folder/'自动转写-未听审.json').read_text());label='small模型机器初稿 · 未逐句听审'
+    # 学习页提供原声区间定位；完整机器转写留在内部分析资料，不作为作者逐字稿交付。
+    segments=[{'start':float(s['start']),'end':float(s['end']),'text':f'原声片段 {i+1} · 点击回看片段并核对表达'} for i,s in enumerate(draft.get('segments',[])) if s.get('text','').strip()]
+    label='机器识别的语音区间，仅供定位；完整视听与原声逐句听审未完成'
+    cuts=json.loads((folder/'剪辑切点候选-未逐点确认.json').read_text())['timestamps_seconds']
+    caption_rows=[]
+    caption_file=folder/'字幕画面OCR-未逐帧确认.json'
+    if caption_file.exists():
+        from PIL import Image
+        ocr_data=json.loads(caption_file.read_text())
+        if ocr_data.get('processing_complete'):
+            for frame in ocr_data['frames']:
+                if 'error' in frame:continue
+                with Image.open(frame['path']) as im:height=im.height
+                selected=[]
+                for line,score,box in zip(frame['lines'],frame['scores'],frame['boxes']):
+                    top=min(p[1] for p in box);bottom=max(p[1] for p in box)
+                    if score>=.8 and len(line)>=4 and .65*height<=top and bottom<=.86*height and bottom-top>=14:
+                        selected.append(line)
+                value=' / '.join(selected)
+                if not value:continue
+                if caption_rows and caption_rows[-1]['text']==value and frame['sample_seconds']-caption_rows[-1]['end']<=1:
+                    caption_rows[-1]['end']=frame['sample_seconds'];continue
+                caption_rows.append({'start':frame['sample_seconds'],'end':frame['sample_seconds'],
+                                     'text':value,'image':url(Path(frame['path']))})
+    source=PACK/'10_剩余32条结构研究.txt' if vid in {r['video_id'] for r in json.loads((PACK/'10_剩余32条结构研究.json').read_text())['cases']} else BASE/'每类前三候选_31条详细拆解_未完成原声听审.txt'
+    if row['index'] in [6,34,35,37,41,45,68]:source=PACK/'08_新增7条视频_文案拍摄剪辑拆解.txt'
+    if row['index'] in [13,73]:source=PACK/'01_补充两条视频拆解与分类更正.txt'
+    if row['index'] in [61,63]:source=BASE/'研究与实操手册_视听审阅未完成.txt'
+    # 对外学习页使用自己的画面观察，不整篇复制视频字幕。
+    checked_frames={
+        '7669738424873635107':[(0,'人物持机提出问题'),(8,'黑底产品亮相，画面型号为OPPO A7 Pro Max'),(16,'喷水动作与防水宣传字样同框'),(26,'水中取出手机的演示画面'),(52,'电池与充电能力的文字配合实物'),(65,'背部细节承担外观信息'),(84,'人物口播承担段落连接'),(103,'机身光泽与花朵装饰特写'),(138,'户外拍摄动作承接影像用途')],
+        '7593246079882136883':[(0,'人物夸张表情配合开头大字'),(18,'用空镜说明拼图素材构成'),(25,'手指操作与拼图界面近景'),(72,'拍照模式的界面示范'),(88,'相册时间轴演示重新选帧'),(105,'多张样片说明跨设备素材用途'),(130,'外景成片承担风格展示'),(162,'字幕里的电池数字与机器转写不同，须按画面核对'),(175,'结尾购机权益字样，属于当时视频信息')],
+        '7670528824794254655':[(0,'手写动作先引出书写问题'),(9,'机身背部与标识近景'),(27,'解释性插入素材明确标注网络来源'),(45,'笔刷操作与功能字卡共同解释'),(64,'坐姿与电脑呈现工作情境'),(82,'大幅绘画结果承担效果证明'),(121,'人物总结大屏与交互用途'),(155,'办公界面提供具体任务'),(194,'外接游戏设备构成另一使用场景')]
+    }
+    caption_rows=[{'start':t,'end':t,'text':description,'image':url(folder/'字幕补证画面'/f'{int(t*2)+1:05d}.jpg')} for t,description in checked_frames.get(vid,[])]
+    entry={'id':vid,'index':row['index'],'title':row['topic_summary'],'category':categories[vid],
+           'caption':meta['title'],'duration':meta['duration'],'published':meta['publish_time_Asia_Shanghai'],
+           'likes':meta['statistics_snapshot']['digg_count'],'media':url(next(folder.glob('*.mp4'))),
+           'original':row['url'],'segments':segments,'transcript_label':label,
+           'cuts':cuts,'caption_frames':caption_rows,'analysis':notes.get(vid,{'阅读入口':'本条具体分析在对应研究文档中。请结合原片检查每个判断。'}),
+           'study_source':url(source)}
+    if vid in checks_by_id:
+        check=checks_by_id[vid]
+        entry['claim_review']={k:check.get(k) for k in ['type','before','after','before_origin','finding','practical_effect','sample_seconds','remaining','scope']}
+        entry['claim_review']['image']=url(Path(check['image_path']))
+        entry['claim_review']['public_source_urls']=check.get('public_source_urls',[])
+        entry['claim_review']['additional_checks']=[]
+        for more in check['additional_checks']:
+            addition={k:more[k] for k in ['sample_seconds','before','after','finding','public_source_urls','verification_basis']}
+            if more.get('image_path'):addition['image']=url(Path(more['image_path']))
+            entry['claim_review']['additional_checks'].append(addition)
+        entry['analysis']['本轮重点核对']=check['finding']+' '+check['practical_effect']
+        entry['analysis']['补核仍待确认']=check['remaining']
+    entry['sentence_audit']=audit_by_id.get(vid)
+    entry['sentence_audit_changes']=[]
+    for change in audit_changes:
+        if change['video_id']!=vid:continue
+        entry['sentence_audit_changes'].append({k:change.get(k) for k in ['candidate_id','start','end','category','before','after','note']})
+        entry['sentence_audit_changes'][-1]['image']=url(Path(change['image_path']))
+    entry['context_checks']=[]
+    for context in context_checks:
+        if context['video_id']!=vid:continue
+        entry['context_checks'].append({k:context[k] for k in ['start','category','finding','production_lesson','scope','source_urls']})
+        entry['context_checks'][-1]['image']=url(Path(context['image_path']))
+    assert source.is_file();items.append(entry)
+data={'account':'英俊姐妹日记','items':items,'categories':[c['category'] for c in taxonomy['categories']],
+      'strong_asr_count':strong,'approved_count':0,'claim_review_count':len(checks_by_id),'claim_review_type_counts':checks['type_counts'],
+      'sentence_audit_summary':full_audit['counts'],
+      'scope':'私人本机学习，不对外发布；机器文稿、切点、有限画面校核不是完整视听或原声听审通过。'}
+serialized=json.dumps(data,ensure_ascii=False,separators=(',',':')).replace('</',r'<\/')
+(OUT/'研究数据.js').write_text('window.YINGJUN_REVIEW_DATA = '+serialized+';\n')
+print(json.dumps({'items':len(items),'strong_asr':strong,'data_bytes':len(serialized.encode()),'html':str(OUT/'看片与逐句核对.html')},ensure_ascii=False))

@@ -1,0 +1,28 @@
+from pathlib import Path
+import json,hashlib
+base=Path(__file__).resolve().parents[1];p=base/'原声核验/全文字幕对照/整图补证决定.json'
+rows=json.loads(p.read_text())
+data=[
+ (1,'7670528824794254655',30.5,'引用素材与自测分开','00062.jpg',
+  '150Kg位于网络引用画面，整图标注素材来源于网络。画面可以解释材料，但不能把该配重直接说成博主亲测或整机承压保证；右下小字仍不清晰。',
+  '拍摄表提前区分自摄、录屏、资料素材；引用的图示条件与自己的结论同时核对，不能用演示替代未做过的实验。',
+  '确认素材来源标记和数值位置，未核准压力实验方法或小字条件。'),
+ (1,'7670528824794254655',80,'画面参数OCR纠错','00161.jpg',
+  '整图的叠字为屏占比92%、3.3K分辨率3296×2472；OCR在相邻帧读成2471和2473，不能择一个机器结果当最终数。',
+  '重要参数字卡核对稳定完整帧，并保留产品对象；镜头有笔尖或手部遮挡时，补看相邻帧。',
+  '确认作品可见参数，不等于本研究完成独立实测。'),
+ (2,'7669738424873635107',81.5,'内存扩展与物理容量分开','00164.jpg',
+  '完整界面和字幕共同表明高达24GB指内存扩展；16.0GB和24.0GB是界面选项，不能因此写成24GB物理运行内存。',
+  '镜头保留栏目名及单位，文案补齐扩展、峰值、起价等限定词，不能只放一个显眼数字。',
+  '确认片中界面语境；未验证设备物理容量、实际流畅度或系统版本适配。'),
+ (67,'7593246079882136883',173.5,'教学与购买承接分层','00348.jpg',
+  '前面围绕实况拼图教学，末段进入2026新国补、立减500元和24期免息分期。这是历史视频里的购买承接，不能抄成今天仍对所有人有效的政策。',
+  '将观看承诺与购买承接分开写：先兑现玩法结果，再注明当时权益及适用条件，不能让优惠取代教学。',
+  '确认片中当时宣传信息；当前平台活动、资格及分期条款未核实。')]
+for index,vid,start,category,name,finding,lesson,scope in data:
+    image=base/'内部分析素材'/vid/'字幕补证画面'/name
+    item=dict(index=index,video_id=vid,start=start,category=category,finding=finding,production_lesson=lesson,scope=scope,
+      image_path=str(image),image_sha256=hashlib.sha256(image.read_bytes()).hexdigest(),source_urls=[],audio_verbatim_approved=False)
+    rows=[r for r in rows if (r['video_id'],r['start'],r['category'])!=(vid,start,category)]
+    rows.append(item)
+p.write_text(json.dumps(rows,ensure_ascii=False,indent=2));print(len(rows))

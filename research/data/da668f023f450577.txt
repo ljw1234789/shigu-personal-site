@@ -1,0 +1,50 @@
+"""e6c7a39f十张画面板及四幅整图已实际查看。"""
+from pathlib import Path
+import json,subprocess,sys,collections,hashlib
+base=Path(__file__).resolve().parents[1];root=base/'原声核验/全文字幕对照/差异画面板';out={}
+non={59:[4,22,24,31,33,34,35,36,45,49,67,77],66:[4,6,7,9,12,20,22,23,24,25,28,30,31,32,34,76],29:[29],45:[11,12,13,14,43,47,49,50,51,52,53,54,56,57,75,76,78,79],63:[25,27,29,42,59,61,62,63]}
+terms={59:{17:'米哈游钦定',19:'iQOO15 Ultra',20:'iQOO15 Ultra',25:'iQOO',38:'极致超分',40:'雾蒙蒙',44:'毛坯房',48:'流畅度对比',56:'插帧原理',57:'插值',59:'做一半抄一半',60:'掉电速度和发热',61:'插帧原理',62:'掉电速度和发热',64:'iQOO15 Ultra',70:'120帧不卡顿',75:'iQOO',85:'iQOO15 Ultra',86:'游戏肩键',87:'双轴震感马达',92:'画质拉满',93:'iQOO'},
+66:{13:'李英俊',18:'ChinaES',35:'宇树G1',42:'启元Q1',44:'全身力控',46:'80cm身高',47:'折叠塞进双肩包',57:'石头科技',58:'长腿扫地机器人',65:'扫地机界',71:'扫地机器人',72:'Mova Pilot70',74:'DIY既视感'},
+29:{5:'午夜蓝小米17T Pro',6:'内敛深邃',7:'内敛深邃',9:'低饱和度',15:'小米17T Pro',31:'徕卡Live动态拍照',36:'小米17T系列',37:'徕卡实况',38:'徕卡',42:'操场',45:'红标徕卡水印',49:'徕卡实况拼贴',52:'小米17T Pro',55:'徕卡5X长焦',57:'原生5倍',58:'光学变焦',61:'小米17同款大底主摄',72:'徕卡影像',73:'17T Pro',74:'天玑9500',75:'144Hz',84:'掉链子',85:'7000mAh金沙江电池',94:'小米17T系列',100:'Pro版',106:'6月8号小米17T系列',109:'首销权益',114:'一年进水保',116:'五年电池保',117:'5年电池保'},
+45:{0:'春日大片',2:'蓝厂X300s',9:'凑近一点',16:'默认鲜明模式',25:'理光胶片色彩',26:'追光对标理光负片',29:'褪色后的温柔',32:'理光正片',48:'调色盘中心白点',55:'调色盘中心白点',60:'曝光光晕',63:'白柔滤镜',64:'一抹红晕',69:'拨一拨参数',77:'骤雨将至的阴霾',83:'梦核',84:'骤雨之后',85:'烈日初显',88:'梦核',89:'柔化',93:'蓝厂X300s',95:'相册'},
+63:{13:'玩转3D打印',16:'机器一到位',23:'MakerWorld',35:'Bambu Studio',37:'Bambu Studio',39:'切片单盘',52:'MakerWorld',60:'卡带收纳盒',64:'收纳盒',65:'最多15张卡带',68:'旋转盒身',77:'伏案工作',83:'键鼠掌托',84:'手腕支撑',85:'手腕支撑',92:'承托',93:'机箱',103:'趣味摆件',106:'家居模型',112:'最动人的地方',118:'发烧佬'}}
+for board in sorted(root.glob('*e6c7a39f*.jpg.json')):
+    for c in json.loads(board.read_text()):
+        i=c['index'];n=int(c['candidate_id'].split('_')[-1])
+        d=dict(category='字幕措辞差异',after='实际画面措辞已查看，保留与草稿差异',note='不由字幕删补或同义写法自动判定原声错误。',visible_resolution='wording_preserved_audio_pending',verified_screen_reading=None)
+        if n in non.get(i,[]):d.update(category='界面衣服或标识文字',after='界面、衣服、展馆、品牌或实物文字',note='不是新增口述；局部残字不拼完整型号或私人信息。',visible_resolution='non_speech_text')
+        if n in terms.get(i,{}):d.update(category='可见用词纠正',after=terms[i][n],note='按实际图像记录写法；产品事实、效果、实际口述和适配条件尚未独立确认。',visible_resolution='screen_correction_confirmed')
+        if i==59:
+            if n==18:d.update(category='对照产品归属',after='原生120帧对应iPhone镜头',note='21.5秒整图为iPhone，不能分给后面iQOO。后文分别讲60帧原生及另外60帧插值。',visible_resolution='context_condition_confirmed')
+            elif n==51:d.update(category='游戏数字归属',after='381是游戏伤害值',note='65秒完整上下对照中381位于角色攻击飘字；不是FPS、温度或测试时长。',visible_resolution='context_condition_confirmed')
+            elif n in (54,55,57):d.update(category='原生与插值分开',after='片中将iQOO描述为60帧原生、另60帧插值',note='仅确认作品比较口径；没有独立核实游戏、系统版本、模式、帧率与同步测试条件。',visible_resolution='context_condition_confirmed')
+            elif n in (17,70):d['note']='这是片中夸张或概括表述，不升级成开发商正式背书或所有场景稳定120fps保证。'
+        elif i==66:
+            if n in (26,29,53,54,58):d.update(category='展会主张与量产状态',after='片中展会宣传或趋势观点',note='交付元年、领先身位、全球首款和第一只均未因此完成独立行业核实；坐等量产也不等于已量产或可购买。',visible_resolution='context_condition_confirmed')
+            elif n==46:d['note']='80cm是本片该机器人身高字卡，不分配给其他展品；没有独立测量。'
+        elif i==29:
+            if n in (55,57,58):d['note']='5倍及光学变焦属于片中这颗长焦的描述，不据此推导任意倍率或主摄均是5倍原生。'
+            elif n in (86,87):d.update(category='续航体验条件不完整',after='片中称户外拍照一天后约余30%',note='未完整给出起始电量、亮度、网络、拍摄量及环境；不能当每个人使用一天的保证。',visible_resolution='context_condition_confirmed')
+            elif n in (106,107,109,114,116,117):d.update(category='历史发布及权益',after=terms.get(i,{}).get(n,'新品发布会'),note='为该视频当时的发布／首销安排。进水保和电池保是不同服务，不能说整机无条件保五年；条款和当前资格未核实。',visible_resolution='context_condition_confirmed')
+        elif i==45:
+            if n in (48,55):d['note']='滑动调色盘中心白点是该段操作；48框尾部录像来自界面混入，不拼进操作句。'
+            elif n in (25,26,32):d['note']='是本片的色彩风格类比，不等于理光参与官方联名或同一底层成像技术。'
+            elif n in (63,64):d['note']='是照片效果描述，不由效果反推现场真的加装白柔物理滤镜。'
+        elif i==63:
+            if n==65:d.update(category='模型容量和来源',after='该模型最多15张卡带；画面署名DarkBunny',note='75.5秒整图可见模型作者；不能写成博主自行原创建模，也不推广到所有收纳盒。',visible_resolution='context_condition_confirmed')
+            elif n in (39,35,37):d['note']='记录片中软件名称及操作入口；不是当前所有版本、机型和材料通用的一键保证。'
+            elif n in (83,84,85,86):d['note']='掌托与支撑是片中使用示例，不独立证明医疗、矫正或长期健康效果。'
+        out[c['candidate_id']]=d
+target=root.parent/'批次G已看画面决定.json';target.write_text(json.dumps(out,ensure_ascii=False,indent=2))
+for board in sorted(root.glob('*e6c7a39f*.jpg.json')):subprocess.run([sys.executable,str(base/'原声核验/保存画面板核对.py'),str(board),str(target)],check=True)
+stats={'batch':'G','total':len(out),'visible_resolution_counts':dict(collections.Counter(d['visible_resolution'] for d in out.values())),'audio_approved':0,'raw_asr_overwritten':False}
+(root.parent/'批次G验收计数.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2));print(json.dumps(stats,ensure_ascii=False))
+p=root.parent/'整图补证决定.json';rows=json.loads(p.read_text())
+extras=[(59,'7605158464809225524',21.5,'比较片先绑定产品再摘参数','原生120帧这一镜的完整画面是iPhone；后文才转到iQOO的原生与插值解释。','对照稿在每个参数旁明确机型、模式和设置，不能按距离最近的产品名分配参数。','只是片中归属，未独立验证帧率和游戏版本。'),
+ (59,'7605158464809225524',65,'游戏伤害值排除性能指标','上下分屏显示iQOO15 Ultra与iPhone17 PRO，381位于攻击场景的游戏伤害飘字，不是帧率或温度。','游戏素材里的数值先判断是UI、伤害、延迟、帧率还是监测工具输出，再作为证据。','没有据此验证整段性能比较或实验公平性。'),
+ (63,'7599177958267358479',75.5,'模型作者署名与制作分工','卡带收纳盒画面标模型作者DarkBunny，同时字幕称最多15张卡带；不能把打印、拍摄和原创建模当成同一件事。','拍摄清单记录模型来源及作者；面试提案只认领实际完成的选题、打印、布景或拍剪贡献。','只确认本处署名与字幕，不代表核准商业使用授权或所有模型的作者。')]
+for idx,vid,start,cat,finding,lesson,scope in extras:
+    im=base/'内部分析素材'/vid/'全文字幕补证画面'/f'{start:09.3f}.jpg'
+    rec=dict(index=idx,video_id=vid,start=start,category=cat,finding=finding,production_lesson=lesson,scope=scope,image_path=str(im),image_sha256=hashlib.sha256(im.read_bytes()).hexdigest(),source_urls=[],audio_verbatim_approved=False)
+    rows=[r for r in rows if (r['video_id'],r['start'],r['category'])!=(vid,start,cat)];rows.append(rec)
+p.write_text(json.dumps(rows,ensure_ascii=False,indent=2))

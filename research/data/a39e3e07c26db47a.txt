@@ -1,0 +1,109 @@
+- link "bilibili":
+  - /url: //www.bilibili.com/zh-Hans
+  - img "bilibili"
+- generic: 下载客户端
+- textbox
+- link:
+  - /url: //space.bilibili.com/zh-Hans/1820524742
+- link "1 消息":
+  - /url: //message.bilibili.com/zh-Hans
+  - generic: "1"
+  - generic: 消息
+- link "动态":
+  - /url: //t.bilibili.com/zh-Hans
+  - generic: 动态
+- link "收藏":
+  - /url: //space.bilibili.com/zh-Hans/1820524742/favlist
+  - generic: 收藏
+- link "历史":
+  - /url: //www.bilibili.com/zh-Hans/history
+  - generic: 历史
+- link "创作中心":
+  - /url: //member.bilibili.com/zh-Hans/platform/home
+  - generic: 创作中心
+- link "投稿":
+  - /url: //member.bilibili.com/zh-Hans/platform/upload/video/frame
+  - generic: 投稿
+- heading "2026年了，国产和苹果本质区别在哪？" [level=1]
+- generic: "484"
+- generic: "1"
+- generic: 2026-08-25 02:05:00
+- generic: 个人观点，仅供参考
+- generic "哔哩哔哩播放器":
+  - generic: 关注
+  - button "播放/暂停" [active]:
+  - generic: 00:20 / 03:10
+  - button "清晰度":
+    - generic: 1080P 高清
+    - generic: 自动
+  - button "倍速":
+    - generic: 倍速
+  - generic "字幕":
+    - generic: 字幕
+    - text: • • •
+  - button "音量":
+  - button "设置":
+  - button "画中画":
+  - button "宽屏":
+  - button "网页全屏":
+  - button "全屏":
+  - generic: 1人正在看
+  - generic "弹幕显示隐藏":
+    - checkbox
+  - generic: 已关闭弹幕
+  - link "弹幕礼仪":
+    - /url: //www.bilibili.com/blackboard/help.html#/?qid=359&pid=357
+    - generic: 弹幕礼仪
+  - generic: 发送
+- generic "点赞（Q）":
+  - generic: "9"
+- generic "投币（W）":
+  - generic: 投币
+- generic "收藏（E）":
+  - generic: "7"
+- generic: 分享
+- link "小米":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%B0%8F%E7%B1%B3&from_source=video_tag
+- link "华为":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%8D%8E%E4%B8%BA&from_source=video_tag
+- link "本质":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E6%9C%AC%E8%B4%A8&from_source=video_tag
+- link "数码":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E6%95%B0%E7%A0%81&from_source=video_tag
+- link "科技":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E7%A7%91%E6%8A%80&from_source=video_tag
+- link "苹果":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E8%8B%B9%E6%9E%9C&from_source=video_tag
+- link "国产手机":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%9B%BD%E4%BA%A7%E6%89%8B%E6%9C%BA&from_source=video_tag
+- link "区别":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%8C%BA%E5%88%AB&from_source=video_tag
+- link "iPhone":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=iPhone&from_source=video_tag
+- heading "评论" [level=2]
+- generic: "1"
+- button "最热":
+  - generic: 最热
+- button "最新":
+  - generic: 最新
+- generic: 尊重是评论打动人心的入场券
+- link:
+  - /url: //space.bilibili.com/zh-Hans/388765048
+- link "账号俱乐部":
+  - /url: //space.bilibili.com/zh-Hans/388765048
+- paragraph: 系统广告现在Ios也有，比如追剧得
+- generic: 2026-09-15 07:40
+- button:
+- button:
+- button "回复"
+- generic: 没有更多评论
+- link:
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.head.click
+- link "英俊姐妹日记":
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.detail.click
+- link " 发消息":
+  - /url: //message.bilibili.com/zh-Hans?spm_id_from=333.788.upinfo.detail.click#whisper/mid3706983859358214
+  - generic: 
+  - text: 发消息
+- generic "记录让人心动的新玩意"
+- text: 关注 144

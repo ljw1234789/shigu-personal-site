@@ -1,0 +1,208 @@
+- banner:
+  - link "bilibili":
+    - /url: //www.bilibili.com/zh-Hans
+    - img "bilibili"
+  - generic: 下载客户端
+  - textbox
+  - link:
+    - /url: //space.bilibili.com/zh-Hans/1820524742
+  - link "1 消息":
+    - /url: //message.bilibili.com/zh-Hans
+    - generic: "1"
+    - generic: 消息
+  - link "动态":
+    - /url: //t.bilibili.com/zh-Hans
+    - generic: 动态
+  - link "收藏":
+    - /url: //space.bilibili.com/zh-Hans/1820524742/favlist
+    - generic: 收藏
+  - link "历史":
+    - /url: //www.bilibili.com/zh-Hans/history
+    - generic: 历史
+  - link "创作中心":
+    - /url: //member.bilibili.com/zh-Hans/platform/home
+    - generic: 创作中心
+  - link "投稿":
+    - /url: //member.bilibili.com/zh-Hans/platform/upload/video/frame
+    - generic: 投稿
+- generic: 英俊姐妹日记
+- generic "记录让人心动的新玩意"
+- generic: 
+- text: 关注
+- link "发消息":
+  - /url: //message.bilibili.com/zh-Hans#/whisper/mid3706983859358214
+- generic: 
+- link " 主页":
+  - /url: /zh-Hans/3706983859358214
+  - generic: 
+  - generic: 主页
+- link " 动态" [active]:
+  - /url: /zh-Hans/3706983859358214/dynamic
+  - generic: 
+  - generic: 动态
+- link " 投稿 29":
+  - /url: /zh-Hans/3706983859358214/upload
+  - generic: 
+  - generic: 投稿
+  - generic: "29"
+- link " 合集和系列":
+  - /url: /zh-Hans/3706983859358214/lists
+  - generic: 
+  - generic: 合集和系列
+- textbox "":
+  - /placeholder: 搜索视频、动态
+- text: 
+- generic: 
+- link "关注数 0":
+  - /url: /zh-Hans/3706983859358214/relation/follow
+  - generic: 关注数
+  - generic "0"
+- link "粉丝数 144":
+  - /url: /zh-Hans/3706983859358214/relation/fans
+  - generic: 粉丝数
+  - generic "144"
+- generic: 获赞数
+- generic "截至2026.11.1, 视频、动态、专栏累计获赞649": "649"
+- generic: 播放数
+- generic "截止昨天，累计播放数为27,122": 2.7万
+- main:
+  - generic: 全部
+  - generic: 视频
+  - generic: 英俊姐妹日记
+  - generic: 10月27日 · 投稿了视频
+  - link "04:06 双11选OPPO全家桶，用着不烧心 326 0":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1t6xM6ME4Q/
+    - generic: 04:06
+    - generic: 双11选OPPO全家桶，用着不烧心
+    - generic: "326"
+    - generic: "0"
+  - text: 转发
+  - text: 评论
+  - text: "6"
+  - generic: 英俊姐妹日记
+  - generic: 9月30日 · 投稿了视频
+  - link "02:35 荣耀Magic9，好看好握的影像旗舰 小机身大升级，搭载 ARRI 影像的荣耀Magic9，体验到底怎么样？ 739 0":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1YUaZ6qEHY/
+    - generic: 02:35
+    - generic: 荣耀Magic9，好看好握的影像旗舰
+    - generic: 小机身大升级，搭载 ARRI 影像的荣耀Magic9，体验到底怎么样？
+    - generic: "739"
+    - generic: "0"
+  - text: 转发
+  - text: 评论
+  - text: "16"
+  - generic: 英俊姐妹日记
+  - generic: 9月30日 · 投稿了视频
+  - link "02:56 nova x Hirono小野联名礼盒怎么玩？ 这一次被华为和泡泡玛特联名礼盒给萌住了 258 0":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1Yra96dEmN/
+    - generic: 02:56
+    - generic: nova x Hirono小野联名礼盒怎么玩？
+    - generic: 这一次被华为和泡泡玛特联名礼盒给萌住了
+    - generic: "258"
+    - generic: "0"
+  - text: 转发
+  - text: 评论
+  - text: "6"
+  - generic: 英俊姐妹日记
+  - generic: 9月29日 · 投稿了视频
+  - link "02:42 荣耀Magic9，好看好握的影像旗舰 ARRL X 荣耀，会擦出什么火花？ 985 0":
+    - /url: //www.bilibili.com/zh-Hans/video/BV15Ean6YEcQ/
+    - generic: 02:42
+    - generic: 荣耀Magic9，好看好握的影像旗舰
+    - generic: ARRL X 荣耀，会擦出什么火花？
+    - generic: "985"
+    - generic: "0"
+  - text: 转发
+  - text: "5"
+  - text: "18"
+  - generic: 英俊姐妹日记
+  - generic: 9月21日 · 投稿了视频
+  - link "02:28 游戏手机也做机圈灯厂？一加 16 明日星光上手体验 1397 1":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1dahe6TEuQ/
+    - generic: 02:28
+    - generic: 游戏手机也做机圈灯厂？一加 16 明日星光上手体验
+    - generic: "1397"
+    - generic: "1"
+  - text: 转发
+  - text: "6"
+  - text: "33"
+  - generic: 英俊姐妹日记
+  - generic: 9月20日 · 投稿了视频
+  - link "02:01 手机摄影新方向？OPPO Find X10系列带你找回真实自然 无暇的妆造 精心布好的灯光 专业的摄影指导 用“百万P图”来形容厂商们的官方宣传照 虽是一种笑谈 却也道出了某种现实 直到OPPO说在即将发布的Find X10系列带来了哈苏超清原相机 未来影像他们想要——真实自然 547 0":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1EUeY6EEkU/
+    - generic: 02:01
+    - generic: 手机摄影新方向？OPPO Find X10系列带你找回真实自然
+    - generic: 无暇的妆造 精心布好的灯光 专业的摄影指导 用“百万P图”来形容厂商们的官方宣传照 虽是一种笑谈 却也道出了某种现实 直到OPPO说在即将发布的Find X10系列带来了哈苏超清原相机 未来影像他们想要——真实自然
+    - generic: "547"
+    - generic: "0"
+  - text: 转发
+  - text: "2"
+  - text: "12"
+  - generic: 英俊姐妹日记
+  - generic: 9月19日 · 投稿了视频
+  - link "02:36 运动健身的好搭子？！OPPO Watch S2首发体验 这款全新的OPPO Watch S2，到底有多强？ 820 0":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1rLet6vENK/
+    - generic: 02:36
+    - generic: 运动健身的好搭子？！OPPO Watch S2首发体验
+    - generic: 这款全新的OPPO Watch S2，到底有多强？
+    - generic: "820"
+    - generic: "0"
+  - text: 转发
+  - text: "1"
+  - text: "14"
+  - generic: 英俊姐妹日记
+  - generic: 9月18日 · 投稿了视频
+  - link "03:54 流畅又懂你！ColorOS 17都有哪些升级？ OPPO的ColorOS系统全新升级，有什么新的变化? 776 0":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1XHey6iEWz/
+    - generic: 03:54
+    - generic: 流畅又懂你！ColorOS 17都有哪些升级？
+    - generic: OPPO的ColorOS系统全新升级，有什么新的变化?
+    - generic: "776"
+    - generic: "0"
+  - text: 转发
+  - text: "2"
+  - text: "12"
+  - generic: 英俊姐妹日记
+  - generic: 9月16日 · 投稿了视频
+  - link "03:48 给电视装了个\"大脑\"，体验完全变了 有一台能听得懂“人话”的电视，是一种什么体验？ 145 0":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1fhes6oE9Z/
+    - generic: 03:48
+    - generic: 给电视装了个"大脑"，体验完全变了
+    - generic: 有一台能听得懂“人话”的电视，是一种什么体验？
+    - generic: "145"
+    - generic: "0"
+  - text: 转发
+  - text: 评论
+  - text: "2"
+  - generic: 英俊姐妹日记
+  - generic: 9月9日 · 投稿了视频
+  - link "02:14 你还在纠结iPhone17/18系列到底该怎么选吗？这期视频给你讲明白！ 504 9":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1LTYp6kEXJ/
+    - generic: 02:14
+    - generic: 你还在纠结iPhone17/18系列到底该怎么选吗？这期视频给你讲明白！
+    - generic: "504"
+    - generic: "9"
+  - text: 转发
+  - text: 评论
+  - text: "12"
+  - generic: 英俊姐妹日记
+  - generic: 8月25日 · 投稿了视频
+  - link "03:10 2026年了，国产和苹果本质区别在哪？ 485 1":
+    - /url: //www.bilibili.com/zh-Hans/video/BV1UAh36ZEZc/
+    - generic: 03:10
+    - generic: 2026年了，国产和苹果本质区别在哪？
+    - generic: "485"
+    - generic: "1"
+  - text: 转发
+  - text: "1"
+  - text: "9"
+  - generic: 英俊姐妹日记
+  - generic: 8月25日
+  - paragraph: 我已成为哔哩哔哩第291432601位转正会员，挑战转正答题考试获得60分。
+  - text: 转发
+  - text: 评论
+  - text: 点赞
+  - generic: 个人资料
+  - generic: 
+  - generic: "3706983859358214"
+  - generic: 

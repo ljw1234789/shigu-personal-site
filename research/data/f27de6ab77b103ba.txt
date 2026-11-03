@@ -1,0 +1,63 @@
+"""复用或启动独立本机服务；用户双击入口时再打开浏览器。"""
+from pathlib import Path
+import argparse
+import socket
+import subprocess
+import sys
+import time
+import urllib.parse
+import urllib.request
+import webbrowser
+
+HERE = Path(__file__).resolve().parent
+SERVER = HERE / '启动学习页.py'
+ADDRESS = 'http://127.0.0.1:8797/' + urllib.parse.quote('原片联动学习/看片与逐句核对.html')
+MARKER = '<title>英俊姐妹日记 · 原片联动学习</title>'
+
+
+def ready():
+    try:
+        with urllib.request.urlopen(ADDRESS, timeout=1) as response:
+            return response.status == 200 and MARKER in response.read(4096).decode('utf-8', errors='replace')
+    except (OSError, UnicodeError):
+        return False
+
+
+def ensure_server():
+    if ready():
+        return '本机学习服务已在运行。'
+    try:
+        with socket.create_connection(('127.0.0.1', 8797), timeout=0.4):
+            raise RuntimeError('8797端口被其他服务占用，未启动新进程。请保留此提示以便排查。')
+    except OSError:
+        pass
+    if not SERVER.is_file():
+        raise RuntimeError('缺少启动学习页.py，请保持学习页文件夹完整。')
+    with (HERE / '本机学习服务.log').open('ab') as log:
+        child = subprocess.Popen(
+            [sys.executable, str(SERVER)], cwd=HERE,
+            stdin=subprocess.DEVNULL, stdout=log, stderr=log,
+            start_new_session=True, close_fds=True,
+        )
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline:
+        if ready():
+            return '本机学习服务已启动。'
+        if child.poll() is not None:
+            break
+        time.sleep(0.15)
+    raise RuntimeError('学习服务未能启动，请查看同目录的本机学习服务.log。')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--no-browser', action='store_true')
+    args = parser.parse_args()
+    try:
+        print(ensure_server(), flush=True)
+        print('http://127.0.0.1:8797/原片联动学习/看片与逐句核对.html', flush=True)
+        if not args.no_browser:
+            webbrowser.open(ADDRESS)
+    except RuntimeError as exc:
+        print(str(exc), file=sys.stderr)
+        sys.exit(1)

@@ -1,0 +1,67 @@
+"""只在本机提供原片学习页，支持浏览器按字节定位视频。"""
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+import os
+import re
+
+ROOT = Path(__file__).resolve().parents[1]
+os.chdir(ROOT)
+
+
+class Handler(SimpleHTTPRequestHandler):
+    def send_head(self):
+        self.byte_range = None
+        path = self.translate_path(self.path)
+        if not os.path.isfile(path):
+            return super().send_head()
+        try:
+            source = open(path, 'rb')
+        except OSError:
+            self.send_error(404)
+            return None
+        size = os.fstat(source.fileno()).st_size
+        request_range = self.headers.get('Range')
+        if request_range:
+            match = re.fullmatch(r'bytes=(\d*)-(\d*)', request_range)
+            if match and (match[1] or match[2]):
+                start = int(match[1]) if match[1] else max(0, size-int(match[2]))
+                end = min(size-1, int(match[2])) if match[1] and match[2] else size-1
+                if start >= size or start > end:
+                    source.close()
+                    self.send_response(416)
+                    self.send_header('Content-Range', f'bytes */{size}')
+                    self.send_header('Content-Length', '0')
+                    self.end_headers()
+                    return None
+                self.byte_range = (start, end)
+        self.send_response(206 if self.byte_range else 200)
+        self.send_header('Content-type', self.guess_type(path))
+        self.send_header('Accept-Ranges', 'bytes')
+        self.send_header('Cache-Control', 'no-cache')
+        if self.byte_range:
+            start, end = self.byte_range
+            self.send_header('Content-Range', f'bytes {start}-{end}/{size}')
+            self.send_header('Content-Length', str(end-start+1))
+            source.seek(start)
+        else:
+            self.send_header('Content-Length', str(size))
+        self.end_headers()
+        return source
+
+    def copyfile(self, source, outputfile):
+        remaining = self.byte_range[1]-self.byte_range[0]+1 if self.byte_range else None
+        try:
+            while remaining is None or remaining > 0:
+                block = source.read(min(1024*1024, remaining) if remaining is not None else 1024*1024)
+                if not block:
+                    break
+                outputfile.write(block)
+                if remaining is not None:
+                    remaining -= len(block)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
+
+
+if __name__ == '__main__':
+    print('本机学习页：http://127.0.0.1:8797/原片联动学习/看片与逐句核对.html', flush=True)
+    ThreadingHTTPServer(('127.0.0.1', 8797), Handler).serve_forever()

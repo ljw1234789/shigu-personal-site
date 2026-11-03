@@ -1,0 +1,21 @@
+from pathlib import Path
+import sys,json,time
+BASE=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(BASE/'原声核验/RapidOCR依赖'))
+from rapidocr import RapidOCR
+engine=RapidOCR()
+source=Path(sys.argv[1]) if len(sys.argv)>1 else BASE/'原声核验/署名检索画面清单.json'
+target=Path(sys.argv[2]) if len(sys.argv)>2 else BASE/'原声核验/74条片头片尾署名OCR-Rapid.json'
+paths=json.loads(source.read_text())
+rows=[]
+for i,path in enumerate(paths):
+    try:
+        result=engine(path)
+        rows.append({'path':path,'lines':list(result.txts or []),'scores':[float(x) for x in (result.scores or [])]})
+    except Exception as error:
+        rows.append({'path':path,'error':str(error)})
+    if (i+1)%25==0:
+        target.write_text(json.dumps(rows,ensure_ascii=False,indent=2))
+        print(json.dumps({'frames_done':i+1,'total':len(paths)},ensure_ascii=False),flush=True)
+target.write_text(json.dumps(rows,ensure_ascii=False,indent=2))
+print(json.dumps({'finished':len(rows),'errors':sum('error'in r for r in rows)},ensure_ascii=False),flush=True)

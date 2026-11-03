@@ -1,0 +1,176 @@
+from pathlib import Path
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+import json, shutil, hashlib
+
+ROOT = Path(__file__).resolve().parent
+LOG = json.loads((ROOT / '截图采集日志.json').read_text())
+DIMS = json.loads((ROOT / '视频画幅.json').read_text())
+FONT = '/System/Library/Fonts/STHeiti Medium.ttc'
+
+CASES = [
+ dict(id='Y01', account='英俊姐妹日记', short='OPPO实况拼图', kind='操作教程', order=1, level='优先练', cover=1,
+      why='成片、操作和人物讲解都有现成画面，能展示你对教程逻辑的判断。',
+      recut='选一个拼图玩法，重组为成品预览、操作入口、关键动作、结果与适用条件。',
+      length='建议先试45—75秒；完整链条优先于固定时长。',
+      preserve='保留机型、系统和功能条件；不可删成看不清操作的快闪。',
+      background='窗帘、落地灯与座椅构成的室内口播场景。'),
+ dict(id='Y02', account='英俊姐妹日记', short='OPPO A7 Pro Max首发体验', kind='单品体验', order=4, level='第二轮练', cover=1,
+      why='人物、机身细节和演示镜头齐全，适合练习把一个卖点说清楚。',
+      recut='只围绕一个功能，保留演示前提、动作、结果，再接明确结论。',
+      length='建议先试45—75秒的单主题版。',
+      preserve='涉及防护、续航和测试的条件与限定须保留；画面存在不等于已独立验证技术结论。',
+      background='红色窗帘和桌面演示场景；不要把道具布景当成已核实的实验室。'),
+ dict(id='Y03', account='英俊姐妹日记', short='华为折叠电脑与手写笔', kind='办公任务种草', order=3, level='优先练', cover=4,
+      why='有完整的工作任务、界面操作和人物承接，比只剪外观更能说明内容组织能力。',
+      recut='选一个办公任务，按遇到的问题、操作过程、完成结果和适用对象组织。',
+      length='建议先试60—90秒的单任务版。',
+      preserve='不能把多个任务混剪成并未实际完成的一次操作；界面需留够辨认时间。',
+      background='暖色木质室内的人物与电脑场景，以原片第10秒的清晰补帧为准。'),
+ dict(id='Y04', account='英俊姐妹日记', short='vivo S50冬日告白开箱', kind='开箱与外观体验', order=2, level='优先练', cover=1,
+      why='产品、手持、桌面和细节素材丰富，题目集中，适合先做一条完成度高的小作品。',
+      recut='围绕外观第一印象，组织揭晓、颜色材质、握持与界面，保持同一观察重点。',
+      length='建议先试35—60秒；不把开箱包装成长期测评。',
+      preserve='保留原来的产品身份与体验范围；已有字幕和音乐仍属于成片层。',
+      background='浅色桌面、书本与金属台灯；这组适合作为环境还原参考。'),
+ dict(id='Y05', account='英俊姐妹日记', short='CES奇特中国产品盘点', kind='展会盘点', order=5, level='补充类型', cover=1,
+      why='能练现场资料的筛选、信息排序和场景之间的连接，与室内口播明显不同。',
+      recut='从盘点中选一个产品讲清楚，或按一个统一问题组织少量产品，避免只有名词快闪。',
+      length='建议先试30—60秒的聚焦版本。',
+      preserve='展会盘点不等于本人到场vlog；旧展会素材须保留时间背景，画面出处另核。',
+      background='原片可见CES展馆外景与产品现场；不认定为账号办公室。'),
+ dict(id='B01', account='毕导', short='量筒里到底有几毫升水', kind='实验判读与验证', order=1, level='优先练', cover=2,
+      why='问题集中、实物明确，有人物与器具近景，适合练一段完整的实验解释。',
+      recut='围绕一个读数问题，保留提问、比较或验证、解释和结论，不把争议句单独剪走。',
+      length='建议先试60—90秒的完整小问题版。',
+      preserve='量具标识、测量与倒出等条件必须结合原声核对，不在选片阶段替原片下科学结论。',
+      background='柜体、窗边与台面构成的室内演示场景。'),
+ dict(id='B02', account='毕导', short='每天看见却不知道原因的现象', kind='生活现象与原理解释', order=3, level='第二轮练', cover=1,
+      why='现象展示、对比和解释材料都有，适合练画面证据如何接上口头解释。',
+      recut='先给液体细流等可见现象，再接一个必要解释和回看现象，避免堆砌资料。',
+      length='建议先试45—75秒的单原理版，听审后再定。',
+      preserve='已有资料片段、模型和人物表达的来源要保留；不删掉决定结论的物理条件。',
+      background='多种实验与资料画面，不优先用来还原团队办公环境。'),
+ dict(id='B03', account='毕导', short='不用打气的足球', kind='材料科普与品牌产品内容', order=5, level='进阶备选', cover=1,
+      why='有球场、产品结构、人物和材料说明，能练品牌内容怎样承接一个真实问题。',
+      recut='先只剪一个足球结构或材料问题，形成现象、结构、用途与限制的短段。',
+      length='原片约8分11秒，建议只取60—90秒的完整单元，排在基础案例之后。',
+      preserve='页面可见米其林品牌标签，但未核实付费合作；不能把不同物体和测试混成同一受控实验。',
+      background='球场与多类产品资料画面；是否实拍或渲染不能只凭截图判定。'),
+ dict(id='B04', account='毕导', short='我被机器人KO了', kind='现场互动体验', order=2, level='优先练', cover=1,
+      why='互动动作和现场反应天然有因果关系，适合练动作、反应、解释的衔接。',
+      recut='选一个机器人任务，按挑战、实际动作、结果、能力边界组织，保留现场感。',
+      length='建议先试45—75秒的单任务版。',
+      preserve='不能把不同机器人的动作拼成同一台的能力；反应应对应实际发生的动作。',
+      background='外滩大会机器人互动区域与现场展位，可作环境参考。'),
+ dict(id='B05', account='毕导', short='飞8000公里考AI', kind='出差活动与品牌逛展', order=4, level='第二轮练', cover=2,
+      why='有人物提问、活动现场和体验反馈，适合练带任务的逛展，而非单纯风景拼接。',
+      recut='只保留一道考题或一个体验任务，组织出发目的、现场尝试、结果与简短复盘。',
+      length='原片约5分28秒，建议先做60—90秒的单任务版。',
+      preserve='页面可见TCL、IFA等标签，未据此认定付费；旧活动内容须保留当时背景。',
+      background='TCL与IFA活动展位、蓝色地毯等现场，以原片可见部分为准。'),
+]
+
+def mmss(t):
+    t = float(t or 0)
+    return f'{int(t)//60:02d}:{t%60:04.1f}'
+
+def latest(cid, slot):
+    if cid == 'Y03' and slot == 4:
+        return dict(timeBefore=10.0, timeAfter=10.0, approximate=False)
+    candidates = [x for x in LOG if x['id']==cid and x.get('slot')==slot and x.get('qa')=='full_video_visible']
+    if candidates:
+        return candidates[-1]
+    assert slot == 1, (cid, slot, 'missing verified screenshot')
+    candidates = [x for x in LOG if x['id']==cid and 'slot' not in x]
+    x = candidates[-1]
+    t = x.get('time', x.get('video',[{}])[0].get('time'))
+    return dict(timeBefore=t, timeAfter=None, approximate=True)
+
+def content_image(cid, slot):
+    if cid == 'Y03' and slot == 4:
+        return Image.open(ROOT/'Y03_原片补帧_010秒.jpg').convert('RGB')
+    im = Image.open(ROOT / f'{cid}_场景_{slot:02d}.jpg').convert('RGB')
+    w,h = im.size
+    ratio = DIMS[cid]['width']/DIMS[cid]['height']
+    cw, ch = min(w,h*ratio), min(h,w/ratio)
+    return im.crop((round((w-cw)/2),round((h-ch)/2),round((w+cw)/2),round((h+ch)/2)))
+
+def fit_text(draw, text, xy, width, font, fill, gap=8):
+    line=''; y=xy[1]
+    for char in text:
+        if draw.textlength(line+char,font=font)>width and line:
+            draw.text((xy[0],y),line,font=font,fill=fill);y+=font.size+gap;line=char
+        else: line+=char
+    if line: draw.text((xy[0],y),line,font=font,fill=fill)
+    return y+font.size+gap
+
+for c in CASES:
+    info=json.loads((ROOT/f"{c['id']}_页面信息.json").read_text())
+    c['url'],c['title'],c['duration']=info['url'],info['title'],info['duration']
+    c['original_seconds']=round(c['duration'],3)
+    c['screens']=[]
+    case_dir=ROOT/c['account']/f"{c['id']}_{c['short']}";case_dir.mkdir(parents=True,exist_ok=True)
+    for slot in (1,2,3):
+        fn=f"{c['id']}_场景_{slot:02d}.jpg";src=ROOT/fn;target=case_dir/fn;shutil.copy2(src,target)
+        t=latest(c['id'],slot)
+        c['screens'].append(dict(file=str(target.relative_to(ROOT)),time_before=t['timeBefore'],time_after=t.get('timeAfter'),approximate=t.get('approximate',False),sha256=hashlib.sha256(target.read_bytes()).hexdigest()))
+    shutil.copy2(ROOT/f"{c['id']}_页面.jpg",case_dir/'原视频页面.jpg')
+    shutil.copy2(ROOT/f"{c['id']}_页面信息.json",case_dir/'页面信息.json')
+    if c['id']=='Y03':
+        shutil.copy2(ROOT/'Y03_原片补帧_010秒.jpg',case_dir/'原片第10秒_清晰背景补帧.jpg')
+        shutil.copy2(ROOT/'Y03_原片补帧来源.json',case_dir/'清晰补帧来源.json')
+        c['extra_still']=dict(file=str((case_dir/'原片第10秒_清晰背景补帧.jpg').relative_to(ROOT)),seconds=10,kind='original_video_frame_extraction')
+    detail=f"{c['account']}｜{c['id']} {c['short']}\n原题：{c['title']}\n原页：{c['url']}\n原片时长：{mmss(c['duration'])}\n类型：{c['kind']}\n练习顺序：第{c['order']}；{c['level']}\n\n为什么选：{c['why']}\n重剪方向：{c['recut']}\n长度建议：{c['length']}\n保留事项：{c['preserve']}\n背景观察：{c['background']}\n\n截图是实际浏览器原视频画面，保留原字幕与播放器痕迹；未生成AI照片。\n"
+    for slot,rec in enumerate(c['screens'],1):
+        detail+=f"截图{slot}：{'约' if rec['approximate'] else ''}{mmss(rec['time_before'])}｜{rec['file']}\n"
+    if c['id']=='Y03':detail+='另补原片第10秒清晰画面供背景参考，直接从既有原视频提帧，非AI生成；来源及原视频校验值见清晰补帧来源.json。\n'
+    detail+='\n选片依据：页面核对与三处抽样画面，英俊另参考已有结构研究；未将其称为全片连续视听或逐句听审。正式重剪前须据完整原声确认可独立成篇的段落与切点。\n本次练习基于已发布成片，独立人声、音乐与字幕层可能无法取得，实际能改的范围在看片后记录。\n'
+    (case_dir/'重剪建议与来源.txt').write_text(detail)
+
+titlefont=ImageFont.truetype(FONT,42);namefont=ImageFont.truetype(FONT,28);small=ImageFont.truetype(FONT,22)
+for account in ['英俊姐妹日记','毕导']:
+    group=sorted([c for c in CASES if c['account']==account],key=lambda c:c['order'])
+    sheet=Image.new('RGB',(1600,1810),'#f4f1eb');d=ImageDraw.Draw(sheet)
+    d.text((36,24),account+'｜5条重剪候选',font=titlefont,fill='#191919')
+    d.text((36,82),'原视频真实截图 · 按建议练习顺序排列',font=small,fill='#555555')
+    for i,c in enumerate(group):
+        x=30+(i%2)*785;y=138+(i//2)*548
+        d.rounded_rectangle((x,y,x+755,y+522),radius=8,fill='white')
+        im=content_image(c['id'],c['cover']);im.thumbnail((723,385),Image.Resampling.LANCZOS)
+        sheet.paste(im,(x+(755-im.width)//2,y+12+(385-im.height)//2))
+        fit_text(d,f"{c['order']}. {c['short']}",(x+16,y+407),720,namefont,'#191919',gap=3)
+        d.text((x+16,y+455),c['kind']+' · '+c['level'],font=small,fill='#555555')
+        cover_label='原片10秒补帧' if c['cover']==4 else f"图{c['cover']}"
+        d.text((x+16,y+486),f"{c['id']} · 原片 {mmss(c['duration'])} · {cover_label}",font=small,fill='#777777')
+    d.text((36,1780),'抽样截图供选片，完整原声与实际剪辑尚未完成。',font=small,fill='#555555')
+    sheet.save(ROOT/(account+'_5条原片截图.jpg'),quality=94)
+
+refs=ROOT/'环境参考_真实截图';refs.mkdir(exist_ok=True)
+reference_cases=[('Y01',1),('Y03',4),('Y04',1),('B01',1),('B04',1),('B05',2)]
+reference_rows=[]
+for cid,slot in reference_cases:
+    c=next(c for c in CASES if c['id']==cid)
+    fn=f'{cid}_参考背景_原片截图.jpg'
+    refsrc=ROOT/'Y03_原片补帧_010秒.jpg' if slot==4 else ROOT/f'{cid}_场景_{slot:02d}.jpg'
+    shutil.copy2(refsrc,refs/fn)
+    reference_rows.append(dict(id=cid,account=c['account'],file=fn,url=c['url'],time=latest(cid,slot)['timeBefore'],description=c['background'],note='实际原片截图，不是AI图；画面出现不等于办公室或本人拍摄的证明。'))
+(refs/'背景来源与时码.json').write_text(json.dumps(reference_rows,ensure_ascii=False,indent=2))
+
+intro='双账号重剪选片｜2026年11月3日\n\n已按用户授权自主初选：英俊姐妹日记5条，毕导5条，共10条。每条保留原视频页面、三处原片截图、来源信息与针对本次求职练习的重剪建议。\n\n建议先做：英俊的实况拼图或vivo开箱；毕导的量筒或机器人互动。先各完成一个能讲清楚单一任务的版本，再展开另外几类。排序按练习的可控程度判断，不是全网热度排名，也不承诺重剪后数据提升。\n\n'
+lines=[intro]
+for account in ['英俊姐妹日记','毕导']:
+    lines.append(account+'\n')
+    for c in sorted([c for c in CASES if c['account']==account],key=lambda c:c['order']):
+        lines.append(f"{c['order']}. {c['id']} {c['short']}｜{c['kind']}｜原片{mmss(c['duration'])}｜{c['level']}\n{c['url']}\n为什么选：{c['why']}\n怎样练：{c['recut']}\n{c['length']}\n边界：{c['preserve']}\n\n")
+lines.append('截图与事实边界\n这些是实际网页与原视频截图，没有用AI捏造现场。平台本来带有的字幕、暂停标志和包装均保留。拼版只做居中裁切、等比缩放和说明标注，原始截图另存。\n每条核对页面与三处抽样画面，未完成本轮全片连续视听、逐句听审或重剪。时长建议属于方案，不是已完成成片。\n商业属性仅按可见品牌内容记录，不因品牌标签认定付费商单。本次新增重剪按实际标注自主练习及个人贡献。\n\n工作环境图片\n另存6张原片背景参考，两个账号各3张，附链接及时码。现阶段全部是原片截图，尚未生成AI环境图；生成时须按这些实景还原并标明性质，不把场景还原当成实际任职或拍摄证明。\n')
+(ROOT/'00_选片总览与重剪建议.txt').write_text(''.join(lines))
+(ROOT/'10条选片与来源.json').write_text(json.dumps(CASES,ensure_ascii=False,indent=2))
+
+qa=dict(accounts={a:len([c for c in CASES if c['account']==a]) for a in ['英俊姐妹日记','毕导']},unique_videos=len({c['url'] for c in CASES}),page_screenshots=10,scene_screenshots=sum(len(c['screens']) for c in CASES),background_references=len(reference_rows),full_audiovisual_review_completed=0,edits_completed=0,ai_images_generated=0)
+assert qa['unique_videos']==10 and qa['scene_screenshots']==30
+assert all(json.loads((ROOT/f"{c['id']}_页面信息.json").read_text()).get('author') for c in CASES)
+for c in CASES:
+    assert len({round(s['time_before'],1) for s in c['screens']})==3,c['id']
+    for slot in (2,3): assert latest(c['id'],slot).get('qa')=='full_video_visible'
+(ROOT/'交付核对.json').write_text(json.dumps(qa,ensure_ascii=False,indent=2))
+print(json.dumps(qa,ensure_ascii=False))

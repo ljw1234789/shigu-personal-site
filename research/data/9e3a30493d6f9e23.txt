@@ -1,0 +1,64 @@
+- banner:
+  - textbox "搜索你感兴趣的内容": 英俊姐妹日记
+  - button "clear":
+    - img "clear"
+  - img "Search"
+  - generic: 搜索
+  - generic: 上传作品
+  - generic: 添加桌面
+  - generic: 快手Mac版
+  - generic: 快币充值
+  - generic: 返回旧版
+- main:
+  - link "推荐":
+    - /url: https://www.kuaishou.com/new-reco
+    - generic: 推荐
+  - link "发现":
+    - /url: https://www.kuaishou.com/?isHome=1
+    - generic: 发现
+  - link "关注":
+    - /url: https://www.kuaishou.com/myFollow
+    - generic: 关注
+  - link "直播":
+    - /url: https://live.kuaishou.com/
+    - generic: 直播
+  - link "赛事":
+    - /url: https://live.kuaishou.com/match
+    - generic: 赛事
+  - link "Acfun":
+    - /url: https://www.acfun.cn
+    - generic: Acfun
+  - link "可灵AI":
+    - /url: https://klingai.kuaishou.com/
+    - generic: 可灵AI
+  - generic: 登录即可享受
+  - text: 更懂你的优质内容
+  - text: 点赞、评论和收藏
+  - text: 更好交流互动
+  - button "立即 登录":
+    - generic: 立即
+    - text: 登录
+  - generic: www.kuaishou.com 2026 @ All rights Reserved 京ICP备15023266号-136
+  - generic: 京公网安备 11010802038443号
+  - generic: 网上有害信息举报专区
+  - generic: 中央网信办（国家网信办）违法和不良信息举报中心
+  - generic: 扫黄打非举报专区
+  - generic: 快手举报专线： 4000066666
+  - generic: 未成年人关怀热线： 4001502277
+  - generic: 举报邮箱： support@kuaishou.com
+  - generic: 营业执照
+  - generic: 增值电信业务经营许可证
+  - generic: 网络文化经营许可证 京网文〔2025〕0487-152号
+  - generic: 广播电视节目制作经营许可证
+  - generic: 人力资源服务许可证
+  - generic: 互联网宗教信息服务许可证 京(2025)0000012
+  - generic: 信息网络传播视听节目许可证
+  - generic: 药品医疗器械网络信息服务备案
+  - generic: 互联网新闻信息服务许可证11220240001
+  - button "京ICP备15023266号-136"
+  - generic: 更多
+  - img "返回"
+  - button "视频":
+    - generic: 视频
+  - button "用户":
+    - generic: 用户

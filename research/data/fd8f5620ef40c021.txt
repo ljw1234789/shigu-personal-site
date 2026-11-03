@@ -1,0 +1,393 @@
+- banner:
+  - textbox "搜索小红书": 搞机所 面试
+  - img "搜索"
+- link:
+  - /url: /explore?channel_type=web_search_result_notes
+- list:
+  - link "首页":
+    - /url: /explore?channel_id=homefeed_recommend
+    - generic: 首页
+  - link "点点 ai":
+    - /url: /ai_chat?from=sidebar&conversationId=
+    - generic: 点点
+    - generic: ai
+  - link "RED":
+    - /url: /red_video
+    - generic: RED
+  - link "直播":
+    - /url: /livelist?channel_id=&channel_type=web_search_result_notes
+    - generic: 直播
+  - link "发布":
+    - /url: https://creator.xiaohongshu.com/publish/publish?source=official
+    - generic: 发布
+  - link "通知":
+    - /url: /notification
+    - generic: 通知
+  - link "消息":
+    - /url: /chat?channel_id=&channel_type=web_search_result_notes
+    - generic: 消息
+  - link "我":
+    - /url: /user/profile/67639317000000001801dee5
+    - generic: 我
+  - paragraph:
+    - link "沪ICP备13030189号":
+      - /url: //beian.miit.gov.cn/
+    - text: "|"
+    - link "营业执照":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323gtfdq87a0690nvj5qg0000000003rivl690
+    - text: "|"
+    - link "2026沪公网安备31010102002533号":
+      - /url: //www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533
+    - text: "|"
+    - link "增值电信业务经营许可证：沪B2-20150021":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnu0anu7690nvj5qg0000000003pqm217o
+    - text: "|"
+    - link "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf
+    - text: "|"
+    - link "互联网药品信息服务资格证书：(沪)-经营性-2023-0144":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf
+    - text: "|"
+    - link "药品网络交易服务第三方平台备案：(沪)网药平台备字[2023]第000007-001号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b83267hojcdl6062u7au7rdm9g007pkcqrshk5s8.pdf
+    - text: "|"
+    - link "违法不良信息举报电话：4006676810":
+      - /url: //www.shjbzx.cn
+    - text: "|"
+    - link "上海市互联网举报中心":
+      - /url: //www.shjbzx.cn
+    - text: "|"
+    - link "网上有害信息举报专区":
+      - /url: //www.12377.cn
+    - text: "|"
+    - link "自营经营者信息":
+      - /url: //dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf
+    - text: "|"
+    - link "网络文化经营许可证：沪网文[2021]1545-113号":
+      - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnuec7u0690nvj5qg0000000003o78obkg
+    - text: "| 个性化推荐算法 网信算备310101216601302230019号"
+  - paragraph: © 2014-2026
+  - paragraph: 行吟信息科技（上海）有限公司
+  - paragraph: 地址：上海市黄浦区马当路388号C座
+  - paragraph: 电话：9501-3888
+- generic "更多":
+  - generic: 更多
+- generic "关于我们":
+  - generic: 关于我们
+- paragraph:
+  - link "沪ICP备13030189号":
+    - /url: //beian.miit.gov.cn/
+  - text: "|"
+  - link "营业执照":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323gtfdq87a0690nvj5qg0000000003rivl690
+  - text: "|"
+  - link "2026沪公网安备31010102002533号":
+    - /url: //www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533
+  - text: "|"
+  - link "增值电信业务经营许可证：沪B2-20150021":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnu0anu7690nvj5qg0000000003pqm217o
+  - text: "|"
+  - link "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf
+  - text: "|"
+  - link "互联网药品信息服务资格证书：(沪)-经营性-2023-0144":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf
+  - text: "|"
+  - link "药品网络交易服务第三方平台备案：(沪)网药平台备字[2023]第000007-001号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b83267hojcdl6062u7au7rdm9g007pkcqrshk5s8.pdf
+  - text: "|"
+  - link "违法不良信息举报电话：4006676810":
+    - /url: //www.shjbzx.cn
+  - text: "|"
+  - link "上海市互联网举报中心":
+    - /url: //www.shjbzx.cn
+  - text: "|"
+  - link "网上有害信息举报专区":
+    - /url: //www.12377.cn
+  - text: "|"
+  - link "自营经营者信息":
+    - /url: //dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf
+  - text: "|"
+  - link "网络文化经营许可证：沪网文[2021]1545-113号":
+    - /url: //fe-video-qc.xhscdn.com/fe-platform-file/104101b8323fvnuec7u0690nvj5qg0000000003o78obkg
+  - text: "| 个性化推荐算法 网信算备310101216601302230019号"
+- paragraph: © 2014-2026
+- paragraph: 行吟信息科技（上海）有限公司
+- paragraph: 地址：上海市黄浦区马当路388号C座
+- paragraph: 电话：9501-3888
+- generic: 全部
+- generic: 图文
+- generic: 视频
+- generic: 用户
+- generic: 筛选
+- link:
+  - /url: /search_result/6abbb5a0000000001203d971?xsec_source=
+- link "深圳深圳！！！！这三个公司全部都是刷kpi,":
+  - /url: /search_result/6abbb5a0000000001203d971?xsec_source=
+- link "小红薯6695D54D 09-29":
+  - /url: /user/profile/64fc21ae0000000004024cb4?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 小红薯6695D54D
+  - generic: 09-29
+- generic: "899"
+- link:
+  - /url: /search_result/69e5a2ad0000000022028a5b?xsec_source=
+- link "上午面了个嵌入式工程师，直接给我整不会了":
+  - /url: /search_result/69e5a2ad0000000022028a5b?xsec_source=
+- link "你已经很棒了 04-20":
+  - /url: /user/profile/69369f75000000002a01d203?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 你已经很棒了
+  - generic: 04-20
+- generic: "86"
+- link:
+  - /url: /search_result/6a24cc300000000022019713?xsec_source=
+- link "秋招的童鞋看过来":
+  - /url: /search_result/6a24cc300000000022019713?xsec_source=
+- link "猎头 Alan 10-16":
+  - /url: /user/profile/67c980f6000000000e02c2e0?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 猎头 Alan
+  - generic: 10-16
+- generic: "2569"
+- link:
+  - /url: /search_result/6ac86c2e0000000018013f8f?xsec_source=
+- link "第一次知道双机位面试还能这样…":
+  - /url: /search_result/6ac86c2e0000000018013f8f?xsec_source=
+- link "快面AI-面试笔试助手 10-09":
+  - /url: /user/profile/6986214400000000210100cb?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 快面AI-面试笔试助手
+  - generic: 10-09
+- generic: "351"
+- link:
+  - /url: /search_result/6a9b5a0f000000001001dff1?xsec_source=
+- link "深圳找工作才5k":
+  - /url: /search_result/6a9b5a0f000000001001dff1?xsec_source=
+- link "momo 09-05":
+  - /url: /user/profile/64d4f522000000000200f5b7?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: momo
+  - generic: 09-05
+- generic: "21"
+- link:
+  - /url: /search_result/69ae81a9000000001d0105dd?xsec_source=
+- link "长沙避雷这个公司":
+  - /url: /search_result/69ae81a9000000001d0105dd?xsec_source=
+- link "小姚摇了摇头 03-09":
+  - /url: /user/profile/662111e40000000007006e74?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 小姚摇了摇头
+  - generic: 03-09
+- generic: "623"
+- link:
+  - /url: /search_result/691594880000000007031ae0?xsec_source=
+- link "其实，国企面试最先淘汰的就是说这几句话的":
+  - /url: /search_result/691594880000000007031ae0?xsec_source=
+- link "艾非尔上的铁塔梦 2025-11-13":
+  - /url: /user/profile/5f9baa86000000000101f4dc?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 艾非尔上的铁塔梦
+  - generic: 2025-11-13
+- generic: "4396"
+- link:
+  - /url: /search_result/6a8e8f98000000002501e5c5?xsec_source=
+- link "面试时太老实，真的会吃亏😭":
+  - /url: /search_result/6a8e8f98000000002501e5c5?xsec_source=
+- link "澜歌学姐 08-26":
+  - /url: /user/profile/664376cf0000000003031d59?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 澜歌学姐
+  - generic: 08-26
+- generic: "132"
+- link:
+  - /url: /search_result/6a1691a00000000006035ba1?xsec_source=
+- link "上月13k招嵌入式，怪不得面14个就录了一个":
+  - /url: /search_result/6a1691a00000000006035ba1?xsec_source=
+- link "真的码不动了哇 05-27":
+  - /url: /user/profile/62e33006000000001f0054d0?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 真的码不动了哇
+  - generic: 05-27
+- generic: "25"
+- link:
+  - /url: /search_result/6a5dfbea000000000503a913?xsec_source=
+- link "剪辑面试听到这几句话基本都会pass":
+  - /url: /search_result/6a5dfbea000000000503a913?xsec_source=
+- link "小小小倔驴 07-20":
+  - /url: /user/profile/6a31052d000000000e03cc00?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 小小小倔驴
+  - generic: 07-20
+- generic: "12"
+- link:
+  - /url: /search_result/6ae159d8000000002501f994?xsec_source=
+- link "你不说功能测试，我还以为是进厂":
+  - /url: /search_result/6ae159d8000000002501f994?xsec_source=
+- link "小红薯6888DAD8 6天前":
+  - /url: /user/profile/6888d88d00000000280266e1?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 小红薯6888DAD8
+  - generic: 6天前
+- generic: "11"
+- link:
+  - /url: /search_result/6a7d9770000000003301aeee?xsec_source=
+- link "上位机面试问题":
+  - /url: /search_result/6a7d9770000000003301aeee?xsec_source=
+- link "初闻不知曲中意 08-13":
+  - /url: /user/profile/604dbea0000000000101c528?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 初闻不知曲中意
+  - generic: 08-13
+- generic: "86"
+- link:
+  - /url: /search_result/6a4f56f40000000015024b11?xsec_source=
+- link "27届java北京小厂面经":
+  - /url: /search_result/6a4f56f40000000015024b11?xsec_source=
+- link "lf 07-09":
+  - /url: /user/profile/67f21e8900000000070020dc?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: lf
+  - generic: 07-09
+- generic: "35"
+- link:
+  - /url: /search_result/6a927889000000002102e19f?xsec_source=
+- link "半导体销售面试的10种类型面试官":
+  - /url: /search_result/6a927889000000002102e19f?xsec_source=
+- link "钟哥笔记-半导体 08-29":
+  - /url: /user/profile/5d3a456b000000001002ee5a?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 钟哥笔记-半导体
+  - generic: 08-29
+- generic: "97"
+- link:
+  - /url: /search_result/6a5dd5b2000000000402880b?xsec_source=
+- link "程序员面试太难了！！！":
+  - /url: /search_result/6a5dd5b2000000000402880b?xsec_source=
+- link "变美进击 07-20":
+  - /url: /user/profile/68ea5df4000000003201a99c?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 变美进击
+  - generic: 07-20
+- generic: "1075"
+- link:
+  - /url: /search_result/69e9d3810000000020013003?xsec_source=
+- link "这年头 啥人都有":
+  - /url: /search_result/69e9d3810000000020013003?xsec_source=
+- link "我是懒大王！ 04-23":
+  - /url: /user/profile/6848f44b000000001b01925b?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 我是懒大王！
+  - generic: 04-23
+- generic: "10"
+- link:
+  - /url: /search_result/6ae0aaba000000002203af33?xsec_source=
+- link "释放":
+  - /url: /search_result/6ae0aaba000000002203af33?xsec_source=
+- link "天er 6天前":
+  - /url: /user/profile/67cc56f2000000000a03fe0b?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 天er
+  - generic: 6天前
+- generic: "1"
+- link:
+  - /url: /search_result/69b8cf000000000022026778?xsec_source=
+- link "最后提醒一下嵌入式面试肚子里没墨水的人":
+  - /url: /search_result/69b8cf000000000022026778?xsec_source=
+- link "你已经很棒了 03-17":
+  - /url: /user/profile/69369f75000000002a01d203?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 你已经很棒了
+  - generic: 03-17
+- generic: "120"
+- link:
+  - /url: /search_result/6aa234cb000000002b024043?xsec_source=
+- link "第一次线上面试，面试官非要我开第二机位":
+  - /url: /search_result/6aa234cb000000002b024043?xsec_source=
+- link "Offer蛙-AI面试笔试助手 09-10":
+  - /url: /user/profile/6322cbc4000000002303fb79?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: Offer蛙-AI面试笔试助手
+  - generic: 09-10
+- generic: 1.3万
+- link:
+  - /url: /search_result/6ae40e5c0000000023013bbd?xsec_source=
+- link "智谱 Agent 开发一面 面完当天约二面":
+  - /url: /search_result/6ae40e5c0000000023013bbd?xsec_source=
+- link "周也在coding 4天前":
+  - /url: /user/profile/625bb3290000000021024938?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 周也在coding
+  - generic: 4天前
+- generic: "72"
+- link:
+  - /url: /search_result/6a4f73a9000000001700af50?xsec_source=
+- link "面试官面你半个小时，其实前两分钟就决定了":
+  - /url: /search_result/6a4f73a9000000001700af50?xsec_source=
+- link "OfferGo AI面试辅助 07-09":
+  - /url: /user/profile/6491dc080000000025035a73?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: OfferGo AI面试辅助
+  - generic: 07-09
+- generic: "8"
+- link:
+  - /url: /search_result/67edf2e0000000001d026ca2?xsec_source=
+- link "中航工业自控所计算机及电子系统研制面经面试高频问题真题题库参考答案":
+  - /url: /search_result/67edf2e0000000001d026ca2?xsec_source=
+- link "图南之唔小震 2025-04-03":
+  - /url: /user/profile/67b9ab0e000000000e0130d8?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 图南之唔小震
+  - generic: 2025-04-03
+- generic: "1"
+- link:
+  - /url: /search_result/68f3fe3a0000000004021665?xsec_source=
+- link "远景科技-机械开发三面-人才池":
+  - /url: /search_result/68f3fe3a0000000004021665?xsec_source=
+- link "琪琪 2025-10-19":
+  - /url: /user/profile/64cb881f000000000b009d19?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 琪琪
+  - generic: 2025-10-19
+- generic: "4"
+- link:
+  - /url: /search_result/6ad98429000000003101e29c?xsec_source=
+- link "这是做什么的":
+  - /url: /search_result/6ad98429000000003101e29c?xsec_source=
+- link "玉珈 1天前":
+  - /url: /user/profile/666afee90000000003032577?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 玉珈
+  - generic: 1天前
+- generic: "2"
+- link:
+  - /url: /search_result/6a8fa3ca000000002a03f593?xsec_source=
+- link "小红薯6A313784 08-27":
+  - /url: /user/profile/6a30ed5f000000000f039000?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 小红薯6A313784
+  - generic: 08-27
+- generic: "108"
+- link:
+  - /url: /search_result/6a194af60000000008030cbb?xsec_source=
+- link "提高面试通过率核心就是要学会装":
+  - /url: /search_result/6a194af60000000008030cbb?xsec_source=
+- link "Apple 职说 05-29":
+  - /url: /user/profile/69b7ed4600000000320286e0?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: Apple 职说
+  - generic: 05-29
+- generic: "24"
+- link:
+  - /url: /search_result/692e8a30000000001e00ea20?xsec_source=
+- link "安徽弈泷职称规划咨询师武囡囡 2025-12-02":
+  - /url: /user/profile/604ffd1400000000010006b9?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 安徽弈泷职称规划咨询师武囡囡
+  - generic: 2025-12-02
+- generic: "2"
+- link:
+  - /url: /search_result/6ad5bbcc0000000025035415?xsec_source=
+- link "搞机所双十一显示器 推荐":
+  - /url: /search_result/6ad5bbcc0000000025035415?xsec_source=
+- link "搞机所 10-19":
+  - /url: /user/profile/61e6bc1f0000000021021a1b?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 搞机所
+  - generic: 10-19
+- generic: "17"
+- link:
+  - /url: /search_result/67baf3310000000006039fd9?xsec_source=
+- link "通信实习面试 被怼哭了":
+  - /url: /search_result/67baf3310000000006039fd9?xsec_source=
+- link "束阁. 2025-02-23":
+  - /url: /user/profile/60c3ebec0000000001004895?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: 束阁.
+  - generic: 2025-02-23
+- generic: "469"
+- link:
+  - /url: /search_result/6ae4d3a6000000001200bc0f?xsec_source=
+- link "一个二本学生的秋招历程":
+  - /url: /search_result/6ae4d3a6000000001200bc0f?xsec_source=
+- link "Lilly 3天前":
+  - /url: /user/profile/69c3d13b0000000033028880?channel_type=web_search_result_notes&parent_page_channel_type=web_profile_board&&xsec_source=pc_search
+  - generic: Lilly
+  - generic: 3天前
+- generic: "55"
+- button:
+- generic: 活动
+- button:
+- button:
+- iframe

@@ -1,0 +1,22 @@
+document.documentElement.classList.replace("no-js","js");
+
+'use strict';
+const data=JSON.parse(document.getElementById('reportData').textContent);
+const format=n=>n>=10000?`${+(n/10000).toFixed(2)}万`:n.toLocaleString('zh-CN');
+const tbody=document.getElementById('sampleRows');for(const r of data.rows){const tr=document.createElement('tr');const title=document.createElement('td');const a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener';a.textContent=r.title+' ↗';title.append(a);tr.append(title);for(const s of [r.date,...['likes','comments','saves','shares'].map(k=>format(r[k])),r.brandTagged?'有':'未见']){const td=document.createElement('td');td.textContent=s;tr.append(td)}tbody.append(tr)}
+const quiz=[
+{"q": "毕导的专业身份是什么？", "a": ["清华大学化学工程系博士", "专职影视导演", "计算机专业教授"], "right": 0, "why": "抖音主页自述为清华大学化学工程系博士。身份是内容背景，具体解释仍要逐项核对。"},
+{"q": "用一句话概括毕导的风格，哪个最准确？", "a": ["情绪激烈的观点输出", "一本正经的幽默科普", "以书单推荐为主的知识整理"], "right": 1, "why": "本报告对样本的归纳是：认真研究生活问题，以幽默表达、实物实验和通俗解释吸引观众。"},
+{"q": "“量筒里有几毫升水”这个选题，先调动了观众什么？", "a": ["对设备价格的兴趣", "购买课程的需求", "亲自判断并验证答案的好奇心"], "right": 2, "why": "一个看似简单的读数问题，让观众先参与判断，再期待解释。它在本次10条样本中获赞最高，但不能把爆款归因于单一因素。"},
+{"q": "“盘子上的X”最适合体现哪种选题方法？", "a": ["从熟悉的生活现象发现科学问题", "追热点时不需要查证", "把术语直接排成知识清单"], "right": 0, "why": "餐盘是日常物件，异常现象构成提问入口。日常经验、悬念和解释需求连在一起，是这条样本的研究价值。"},
+{"q": "毕导视频的审美主要服务什么？", "a": ["让背景装饰越多越好", "让观众看清问题、实验过程与解释", "让所有画面始终保持同一个景别"], "right": 1, "why": "从公开片段看，人物、道具、字幕与图解各有任务。视觉层次服务理解；不需要每条视频都套同一种画面。"},
+{"q": "研究毕导团队流程时，哪一种顺序更合理？", "a": ["选题→调研→脚本→拍摄与剪辑", "先接所有广告，再随意补解释", "把AI答案直接拍成视频"], "right": 0, "why": "本人公开演讲介绍选题、调研、脚本、剪辑等流程。拍摄是本报告对视频制作环节的补充归纳，科学判断与最终表达仍需要人负责。"},
+{q:'毕导最适合归入哪个具体子赛道？',a:['读书讲书与书单推荐','趣味科学／生活实验科普','AI工具教程合集'],right:1,why:'他的真人表达与生活实验围绕科学问题展开。本报告不把他继续归为严格的读书讲书赛道。'},
+{"q": "毕导的工作室在2024年搬到了哪里？", "a": ["上海", "北京", "杭州"], "right": 2, "why": "杭州新闻采访提到，2024年博士毕业后，毕导将工作室搬回杭州。人物部分的时间线也保留了这个节点。"},
+{q:'7人团队这个数字应该怎样表达？',a:['2026年现在固定有7名员工，每月工资已核验','2025年采访披露工作室7人，当前人数和工资未公开','根据视频质量估计有7人'],right:1,why:'7人来自2025.12杭州新闻采访。它支持曾有团队运营，不等于当前员工数或工资凭证。'},
+{q:'最近10条非置顶作品的点赞中位数是多少？',a:['14.95万，样本跨8月14日至9月30日','13.4万，是账号全部历史作品中位数','61.2万，是最近10条平均点赞'],right:0,why:'10条排序后，中间两项是13.4万与16.5万，平均为14.95万。13.4万属于近30日窗口内7条的中位数；61.2万是单条样本最高值。'},
+{"q": "作品页面出现品牌标签，能够直接证明什么？", "a": ["这条视频的实际报酬", "团队每月净利润", "公开页面存在品牌关联"], "right": 2, "why": "品牌标签提供内容与商业场景的线索，无法直接证明合同金额、回款或广告效果。"},
+{q:'评论继续追问旧视频的水盆问题，能支持哪种结论？',a:['部分观众记得旧内容并期待回应，是定性粘性线索','所有粉丝都会复看旧作品','所有452.3万粉丝都持续观看'],right:0,why:'跨作品追问可以支持部分观众具有内容记忆。评论有排序偏差，不能推算全部关注者的复访率。'},
+{"q": "近30日7条作品这个数字来自哪里？", "a": ["按每周更新频率推算", "抖音公开页面的日期手工核验，限定可见非置顶作品", "凭印象判断"], "right": 1, "why": "时间窗为2026.09.11—10.10；本次逐条打开作品核对日期，统计的是可见非置顶样本，不能代表团队全部产能。"},
+{q:'2016年这个时间节点对应什么？',a:['抖音账号注册日','公司工商成立日','本人公开演讲中的公众号注册年份'],right:2,why:'2016是公众号节点。工作室创办时间为报道中的2017；抖音账号注册日和工商成立日未取得。'}
+];let qi=0,score=0,answered=false;const next=document.getElementById('quizNext');function renderQuiz(){answered=false;next.disabled=true;document.getElementById('quizCount').textContent=`第 ${String(qi+1).padStart(2,'0')} 题 / ${quiz.length}`;document.getElementById('quizQuestion').textContent=quiz[qi].q;document.getElementById('quizFeedback').textContent='';document.getElementById('quizScore').textContent=`已答 ${qi} / ${quiz.length} · 正确 ${score}`;next.textContent=qi===quiz.length-1?'查看成绩 →':'下一题 →';const box=document.getElementById('quizOptions');box.replaceChildren();quiz[qi].a.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.textContent=String.fromCharCode(65+i)+'. '+s;b.addEventListener('click',()=>{if(answered)return;answered=true;const correct=i===quiz[qi].right;if(correct)score++;Array.from(box.children).forEach((c,j)=>{c.disabled=true;if(j===quiz[qi].right)c.classList.add('correct');else if(j===i)c.classList.add('wrong')});document.getElementById('quizFeedback').textContent=(correct?'回答正确。':'再核对一下。')+quiz[qi].why;document.getElementById('quizScore').textContent=`已答 ${qi+1} / ${quiz.length} · 正确 ${score}`;next.disabled=false});box.append(b)})}next.addEventListener('click',()=>{if(qi===quiz.length){qi=0;score=0;renderQuiz();return}if(!answered)return;if(qi===quiz.length-1){qi=quiz.length;document.getElementById('quizCount').textContent='本轮练习完成';document.getElementById('quizQuestion').textContent=`答对 ${score} / ${quiz.length} 题`;document.getElementById('quizOptions').replaceChildren();document.getElementById('quizFeedback').textContent=score===quiz.length?'关键事实与证据边界已掌握。':'回看刚才不确定的内容，再练一次。辨清未知项也是调研能力的一部分。';next.textContent='重新练习 ↻';next.disabled=false}else{qi++;renderQuiz()}});renderQuiz();

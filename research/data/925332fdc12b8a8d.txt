@@ -1,0 +1,216 @@
+- button "开启读屏标签"
+- generic: 读屏标签已关闭
+- link:
+  - /url: //www.douyin.com/jingxuan
+- link "精选":
+  - /url: https://www.douyin.com/jingxuan?from_nav=1
+  - generic: 精选
+- link "推荐":
+  - /url: https://www.douyin.com/?recommend=1&from_nav=1
+  - generic: 推荐
+- link "AI抖音":
+  - /url: https://www.douyin.com/aisearch?from_nav=1
+  - generic: AI抖音
+- link "关注":
+  - /url: https://www.douyin.com/follow?from_nav=1
+  - generic: 关注
+- link "朋友":
+  - /url: https://www.douyin.com/friend?from_nav=1
+  - generic: 朋友
+- link "我的":
+  - /url: https://www.douyin.com/user/self?from_nav=1
+  - generic: 我的
+- link "直播":
+  - /url: https://live.douyin.com/?from_nav=1
+  - generic: 直播
+- link "放映厅":
+  - /url: https://www.douyin.com/vs?from_nav=1
+  - generic: 放映厅
+- link "短剧":
+  - /url: https://www.douyin.com/series?from_nav=1
+  - generic: 短剧
+- generic: 下载抖音精选
+- generic: 2026 © 抖音
+- link "京ICP备16016397号-3":
+  - /url: https://beian.miit.gov.cn/
+- contentinfo:
+  - link "icon京公网安备11010802050006号":
+    - /url: https://beian.mps.gov.cn/
+    - img "icon"
+    - text: 京公网安备11010802050006号
+  - link "icon电子营业执照":
+    - /url: https://zzlz.gsxt.gov.cn/businessCheck/verifKey.do
+    - img "icon"
+    - text: 电子营业执照
+  - generic: 信息网络传播视听节目许可证 0126733
+  - generic: 广播电视节目制作经营许可证 （京）字第11313号
+  - generic: 增值电信业务经营许可证 京B2-20170846
+  - generic: 网络文化经营许可证 京网文〔2025〕0181-061号
+  - generic: 互联网宗教信息服务许可证 京（2025）0000017
+  - generic: 药品医疗器械网络信息服务备案 （京）网药械信息备字（2023）第00570号
+  - generic: 互联网新闻信息服务许可证 11220230001
+  - link "（京）人服证字〔2026〕第0600005023号":
+    - /url: https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/d1cb34abe8ebb5600b51bac36ce3247f.jpg
+  - link "网络谣言曝光台":
+    - /url: https://www.piyao.org.cn/yybgt/index.htm
+  - link "网上有害信息举报":
+    - /url: https://www.12377.cn/
+  - generic: 违法和不良信息举报 400-140-2108 feedback@douyin.com
+  - generic: 算法推荐专项举报 sfjubao@bytedance.com
+  - generic: 体育饭圈专项举报 tyfq@bytedance.com
+  - link "广告投放":
+    - /url: https://www.oceanengine.com/resource/douyin
+  - link "用户服务协议":
+    - /url: https://www.douyin.com/agreements/?id=6773906068725565448
+  - link "隐私政策":
+    - /url: https://www.douyin.com/agreements/?id=6773901168964798477
+  - link "账号找回":
+    - /url: https://www.douyin.com/recovery_account/
+  - link "联系我们":
+    - /url: https://www.douyin.com/aboutus/
+  - link "加入我们":
+    - /url: https://www.douyin.com/aboutus/
+  - link "友情链接":
+    - /url: https://www.douyin.com/friend_links
+  - link "站点地图":
+    - /url: https://www.douyin.com/htmlmap/hotauthor_0_1
+  - link "下载抖音":
+    - /url: https://www.douyin.com/downloadpage/pc
+  - link "抖音电商":
+    - /url: https://mix.jinritemai.com/falcon/mix_page/index.html
+- banner:
+  - textbox "搜索你感兴趣的内容"
+  - button "搜索":
+    - generic: 搜索
+  - paragraph: 充钻石
+  - link "客户端":
+    - /url: https://www.douyin.com/download/pc/obj/douyin-pc-web/douyin-pc-client/7044145585217083655/releases/495279540/8.7.0/darwin-universal/douyin-v8.7.0-darwin-universal.dmg
+    - paragraph: 客户端
+  - generic: 壁纸
+  - list:
+    - paragraph: 通知
+  - list:
+    - paragraph: 消息
+    - generic: "2"
+  - paragraph: 投稿
+  - link:
+    - /url: //www.douyin.com/user/self
+- img "英俊姐妹日记头像"
+- heading "英俊姐妹日记" [level=1]:
+  - generic: 英俊姐妹日记
+- generic: 关注
+- generic: "7"
+- generic: 粉丝
+- generic: 89.9万
+- generic: 获赞
+- generic: 140.7万
+- paragraph:
+  - generic: 抖音号：815387110
+  - generic: IP属地：广东
+  - generic: 22岁
+- img "📝"
+- text: 记录让人心动的新玩意
+- img "✨"
+- text: 商务合作：gjsffff
+- button:
+- button "分享主页":
+  - generic: 分享主页
+- button "关注":
+  - generic: 关注
+- button "私信":
+  - generic: 私信
+- generic: 下载电脑客户端，桌面快捷访问
+- link "下载":
+  - /url: https://www.douyin.com/download/pc/obj/douyin-pc-web/douyin-pc-client/7044145585217083655/releases/495279540/8.7.0/darwin-universal/douyin-v8.7.0-darwin-universal.dmg
+  - generic: 下载
+- tablist:
+  - tab "作品 74" [selected]:
+    - heading "作品 74" [level=2]:
+      - generic: 作品
+      - generic: "74"
+  - tab "推荐":
+    - generic: 推荐
+  - tab "喜欢":
+    - generic: 喜欢
+- tabpanel "作品 74"
+- tablist:
+  - tab "作品":
+    - generic: 作品
+  - tab "合集":
+    - generic: 合集
+  - tab "短剧" [active] [selected]:
+    - generic: 短剧
+- tabpanel "短剧"
+- list
+- paragraph: 暂无内容
+- paragraph: 该账号还未发布过短剧哦～
+- contentinfo:
+  - link "广告投放":
+    - /url: https://www.oceanengine.com/resource/douyin
+  - link "用户服务协议":
+    - /url: https://www.douyin.com/agreements/?id=6773906068725565448
+  - link "隐私政策":
+    - /url: https://www.douyin.com/agreements/?id=6773901168964798477
+  - link "账号找回":
+    - /url: https://www.douyin.com/recovery_account/
+  - link "联系我们":
+    - /url: https://www.douyin.com/aboutus/
+  - link "加入我们":
+    - /url: https://www.douyin.com/aboutus/
+  - link "友情链接":
+    - /url: https://www.douyin.com/friend_links
+  - link "站点地图":
+    - /url: https://www.douyin.com/htmlmap/hotauthor_0_1
+  - link "下载抖音":
+    - /url: https://www.douyin.com/downloadpage/pc
+  - link "抖音电商":
+    - /url: https://mix.jinritemai.com/falcon/mix_page/index.html
+  - link "网络谣言曝光台 ｜":
+    - /url: https://www.piyao.org.cn/yybgt/index.htm
+  - link "网上有害信息举报":
+    - /url: https://www.12377.cn/
+  - generic: ｜ 违法和不良信息举报：400-140-2108 feedback@douyin.com ｜ 算法推荐专项举报：sfjubao@bytedance.com | 体育饭圈专项举报：tyfq@bytedance.com
+  - link "京ICP备16016397号-3":
+    - /url: https://beian.miit.gov.cn/
+  - generic: ｜ 信息网络传播视听节目许可证 0126733
+  - generic: ｜ 广播电视节目制作经营许可证 （京）字第11313号
+  - generic: ｜ 增值电信业务经营许可证 京B2-20170846
+  - generic: ｜ 网络文化经营许可证 京网文〔2025〕0181-061号 ｜
+  - img "icon"
+  - link "京公网安备11010802050006号":
+    - /url: https://beian.mps.gov.cn/
+  - generic: ｜ 互联网宗教信息服务许可证 京（2025）0000017 ｜
+  - img "icon"
+  - link "电子营业执照":
+    - /url: https://zzlz.gsxt.gov.cn/businessCheck/verifKey.do
+  - link "｜（京）人服证字〔2026〕第0600005023号":
+    - /url: https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/d1cb34abe8ebb5600b51bac36ce3247f.jpg
+  - generic: 热门：
+  - link "抖音热门歌曲":
+    - /url: https://www.douyin.com/jingxuan/music
+  - link "抖音":
+    - /url: https://www.douyin.com/jingxuan
+  - link "Max羊绒大衣工厂店":
+    - /url: https://www.douyin.com/user/MS4wLjABAAAA_OY2mOB5tMb70J7dCYhG0lJoab4xADuyt4s9Jq069v1bTrkkx-AuJlsKuCFWVBxp
+  - 'link "#周末逛校园#华工风景好 #比景区还漂亮的大学校园 #随拍分享"':
+    - /url: https://www.douyin.com/video/7703020767865019483
+  - link "湖南601分能上哪些大学":
+    - /url: https://www.douyin.com/topic/7509890241906837540
+  - link "24年高考数学北京卷":
+    - /url: https://www.douyin.com/shipin/7509915210141272116
+  - link "全国一套卷":
+    - /url: https://www.douyin.com/search/%E5%85%A8%E5%9B%BD%E4%B8%80%E5%A5%97%E5%8D%B7
+  - link "“云南土NE1”女团都曾是留守儿童":
+    - /url: https://www.douyin.com/video/7574641910141209899?source=Baiduspider
+  - link "娜姐制作手工姜糖详细教程，喜欢的朋友们学起来，雨锅已经出师啦":
+    - /url: https://www.douyin.com/video/7016105640229702919?source=Baiduspider
+  - link "桂花雨 - 朗读五年级语文":
+    - /url: https://www.douyin.com/video/7034161640027213064?source=Baiduspider
+  - 'link "记住两个字，保证你有研究生上 #考研 #张雪峰 #调剂 #复试"':
+    - /url: https://www.douyin.com/video/7460079641831689483?source=Baiduspider-sdc
+  - link "此曲只应天上有，人间能得几回闻！ 此曲此情！":
+    - /url: https://www.douyin.com/video/7505542451509546255?source=Baiduspider
+  - 'link "魅族20新机要来了，考虑综合因素后你们是选择购买魅族老款机型还是死等魅族20#魅族 #魅族20pro #魅族20"':
+    - /url: https://www.douyin.com/video/7201701588640042244?source=Baiduspider
+  - link "5月销量排行榜解读，a级车排行榜（下），a级车怎么选":
+    - /url: https://www.douyin.com/video/7379966782435544358?source=Baiduspider-sdc

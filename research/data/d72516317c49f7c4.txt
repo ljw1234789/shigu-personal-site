@@ -1,0 +1,47 @@
+- list:
+  - link "首页":
+    - /url: //www.bilibili.com
+    - text: 首页
+- list:
+  - generic: 投稿
+- heading "用上OPPO充电新品，续航不焦虑，充电更轻松！" [level=1]
+- generic: "855"
+- generic: "0"
+- generic: 2026-06-03 16:12:26
+- generic: 未经作者授权，禁止转载
+- generic "哔哩哔哩播放器"
+- generic "点赞（Q）":
+  - generic: "19"
+- generic "投币（W）":
+  - generic: 投币
+- generic "收藏（E）":
+  - generic: "12"
+- generic: 分享
+- generic: 大小跟一支口红一样的充电宝，竟然能撑一整天！？
+- link "体验":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E4%BD%93%E9%AA%8C&from_source=video_tag
+- link "oppo充电宝":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=oppo%E5%85%85%E7%94%B5%E5%AE%9D&from_source=video_tag
+- link "oppo小方瓶":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=oppo%E5%B0%8F%E6%96%B9%E7%93%B6&from_source=video_tag
+- link "oppo超能舱":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=oppo%E8%B6%85%E8%83%BD%E8%88%B1&from_source=video_tag
+- link "618OPPO省心狂补节狂欢中":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=618OPPO%E7%9C%81%E5%BF%83%E7%8B%82%E8%A1%A5%E8%8A%82%E7%8B%82%E6%AC%A2%E4%B8%AD&from_source=video_tag
+- link "小方瓶双口":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%B0%8F%E6%96%B9%E7%93%B6%E5%8F%8C%E5%8F%A3&from_source=video_tag
+- link "新品":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E6%96%B0%E5%93%81&from_source=video_tag
+- link "618":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=618&from_source=video_tag
+- link "OPPO":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=OPPO&from_source=video_tag
+- link:
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.head.click
+- link "英俊姐妹日记":
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.detail.click
+- link " 发消息":
+  - /url: //message.bilibili.com/zh-Hans?spm_id_from=333.788.upinfo.detail.click#whisper/mid3706983859358214
+  - generic: 
+  - text: 发消息
+- generic "记录让人心动的新玩意"

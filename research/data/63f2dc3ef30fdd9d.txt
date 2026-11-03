@@ -1,0 +1,113 @@
+- heading "飞瓜.抖音版" [level=1]:
+  - link "飞瓜.抖音版":
+    - /url: /
+    - img "飞瓜.抖音版"
+- list:
+  - link "首页":
+    - /url: /
+  - link "行业资讯":
+    - /url: /Article2/
+  - link "帮助中心":
+    - /url: /helperv2/
+- link "飞瓜产品":
+  - /url: javascript:;
+- link "更多服务":
+  - /url: "#"
+- link "注册 / 登录":
+  - /url: javascript:;
+- generic: 认领账号
+- text: 英俊姐妹日记
+- link:
+  - /url: javascript:;
+- list:
+  - listitem: 抖音号：815387110
+- generic: 简介：📝记录让人心动的新玩意 ✨商务合作：gjsffff
+- link "点击收藏":
+  - /url: javascript:void(0);
+  - text: 点击收藏
+- link "加关注的抖音号":
+  - /url: javascript:void(0);
+  - text: 加关注的抖音号
+- link "相似号查询":
+  - /url: javascript:;
+  - text: 相似号查询
+- link "加抖音号对比":
+  - /url: javascript:void(0);
+  - text: 加抖音号对比
+- link "监控下次视频":
+  - /url: javascript:void(0);
+  - text: 监控下次视频
+- link "监控下次直播":
+  - /url: javascript:void(0);
+  - text: 监控下次直播
+- generic: 数据概览
+- link "粉丝数":
+  - /url: javascript:;
+  - text: 粉丝数
+- generic: 89.9w
+- text: 作品数
+- generic: "74"
+- text: 飞瓜指数
+- generic: "841.1"
+- text: 昨日排名打败
+- generic: 暂无数据
+- text: 近一周排名打败
+- generic: 97.55%的播主
+- text: 总点赞
+- generic: 140.7w
+- text: 平均点赞
+- generic: 1.9w
+- text: 集均评论
+- generic: "517"
+- text: 集均分享
+- generic: "612"
+- tablist:
+  - tab "数据概览"
+  - tab "粉丝特征分析"
+  - generic: New
+  - tab "播主视频"
+  - tab "电商数据分析"
+  - tab "MCN机构"
+- tabpanel
+- term: 功能介绍
+- definition:
+  - link "功能介绍":
+    - /url: /help/guide/9.html
+- definition:
+  - link "版本区别":
+    - /url: /Home/Price
+- definition:
+  - link "抖音号榜单":
+    - /url: /rank/tag/0/day/20261102.html
+- definition:
+  - link "品牌投放榜":
+    - /url: https://yt.feigua.cn/rank/pinpai
+- term: 关于我们
+- definition:
+  - link "联系我们":
+    - /url: https://www.feigua.cn/About/Contact
+- definition:
+  - link "加入我们":
+    - /url: /home/about
+- term: 更多产品
+- definition:
+  - link "西瓜数据":
+    - /url: https://data.xiguaji.com/?chl=feigua
+- definition:
+  - link "西瓜助手":
+    - /url: http://zs.xiguaji.com/?chl=feigua
+- definition:
+  - link "千瓜数据":
+    - /url: http://www.qian-gua.com/?chl=feiguada
+- definition:
+  - link "西瓜集":
+    - /url: http://www.xiguaji.com/?chl=feigua
+- definition:
+  - link "飞瓜易投":
+    - /url: https://yt.feigua.cn
+- term:
+- definition: 扫一扫关注飞瓜数据微信公众号，即可了解更多关于我们的资讯
+- contentinfo:
+  - text: Copyright © 2014-2026 飞瓜数据 | 福州果集信息科技有限公司
+  - link "闽ICP备19018186号-6":
+    - /url: https://beian.miit.gov.cn

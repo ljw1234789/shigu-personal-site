@@ -1,0 +1,58 @@
+from pathlib import Path
+import re, shutil, json
+
+root = Path(__file__).resolve().parent.parent
+dist = root / 'dist'
+s = (dist / 'index.html').read_text()
+css = re.search(r'<style>([\s\S]*?)</style>', s).group(1)
+for old,new in {'#f2f3eb':'#f7f9fa','#173e35':'#1b2a34','#637269':'#687782','#ccd2c7':'#dce2e7','#d9f263':'#3478ff','#fffef8':'#ffffff','#e9ece1':'#edf2f6','#e5ebd8':'#e8f0ff','#b7caa5':'#bacdf1','#e7eadf':'#eef2f5','#e4ebcd':'#e9f0ff','#e9ecdf':'#edf2f6','#879e73':'#3478ff','#7d956a':'#3478ff','#668600':'#3478ff'}.items():
+    css=css.replace(old,new)
+css=css.replace('--mono:ui-monospace','--mono:"IBM Plex Mono",ui-monospace')
+(dist/'base.css').write_text(css)
+s=re.sub(r'<style>[\s\S]*?</style>', '<link rel="preload" href="fonts/display-sc.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="fonts/font-face.css">\n<link rel="stylesheet" href="base.css">\n<link rel="stylesheet" href="report.css">', s, count=1)
+s=re.sub(r'<header.*?</header>', '''<header class="top"><div class="wrap top-inner"><a class="brand" href="#top"><span class="brand-glyph" aria-hidden="true">b.</span> 毕导 <span class="brand-sep">/</span><span class="brand-note">IP 研究</span></a><nav class="nav" aria-label="报告导航"><a href="#profile">人物</a><a href="#data">数据</a><a href="#content">内容</a><a href="#business">团队</a><a href="#exam">考考你</a><a href="#sources">来源</a></nav><span class="edition">2026.10.11</span></div><div class="reading-progress" aria-hidden="true"></div></header>''',s,count=1,flags=re.S)
+start=s.index('<div class="wrap hero">')
+end=s.index('<section class="section wrap" id="profile">')
+oldhero=s[start:end]
+stats=re.search(r'<div class="statstrip">[\s\S]*?<div class="scope">[\s\S]*?</div>',oldhero).group(0)
+s=s[:start]+'''<section class="hero-scroll" aria-label="毕导研究报告开篇"><div class="hero-stage"><div class="hero-word" aria-hidden="true">BI DAO</div><div class="hero-meta"><span>趣味科学 / 生活实验</span><span>独立课堂调研</span></div><canvas id="labCanvas" role="img" aria-label="可换角度的动态量筒示意"></canvas><div class="hero-copy"><p class="hero-label">毕导 · 一本正经的幽默科普</p><h1>一本正经，<br>研究点好玩的。</h1><p class="hero-lead">量筒里有多少水？盘子上的X从哪来？<br>在他这里，小问题也值得认真研究。</p><a class="btn primary" href="#experiment">先做个小实验 <span aria-hidden="true">↗</span></a></div><div class="hero-signal"><span class="signal-index" id="signalIndex">01 / 好奇</span><p id="signalText">越普通的问题，<br>越可能藏着惊喜。</p></div><button class="angle-button" id="angleButton" type="button" aria-label="改变量筒观察角度">换个角度 <span aria-hidden="true">↻</span></button><div class="hero-bottom"><span>实验器材互动示意</span><a href="#experiment">往下看，直觉靠得住吗？ <span aria-hidden="true">↓</span></a></div></div></section><div class="wrap hero-stats">'''+stats+'''</div>
+<section class="section wrap experiment" id="experiment"><div class="experiment-copy"><span class="kicker">先猜，再验证。</span><h2>这两个蓝圆，<br>哪个更大？</h2><p>先别急着说“这么简单”。<br>你的眼睛，可能有自己的意见。</p><div class="guess-buttons" aria-label="比较两个蓝色圆的大小"><button type="button" data-guess="A">A 更大</button><button type="button" data-guess="same">一样大</button><button type="button" data-guess="B">B 更大</button></div><p class="experiment-answer" id="experimentAnswer" aria-live="polite">选一个答案，看看会发生什么。</p><button class="mini-button" type="button" id="resetExperiment" hidden>让眼睛再上一次当 ↻</button><p class="experiment-note">本页设计的视觉互动示意，用来体验“提问—验证”的表达方式。</p></div><div class="illusion-board" id="illusionBoard"><svg viewBox="0 0 600 330" role="img" aria-label="两个蓝色中心圆，一个被小圆环绕，一个被大圆环绕"><g class="context context-a" fill="#d0d8df"><circle cx="114" cy="110" r="10"/><circle cx="150" cy="90" r="10"/><circle cx="186" cy="110" r="10"/><circle cx="202" cy="150" r="10"/><circle cx="186" cy="190" r="10"/><circle cx="150" cy="210" r="10"/><circle cx="114" cy="190" r="10"/><circle cx="98" cy="150" r="10"/></g><g class="context context-b" fill="#d0d8df"><circle cx="410" cy="74" r="36"/><circle cx="490" cy="74" r="36"/><circle cx="534" cy="150" r="36"/><circle cx="490" cy="226" r="36"/><circle cx="410" cy="226" r="36"/><circle cx="366" cy="150" r="36"/></g><g class="measure" stroke="#b6c5d1" fill="none"><path d="M150 107V197M450 107V197M122 126H478M122 174H478" stroke-dasharray="3 5"/><path d="M133 126H167M433 126H467M133 174H167M433 174H467"/></g><g class="target target-a"><circle cx="150" cy="150" r="24" fill="#3478ff"/><text x="150" y="155" text-anchor="middle" fill="white">A</text></g><g class="target target-b"><circle cx="450" cy="150" r="24" fill="#3478ff"/><text x="450" y="155" text-anchor="middle" fill="white">B</text></g></svg><span class="illusion-caption" id="illusionCaption">先相信直觉。然后，我们验证一下。</span></div></section>
+'''+s[end:]
+# Keep collected screenshots in the local evidence folder, outside the hosted page.
+s=re.sub(r'<figure class="case-image">[\s\S]*?</figure>', '',s)
+s=re.sub(r'<div class="evidence">[\s\S]*?</div><div class="downloads">', '<div class="downloads">',s,count=1)
+s=re.sub(r'<dialog[\s\S]*?</dialog>','',s,count=1)
+s=re.sub(r"const dialog=document.getElementById\('imageDialog'\);[\s\S]*?(?=const quiz=)", '',s,count=1)
+s=s.replace('首页实验室图片来自该报道。','工作室规模采用该报道当时的口径。')
+s=s.replace('样本有稳定人物主体、易读字幕与实验细节。他的优势是“把科学讲清楚的视觉设计”；下文结合实际画面评价，不给空泛审美分数。','样本有清晰的人物主体、字幕与实验细节。审美围绕“看清问题、跟上解释”展开；下文拆解具体作品。')
+s=s.replace('有画面证据','有样本依据')
+s=s.replace('这组题由AI依据报告生成，采用本地题库判分。没有连接在线模型，也不会上传你的答案。','14道选择题，3道口述题。身份、风格、代表作品、团队与数据，一个也别漏。')
+s=s.replace('采集日期2026.10.11。公开网页会变化，截图保留的是当时看到的页面。登录、配额与平台统计限制均在正文注明。','采集日期2026.10.11。原始链接保留在此，截图另存于资料包。平台口径与调研限制见各项说明。')
+s=s.replace('单文件HTML可离线打开；CSV可用表格软件查看。网页图表与答辩练习无需联网。','离线网页、10条作品数据，以及原始截图分别归档。')
+s=s.replace('IP FIELD NOTES / BI DAO · 2026.10.11','毕导 IP 研究 / 2026.10.11')
+s=s.replace('研究对象已确定，证据口径可追溯。','有趣是入口，认真是底气。')
+# Six content questions precede the original eight evidence questions.
+quiz=[
+ {'q':'毕导的专业身份是什么？','a':['清华大学化学工程系博士','专职影视导演','计算机专业教授'],'right':0,'why':'抖音主页自述为清华大学化学工程系博士。身份是内容背景，具体解释仍要逐项核对。'},
+ {'q':'用一句话概括毕导的风格，哪个最准确？','a':['情绪激烈的观点输出','一本正经的幽默科普','以书单推荐为主的知识整理'],'right':1,'why':'本报告对样本的归纳是：认真研究生活问题，以幽默表达、实物实验和通俗解释吸引观众。'},
+ {'q':'“量筒里有几毫升水”这个选题，先调动了观众什么？','a':['对设备价格的兴趣','购买课程的需求','亲自判断并验证答案的好奇心'],'right':2,'why':'一个看似简单的读数问题，让观众先参与判断，再期待解释。它在本次10条样本中获赞最高，但不能把爆款归因于单一因素。'},
+ {'q':'“盘子上的X”最适合体现哪种选题方法？','a':['从熟悉的生活现象发现科学问题','追热点时不需要查证','把术语直接排成知识清单'],'right':0,'why':'餐盘是日常物件，异常现象构成提问入口。日常经验、悬念和解释需求连在一起，是这条样本的研究价值。'},
+ {'q':'毕导视频的审美主要服务什么？','a':['让背景装饰越多越好','让观众看清问题、实验过程与解释','让所有画面始终保持同一个景别'],'right':1,'why':'从公开片段看，人物、道具、字幕与图解各有任务。视觉层次服务理解；不需要每条视频都套同一种画面。'},
+ {'q':'研究毕导团队流程时，哪一种顺序更合理？','a':['选题→调研→脚本→拍摄与剪辑','先接所有广告，再随意补解释','把AI答案直接拍成视频'],'right':0,'why':'本人公开演讲介绍选题、调研、脚本、剪辑等流程。拍摄是本报告对视频制作环节的补充归纳，科学判断与最终表达仍需要人负责。'}
+]
+s=s.replace('const quiz=[','const quiz=[\n'+',\n'.join(json.dumps(x,ensure_ascii=False) for x in quiz)+',',1)
+s=s.replace('QUESTION ${String(qi+1).padStart(2,\'0\')} / ${quiz.length}','第 ${String(qi+1).padStart(2,\'0\')} 题 / ${quiz.length}')
+s=s.replace("'PRACTICE COMPLETE'","'本轮练习完成'")
+# Less repetitive caveats stay available on demand.
+s=re.sub(r'<div class="note">([\s\S]*?)</div>',lambda m:'<details class="research-note"><summary>'+m.group(1).split('：',1)[0]+' · 查看说明</summary><div class="note">'+m.group(1)+'</div></details>' if '：' in m.group(1) and len(m.group(1))>100 else m.group(0),s)
+style='<div class="style-line"><div><span>表达</span><strong>一本正经的冷幽默</strong><p>问题越小，研究越较真。认真推导和生活化的笑点形成反差。</p></div><div><span>叙事</span><strong>疑问 → 验证 → 解释</strong><p>让人先好奇、再观察，最后带走一个能讲明白的知识点。</p></div><div><span>视觉</span><strong>真人、实物、字幕与图解</strong><p>把抽象原理落到能看到的对象上，让观众跟得上。</p></div></div>'
+s=s.replace('<div class="identity">',style+'<div class="identity">',1)
+s=s.replace('</script>\n</body>', '</script>\n<script src="lab.js" defer></script>\n</body>')
+s=s.replace('<html lang="zh-CN">','<html lang="zh-CN" class="no-js">')
+# Progressively reveal only with JS; the report remains readable without it.
+s=s.replace('<head>','<head>\n<script>document.documentElement.classList.replace("no-js","js");</script>',1)
+(dist/'index.html').write_text(s)
+for p in list((dist/'assets').glob('*')):
+    if p.suffix.lower() in {'.png','.jpg','.jpeg'}:
+        shutil.move(str(p),root/'research'/'evidence'/p.name)
+print('Updated report structure; evidence images archived locally.')

@@ -1,0 +1,45 @@
+from pathlib import Path
+import base64, json, mimetypes, re, zipfile
+
+root = Path(__file__).parent
+dist = root / 'dist'
+html = (dist / 'index.html').read_text()
+def inline_local(match, tag):
+    name = match.group(1).split('?')[0]
+    asset = dist / name
+    if not asset.is_file() or asset.resolve().parent != dist.resolve():
+        return match.group(0)
+    return '<'+tag+'>'+asset.read_text()+'</'+tag+'>'
+html = re.sub(r'<link rel="stylesheet" href="([^\"]+)">', lambda m: inline_local(m, 'style'), html)
+html = re.sub(r'<script src="([^\"]+)" defer></script>', lambda m: inline_local(m, 'script'), html)
+for font in (dist / 'fonts').glob('*.woff2'):
+    uri = 'data:font/woff2;base64,' + base64.b64encode(font.read_bytes()).decode()
+    html = html.replace('fonts/' + font.name, uri)
+for photo in (dist / 'assets').glob('*'):
+    mime = mimetypes.guess_type(photo.name)[0]
+    if mime and mime.startswith('image/'):
+        uri = 'data:' + mime + ';base64,' + base64.b64encode(photo.read_bytes()).decode()
+        html = html.replace('assets/' + photo.name, uri)
+csv = dist / '毕导-10条作品数据.csv'
+csv_uri = 'data:text/csv;charset=utf-8;base64,' + base64.b64encode(csv.read_bytes()).decode()
+html = html.replace('href="毕导-10条作品数据.csv"', 'href="' + csv_uri + '"')
+html = html.replace('<a class="btn primary" href="毕导-IP调研报告.html" download>下载离线HTML ↓</a>', '<span class="pill good">当前已是离线单文件版本</span>')
+(dist / '毕导-IP调研报告.html').write_text(html)
+
+scripts = re.findall(r'<script>([\s\S]*?)</script>', (dist / 'index.html').read_text())
+(root / 'research' / 'check-script.js').write_text('\n'.join(scripts))
+with zipfile.ZipFile(root / '毕导-IP调研报告-提交包.zip', 'w', zipfile.ZIP_DEFLATED) as z:
+    z.write(dist / '毕导-IP调研报告.html', '毕导-IP调研报告.html')
+    z.write(csv, csv.name)
+    for evidence in (root/'research'/'evidence').glob('*'):
+        z.write(evidence, '原始截图/'+evidence.name)
+    for evidence_name in ['cylinder-in-ex-proof.png', 'plate-x-explanation-proof.png', 'cylinder-verified-notes.json']:
+        evidence = root / 'research' / evidence_name
+        if evidence.exists():
+            z.write(evidence, '补充核验-2026-10-12/' + evidence.name)
+    for license_file in (root/'research'/'font-licenses').glob('*'):
+        z.write(license_file, '字体许可/'+license_file.name)
+    z.writestr('资料说明.txt', '毕导IP调研。平台数据采集日期：2026-10-11。\n原始截图仅作核验存档，不在网页中展示；人物介绍使用杭州新闻报道配图，来源为网页S04。\n2026-10-12补充查看量筒的In/Ex解释片段及盘面纹路片段，未宣称完整观看全片；补充评论数不覆盖10月11日数据快照。\n网页保留原始来源链接与数据口径。动态量筒、圆形互动和案例交互为本页设计示意，不是毕导原视频实验复刻；量筒挂壁效果放大，不提供实测残留量，In/Ex原理另经BRAND技术手册校核。\n字体：本机中文字体、Space Grotesk、IBM Plex Mono；保留Noto Sans SC子集及许可。字体文件采用SIL Open Font License。\n')
+print(json.dumps({'offline_bytes': (dist / '毕导-IP调研报告.html').stat().st_size,
+                  'csv_rows': len(json.loads((dist / 'data.json').read_text())['rows']),
+                  'zip': str(root / '毕导-IP调研报告-提交包.zip')}, ensure_ascii=False))

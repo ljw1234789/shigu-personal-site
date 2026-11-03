@@ -1,0 +1,494 @@
+- button "开启读屏标签"
+- generic: 读屏标签已关闭
+- link:
+  - /url: //www.douyin.com/jingxuan
+- link "精选":
+  - /url: https://www.douyin.com/jingxuan?from_nav=1
+  - generic: 精选
+- link "推荐":
+  - /url: https://www.douyin.com/?recommend=1&from_nav=1
+  - generic: 推荐
+- link "AI抖音":
+  - /url: https://www.douyin.com/aisearch?from_nav=1
+  - generic: AI抖音
+- link "关注":
+  - /url: https://www.douyin.com/follow?from_nav=1
+  - generic: 关注
+- link "朋友":
+  - /url: https://www.douyin.com/friend?from_nav=1
+  - generic: 朋友
+- link "我的":
+  - /url: https://www.douyin.com/user/self?from_nav=1
+  - generic: 我的
+- link "直播":
+  - /url: https://live.douyin.com/?from_nav=1
+  - generic: 直播
+- link "放映厅":
+  - /url: https://www.douyin.com/vs?from_nav=1
+  - generic: 放映厅
+- link "短剧":
+  - /url: https://www.douyin.com/series?from_nav=1
+  - generic: 短剧
+- generic: 下载抖音精选
+- generic: 2026 © 抖音
+- link "京ICP备16016397号-3":
+  - /url: https://beian.miit.gov.cn/
+- contentinfo:
+  - link "icon京公网安备11010802050006号":
+    - /url: https://beian.mps.gov.cn/
+    - img "icon"
+    - text: 京公网安备11010802050006号
+  - link "icon电子营业执照":
+    - /url: https://zzlz.gsxt.gov.cn/businessCheck/verifKey.do
+    - img "icon"
+    - text: 电子营业执照
+  - generic: 信息网络传播视听节目许可证 0126733
+  - generic: 广播电视节目制作经营许可证 （京）字第11313号
+  - generic: 增值电信业务经营许可证 京B2-20170846
+  - generic: 网络文化经营许可证 京网文〔2025〕0181-061号
+  - generic: 互联网宗教信息服务许可证 京（2025）0000017
+  - generic: 药品医疗器械网络信息服务备案 （京）网药械信息备字（2023）第00570号
+  - generic: 互联网新闻信息服务许可证 11220230001
+  - link "（京）人服证字〔2026〕第0600005023号":
+    - /url: https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/d1cb34abe8ebb5600b51bac36ce3247f.jpg
+  - link "网络谣言曝光台":
+    - /url: https://www.piyao.org.cn/yybgt/index.htm
+  - link "网上有害信息举报":
+    - /url: https://www.12377.cn/
+  - generic: 违法和不良信息举报 400-140-2108 feedback@douyin.com
+  - generic: 算法推荐专项举报 sfjubao@bytedance.com
+  - generic: 体育饭圈专项举报 tyfq@bytedance.com
+  - link "广告投放":
+    - /url: https://www.oceanengine.com/resource/douyin
+  - link "用户服务协议":
+    - /url: https://www.douyin.com/agreements/?id=6773906068725565448
+  - link "隐私政策":
+    - /url: https://www.douyin.com/agreements/?id=6773901168964798477
+  - link "账号找回":
+    - /url: https://www.douyin.com/recovery_account/
+  - link "联系我们":
+    - /url: https://www.douyin.com/aboutus/
+  - link "加入我们":
+    - /url: https://www.douyin.com/aboutus/
+  - link "友情链接":
+    - /url: https://www.douyin.com/friend_links
+  - link "站点地图":
+    - /url: https://www.douyin.com/htmlmap/hotauthor_0_1
+  - link "下载抖音":
+    - /url: https://www.douyin.com/downloadpage/pc
+  - link "抖音电商":
+    - /url: https://mix.jinritemai.com/falcon/mix_page/index.html
+- banner:
+  - generic: ex是什么意思
+  - textbox
+  - button "搜索":
+    - generic: 搜索
+  - paragraph: 充钻石
+  - link "客户端":
+    - /url: https://www.douyin.com/download/pc/obj/douyin-pc-web/douyin-pc-client/7044145585217083655/releases/495279540/8.7.0/darwin-universal/douyin-v8.7.0-darwin-universal.dmg
+    - paragraph: 客户端
+  - generic: 壁纸
+  - list:
+    - paragraph: 通知
+  - list:
+    - paragraph: 消息
+  - paragraph: 投稿
+  - link:
+    - /url: //www.douyin.com/user/self
+- generic: 00:35
+- generic: /
+- generic: 03:56
+- textbox "发一条弹幕吧"
+- generic: 发送
+- generic: 倍速
+- generic: 智能
+- button
+- generic: 清屏
+- button
+- generic: 连播
+- link "个人观点，仅供参考":
+  - /url: undefined
+  - generic: 个人观点，仅供参考
+- 'heading "第125集 | 这个量筒里到底有几毫升水？别笑，你也答不上来！ #欢迎问我任何问题 #知识前沿派对" [level=1]':
+  - text: 第125集 |
+  - generic: 这个量筒里到底有几毫升水？别笑，你也答不上来！
+  - link "#欢迎问我任何问题":
+    - /url: //www.douyin.com/search/%E6%AC%A2%E8%BF%8E%E9%97%AE%E6%88%91%E4%BB%BB%E4%BD%95%E9%97%AE%E9%A2%98?enter_from=video_detail&source=pc_click_hashtag_feed
+  - link "#知识前沿派对":
+    - /url: //www.douyin.com/search/%E7%9F%A5%E8%AF%86%E5%89%8D%E6%B2%BF%E6%B4%BE%E5%AF%B9?enter_from=video_detail&source=pc_click_hashtag_feed
+- generic: 63.6万
+- generic: "5985"
+- generic: 5.0万
+- generic: 10.3万
+- generic: 举报
+- generic: 发布时间：2026-09-29 23:00
+- generic: 全部评论
+- link "这部阿威来讲头像":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAopTTrbOcwuHeURIvXNaGJldD81fCbtMI8PHdXg2xC-OBHg189olfZ68fyGbo9T6c
+  - img "这部阿威来讲头像"
+- generic: 留下你的精彩评论吧
+- generic: 大家都在搜：
+- link "量筒":
+  - /url: //www.douyin.com/search/%E9%87%8F%E7%AD%92?aweme_id=7690946606966770953&enter_from=video_detail&gid=7690946606966770953&source=comment_related_search
+  - generic: 量筒
+- link "理财小何":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAnTiai-gmfzLQUJSmgUcqgmZsye82AUzHRIQhBntRrXpjGwYdPL_f3GhlQzhtveOJ
+  - generic: 理财小何
+- generic: ...
+- generic: 是时候请出
+- link "移液枪":
+  - /url: //www.douyin.com/search/%E7%A7%BB%E6%B6%B2%E6%9E%AA?aweme_id=7690946606966770953&enter_from=video_detail&gid=7690946606966770953&source=comment_named_entity_search
+  - text: 移液枪
+- generic: 了
+- generic: 1月前·江苏
+- paragraph:
+  - generic: "3273"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开21条回复":
+  - generic: 展开21条回复
+- link "文字里的我":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAUgeSO5yzeNfqz9WWpYPg8bGCEG8PfmsyvMwEKckpJ-c
+  - generic: 文字里的我
+- generic: ...
+- generic: 告诉我，移液管到底咋用
+- generic: 1月前·浙江
+- paragraph:
+  - generic: "6"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "2222":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA7n8Ha6j3FiEc1xXYmHMYNNjehEpTlo3-JZEybbNLksQ
+  - generic: "2222"
+- generic: ...
+- generic: 留在量筒里的水，用水冲出来不就行了？
+- generic: 作者赞过
+- generic: 1月前·广西
+- paragraph:
+  - generic: 6.4万
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开541条回复":
+  - generic: 展开541条回复
+- link "月光下的":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAKULeekLSHe4Ag3ugjFk0x8DbB1w8zo_c8MUi1HBFqpE
+  - generic: 月光下的
+- generic: ...
+- text: 我09年上大学，就用移液枪了
+- img "[捂脸]"
+- text: 。还有生物科的都知道刷试管的痛
+- img "[捂脸]"
+- generic: 4周前·河北
+- paragraph:
+  - generic: "4"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- link "青花映红月":
+  - /url: //www.douyin.com/user/MS4wLjABAAAAN-broFqpRJLqKMdH_j05CPr7JTZc-KhrG-yMT9N-CjM
+  - generic: 青花映红月
+- generic: ...
+- text: 烧杯绝杀！我们实验室用的最多的就是烧杯
+- img "[柴犬]"
+- img "[柴犬]"
+- text: 因为我们的实验上下偏差它已经满足了
+- img "[柴犬]"
+- img "[柴犬]"
+- img "[柴犬]"
+- generic: 1月前·贵州
+- paragraph:
+  - generic: "25"
+- paragraph:
+- generic: 分享
+- generic: 回复
+- button "展开1条回复":
+  - generic: 展开1条回复
+- generic: 加载中
+- link "毕导":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA26unzRl4eTG2pAGnxD1pS3kMvjaUIcNxvLGr3VJOiKU
+  - img "毕导"
+- link "毕导":
+  - /url: //www.douyin.com/user/MS4wLjABAAAA26unzRl4eTG2pAGnxD1pS3kMvjaUIcNxvLGr3VJOiKU
+  - generic: 毕导
+- paragraph: 粉丝455.4万获赞4452.6万
+- button "关注":
+  - generic: 关注
+- generic: 下载客户端，桌面快捷访问
+- link "下载":
+  - /url: https://www.douyin.com/download/pc/obj/douyin-pc-web/douyin-pc-client/7044145585217083655/releases/495279540/8.7.0/darwin-universal/douyin-v8.7.0-darwin-universal.dmg
+  - generic: 下载
+- heading "合集 · 毕导的小学二年级课堂" [level=2]
+- list:
+  - link "合集 · 毕导的小学二年级课堂第122集 09:48":
+    - /url: //www.douyin.com/video/7673348711728041252
+    - img "合集 · 毕导的小学二年级课堂第122集"
+    - generic: 09:48
+  - 'heading "第122集 | 吵翻天了！飞机放在跑步机上，到底能不能起飞？ #知识前沿派对 #科普 #欢迎问我任何问题 #中国人能飞" [level=3]':
+    - 'link "第122集 | 吵翻天了！飞机放在跑步机上，到底能不能起飞？ #知识前沿派对 #科普 #欢迎问我任何问题 #中国人能飞"':
+      - /url: //www.douyin.com/video/7673348711728041252
+      - generic: "第122集 | 吵翻天了！飞机放在跑步机上，到底能不能起飞？ #知识前沿派对 #科普 #欢迎问我任何问题 #中国人能飞"
+  - text: 22.9万
+  - link "合集 · 毕导的小学二年级课堂第123集 02:45":
+    - /url: //www.douyin.com/video/7684877754814188843
+    - img "合集 · 毕导的小学二年级课堂第123集"
+    - generic: 02:45
+  - 'heading "第123集 | 世界上一半的人每天看见这个现象，却不知道为什么 #科普 #欢迎问我任何问题 #知识前沿派对" [level=3]':
+    - 'link "第123集 | 世界上一半的人每天看见这个现象，却不知道为什么 #科普 #欢迎问我任何问题 #知识前沿派对"':
+      - /url: //www.douyin.com/video/7684877754814188843
+      - generic: "第123集 | 世界上一半的人每天看见这个现象，却不知道为什么 #科普 #欢迎问我任何问题 #知识前沿派对"
+  - text: 13.9万
+  - link "合集 · 毕导的小学二年级课堂第124集 15:02":
+    - /url: //www.douyin.com/video/7688649420908383522
+    - img "合集 · 毕导的小学二年级课堂第124集"
+    - generic: 15:02
+  - 'heading "第124集 | 你吃饭的盘子上一直有个诡异的X，但没人能说清它为什么在那 #科普 #欢迎问我任何问题 #知识前沿派对 #光学" [level=3]':
+    - 'link "第124集 | 你吃饭的盘子上一直有个诡异的X，但没人能说清它为什么在那 #科普 #欢迎问我任何问题 #知识前沿派对 #光学"':
+      - /url: //www.douyin.com/video/7688649420908383522
+      - generic: "第124集 | 你吃饭的盘子上一直有个诡异的X，但没人能说清它为什么在那 #科普 #欢迎问我任何问题 #知识前沿派对 #光学"
+  - text: 26.9万
+  - link "合集 · 毕导的小学二年级课堂第125集 播放中":
+    - /url: //www.douyin.com/video/7690946606966770953
+    - img "合集 · 毕导的小学二年级课堂第125集"
+    - generic: 播放中
+  - 'heading "第125集 | 这个量筒里到底有几毫升水？别笑，你也答不上来！ #欢迎问我任何问题 #知识前沿派对" [level=3]':
+    - 'link "第125集 | 这个量筒里到底有几毫升水？别笑，你也答不上来！ #欢迎问我任何问题 #知识前沿派对"':
+      - /url: //www.douyin.com/video/7690946606966770953
+      - generic: "第125集 | 这个量筒里到底有几毫升水？别笑，你也答不上来！ #欢迎问我任何问题 #知识前沿派对"
+  - text: 63.6万
+  - link "合集 · 毕导的小学二年级课堂第126集 05:02":
+    - /url: //www.douyin.com/video/7697510948071804196
+    - img "合集 · 毕导的小学二年级课堂第126集"
+    - generic: 05:02
+  - 'heading "第126集 | 2026诺奖新知课｜人类还剩下什么专业是不可被取代的? #抖音精选App陪你看诺奖 #2026诺贝尔奖 #科普新锐扶持计划 #2026诺奖新知课" [level=3]':
+    - 'link "第126集 | 2026诺奖新知课｜人类还剩下什么专业是不可被取代的? #抖音精选App陪你看诺奖 #2026诺贝尔奖 #科普新锐扶持计划 #2026诺奖新知课"':
+      - /url: //www.douyin.com/video/7697510948071804196
+      - generic: "第126集 | 2026诺奖新知课｜人类还剩下什么专业是不可被取代的? #抖音精选App陪你看诺奖 #2026诺贝尔奖 #科普新锐扶持计划 #2026诺奖新知课"
+  - text: 12.4万
+  - link "合集 · 毕导的小学二年级课堂第127集 04:07":
+    - /url: //www.douyin.com/video/7702311970459897123
+    - img "合集 · 毕导的小学二年级课堂第127集"
+    - generic: 04:07
+  - 'heading "第127集 | 透明的镜片居然有影子？观众的问题让我脑洞大开！ #科普#欢迎问我任何问题#知识前沿派对" [level=3]':
+    - 'link "第127集 | 透明的镜片居然有影子？观众的问题让我脑洞大开！ #科普#欢迎问我任何问题#知识前沿派对"':
+      - /url: //www.douyin.com/video/7702311970459897123
+      - generic: "第127集 | 透明的镜片居然有影子？观众的问题让我脑洞大开！ #科普#欢迎问我任何问题#知识前沿派对"
+  - text: 34.6万
+- heading "推荐视频" [level=2]
+- list:
+  - 'link "上亿条生命集体释放染白大海！大自然最血腥的自杀式繁衍献祭 #科普 #鲱鱼 #知识前沿派对 #神奇动物在抖音 #生物科普 02:39"':
+    - /url: //www.douyin.com/video/7681267283243067782
+    - 'img "上亿条生命集体释放染白大海！大自然最血腥的自杀式繁衍献祭 #科普 #鲱鱼 #知识前沿派对 #神奇动物在抖音 #生物科普"'
+    - generic: 02:39
+  - 'heading "上亿条生命集体释放染白大海！大自然最血腥的自杀式繁衍献祭 #科普 #鲱鱼 #知识前沿派对 #神奇动物在抖音 #生物科普" [level=3]':
+    - 'link "上亿条生命集体释放染白大海！大自然最血腥的自杀式繁衍献祭 #科普 #鲱鱼 #知识前沿派对 #神奇动物在抖音 #生物科普"':
+      - /url: //www.douyin.com/video/7681267283243067782
+      - generic: "上亿条生命集体释放染白大海！大自然最血腥的自杀式繁衍献祭 #科普 #鲱鱼 #知识前沿派对 #神奇动物在抖音 #生物科普"
+  - text: 14.9万
+  - link "YNY探秘社":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAXcFk3oIXkfE7FCmYPnGCoNZKTTpCRA4Hg5na9PrIUXEiVLynws53LyQbBUAyF6oH?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: YNY探秘社
+  - 'link "全网都在喝大水，但这瓶水肾要排2小时 全网都在拎着 2 升大瓶水\"吨吨吨\"，但健康成年人的肾每小时最多只能排出约 1 升水。 2 分钟讲清：每天到底要喝多少（不是 8 杯），猛灌为什么会导致低钠血症，喝水能不能减肥，以及一瓶大水该怎么分一天喝。 你手边那瓶水，现在喝到第几格了？评论区报个数。#医学科普 #大水 #健康 #健康科普 #减脂 02:16"':
+    - /url: //www.douyin.com/video/7698218080673058084
+    - 'img "全网都在喝大水，但这瓶水肾要排2小时 全网都在拎着 2 升大瓶水\"吨吨吨\"，但健康成年人的肾每小时最多只能排出约 1 升水。 2 分钟讲清：每天到底要喝多少（不是 8 杯），猛灌为什么会导致低钠血症，喝水能不能减肥，以及一瓶大水该怎么分一天喝。 你手边那瓶水，现在喝到第几格了？评论区报个数。#医学科普 #大水 #健康 #健康科普 #减脂"'
+    - generic: 02:16
+  - 'heading "全网都在喝大水，但这瓶水肾要排2小时 全网都在拎着 2 升大瓶水\"吨吨吨\"，但健康成年人的肾每小时最多只能排出约 1 升水。 2 分钟讲清：每天到底要喝多少（不是 8 杯），猛灌为什么会导致低钠血症，喝水能不能减肥，以及一瓶大水该怎么分一天喝。 你手边那瓶水，现在喝到第几格了？评论区报个数。#医学科普 #大水 #健康 #健康科普 #减脂" [level=3]':
+    - 'link "全网都在喝大水，但这瓶水肾要排2小时 全网都在拎着 2 升大瓶水\"吨吨吨\"，但健康成年人的肾每小时最多只能排出约 1 升水。 2 分钟讲清：每天到底要喝多少（不是 8 杯），猛灌为什么会导致低钠血症，喝水能不能减肥，以及一瓶大水该怎么分一天喝。 你手边那瓶水，现在喝到第几格了？评论区报个数。#医学科普 #大水 #健康 #健康科普 #减脂"':
+      - /url: //www.douyin.com/video/7698218080673058084
+      - generic: 全网都在喝大水，但这瓶水肾要排2小时 全网都在拎着 2 升大瓶水"吨吨吨"，但健康成年人的肾每小时最多只能排出约 1 升水。
+      - generic: 2 分钟讲清：每天到底要喝多少（不是 8 杯），猛灌为什么会导致低钠血症，喝水能不能减肥，以及一瓶大水该怎么分一天喝。
+      - generic: "你手边那瓶水，现在喝到第几格了？评论区报个数。#医学科普 #大水 #健康 #健康科普 #减脂"
+  - text: "9138"
+  - link "健康侦探阿康":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAuD5i-zp_RLe84Br-jOIl0qkBCgXNsS1lKFs02aP8unJ0mjT6IC-Nna7GDVCbOW1V?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 健康侦探阿康
+  - 'link "美国和俄罗斯白人长相差距有多大？为何有些俄罗斯人长相像亚洲人 #知识前沿派对 #冷知识 #白人 #美国 #俄罗斯 01:54"':
+    - /url: //www.douyin.com/video/7688323326669901099
+    - 'img "美国和俄罗斯白人长相差距有多大？为何有些俄罗斯人长相像亚洲人 #知识前沿派对 #冷知识 #白人 #美国 #俄罗斯"'
+    - generic: 01:54
+  - 'heading "美国和俄罗斯白人长相差距有多大？为何有些俄罗斯人长相像亚洲人 #知识前沿派对 #冷知识 #白人 #美国 #俄罗斯" [level=3]':
+    - 'link "美国和俄罗斯白人长相差距有多大？为何有些俄罗斯人长相像亚洲人 #知识前沿派对 #冷知识 #白人 #美国 #俄罗斯"':
+      - /url: //www.douyin.com/video/7688323326669901099
+      - generic: "美国和俄罗斯白人长相差距有多大？为何有些俄罗斯人长相像亚洲人 #知识前沿派对 #冷知识 #白人 #美国 #俄罗斯"
+  - text: "6292"
+  - link "天外之物":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAYAdtpoxxRgYo7I5fI0lca_PFvCIKQYu_ucTMKQaJb7g?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 天外之物
+  - link "【会员抢先看】巨型构造体是无限能源还是吸食恒星能量的宇宙物种 这里是“总裁聊聊”一个让你成为酒桌吹牛小王子的地方~~ 本视频为【会员抢先看不分段纯享版】 专属会员 18:16":
+    - /url: //www.douyin.com/video/7686782219259481344
+    - img "【会员抢先看】巨型构造体是无限能源还是吸食恒星能量的宇宙物种 这里是“总裁聊聊”一个让你成为酒桌吹牛小王子的地方~~ 本视频为【会员抢先看不分段纯享版】"
+    - generic: 专属会员
+    - generic: 18:16
+  - heading "【会员抢先看】巨型构造体是无限能源还是吸食恒星能量的宇宙物种 这里是“总裁聊聊”一个让你成为酒桌吹牛小王子的地方~~ 本视频为【会员抢先看不分段纯享版】" [level=3]:
+    - link "【会员抢先看】巨型构造体是无限能源还是吸食恒星能量的宇宙物种 这里是“总裁聊聊”一个让你成为酒桌吹牛小王子的地方~~ 本视频为【会员抢先看不分段纯享版】":
+      - /url: //www.douyin.com/video/7686782219259481344
+      - generic: 【会员抢先看】巨型构造体是无限能源还是吸食恒星能量的宇宙物种 这里是“总裁聊聊”一个让你成为酒桌吹牛小王子的地方~~
+      - generic: 本视频为【会员抢先看不分段纯享版】
+  - text: "93"
+  - link "自说自话的总裁":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAJi-kZVje8nqLKa9baHfLCf1l8thcvTFL1NtYUzseurtYZpzPxoTYSfAbG8KrLzjN?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 自说自话的总裁
+  - 'link "胶球 物理学迎来一项重大突破。 你身上每一斤肉， 百分之九十九的重量都不是物质， 是力。 而就在几天前， 中国科学家证明了一件更疯狂的事—— 力，不需要任何物质， 自己就能凝成一个球。 这不是科幻， 是粒子物理五十年来最重磅的突破。#胶球 #粒子物理 #科普涨知识 # 05:29"':
+    - /url: //www.douyin.com/video/7674420714941812018
+    - 'img "胶球 物理学迎来一项重大突破。 你身上每一斤肉， 百分之九十九的重量都不是物质， 是力。 而就在几天前， 中国科学家证明了一件更疯狂的事—— 力，不需要任何物质， 自己就能凝成一个球。 这不是科幻， 是粒子物理五十年来最重磅的突破。#胶球 #粒子物理 #科普涨知识 #"'
+    - generic: 05:29
+  - 'heading "胶球 物理学迎来一项重大突破。 你身上每一斤肉， 百分之九十九的重量都不是物质， 是力。 而就在几天前， 中国科学家证明了一件更疯狂的事—— 力，不需要任何物质， 自己就能凝成一个球。 这不是科幻， 是粒子物理五十年来最重磅的突破。#胶球 #粒子物理 #科普涨知识 #" [level=3]':
+    - 'link "胶球 物理学迎来一项重大突破。 你身上每一斤肉， 百分之九十九的重量都不是物质， 是力。 而就在几天前， 中国科学家证明了一件更疯狂的事—— 力，不需要任何物质， 自己就能凝成一个球。 这不是科幻， 是粒子物理五十年来最重磅的突破。#胶球 #粒子物理 #科普涨知识 #"':
+      - /url: //www.douyin.com/video/7674420714941812018
+      - generic: 胶球 物理学迎来一项重大突破。
+      - generic: 你身上每一斤肉，
+      - generic: 百分之九十九的重量都不是物质，
+      - generic: 是力。
+      - generic: 而就在几天前，
+      - generic: 中国科学家证明了一件更疯狂的事——
+      - generic: 力，不需要任何物质，
+      - generic: 自己就能凝成一个球。
+      - generic: 这不是科幻，
+      - generic: "是粒子物理五十年来最重磅的突破。#胶球 #粒子物理 #科普涨知识 #"
+  - text: 5.4万
+  - link "星际探秘社":
+    - /url: //www.douyin.com/user/MS4wLjABAAAANllNX9p7wWmC9t56H-Wf3IynDwmnOFLesJAg3Ycx-rqPQiBS3PwJIfKvInxwUHls?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 星际探秘社
+  - 'link "好好好，今天开始奶茶我要点无糖 #戒糖 #糖的危害 #健康饮食 #实验 02:04"':
+    - /url: //www.douyin.com/video/7686134404413967662
+    - 'img "好好好，今天开始奶茶我要点无糖 #戒糖 #糖的危害 #健康饮食 #实验"'
+    - generic: 02:04
+  - 'heading "好好好，今天开始奶茶我要点无糖 #戒糖 #糖的危害 #健康饮食 #实验" [level=3]':
+    - 'link "好好好，今天开始奶茶我要点无糖 #戒糖 #糖的危害 #健康饮食 #实验"':
+      - /url: //www.douyin.com/video/7686134404413967662
+      - generic: "好好好，今天开始奶茶我要点无糖 #戒糖 #糖的危害 #健康饮食 #实验"
+  - text: 11.7万
+  - link "钮祜禄淑芬":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAO2wyNpGLGb9u1nR6If109BzbLBHwc-uNxvGuv6LbXBrqJBWx4MZ6beriC-JsBSXN?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 钮祜禄淑芬
+  - 'link "长期禁欲，对身体的伤害有多大？#科普 #禁欲 #知识前沿派对 02:07"':
+    - /url: //www.douyin.com/video/7670566884988165226
+    - 'img "长期禁欲，对身体的伤害有多大？#科普 #禁欲 #知识前沿派对"'
+    - generic: 02:07
+  - 'heading "长期禁欲，对身体的伤害有多大？#科普 #禁欲 #知识前沿派对" [level=3]':
+    - 'link "长期禁欲，对身体的伤害有多大？#科普 #禁欲 #知识前沿派对"':
+      - /url: //www.douyin.com/video/7670566884988165226
+      - generic: "长期禁欲，对身体的伤害有多大？#科普 #禁欲 #知识前沿派对"
+  - text: 4.1万
+  - link "老洋人科普":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAo5w50UrHr-X2XezTNoYdFLQEY61fbY9nRDlSxnPUtCPXknIEuDRs2O1ymnYd3WEK?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 老洋人科普
+  - 'link "《爱因斯坦牛顿探索异星大合集》完结版 #爱因斯坦 #牛顿 #aigc #知识前沿派对 #知识科普 31:30"':
+    - /url: //www.douyin.com/video/7681630066677222665
+    - 'img "《爱因斯坦牛顿探索异星大合集》完结版 #爱因斯坦 #牛顿 #aigc #知识前沿派对 #知识科普"'
+    - generic: 31:30
+  - 'heading "《爱因斯坦牛顿探索异星大合集》完结版 #爱因斯坦 #牛顿 #aigc #知识前沿派对 #知识科普" [level=3]':
+    - 'link "《爱因斯坦牛顿探索异星大合集》完结版 #爱因斯坦 #牛顿 #aigc #知识前沿派对 #知识科普"':
+      - /url: //www.douyin.com/video/7681630066677222665
+      - generic: "《爱因斯坦牛顿探索异星大合集》完结版 #爱因斯坦 #牛顿 #aigc #知识前沿派对 #知识科普"
+  - text: 21.9万
+  - link "地球online摸鱼员":
+    - /url: //www.douyin.com/user/MS4wLjABAAAAVsYzrXZAs071oscIJyvkKYKllSq_XscFKiVK1-dV0GctTeMTLdRTJIipBPCzqpt5?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 地球online摸鱼员
+  - 'link "高中地理vs大学地理真的不一样！不同阶段做不同的事~ 和浙江省优质课一等奖、十年高中地理教学经验资深教师@川不过气 对谈：（1）高中地理我为什么玄？（2）高中地理和大学地理有什么差别？（3）高中选地理，将来能选什么专业？（4）到了大学怎么规划？#视频播客扶持计划 #抖音里的人 #抖音创作者大会 #知识前沿派对 #边走边拍讲地理 46:04"':
+    - /url: //www.douyin.com/video/7694625232325332260
+    - 'img "高中地理vs大学地理真的不一样！不同阶段做不同的事~ 和浙江省优质课一等奖、十年高中地理教学经验资深教师@川不过气 对谈：（1）高中地理我为什么玄？（2）高中地理和大学地理有什么差别？（3）高中选地理，将来能选什么专业？（4）到了大学怎么规划？#视频播客扶持计划 #抖音里的人 #抖音创作者大会 #知识前沿派对 #边走边拍讲地理"'
+    - generic: 46:04
+  - 'heading "高中地理vs大学地理真的不一样！不同阶段做不同的事~ 和浙江省优质课一等奖、十年高中地理教学经验资深教师@川不过气 对谈：（1）高中地理我为什么玄？（2）高中地理和大学地理有什么差别？（3）高中选地理，将来能选什么专业？（4）到了大学怎么规划？#视频播客扶持计划 #抖音里的人 #抖音创作者大会 #知识前沿派对 #边走边拍讲地理" [level=3]':
+    - 'link "高中地理vs大学地理真的不一样！不同阶段做不同的事~ 和浙江省优质课一等奖、十年高中地理教学经验资深教师@川不过气 对谈：（1）高中地理我为什么玄？（2）高中地理和大学地理有什么差别？（3）高中选地理，将来能选什么专业？（4）到了大学怎么规划？#视频播客扶持计划 #抖音里的人 #抖音创作者大会 #知识前沿派对 #边走边拍讲地理"':
+      - /url: //www.douyin.com/video/7694625232325332260
+      - generic: "高中地理vs大学地理真的不一样！不同阶段做不同的事~ 和浙江省优质课一等奖、十年高中地理教学经验资深教师@川不过气 对谈：（1）高中地理我为什么玄？（2）高中地理和大学地理有什么差别？（3）高中选地理，将来能选什么专业？（4）到了大学怎么规划？#视频播客扶持计划 #抖音里的人 #抖音创作者大会 #知识前沿派对 #边走边拍讲地理"
+  - text: "8355"
+  - link "临川问雪":
+    - /url: //www.douyin.com/user/MS4wLjABAAAA7-kUgYYSlH8orRwN8BNRlhazy7R_6cG3MqK_UE9ilnI?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 临川问雪
+  - 'link "《水的净化》悬疑版做出来了，公开课不烧心 “哥，这水能喝了吗？” 你重回1996年，眼前还是那杯清水。 这一次，你会怎样选择？ 把人教版《水的净化》的课堂导入，做成了悬疑剧情。 视频展示的是开场片段。后续让学生带着任务，进入沉降、过滤、吸附和蒸馏的学习。 剧情不替代实验。看起来清澈的水，能证明什么？还缺哪些证据？答案要回到教材和实验中寻找。 初中化学老师，这样的开场，你愿意在课堂试一次吗？ #初中化学 #水的净化 #化学课件 #情境教学 #不烧心 00:19"':
+    - /url: //www.douyin.com/video/7698199311460594344
+    - 'img "《水的净化》悬疑版做出来了，公开课不烧心 “哥，这水能喝了吗？” 你重回1996年，眼前还是那杯清水。 这一次，你会怎样选择？ 把人教版《水的净化》的课堂导入，做成了悬疑剧情。 视频展示的是开场片段。后续让学生带着任务，进入沉降、过滤、吸附和蒸馏的学习。 剧情不替代实验。看起来清澈的水，能证明什么？还缺哪些证据？答案要回到教材和实验中寻找。 初中化学老师，这样的开场，你愿意在课堂试一次吗？ #初中化学 #水的净化 #化学课件 #情境教学 #不烧心"'
+    - generic: 00:19
+  - 'heading "《水的净化》悬疑版做出来了，公开课不烧心 “哥，这水能喝了吗？” 你重回1996年，眼前还是那杯清水。 这一次，你会怎样选择？ 把人教版《水的净化》的课堂导入，做成了悬疑剧情。 视频展示的是开场片段。后续让学生带着任务，进入沉降、过滤、吸附和蒸馏的学习。 剧情不替代实验。看起来清澈的水，能证明什么？还缺哪些证据？答案要回到教材和实验中寻找。 初中化学老师，这样的开场，你愿意在课堂试一次吗？ #初中化学 #水的净化 #化学课件 #情境教学 #不烧心" [level=3]':
+    - 'link "《水的净化》悬疑版做出来了，公开课不烧心 “哥，这水能喝了吗？” 你重回1996年，眼前还是那杯清水。 这一次，你会怎样选择？ 把人教版《水的净化》的课堂导入，做成了悬疑剧情。 视频展示的是开场片段。后续让学生带着任务，进入沉降、过滤、吸附和蒸馏的学习。 剧情不替代实验。看起来清澈的水，能证明什么？还缺哪些证据？答案要回到教材和实验中寻找。 初中化学老师，这样的开场，你愿意在课堂试一次吗？ #初中化学 #水的净化 #化学课件 #情境教学 #不烧心"':
+      - /url: //www.douyin.com/video/7698199311460594344
+      - generic: 《水的净化》悬疑版做出来了，公开课不烧心 “哥，这水能喝了吗？”
+      - generic: 你重回1996年，眼前还是那杯清水。
+      - generic: 这一次，你会怎样选择？
+      - generic: 把人教版《水的净化》的课堂导入，做成了悬疑剧情。
+      - generic: 视频展示的是开场片段。后续让学生带着任务，进入沉降、过滤、吸附和蒸馏的学习。
+      - generic: 剧情不替代实验。看起来清澈的水，能证明什么？还缺哪些证据？答案要回到教材和实验中寻找。
+      - generic: 初中化学老师，这样的开场，你愿意在课堂试一次吗？
+      - generic: "#初中化学 #水的净化 #化学课件 #情境教学 #不烧心"
+  - text: "5331"
+  - link "土豆丝冲大厂":
+    - /url: //www.douyin.com/user/MS4wLjABAAAA5hRBIkBxXoECiJ2c_XMjESIdexWLJj4eWcouWovSLvUs92XoD_R4fkr_6otbMuUq?author_id=95568962953&enter_from=video_detail&enter_method=video_cover_title&from_tab_name=main&group_id=7690946606966770953&log_pb=%7B%22impr_id%22%3A%222026110401034931A231AD0E730B5DF18F%22%7D&relation=0
+    - generic: 土豆丝冲大厂
+- contentinfo:
+  - link "广告投放":
+    - /url: https://www.oceanengine.com/resource/douyin
+  - link "用户服务协议":
+    - /url: https://www.douyin.com/agreements/?id=6773906068725565448
+  - link "隐私政策":
+    - /url: https://www.douyin.com/agreements/?id=6773901168964798477
+  - link "账号找回":
+    - /url: https://www.douyin.com/recovery_account/
+  - link "联系我们":
+    - /url: https://www.douyin.com/aboutus/
+  - link "加入我们":
+    - /url: https://www.douyin.com/aboutus/
+  - link "友情链接":
+    - /url: https://www.douyin.com/friend_links
+  - link "站点地图":
+    - /url: https://www.douyin.com/htmlmap/hotauthor_0_1
+  - link "下载抖音":
+    - /url: https://www.douyin.com/downloadpage/pc
+  - link "抖音电商":
+    - /url: https://mix.jinritemai.com/falcon/mix_page/index.html
+  - link "网络谣言曝光台 ｜":
+    - /url: https://www.piyao.org.cn/yybgt/index.htm
+  - link "网上有害信息举报":
+    - /url: https://www.12377.cn/
+  - generic: ｜ 违法和不良信息举报：400-140-2108 feedback@douyin.com ｜ 算法推荐专项举报：sfjubao@bytedance.com | 体育饭圈专项举报：tyfq@bytedance.com
+  - link "京ICP备16016397号-3":
+    - /url: https://beian.miit.gov.cn/
+  - generic: ｜ 信息网络传播视听节目许可证 0126733
+  - generic: ｜ 广播电视节目制作经营许可证 （京）字第11313号
+  - generic: ｜ 增值电信业务经营许可证 京B2-20170846
+  - generic: ｜ 网络文化经营许可证 京网文〔2025〕0181-061号 ｜
+  - img "icon"
+  - link "京公网安备11010802050006号":
+    - /url: https://beian.mps.gov.cn/
+  - generic: ｜ 互联网宗教信息服务许可证 京（2025）0000017 ｜
+  - img "icon"
+  - link "电子营业执照":
+    - /url: https://zzlz.gsxt.gov.cn/businessCheck/verifKey.do
+  - link "｜（京）人服证字〔2026〕第0600005023号":
+    - /url: https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/d1cb34abe8ebb5600b51bac36ce3247f.jpg
+  - generic: 热门：
+  - link "游戏视频推荐":
+    - /url: https://www.douyin.com/jingxuan/game
+  - link "抖音网页版入口":
+    - /url: https://www.douyin.com/jingxuan
+  - link "弘高再生资源回收":
+    - /url: https://www.douyin.com/user/MS4wLjABAAAAiYbj3NeXgZU3jJd9COcX5yCW4S7bjn-kkFHdndQ_fWyIpFsCzoZdVm0lG2ijz_b-
+  - link "想让孩子写的字体干净又工整，可以试试这款英语定位本，从简单的衡水体入手，孩子练习起来更轻松#英语定位":
+    - /url: https://www.douyin.com/video/7703730000389868826
+  - link "高考走体育上大学能选其他专业吗":
+    - /url: https://www.douyin.com/topic/7509884393516451850
+  - link "社考生":
+    - /url: https://www.douyin.com/shipin/7509895382948907060
+  - link "语文文言文高考代号":
+    - /url: https://www.douyin.com/search/%E8%AF%AD%E6%96%87%E6%96%87%E8%A8%80%E6%96%87%E9%AB%98%E8%80%83%E4%BB%A3%E5%8F%B7
+  - link "不是毛巾是车厘子毛巾卷":
+    - /url: https://www.douyin.com/video/7587170902811364635?source=Baiduspider
+  - 'link "公司团建，记录一下！ #春游氛围感露营美食 #团建聚会 #露营漫时光 #牧川营地"':
+    - /url: https://www.douyin.com/video/7357973595575848228?source=Baiduspider
+  - 'link "33《是谁嗯嗯在我头上》—沃尔夫·埃布鲁赫 此绘本既有宽度也有深度，给予了无限的想象空间，不同的孩子收获不同的知识和力量#绘本故事 #亲子阅读 #每日推文"':
+    - /url: https://www.douyin.com/video/7342323742107880716?source=Baiduspider
+  - 'link "希望更多人可以接触到地狱游记，多行善事，共同修行。#修行 #多行善事必得善果 #修行"':
+    - /url: https://www.douyin.com/video/7482325441139723547?source=Baiduspider-sdc
+  - 'link "今晚龙船洗溪结束，龙船抬上溪头晒干，明天下午正赛决赛落船仪式！早美乡第二届陈店五村龙舟友谊邀请赛，明天下午五点举行龙舟友谊正赛决赛，欢迎大家莅临观看！#龙舟文化 #早美乡龙舟友谊邀请赛 #传统龙舟 #水上运动 #男人的快乐就是这么简单"':
+    - /url: https://www.douyin.com/video/7526182316961778953?source=Baiduspider
+  - 'link "A股良心复盘，有干货，讲真话的优质教学主播！每天更新，欢迎关注！#A股 #大盘分析 #鹏哥复盘 #股票 #股民"':
+    - /url: https://www.douyin.com/video/7530193116477820187?source=Baiduspider
+  - link "强化北山捡垃圾教程#暗区突围":
+    - /url: https://www.douyin.com/video/7296151785096367375?source=Baiduspider-sdc

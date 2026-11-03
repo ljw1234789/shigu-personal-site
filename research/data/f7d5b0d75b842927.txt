@@ -1,0 +1,191 @@
+"""把本轮公开页面观察加入既有研究；不更改74条原片验收状态。"""
+import json
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+PKG = ROOT / '求职准备总包'
+EVID = ROOT / '原声核验'
+NAME = '22_全部公开资料范围与本轮补证'
+
+def read_json(path):
+    return json.loads(path.read_text())
+
+def write_json(path, value):
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+catalog = (ROOT / '74条公开作品目录.txt').read_text()
+originals = {}
+meta = {r['id']: r for r in read_json(PKG / '11_公开发布时间与运营快照.json')['rows']}
+for m in re.finditer(r'(?m)^(\d+)\. (.+)\nhttps://www.douyin.com/video/(\d+)', catalog):
+    originals[int(m[1])] = {'index': int(m[1]), 'id': m[3], 'topic': m[2].split('｜')[0], **meta[m[3]]}
+
+bili = read_json(EVID / 'B站29条公开目录_2026-11-02.json')
+# 按题材、标题和时长人工提出的检索对应关系；不是内容同一性验收。
+matches = [4, 8, 7, 10, 11, 13, 14, 12, 15, 16, None, 18, 19, 1, 2, 20, 27, 29, 28, 30, 35, 31, 33, 38, 3, 36, 43, 40, 42]
+links = []
+for item, index in zip(bili['items'], matches, strict=True):
+    card = item['cardText'].splitlines()
+    seconds = sum(int(p) * 60 ** i for i, p in enumerate(reversed(card[-1].split(':'))))
+    row = {**item, 'bvid': item['url'].split('/video/')[1].split('/')[0], 'bili_duration_display_seconds': seconds,
+           'status': 'title_topic_duration_candidate' if index else 'not_matched_in_existing_douyin_catalog',
+           'full_content_identity_confirmed': False, 'operator_identity_confirmed': False}
+    if index:
+        dy = originals[index]
+        row['douyin_candidate'] = {k: dy[k] for k in ['index', 'id', 'url', 'title', 'duration_seconds']}
+        row['duration_difference_seconds'] = round(seconds - dy['duration_seconds'], 3)
+    if row['bvid'] == 'BV15Ean6YEcQ':
+        row['note'] = 'B站与另一条荣耀视频标题完全相同；暂按题材和时长关联抖音10，须逐镜确认，不能按标题去重。'
+    if not index:
+        row['note'] = '已查看20秒附近出镜画面及页面；未完成全片审阅，可能是额外作品、改标题或不同剪辑，不计作已确认第75条。'
+    links.append(row)
+
+scope = [
+    {'category': '账号身份与公开资料', 'status': '部分完成', 'known': '抖音号、简介、商务入口、展示数据及JD中的出镜者名称', 'gap': '改名时间、账号法律归属、完整职业履历'},
+    {'category': '跨平台账号与历史', 'status': '发现候选，未确认管理主体', 'known': 'B站同名账号29条目录、简介、动态首屏', 'gap': '官方互链或其他足以确认管理关系的证据；其他平台仍未可靠对应'},
+    {'category': '公开作品与版本', 'status': '抖音74条结构研究；跨平台补充中', 'known': '74条原片、元数据、机器转写、画面依据与分类；B站29个作品入口', 'gap': 'B站逐片内容同一性、额外内容、已删私密作品不可据当前目录恢复'},
+    {'category': '选题、文案、拍摄、剪辑', 'status': '成片归纳已形成，内部流程未证实', 'known': '12类内容方法、逐条骨架、原创练习、可见画面纠错', 'gap': '完整连续视听与原声逐句验收；真实脚本、拍摄表、修改版本链'},
+    {'category': '评论、受众与互动', 'status': '少量定性观察', 'known': '两页抖音可见评论及部分作者回复', 'gap': '系统评论样本、受众画像、真实留存和转化；不可把少量评论外推人群'},
+    {'category': '公司、股权与账号关系', 'status': '公司支持关系有JD依据，登记未独立核实', 'known': '雇主名称、公司简介、招聘平台工商栏、历史媒体报道', 'gap': '官方登记原始结果、股权、账号与出镜者的合同关系'},
+    {'category': '团队、人员与分工', 'status': '公开角色明确，具体编制未知', 'known': '编导、出镜、摄像灯光、剪辑运营的协作职责', 'gap': '本号固定人数、姓名、专属或共享、决策者、带教安排'},
+    {'category': '品牌合作、商单与报价', 'status': '业务方向有依据，付费金额未确认', 'known': '商务入口、品牌内容与公司广告业务自述', 'gap': '逐条付费标记、实际成交价、复投、报价权益；星图客户入口需登录'},
+    {'category': '收入、成本与分账', 'status': '未取得可靠数字', 'known': '仅有历史公司及其他账号口径，不能套用本号', 'gap': '订单结算、成本、利润、个人所得；不以粉丝数估算为事实'},
+    {'category': '招聘、薪资与工作条件', 'status': '有可访问职位页面，实际空缺未确认', 'known': '不同职位的学历经验、平台薪酬区间及HR入口', 'gap': '发布时间、固定底薪、绩效、试用期及你亲自拍剪的实际范围'},
+    {'category': '采访、报道、活动与公开观点', 'status': '已有公司历史报道，个人资料仍少', 'known': '相关公司公开报道和作品中的人物表达', 'gap': '可靠对应本人的完整访谈、履历与公开创作自述'},
+    {'category': '直播、店铺、带货与其他内容形态', 'status': '未建立充分证据', 'known': '不能用品牌出现推定销售或佣金', 'gap': '可确认的本号直播、商品橱窗、交易与授权等证据'},
+]
+
+new_sources = [
+    {'id': 'S17', 'title': 'B站同名候选账号主页与29条投稿目录', 'url': 'https://space.bilibili.com/zh-Hans/3706983859358214', 'method': '2026-11-02实际Chrome页面、DOM可见卡片与动态首屏', 'scope': '账号与内容对应线索；尚未确认管理主体，不并入抖音粉丝或播放统计'},
+    {'id': 'S18', 'title': 'B站未匹配作品候选', 'url': 'https://www.bilibili.com/zh-Hans/video/BV1UAh36ZEZc/', 'method': '2026-11-02实际页面及20秒附近画面', 'scope': '标题、出镜画面、3分10秒时长；不是第75条原创作品或全片内容验收'},
+    {'id': 'S19', 'title': '抖音数码测评文案主笔JD', 'url': 'https://www.zhaopin.com/jobdetail/CCL1490015910J40961957915.htm', 'method': '2026-11-02从公司页直达原职位，搜索服务返回正文，抓取标记两周前', 'scope': '明确点名英俊姐妹日记，学历大专及以上；王先生为平台发布者；不证明当日空缺或固定底薪'},
+    {'id': 'S20', 'title': '抖音AI内容编导JD', 'url': 'https://www.zhaopin.com/jobdetail/CCL1490015910J40969439915.htm', 'method': '2026-11-02从现有公司职位卡直达，搜索服务返回原文，抓取标记昨天', 'scope': '公司自述孵化全新AI工具账号；不能算成英俊的岗位、团队扩编或业务转向'},
+    {'id': 'S21', 'title': '公司主页当日显示与职位入口', 'url': 'https://www.zhaopin.com/companydetail/CZL1490015910.htm', 'method': '2026-11-02从原JD公司链接直达，搜索服务返回原文，抓取标记今天', 'scope': '公司简介、职位入口、工商展示；不同缓存显示5或6个岗位，不做当前精确人数/空缺数'},
+    {'id': 'S22', 'title': '星图官网客户入口登录限制', 'url': 'https://www.xingtu.cn/', 'method': '2026-11-02实际Chrome点击客户后跳到sso.oceanengine.com/xingtu/login?role=1', 'scope': '只确认访问限制；未登录注册、未获得本账号报价'},
+    {'id': 'S23', 'title': '国家企业信用信息公示系统访问限制', 'url': 'https://www.gsxt.gov.cn/index.html', 'method': '2026-11-02网页读取403；实际Chrome显示Environment Checking，后续观察超时', 'scope': '未取得公司登记结果，不升级招聘平台工商栏为官方登记事实'},
+]
+
+summary = {
+    'updated_on': '2026-11-02', 'timezone': 'America/New_York', 'scope': '账号、公开出镜者及其内容经营相关的全部可取得公开资料',
+    'all_public_materials_collected': False, 'all_internet_exhausted': False,
+    'douyin_original_catalog_total_unchanged': 74,
+    'bili_candidate_account': {'uid': '3706983859358214', 'operator_confirmed': False, 'followers_display': 144,
+        'likes_display_as_of': '2026-11-01', 'likes_display': 649, 'views_display_as_of': '2026-11-01',
+        'views_display_exact_tooltip': 27122, 'uploads': 29, 'title_topic_duration_candidate_matches': 28,
+        'unmatched_candidates': 1, 'full_content_identity_approved': 0, 'not_added_to_douyin_denominator': True},
+    'coverage_matrix': scope, 'sources': new_sources, 'bili_catalog_matches': links,
+    'job_salary_boundary': '详情页薪酬隐藏；同公司同名推荐卡显示区间。均非已核固定底薪。',
+    'job_cards_observed': [
+        {'title': '抖音短视频编导（3C数码/双休）', 'range_cny_month': [12000, 20000], 'source': 'S9', 'position_status_confirmed': False},
+        {'title': '抖音数码测评文案主笔', 'range_cny_month': [10000, 15000], 'source': 'S19', 'position_status_confirmed': False},
+        {'title': '抖音AI内容编导', 'range_cny_month': [10000, 15000], 'source': 'S20；金额见S9同公司推荐卡', 'position_status_confirmed': False, 'assigned_to_yingjun': False},
+    ],
+    'outreach_sent': False,
+    'remaining_audio_status': {'full_audiovisual_approved': 0, 'audio_verbatim_approved': 0},
+}
+write_json(PKG / (NAME + '.json'), summary)
+
+report = '''英俊姐妹日记｜全部公开资料范围与本轮补证
+观察日期：2026年11月2日（本机纽约时间）
+
+你说的“所有资料”，本册按账号、公开出镜者及其内容经营相关的全部可取得公开资料处理。包括视频、图文、简介、动态、评论、跨平台账号、公司团队、报道活动、商务报价、招聘和可见变现证据。
+当前结论：尚未全部查齐。本文件是资料覆盖清单和新增证据，不是“全网全部查完”的证明；也不是她内部工作方法的原始档案。
+
+一、本轮新增的真实材料
+
+1. B站同名候选账号，UID 3706983859358214。
+实际主页显示29条投稿、144粉丝；累计649赞与27,122播放的提示口径截至11月1日。简介与抖音相符，抽看A7及另一条片子的出镜画面存在对应线索，但未找到足以确认管理主体的官方互链。暂称同名候选，不把它的播放、粉丝与抖音相加。
+https://space.bilibili.com/zh-Hans/3706983859358214
+
+29个作品入口已完整列入本文件同名JSON，并按标题、题材和时长给28条提出了抖音对应候选；这28条未做全片内容同一性验收。两条荣耀Magic9视频同标题、不同BV号与时长，保留两条，不按标题去重。
+
+另有一条《2026年了，国产和苹果本质区别在哪？》，时长3分10秒、页面日期8月25日，暂未在74条目录匹配。已留存约20秒画面，未完成全片研究；可能是额外内容、改标题或另一剪辑，不直接称第75条作品。
+https://www.bilibili.com/zh-Hans/video/BV1UAh36ZEZc/
+
+动态首屏还显示投稿文案及一条8月25日转正会员的系统动态。会员转正日期不等于注册、开号或开始运营日期。动态与投稿卡日期存在一天差异，页面时间还随加载变化，本轮不比较精确小时或断言发布时间先后。
+
+2. 新增点名本号的文案主笔JD。
+抖音数码测评文案主笔：深圳光明，大专及以上，至少1年相关经验。内容包含策划、脚本、现场导演及后期协作；基础拍摄剪辑为加分能力。页面推荐卡显示1万—1.5万元区间，详情顶部隐藏薪资。联系人展示王先生／人事经理，仅为平台入口，未核实当日仍负责招聘。
+https://www.zhaopin.com/jobdetail/CCL1490015910J40961957915.htm
+
+这与此前本科要求的“新媒体文案”是不同职位编号，须分别记录。学历符合不等于经验已符合，也不等于录用或固定底薪满足8000元。
+
+3. 更新3C编导与公司业务线索。
+3C编导页面仍可读取，深圳光明、大专、1—3年；同名同公司推荐卡显示1.2万—2万元，详情顶部隐藏薪资。平台显示招聘入口不等于已核实实际空缺，抓取时间不等于首次招聘时间。
+https://www.zhaopin.com/jobdetail/CCL1490015910J40944898315.htm
+
+另一个AI编导职位写的是孵化新AI工具账号，大专、1—3年；不能当成英俊账号的新方向或专属岗位。推荐卡区间1万—1.5万元，底薪未核。公司主页与不同职位缓存显示的在招数不一致，不用它精确计算公司岗位或人数。
+https://www.zhaopin.com/jobdetail/CCL1490015910J40969439915.htm
+https://www.zhaopin.com/companydetail/CZL1490015910.htm
+
+二、全部公开资料的覆盖账
+
+'''
+for i, item in enumerate(scope, 1):
+    report += f'{i}. {item["category"]}：{item["status"]}。\n已取得／可支持：{item["known"]}。\n仍缺：{item["gap"]}。\n\n'
+report += '''三、这次真正遇到的访问限制
+
+星图官网可打开；点击客户入口后进入登录页。未输入号码、未注册或借用身份，尚未读到本账号报价。即使得到挂牌价，也不能当作实际成交、利润或个人收入。
+https://www.xingtu.cn/
+
+国家企业信用信息公示系统：网页读取返回403，实际Chrome停在Environment Checking，后续观察超时；未取得该公司的官方登记记录。保留招聘平台工商字段的来源标签。
+https://www.gsxt.gov.cn/index.html
+
+宝安湾新增活动报道链接目前网页读取502，仅保留搜索线索，不增加经全文核实的公司合作结论。此前已核历史报道继续沿用07文件的日期和适用口径。
+https://www.baoanone.com/content198260.html
+
+小红书、微博及个人访谈，目前仍无可可靠归属本人的结果；同名或同公司账号不能直接合并。直播、店铺和佣金也仍缺本账号的充分证据。搜索没有找到不等于资料不存在。
+
+四、怎样才算交付到了你要求的程度
+
+每项结论都应有可打开的原始出处、观察日期和适用范围；跨平台先确认身份，再比较版本；商业内容先核合作性质，再谈价格；公司总人数与本号人数分开。内部信息只有公开披露或得到合法授权的原始材料后才能确认。
+
+现有抖音分母仍为74：结构研究74／74，画面差异候选4003／4003已回图；完整连续视听、原声逐句验收仍为0。B站29条只计新目录，不计29条新原创或29条完整拆解。所有未核实项继续保留。
+
+下一批公开研究应先解决B站管理主体及未匹配作品，再核实其他平台、品牌合作公开证据、系统评论样本和可公开读取的公司登记。真实人员、底薪、报价、后台、brief与版本链可能需团队自愿提供。目前未向博主、商务或HR发送任何消息。
+
+原始观察与机器可读目录：原声核验／B站候选主页_2026-11-02.json、B站29条公开目录_2026-11-02.json、B站A7样本_页面证据.txt、B站额外内容候选_页面证据.txt与PNG、B站候选动态首屏_2026-11-02.txt、星图报价入口_登录阻碍_2026-11-02.txt。\n'''
+(PKG / (NAME + '.txt')).write_text(report)
+
+master = PKG / '00_从这里看_账号研究总册.txt'
+text = master.read_text()
+entry = NAME + '.txt／.json：全部公开资料的12类覆盖账；B站29条候选目录与28条检索对应；新增文案主笔和AI岗位；报价及工商访问限制。尚未全部查齐。\n'
+if entry not in text:
+    text = text.replace('本轮新增入口（2026年11月2日）：\n', '本轮新增入口（2026年11月2日）：\n' + entry, 1)
+salary = '薪酬：11月1日岗位列表观察到的12—15K属于当日招聘展示线索；固定底薪、绩效、试用期待遇未核实，不能据此说已满足8000元固定底薪。'
+text = text.replace(salary, '薪酬：此前12—15K展示线索保留；本轮另见3C编导推荐卡12—20K、文案主笔10—15K，分别对应不同职位，详情顶部隐藏薪资。均未核固定底薪、绩效、试用期待遇，不能说已满足8000元固定底薪。详见22文件。')
+master.write_text(text)
+
+person = PKG / '07_人物公司商业与评论证据档案.txt'
+text = person.read_text().replace('5. 未找到能可靠对应本人的跨平台账号、个人访谈或完整履历；不把搜索到的其他同名人士并入档案。', '5. 本轮新发现B站同名账号及29条目录，出镜与内容存在对应线索，但管理主体尚未确认，暂为候选；详见22文件。其他平台、个人访谈或完整履历仍未可靠对应，不把其他同名人士并入档案。')
+section = '\n十、全部公开资料的范围与新增平台（2026年11月2日）\n\n'
+if section not in text:
+    text += section + '全部公开资料按12类建账，仍未全部查齐。B站同名候选29条，28条有标题／题材／时长对应候选、1条暂未匹配；未确认管理关系，不并入74条抖音研究分母。另补到点名英俊姐妹日记的“大专及以上”文案主笔JD，与先前本科文案岗分开记录；星图报价遇登录入口，工商官网访问受限。完整清单、原始链接和薪酬边界见22文件。\n'
+person.write_text(text)
+
+ledger_path = PKG / '05_证据与覆盖记录.json'
+ledger = read_json(ledger_path)
+existing = {s['id'] for s in ledger['sources']}
+ledger['sources'].extend(s for s in new_sources if s['id'] not in existing)
+ledger['public_materials_coverage_20261102'] = {
+    'path': str(PKG / (NAME + '.json')), 'all_public_materials_collected': False,
+    'categories': len(scope), 'bili_candidate_uploads': 29, 'bili_operator_confirmed': False,
+    'bili_candidate_matches': 28, 'bili_unmatched_candidates': 1,
+    'douyin_original_catalog_total_unchanged': 74, 'outreach_sent': False,
+}
+write_json(ledger_path, ledger)
+
+reader = ROOT / '原片联动学习/看片与逐句核对.html'
+html = reader.read_text()
+link = f' · <a href="../求职准备总包/{NAME}.txt" target="_blank">全部公开资料覆盖账</a>'
+if link not in html:
+    html = html.replace('>这轮发现怎样用到拍剪</a></p>', '>这轮发现怎样用到拍剪</a>' + link + '</p>', 1)
+reader.write_text(html)
+
+assert len(originals) == 74 and len(links) == 29
+assert sum('douyin_candidate' in r for r in links) == 28
+assert len({r['bvid'] for r in links}) == 29
+assert ledger['coverage']['catalog_total'] == 74
+assert not any(r['full_content_identity_confirmed'] for r in links)
+assert reader.read_text().count('>全部公开资料覆盖账</a>') == 1
+print(json.dumps({'report': str(PKG / (NAME + '.txt')), 'categories': len(scope), 'bili_candidates': len(links), 'candidate_matches': 28, 'unmatched': 1, 'douyin_total_unchanged': 74, 'all_public_materials_collected': False}, ensure_ascii=False))

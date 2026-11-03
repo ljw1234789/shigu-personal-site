@@ -1,0 +1,40 @@
+- list:
+  - link "首页":
+    - /url: //www.bilibili.com
+    - text: 首页
+- list:
+  - generic: 投稿
+- heading "腕上微运动？随时随地随心动！华为 Fit 5 Pro 上手体验" [level=1]
+- generic: "733"
+- generic: "0"
+- generic: 2026-08-22 16:00:00
+- generic: 个人观点，仅供参考
+- generic "哔哩哔哩播放器"
+- generic "点赞（Q）":
+  - generic: "15"
+- generic "投币（W）":
+  - generic: "4"
+- generic "收藏（E）":
+  - generic: "3"
+- generic: 分享
+- link "华为":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%8D%8E%E4%B8%BA&from_source=video_tag
+- link "体验":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E4%BD%93%E9%AA%8C&from_source=video_tag
+- link "华为 Fit5 Pro":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%8D%8E%E4%B8%BA%20Fit5%20Pro&from_source=video_tag
+- link "华为手表":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E5%8D%8E%E4%B8%BA%E6%89%8B%E8%A1%A8&from_source=video_tag
+- link "智能手表":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E6%99%BA%E8%83%BD%E6%89%8B%E8%A1%A8&from_source=video_tag
+- link "运动手表":
+  - /url: //search.bilibili.com/zh-Hans/all?keyword=%E8%BF%90%E5%8A%A8%E6%89%8B%E8%A1%A8&from_source=video_tag
+- link:
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.head.click
+- link "英俊姐妹日记":
+  - /url: //space.bilibili.com/zh-Hans/3706983859358214/?spm_id_from=333.788.upinfo.detail.click
+- link " 发消息":
+  - /url: //message.bilibili.com/zh-Hans?spm_id_from=333.788.upinfo.detail.click#whisper/mid3706983859358214
+  - generic: 
+  - text: 发消息
+- generic "记录让人心动的新玩意"
