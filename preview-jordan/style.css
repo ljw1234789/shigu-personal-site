@@ -1,10 +1,10 @@
 @font-face{font-family:DeskSerif;src:url('../assets/fonts/ljw-editorial-serif.woff2') format('woff2');font-display:swap}
 *{box-sizing:border-box}
 :root{color-scheme:light;--paper:#f5f4f0;--floor:#d5d6e1;--ink:#18191b;--muted:#6d707d}
-html{background:var(--floor);scrollbar-width:none}
+html{background:var(--floor);scrollbar-width:none;scroll-behavior:auto;overscroll-behavior-y:none;overflow-anchor:none}
 html::-webkit-scrollbar{display:none}
 body{margin:0;color:var(--ink);background:var(--floor);font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif}
-body:not(.has-entered),body.is-entering{overflow:hidden}
+body:not(.has-entered){overflow:hidden}
 button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 button{font:inherit;color:inherit;cursor:pointer}
 button:disabled{cursor:wait}
@@ -31,7 +31,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #31466c;outline-offset:5p
 #desk{width:100%;height:100%;display:block;touch-action:pan-y}
 body.is-inspecting #desk{touch-action:none}
 .scroll-track{height:calc(100svh + 9300px)}
-.navigation{position:fixed;inset:0;z-index:30;padding:95px max(8vw,32px) 40px;background:#e6e6efed;backdrop-filter:blur(15px);overflow:auto}
+.navigation{position:fixed;inset:0;z-index:30;padding:95px max(8vw,32px) 40px;background:#e6e6efed;backdrop-filter:blur(15px);overflow:auto;overscroll-behavior:contain}
 .navigation>p{display:flex;justify-content:space-between;font-family:DeskSerif,serif;font-size:23px;margin:0 0 35px}
 .navigation>p span{font-family:Arial,"PingFang SC",sans-serif;font-size:13px;color:#6b6d76;align-self:center}
 .navigation>button{display:flex;align-items:center;gap:28px;max-width:1100px;width:100%;border:0;border-top:1px solid #bdbdca;background:transparent;text-align:left;padding:15px 0;font-family:DeskSerif,serif;font-size:clamp(25px,3.7vw,48px);font-weight:500}
@@ -41,18 +41,19 @@ body.is-inspecting #desk{touch-action:none}
 .navigation>a{display:inline-block;margin-top:25px;font-size:12px;color:#525567;text-decoration:none}
 .desk-caption{position:fixed;left:35px;bottom:27px;z-index:20;display:flex;gap:18px;align-items:center;font-size:10px;pointer-events:none;color:#51535d;transition:opacity .3s}
 .desk-caption span:first-child{font-variant-numeric:tabular-nums;font-size:9px;color:#777986}
-.desk-controls{position:fixed;right:30px;bottom:18px;display:flex;align-items:center;gap:18px;z-index:20;transition:opacity .3s}
+.desk-controls{position:fixed;right:165px;top:18px;display:flex;align-items:center;gap:18px;z-index:32;transition:opacity .3s}
 .index-button,.motion-button{border:0;background:transparent;font-size:11px;padding:12px 8px}
 .index-button span{margin-left:12px;font-size:18px}
 .motion-button{width:30px;font-size:15px;padding:10px 3px}
 .scroll-cue{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);font-size:10px;color:#696c77;display:flex;align-items:center;gap:15px;z-index:5;transition:opacity .5s}
 .scroll-cue span{font-size:20px}
 .asset-status{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:35;padding:12px 18px;margin:0;background:#f8f8f2e8;border-radius:2px;font-size:12px;color:#555b69;white-space:nowrap}
-.asset-status a{color:#252b37;margin-left:15px;text-underline-offset:4px}
+.asset-status button{color:#252b37;margin-left:15px;border:0;padding:0;background:transparent;font:inherit;text-decoration:underline;text-underline-offset:4px}
 .inspection{position:fixed;inset:0;pointer-events:none;z-index:24;opacity:0;transition:opacity .25s}
 .inspection.is-ready{opacity:1}
+.inspection:before{content:"";position:absolute;inset:auto 0 0;height:100px;background:linear-gradient(transparent,#d5d6e1f0 75%);pointer-events:none}
 .inspection-title{position:absolute;left:50%;top:24px;transform:translateX(-50%);font-size:11px;margin:0;color:#4f5059;white-space:nowrap}
-.inspection-actions{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;justify-content:center;align-items:center;gap:24px;white-space:nowrap}
+.inspection-actions{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;justify-content:center;align-items:center;gap:24px;white-space:nowrap;z-index:1}
 .inspection-actions button,.inspection-actions a{pointer-events:auto;border:0;background:transparent;text-decoration:none;color:#191a20;font-size:12px;line-height:1.4;padding:12px 0;position:relative}
 .inspection-actions button:after,.inspection-actions a:after{position:absolute;bottom:6px;left:0;right:0;content:"";height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .22s}
 .inspection-actions button:hover:after,.inspection-actions a:hover:after{transform:scaleX(1)}
@@ -71,7 +72,7 @@ body.has-fallback .scroll-track,body.has-fallback .desk-viewport,body.has-fallba
 @media(max-width:760px){
  .site-bar{inset:13px 13px auto}.identity{font-size:11px}.menu-button{width:37px}
  .desk-caption{left:23px;bottom:23px;font-size:9px}.desk-caption span:first-child{display:none}
- .desk-controls{right:15px;bottom:13px;gap:8px}.index-button{font-size:10px}.index-button span{margin-left:8px}
+ .desk-controls{right:116px;top:13px;gap:8px}.index-button{font-size:10px}.index-button span{margin-left:8px}
  .scroll-cue{bottom:62px;font-size:9px}
  .navigation{padding:100px 25px 35px}.navigation>p{display:block}.navigation>p span{display:block;margin-top:13px}.navigation>button{font-size:27px;padding:18px 0;gap:18px}
  .inspection-title{top:80px;font-size:11px;max-width:85vw;text-align:center;white-space:normal}

@@ -13,6 +13,7 @@ const images = {'dry-ice':'dry-ice-hd.jpg',coastline:'coastline-hd.jpg',behind:'
 const videoTimes = {'dry-ice':'10:25',coastline:'13:55',behind:'03:43'};
 const ASSETS = '../assets/projects/';
 const MAX_TRAVEL = 62;
+const VIEW_LEAD = 3.4;
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp = t => Math.max(0,Math.min(1,t));
 const outQuart = t => 1-Math.pow(1-clamp(t),4);
@@ -28,6 +29,7 @@ const qBase = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/4,0,0
 const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),Math.PI/2);
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
+const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
 const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
@@ -68,7 +70,9 @@ updateMotionButton();
 function jump(z){
   closeObject();setMenu(false);
   const max=document.documentElement.scrollHeight-innerHeight;
-  scrollTo({top:z/MAX_TRAVEL*max,behavior:paused||reduced.matches?'instant':'smooth'});
+  // The camera already eases toward the scroll position. Avoid a second browser
+  // animation that can keep moving after the visitor changes scroll direction.
+  scrollTo({top:z/MAX_TRAVEL*max,behavior:'instant'});
 }
 document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>jump(Number(b.dataset.jump))));
 document.addEventListener('keydown',e=>{
@@ -109,11 +113,25 @@ function setInspection(){
   $('#inspection-title').textContent=name;
   $('#inspection-description').textContent=description;
 }
+function inspectionCorners(g){
+  g.updateWorldMatrix(true,true);
+  const inverse=g.matrixWorld.clone().invert(),box=new THREE.Box3();
+  g.traverse(node=>{
+    if(!node.isMesh)return;
+    node.geometry.computeBoundingBox();
+    const b=node.geometry.boundingBox,m=inverse.clone().multiply(node.matrixWorld);
+    for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])box.expandByPoint(new THREE.Vector3(x,y,z).applyMatrix4(m));
+  });
+  const corners=[];
+  for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z])corners.push(new THREE.Vector3(x,y,z));
+  return corners;
+}
 function openObject(g){
   if(!g||!g.userData.action||!ready||!entered)return;
   if(active&&active!==g){closeObject();return;}
   if(active===g)return;
   setMenu(false);active=g;focusFrom=0;focusTo=1;focusAt=performance.now();focus=0;
+  g.userData.inspectionCorners=inspectionCorners(g);
   g.userData.focusStart={position:g.position.clone(),quaternion:g.quaternion.clone(),scale:g.scale.x};
   flip=flipTo=0;dragYaw=dragPitch=0;playing=false;uiReady=false;
   g.userData.revealAt=-1e6;g.visible=true;
@@ -477,13 +495,18 @@ function studioEnvironment(){
 function resize(){
   if(!renderer)return;
   mobile=innerWidth/innerHeight<.8;camera.aspect=innerWidth/innerHeight;camera.fov=mobile?80:50;camera.updateProjectionMatrix();
+  qBase.setFromEuler(new THREE.Euler(-THREE.MathUtils.degToRad(mobile?55:45),0,0));
   renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.7:2));renderer.setSize(innerWidth,innerHeight);
-  objects.forEach(g=>{const d=g.userData;d.scale=(mobile?(d.kind==='name'?.79:d.device?.54:.72):1)*(d.baseScale||1);});
+  objects.forEach(g=>{const d=g.userData;d.scale=(mobile?(d.kind==='name'?.79:d.kind==='keyboard'?.45:(d.device||d.kind==='monitor')?.54:.72):1)*(d.baseScale||1);});
   getScroll();
+}
+function compactX(d){
+  const ratio=d.primary?.48:d.kind==='keyboard'?.43:(d.device||d.kind==='monitor')?.5:.64;
+  return d.kind==='name'||d.identity?0:d.rest.x*ratio;
 }
 function restingPosition(g){
   const d=g.userData;
-  return new THREE.Vector3(mobile?(d.kind==='name'||d.identity?0:d.rest.x*(d.primary?.48:d.device?.5:.64)):d.rest.x,d.rest.y,d.rest.z);
+  return new THREE.Vector3(mobile?compactX(d):d.rest.x,d.rest.y,d.rest.z);
 }
 function setPaperBend(g,amount){
   const p=g.userData.paper;if(!p||Math.abs(p.bend-amount)<.0004)return;p.bend=amount;
@@ -495,7 +518,7 @@ function cameraUpdate(now,dt,still){
   viewZ=still?scrollGoal:damp(viewZ,scrollGoal,6.5,dt);
   const intro=still?1:outQuint((now-enterAt)/3000);
   const targetY=mobile?9:7.5;
-  camera.position.set(0,THREE.MathUtils.lerp(60,targetY,intro)+focus*(mobile?4.5:2.2),viewZ+THREE.MathUtils.lerp(-60,7.5,intro));
+  camera.position.set(0,THREE.MathUtils.lerp(60,targetY,intro)+focus*(mobile?4.5:2.2),viewZ+THREE.MathUtils.lerp(-60,7.5+VIEW_LEAD,intro));
   const pitch=active||still?0:pointer.y*Math.PI*.05,yaw=active||still?0:pointer.x*-Math.PI*.1;
   cameraPitch=still?pitch:damp(cameraPitch,pitch,3,dt);cameraYaw=still?yaw:damp(cameraYaw,yaw,3,dt);
   qRig.setFromEuler(new THREE.Euler(cameraPitch,cameraYaw,0,'YXZ'));camera.quaternion.copy(qRig).multiply(qBase);
@@ -529,15 +552,24 @@ function renderObject(g,now,dt,still){
   }
   let bend=d.kind==='paper'?(1-outQuart(elapsed/2000))*.65+(isHover?-.15:.035):0;
   if(active===g){
-    const fitHeight=mobile?.63:.76,fitWidth=mobile?.79:.72;
-    const tan=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
-    const distance=Math.max(d.height/(2*tan*fitHeight),d.width/(2*tan*camera.aspect*fitWidth));
-    camera.getWorldDirection(vForward);
-    vTarget.copy(camera.position).addScaledVector(vForward,distance);
     qDrag.setFromEuler(new THREE.Euler(dragPitch,dragYaw,0,'YXZ'));
     qFace.copy(camera.quaternion).multiply(qDrag);
     if(d.face==='floor')qFace.multiply(qFloorToFace);
     if(d.back)qFace.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),flip*Math.PI));
+    const tan=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+    const fitWidth=Math.max(.18,Math.min(mobile?.83:.72,1-2*(mobile?24:80)/innerWidth));
+    const fitTop=Math.max(.18,Math.min(mobile?.66:.76,1-2*(mobile?140:76)/innerHeight));
+    const fitBottom=Math.max(.18,Math.min(mobile?.64:.70,1-2*(mobile?150:100)/innerHeight));
+    qFit.copy(camera.quaternion).invert().multiply(qFace);
+    let distance=2;
+    // Fit the entire object, including a laptop's keyboard and screen depth,
+    // into the space between the header and the independent action row.
+    for(const corner of d.inspectionCorners){
+      vFit.copy(corner).sub(d.center).applyQuaternion(qFit);
+      distance=Math.max(distance,vFit.z+Math.abs(vFit.x)/(tan*camera.aspect*fitWidth),vFit.z+(vFit.y>=0?vFit.y/fitTop:-vFit.y/fitBottom)/tan);
+    }
+    camera.getWorldDirection(vForward);
+    vTarget.copy(camera.position).addScaledVector(vForward,distance);
     vCenter.copy(d.center).applyQuaternion(qFace);vTarget.sub(vCenter);
     if(focusTo){
       g.position.lerpVectors(d.focusStart.position,vTarget,focus);
@@ -554,7 +586,7 @@ function renderObject(g,now,dt,still){
   if(d.paper){d.bendValue=still?bend:damp(d.bendValue||0,bend,9,dt);setPaperBend(g,d.bendValue);}
   if(d.arm)d.arm.rotation.y=damp(d.arm.rotation.y,isHover?-.2:0,7,dt);
   if(d.contact){
-    d.contact.visible=g.visible;d.contact.position.x=mobile?(d.kind==='name'?0:d.rest.x*(d.primary?.48:d.device?.5:.64)):d.rest.x;
+    d.contact.visible=g.visible;d.contact.position.x=mobile?compactX(d):d.rest.x;
     d.contact.position.z=d.rest.z;d.contact.scale.setScalar(s);
     d.contact.material.opacity=d.contactOpacity*clamp(elapsed/1400)*(active===g?1-focus:1);
   }

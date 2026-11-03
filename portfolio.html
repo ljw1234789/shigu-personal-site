@@ -8,6 +8,15 @@
  <meta property="og:title" content="刘俊威的个人网站｜科普视频内容创作" />
  <meta property="og:description" content="你好，我是刘俊威，一个工科背景的内容创作者。用 AI 做内容，也把想法做成工具。" />
  <title>刘俊威的作品集｜科普视频内容创作</title>
+ <script>
+ (() => {
+   const target = location.protocol === 'file:'
+     ? new URL('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/')
+     : new URL('preview-jordan/', location.href);
+   target.searchParams.set('v', 'flow11');
+   location.replace(target.href);
+ })();
+ </script>
  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
  <link rel="stylesheet" href="styles.css?v=20261014-results1" />
  <link rel="stylesheet" href="motion.css?v=20261014-results1" />

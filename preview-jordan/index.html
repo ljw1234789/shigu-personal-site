@@ -9,7 +9,7 @@
   <script>
     if (location.protocol === 'file:') {
       const target = new URL('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/');
-      target.searchParams.set('v', 'entry-route10');
+      target.searchParams.set('v', 'flow11');
       if (new URLSearchParams(location.search).get('enter') === '1') target.searchParams.set('enter', '1');
       location.replace(target.href);
     }
@@ -18,13 +18,13 @@
   <link rel="preload" href="../assets/fonts/ljw-editorial-serif.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="modulepreload" href="../assets/vendor/three.module.js">
   <link rel="preload" href="name-wordmark.bin.gz" as="fetch" crossorigin>
-  <link rel="stylesheet" href="style.css?v=entry-route10">
+  <link rel="stylesheet" href="style.css?v=flow11">
   <link rel="stylesheet" href="../cursor.css?v=20261029-3">
   <script src="../site-data.js"></script>
   <script src="../project-evidence.js"></script>
   <script src="../portfolio-narrative.js"></script>
   <script src="../tool-catalog.js"></script>
-  <script type="module" src="desk.js?v=entry-route10"></script>
+  <script type="module" src="desk.js?v=flow11"></script>
 </head>
 <body class="scroll-home">
   <div class="entry" id="entry">
@@ -57,7 +57,7 @@
       <button data-case="behind"><img src="../assets/projects/behind-hd.jpg" alt=""><span>一条视频的诞生 ↗</span></button>
     </div>
   </main>
-  <p class="asset-status" id="asset-status" role="status" hidden>正在载入作品… <a href="../portfolio.html#cases">直接看作品 ↗</a></p>
+  <p class="asset-status" id="asset-status" role="status" hidden>正在载入作品… <button type="button" data-jump="4.5">跳到作品 ↓</button></p>
   <div class="desk-caption" id="desk-caption"><span id="section-number">01 / 06</span><span id="section-name">刘俊威的创作桌面</span></div>
   <div class="desk-controls">
     <button class="index-button" id="work-index" type="button">作品清单 <span>↗</span></button>
