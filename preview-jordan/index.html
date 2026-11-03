@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#d8d9e3">
+  <meta name="description" content="刘俊威的创作桌面：视频作品、个人贡献与创作工具。">
+  <title>刘俊威 · 创作桌面预览</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/ljw-editorial-serif.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="modulepreload" href="../assets/vendor/three.module.js">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../cursor.css?v=20261029-3">
+  <script src="../site-data.js"></script>
+  <script src="../project-evidence.js"></script>
+  <script src="../portfolio-narrative.js"></script>
+  <script src="../tool-catalog.js"></script>
+  <script type="module" src="desk.js"></script>
+</head>
+<body class="scroll-home">
+  <div class="entry" id="entry">
+    <button class="entry-button" id="enter" type="button"><span>进入刘俊威的作品集</span><span aria-hidden="true">↗</span></button>
+    <p id="load-status" role="status">正在准备桌面</p>
+  </div>
+  <header class="site-bar">
+    <button class="menu-button" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="navigation" aria-expanded="false"><i></i><i></i><i></i></button>
+    <button class="identity" data-jump="0" aria-label="回到刘俊威的姓名">刘俊威<span>↗</span></button>
+  </header>
+  <nav class="navigation" id="navigation" aria-label="作品集导航" hidden>
+    <p>刘俊威<span>短视频内容策划与剪辑</span></p>
+    <button data-jump="0"><span>01</span>回到桌面<b>↗</b></button>
+    <button data-jump="6"><span>02</span>视频作品<b>↗</b></button>
+    <button data-jump="30"><span>03</span>创作工具<b>↗</b></button>
+    <button data-jump="40"><span>04</span>关于我<b>↗</b></button>
+    <a href="../">查看现有网站 ↗</a>
+  </nav>
+  <main id="main">
+    <h1 class="sr-only">刘俊威的个人作品集</h1>
+    <div class="desk-viewport" id="viewport"><canvas id="desk" aria-label="立体创作桌面，滚动浏览作品；也可以使用导航和作品清单。"></canvas></div>
+    <div class="scroll-track" id="scroll-track" aria-hidden="true"></div>
+    <div class="fallback" id="fallback" hidden>
+      <img class="fallback-name" src="../assets/sculpture-v13/wordmark.svg" alt="刘俊威">
+      <p>短视频内容策划与剪辑</p>
+      <button data-case="dry-ice"><img src="../assets/projects/dry-ice-hd.jpg" alt=""><span>重新认识干冰白雾 ↗</span></button>
+      <button data-case="coastline"><img src="../assets/projects/coastline-hd.jpg" alt=""><span>丈量一条海岸线 ↗</span></button>
+      <button data-case="behind"><img src="../assets/projects/behind-hd.jpg" alt=""><span>一条视频的诞生 ↗</span></button>
+    </div>
+  </main>
+  <div class="desk-caption" id="desk-caption"><span id="section-number">01 / 06</span><span id="section-name">刘俊威的创作桌面</span></div>
+  <div class="desk-controls">
+    <button class="index-button" id="work-index" type="button">作品清单 <span>↗</span></button>
+    <button class="motion-button" id="motion-toggle" type="button" aria-label="暂停桌面动态" aria-pressed="false">Ⅱ</button>
+  </div>
+  <div class="scroll-cue" id="scroll-cue" aria-hidden="true">往下滚动 <span>↓</span></div>
+  <div id="hover-label" class="hover-label" aria-hidden="true"></div>
+  <dialog id="detail" aria-labelledby="detail-heading">
+    <header class="detail-bar"><span>刘俊威</span><button id="close-detail" aria-label="返回桌面" type="button">返回桌面 <b>×</b></button></header>
+    <div class="detail-body" id="detail-body"></div>
+  </dialog>
+  <noscript><p>请打开 <a href="../portfolio.html">刘俊威的完整作品集</a> 查看视频和个人贡献。</p></noscript>
+</body>
+</html>
