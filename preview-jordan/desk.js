@@ -1,462 +1,588 @@
 import * as THREE from '../assets/vendor/three.module.js';
 
-const $ = (s) => document.querySelector(s);
-const canvas = $('#desk');
-const entry = $('#entry');
-const dialog = $('#detail');
-const detail = $('#detail-body');
-const menu = $('#navigation');
+const $ = s => document.querySelector(s);
+const canvas = $('#desk'), entry = $('#entry'), menu = $('#navigation');
+const inspector = $('#inspection'), actions = $('#inspection-actions'), video = $('#video-surface');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const projects = window.PERSONAL_SITE.projects;
-const evidence = window.PROJECT_EVIDENCE;
+const evidence = window.PROJECT_EVIDENCE.projects;
 const narrative = window.PORTFOLIO_NARRATIVE;
-const tools = window.CREATIVE_TOOLS.filter(t => ['science', 'motion'].includes(t.id));
-const order = ['dry-ice', 'coastline', 'behind'];
-const images = { 'dry-ice': 'dry-ice-hd.jpg', coastline: 'coastline-hd.jpg', behind: 'behind-hd.jpg' };
+const tools = window.CREATIVE_TOOLS.filter(t => ['science','motion'].includes(t.id));
+const order = ['dry-ice','coastline','behind'];
+const images = {'dry-ice':'dry-ice-hd.jpg',coastline:'coastline-hd.jpg',behind:'behind-hd.jpg'};
 const ASSETS = '../assets/projects/';
-const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const ease = t => 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
-let entered = false, paused = reduced.matches, enteringAt = 0, fallback = false;
-let ready = false, hovered = null, pointerDown = null, scene, camera, renderer, light;
-let frame = 0, lastTime = 0, activeTime = 0, drawAt = 0, viewZ = 0;
-const pickables = [], objects = [], materials = [];
-const mouse = new THREE.Vector2(10, 10);
-const ray = new THREE.Raycaster();
-const worldPoint = new THREE.Vector3();
-let px = 0, py = 0, scrollGoal = 0;
-const floorColor = '#babed0';
-const interactionLabel = $('#hover-label');
-const sectionStops = [
-  [0, '刘俊威的创作桌面'], [4, '重新认识干冰白雾'], [11.2, '丈量一条海岸线'],
-  [19.5, '一条视频的诞生'], [28, '创作工具'], [37.5, '关于我']
-];
+const MAX_TRAVEL = 62;
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp = t => Math.max(0,Math.min(1,t));
+const outQuart = t => 1-Math.pow(1-clamp(t),4);
+const outQuint = t => 1-Math.pow(1-clamp(t),5);
+const inOut = t => (t=clamp(t))<.5?8*t*t*t*t:1-Math.pow(-2*t+2,4)/2;
+const back = t => {t=clamp(t)-1;return 1+2.70158*t*t*t+1.70158*t*t;};
+const bounce = t => {t=clamp(t);const n=7.5625,d=2.75;if(t<1/d)return n*t*t;if(t<2/d)return n*(t-=1.5/d)*t+.75;if(t<2.5/d)return n*(t-=2.25/d)*t+.9375;return n*(t-=2.625/d)*t+.984375;};
+const damp = (a,b,s,dt) => THREE.MathUtils.lerp(a,b,1-Math.exp(-s*dt));
+const objects=[],pickables=[],keys=[],identities=[],papers=[];
+const projectPhotos = new Map();
+const pointer = new THREE.Vector2(0,0),ray = new THREE.Raycaster();
+const qBase = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/4,0,0));
+const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),Math.PI/2);
+const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
+const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
+const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'关于我']];
+let scene,camera,renderer,light,ivory,black,grey,white,blue;
+let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
+let frame=0,lastTime=0,drawAt=0,scrollGoal=0,viewZ=0,scrollPosition=0;
+let hover=null,down=null,dragYaw=0,dragPitch=0,cameraYaw=0,cameraPitch=0;
+let active=null,focus=0,focusFrom=0,focusTo=0,focusAt=0,flip=0,flipTo=0;
+let playing=false,uiReady=false,mobile=false;
 
-function setMenu(open) {
-  menu.hidden = !open;
-  $('#menu-toggle').setAttribute('aria-expanded', String(open));
-  $('#menu-toggle').setAttribute('aria-label', open ? '关闭导航' : '打开导航');
+function setMenu(open){
+  if(open)closeObject();
+  menu.hidden=!open;
+  $('#menu-toggle').setAttribute('aria-expanded',String(open));
+  $('#menu-toggle').setAttribute('aria-label',open?'关闭导航':'打开导航');
 }
-$('#menu-toggle').addEventListener('click', () => setMenu(menu.hidden));
-$('#enter').addEventListener('click', () => {
-  if (entered) return;
-  entered = true; enteringAt = performance.now();
+$('#menu-toggle').addEventListener('click',()=>setMenu(menu.hidden));
+$('#work-index').addEventListener('click',()=>setMenu(true));
+$('#enter').addEventListener('click',()=>{
+  if(entered||!ready)return;
+  entered=true;enterAt=performance.now()+120;
+  canvas.dataset.phase='entering';
   entry.classList.add('is-gone');
-  $('#menu-toggle').focus({preventScroll: true});
-  document.body.classList.add('has-entered');
+  document.body.classList.add('has-entered','is-entering');
+  $('#menu-toggle').focus({preventScroll:true});
+  if(paused||reduced.matches||fallback)document.body.classList.remove('is-entering');
 });
-function jump(z) {
-  setMenu(false);
-  const max = document.documentElement.scrollHeight - innerHeight;
-  scrollTo({top: z / 42 * max, behavior: reduced.matches || paused ? 'instant' : 'smooth'});
+function updateMotionButton(){
+  const b=$('#motion-toggle');b.setAttribute('aria-pressed',String(paused));
+  b.setAttribute('aria-label',paused?'播放桌面动态':'暂停桌面动态');b.textContent=paused?'▷':'Ⅱ';
 }
-document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => {
-  const z=Number(b.dataset.jump);
-  if (fallback) {
-    setMenu(false);
-    if(z>=37)return showAbout();
-    if(z>=28)return showTools();
-    if(z>0)return showIndex();
-    return scrollTo({top:0,behavior:'instant'});
+$('#motion-toggle').addEventListener('click',()=>{paused=!paused;updateMotionButton();});
+reduced.addEventListener('change',()=>{paused=reduced.matches;updateMotionButton();});
+updateMotionButton();
+function jump(z){
+  closeObject();setMenu(false);
+  const max=document.documentElement.scrollHeight-innerHeight;
+  scrollTo({top:z/MAX_TRAVEL*max,behavior:paused||reduced.matches?'instant':'smooth'});
+}
+document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>jump(Number(b.dataset.jump))));
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(active)closeObject();else setMenu(false);}
+});
+function getScroll(){
+  const next=scrollY;
+  if(active&&Math.abs(next-scrollPosition)>2)closeObject();
+  scrollPosition=next;
+  const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+  scrollGoal=clamp(next/max)*MAX_TRAVEL;
+  let index=0;sectionStops.forEach((s,i)=>{if(scrollGoal>=s[0])index=i;});
+  $('#section-number').textContent='0'+(index+1)+' / 06';
+  $('#section-name').textContent=sectionStops[index][1];
+  $('#scroll-cue').style.opacity=scrollGoal<1?'1':'0';
+}
+addEventListener('scroll',getScroll,{passive:true});
+
+function setInspection(){
+  if(!active)return;
+  const d=active.userData,a=d.action;
+  let name=d.title||'',html='',description='';
+  if(a.kind==='case'){
+    const p=projects.find(p=>p.id===a.id),n=narrative[a.id];name=p.name;
+    html=(d.panel?'<button data-inspect="play">'+(playing?'停止播放 □':'播放成片 ▷')+'</button>':'')+
+      (d.back?'<button data-inspect="flip">'+(flipTo?'回到封面 ↻':'我的贡献 ↻')+'</button>':'')+
+      '<a href="'+evidence[a.id].bilibili.url+'" target="_blank" rel="noopener">B 站原片 ↗</a>';
+    description=p.name+'。我的参与：'+n.summary+'。'+n.steps.map(s=>s[0]+'：'+s[1]).join('。');
+  }else if(a.kind==='tool'){
+    const t=tools.find(t=>t.id===a.id);name=t.name;description=t.detail;
+    html=(d.back?'<button data-inspect="flip">'+(flipTo?'回到正面 ↻':'工具介绍 ↻')+'</button>':'')+
+      '<a href="'+esc(t.url)+'" target="_blank" rel="noopener">打开'+esc(t.name)+' ↗</a>';
+  }else if(a.kind==='about'){
+    name='刘俊威 · 短视频内容策划与剪辑';description='工科背景，曾在毕导团队参与科普视频制作。用 AI 辅助选题、脚本、剪辑与发布复盘。';
+    html='<a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a>';
   }
-  jump(z);
+  actions.innerHTML=html+'<button data-inspect="close">收回桌面 ×</button>';
+  $('#inspection-title').textContent=name;
+  $('#inspection-description').textContent=description;
+}
+function openObject(g){
+  if(!g||!g.userData.action||!ready||!entered)return;
+  if(active&&active!==g){closeObject();return;}
+  if(active===g)return;
+  setMenu(false);active=g;focusFrom=0;focusTo=1;focusAt=performance.now();focus=0;
+  g.userData.focusStart={position:g.position.clone(),quaternion:g.quaternion.clone(),scale:g.scale.x};
+  flip=flipTo=0;dragYaw=dragPitch=0;playing=false;uiReady=false;
+  g.userData.revealAt=-1e6;g.visible=true;
+  document.body.classList.add('is-inspecting');
+  $('.desk-controls').inert=true;
+  inspector.hidden=false;inspector.inert=false;inspector.removeAttribute('aria-hidden');setInspection();
+  canvas.dataset.focus=g.userData.action.id||g.userData.action.kind;
+  canvas.dataset.phase='lifting';
+}
+function stopVideo(){playing=false;video.replaceChildren();video.hidden=true;}
+function closeObject(){
+  if(!active||focusTo===0)return;
+  stopVideo();inspector.classList.remove('is-ready');uiReady=false;
+  inspector.inert=true;inspector.setAttribute('aria-hidden','true');
+  active.userData.returnStart={position:active.position.clone(),quaternion:active.quaternion.clone(),scale:active.scale.x};
+  focusFrom=focus;focusTo=0;focusAt=performance.now();
+  canvas.dataset.phase='returning';
+}
+actions.addEventListener('click',e=>{
+  const b=e.target.closest('[data-inspect]');if(!b||!active)return;
+  if(b.dataset.inspect==='close')return closeObject();
+  if(b.dataset.inspect==='flip'){
+    stopVideo();flipTo=flipTo?0:1;dragYaw=dragPitch=0;setInspection();return;
+  }
+  if(b.dataset.inspect==='play'){
+    if(playing){stopVideo();setInspection();return;}
+    flipTo=0;dragYaw=dragPitch=0;playing=true;
+    const p=projects.find(p=>p.id===active.userData.action.id);
+    const iframe=document.createElement('iframe');iframe.title=p.title;
+    iframe.src='https://open.douyin.com/player/video?vid='+p.video+'&autoplay=0';
+    iframe.allow='autoplay; fullscreen; picture-in-picture';iframe.allowFullscreen=true;
+    video.replaceChildren(iframe);setInspection();
+  }
+});
+document.querySelectorAll('[data-case]').forEach(b=>b.addEventListener('click',()=>{
+  if(fallback)return window.open(evidence[b.dataset.case].bilibili.url,'_blank','noopener');
+  openObject(projectPhotos.get(b.dataset.case));
 }));
-$('#work-index').addEventListener('click', showIndex);
-$('#motion-toggle').setAttribute('aria-pressed', String(paused));
-$('#motion-toggle').setAttribute('aria-label', paused ? '播放桌面动态' : '暂停桌面动态');
-$('#motion-toggle').textContent = paused ? '▷' : 'Ⅱ';
-$('#motion-toggle').addEventListener('click', () => {
-  paused = !paused;
-  $('#motion-toggle').setAttribute('aria-pressed', String(paused));
-  $('#motion-toggle').setAttribute('aria-label', paused ? '播放桌面动态' : '暂停桌面动态');
-  $('#motion-toggle').textContent = paused ? '▷' : 'Ⅱ';
+
+function cast(){
+  if(!camera||!entered||!menu.hidden)return null;
+  ray.setFromCamera(pointer,camera);
+  const hit=ray.intersectObjects(pickables,true).find(h=>{
+    let o=h.object;while(o&&!o.userData.owner)o=o.parent;
+    return o?.userData.owner?.visible;
+  });
+  if(!hit)return null;
+  let o=hit.object;while(o&&!o.userData.owner)o=o.parent;
+  return {root:o.userData.owner,key:o.userData.key||null};
+}
+function point(e){pointer.set(e.clientX/innerWidth*2-1,1-e.clientY/innerHeight*2);}
+canvas.addEventListener('pointerdown',e=>{
+  point(e);const hit=cast();down={x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,hit,drag:false};
+  if(active&&hit?.root===active&&!playing)canvas.setPointerCapture(e.pointerId);
 });
-$('#close-detail').addEventListener('click', () => dialog.close());
-dialog.addEventListener('close', () => {
-  detail.innerHTML = ''; document.body.classList.remove('modal-open');
-  $('#work-index').focus({preventScroll:true});
-});
-dialog.addEventListener('click', e => {
-  if (e.target !== dialog) return;
-  const b = dialog.getBoundingClientRect();
-  if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom) dialog.close();
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    if(!entered)$('#enter').click();
-    setMenu(false);
+canvas.addEventListener('pointermove',e=>{
+  point(e);
+  if(down&&active&&down.hit?.root===active&&!playing&&focus>.98){
+    const dx=e.clientX-down.lastX,dy=e.clientY-down.lastY;
+    if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>6)down.drag=true;
+    if(down.drag){dragYaw+=dx*.004;dragPitch-=dy*.004;}
+    down.lastX=e.clientX;down.lastY=e.clientY;
   }
 });
-function show(html) {
-  setMenu(false); detail.innerHTML = html;
-  interactionLabel.classList.remove('is-visible');
-  document.body.classList.add('modal-open');
-  if (!dialog.open) dialog.showModal();
-  dialog.scrollTop = 0;
-  detail.querySelector('h2')?.focus({preventScroll:true});
-}
-function showIndex() {
-  show('<p class="case-kicker">毕导团队参与项目</p><h2 id="detail-heading" tabindex="-1">视频作品</h2><div class="index-list">' +
-    order.map(id => {
-      const p = projects.find(p => p.id === id);
-      return '<button class="index-card" data-case="' + id + '"><img src="' + ASSETS + images[id] +
-        '" alt="' + esc(p.name) + '"><strong>' + esc(p.name) + ' ↗</strong><span>我的参与：AI 辅助选题、脚本、剪辑与发布复盘</span></button>';
-    }).join('') + '</div>');
-}
-function showCase(id) {
-  const p = projects.find(p => p.id === id), e = evidence.projects[id], n = narrative[id];
-  show('<div class="case-top"><div class="case-media"><img src="' + ASSETS + images[id] + '" alt="' + esc(p.title) +
-    '"><button type="button" data-play="' + id + '" aria-label="播放' + esc(p.name) + '"><span class="play-circle">▶</span></button></div>' +
-    '<div><p class="case-kicker">' + esc(p.type) + ' · ' + esc(p.date) + '</p><h2 id="detail-heading" tabindex="-1">' + esc(p.name) +
-    '</h2><p class="case-intro">' + esc(p.copy) + '</p><div class="metrics">' +
-    '<a href="' + e.bilibili.url + '" target="_blank" rel="noopener" title="2026.10.29 公开页面记录"><strong>' + esc(e.bilibili.views) +
-    '</strong><small>B 站播放 ↗</small></a><a href="' + e.douyin.url + '" target="_blank" rel="noopener" title="2026.10.29 公开页面记录"><strong>' +
-    esc(e.douyin.likes) + '</strong><small>抖音点赞 ↗</small></a></div><div class="source-links"><a href="' + e.bilibili.url +
-    '" target="_blank" rel="noopener">在 B 站观看 ↗</a><a href="' + e.douyin.url + '" target="_blank" rel="noopener">在抖音观看 ↗</a></div></div></div>' +
-    '<p class="role-line"><strong>我负责的部分</strong>' + esc(n.summary) + '</p><div class="steps">' +
-    n.steps.map((s, i) => '<section class="step"><span>0' + (i + 1) + '</span><h3>' + esc(s[0]) + '</h3><p>' + esc(s[1]) + '</p></section>').join('') + '</div>');
-}
-function showTool(id) {
-  const t = tools.find(t => t.id === id);
-  const visual = id === 'science'
-    ? '<img class="tool-preview" src="' + ASSETS + 'science-workbench.jpg" alt="科普工作台实际界面">'
-    : '<div class="tool-preview motion-preview"><span>MOTION</span><b>▶</b><span>LAB</span></div>';
-  show('<div class="tool-layout">' + visual + '<div><p class="case-kicker">创作工具 · ' + esc(t.category) +
-    '</p><h2 id="detail-heading" tabindex="-1">' + esc(t.name) + '</h2><p class="case-intro">' + esc(t.detail) +
-    '</p><ul class="tool-features">' + t.features.map(s => '<li>' + esc(s) + '</li>').join('') +
-    '</ul><a class="tool-action" href="' + esc(t.url) + '" target="_blank" rel="noopener">打开工具 <span>↗</span></a></div></div>');
-}
-function showTools() {
-  show('<h2 id="detail-heading" tabindex="-1">创作工具</h2><div class="index-list">' +
-    tools.map(t=>'<button class="index-card" data-tool="'+t.id+'"><strong>'+esc(t.name)+' ↗</strong><span>'+esc(t.summary)+'</span></button>').join('')+'</div>');
-}
-function showAbout() {
-  show('<div class="about-layout"><div><p class="case-kicker">工作之外，保持好奇。</p><h2 id="detail-heading" tabindex="-1">我是<br>刘俊威。</h2>' +
-    '<p class="about-role">短视频内容策划与剪辑</p><a class="text-link" href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a></div>' +
-    '<div><div class="about-tags">用好奇心，<br>做值得看完的内容。</div><p>工科背景让我习惯追问原理，做内容则让我学习如何把它讲清楚。</p>' +
-    '<p>我曾在毕导团队参与科普视频制作，用 AI 辅助选题和脚本，也参与剪辑、发布与复盘。这里收录了三条参与项目，以及我围绕创作流程做的小工具。</p>' +
-    '<button class="tool-action" type="button" data-index>查看我的作品 <span>↗</span></button></div></div>');
-}
-document.addEventListener('click', e => {
-  const b = e.target.closest('[data-case],[data-play],[data-index],[data-tool]');
-  if (!b) return;
-  if (b.hasAttribute('data-index')) return showIndex();
-  if (b.hasAttribute('data-case')) return showCase(b.dataset.case);
-  if (b.hasAttribute('data-tool')) return showTool(b.dataset.tool);
-  const id = b.dataset.play, p = projects.find(p => p.id === id), media = b.closest('.case-media');
-  const iframe = document.createElement('iframe');
-  iframe.title = p.title;
-  iframe.src = 'https://open.douyin.com/player/video?vid=' + p.video + '&autoplay=0';
-  iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-  iframe.allowFullscreen = true;
-  media.replaceChildren(iframe);
+canvas.addEventListener('pointerup',e=>{
+  if(!down)return;const previous=down;down=null;
+  if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
+  if(previous.drag||Math.hypot(e.clientX-previous.x,e.clientY-previous.y)>10)return;
+  point(e);const hit=cast();
+  if(active){if(hit?.root!==active)closeObject();return;}
+  if(hit?.key)hit.key.userData.pressedAt=performance.now();
+  if(hit?.root)openObject(hit.root);
 });
-function perform(action) {
-  if (!action) return;
-  if (action.kind === 'case') showCase(action.id);
-  if (action.kind === 'tool') showTool(action.id);
-  if (action.kind === 'about') showAbout();
-  if (action.kind === 'key') action.group.userData.pressedAt = performance.now();
-}
-
-function getScroll() {
-  const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-  scrollGoal = Math.min(42, Math.max(0, scrollY / max * 42));
-  let index = 0;
-  sectionStops.forEach((s, i) => { if (scrollGoal >= s[0]) index = i; });
-  $('#section-number').textContent = '0' + (index + 1) + ' / 06';
-  $('#section-name').textContent = sectionStops[index][1];
-  $('#scroll-cue').style.opacity = scrollGoal < 1.2 ? '1' : '0';
-}
-addEventListener('scroll', getScroll, {passive:true});
-canvas.addEventListener('pointermove', e => {
-  px = e.clientX; py = e.clientY;
-  mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
-  interactionLabel.style.left = px + 'px'; interactionLabel.style.top = py + 'px';
-});
-canvas.addEventListener('pointerleave', () => { mouse.set(10,10); hovered = null; interactionLabel.classList.remove('is-visible'); });
-canvas.addEventListener('pointerdown', e => { pointerDown = {x:e.clientX,y:e.clientY,time:performance.now()}; });
-canvas.addEventListener('pointerup', e => {
-  if (!entered || !pointerDown || Math.hypot(e.clientX-pointerDown.x,e.clientY-pointerDown.y)>13 || performance.now()-pointerDown.time>650) return;
-  mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
-  perform(pick()?.userData.hitAction); pointerDown = null;
-});
-
-function pick() {
-  if (!camera || !entered || dialog.open || !menu.hidden) return null;
-  ray.setFromCamera(mouse, camera);
-  const hit = ray.intersectObjects(pickables, true)[0];
-  if (!hit) return null;
-  let o = hit.object;
-  while (o && !o.userData.hitAction) o = o.parent;
-  return o || null;
-}
-const material = (color, opts = {}) => {
-  const m = new THREE.MeshStandardMaterial({color, roughness:.52, metalness:.04, ...opts});
-  materials.push(m); return m;
-};
-let ivory, black, grey, white, gold, blue;
-function rounded(w,h,d,r=.06) {
-  const s = new THREE.Shape(), x=-w/2, y=-h/2;
-  s.moveTo(x+r,y); s.lineTo(x+w-r,y); s.quadraticCurveTo(x+w,y,x+w,y+r);
-  s.lineTo(x+w,y+h-r); s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-  s.lineTo(x+r,y+h); s.quadraticCurveTo(x,y+h,x,y+h-r);
-  s.lineTo(x,y+r); s.quadraticCurveTo(x,y,x+r,y);
-  const g = new THREE.ExtrudeGeometry(s,{depth:d,bevelEnabled:false,curveSegments:6});
-  g.translate(0,0,-d/2); return g;
-}
-function mesh(geo, mat) { const m=new THREE.Mesh(geo,mat); m.castShadow=true; m.receiveShadow=true; return m; }
-function slab(parent,w,h,d,mat,r=.03) {
-  const m=mesh(rounded(w,h,d,r),mat); m.rotation.x=-Math.PI/2; m.position.y=d/2; parent.add(m); return m;
-}
-function surface(parent,w,h,y,texture) {
-  const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map:texture,roughness:.68,metalness:0,side:THREE.FrontSide}));
-  m.rotation.x=-Math.PI/2; m.position.y=y; m.receiveShadow=true; parent.add(m); return m;
-}
-function createTexture(w,h,paint) {
-  const c=document.createElement('canvas'); c.width=w; c.height=h; paint(c.getContext('2d'),w,h);
-  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace;
-  t.anisotropy=renderer.capabilities.getMaxAnisotropy(); return t;
-}
-function cover(ctx,img,x,y,w,h) {
-  const r=Math.max(w/img.width,h/img.height), sw=w/r, sh=h/r;
-  ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,x,y,w,h);
-}
-function shadow(parent,w,h,opacity=.18) {
-  const t=createTexture(256,256,(c,W,H)=>{const g=c.createRadialGradient(W/2,H/2,10,W/2,H/2,W/2);g.addColorStop(0,'rgba(18,21,38,'+opacity+')');g.addColorStop(.5,'rgba(18,21,38,'+(opacity*.4)+')');g.addColorStop(1,'rgba(18,21,38,0)');c.fillStyle=g;c.fillRect(0,0,W,H);});
-  const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false}));
-  m.rotation.x=-Math.PI/2;m.position.y=.008;parent.add(m);
-}
-function object(x,z,angle,action,label) {
-  const g=new THREE.Group(); g.position.set(x,0,z);g.rotation.y=angle;scene.add(g);
-  g.userData.rest={x,z,y:0,ry:angle};g.userData.label=label;g.userData.reveal=0;
-  if(action){g.userData.hitAction=action;pickables.push(g);}
-  objects.push(g); return g;
-}
-function floorText(text,x,z,w=5,color='#464957',size=65) {
-  const g=object(x,z,0,null,'');
-  const t=createTexture(1400,180,(c,W,H)=>{c.fillStyle=color;c.font='500 '+size+'px DeskSerif, serif';c.textBaseline='middle';c.fillText(text,10,H/2);});
-  const m=new THREE.Mesh(new THREE.PlaneGeometry(w,w*180/1400),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false}));
-  m.rotation.x=-Math.PI/2;m.position.y=.012;g.add(m);return g;
-}
-function polaroid(img,title,number,x,z,angle,id) {
-  const w=4.6,h=3.8,g=object(x,z,angle,{kind:'case',id},'查看项目 ↗');
-  shadow(g,w+1.6,h+1.4,.17);slab(g,w,h,.07,ivory,.025);
-  const t=createTexture(1400,1156,(c,W,H)=>{
-    c.fillStyle='#faf9f4';c.fillRect(0,0,W,H);
-    cover(c,img,48,46,W-96,760);
-    c.fillStyle='#202027';c.font='500 58px DeskSerif, serif';c.fillText(title,60,935);
-    c.font='21px Arial';c.fillStyle='#737681';c.fillText('LIU JUNWEI / SELECTED WORK',64,1050);
-    c.textAlign='right';c.fillText('0'+number+' — 03',W-62,1050);
-  });
-  surface(g,w-.015,h-.015,.075,t);return g;
-}
-function keyboard(text,x,z) {
-  const root=object(x,z,-.16,null,'');shadow(root,6.1,3.2,.18);
-  root.userData.mobileZOffset=text==='SCIENCE/FILM'?3.2:-3.8;
-  const lines=text.split('/');
-  lines.forEach((line,row)=>{
-    [...line].forEach((letter,i)=>{
-      const key=new THREE.Group();
-      key.position.set((i-(line.length-1)/2)*.82,.03,(row-(lines.length-1)/2)*.9);
-      key.userData.hitAction={kind:'key',group:key}; key.userData.label='按一下';
-      slab(key,.77,.8,.17,black,.035);
-      const t=createTexture(160,160,(c)=>{c.fillStyle='#eff0f5';c.textAlign='center';c.textBaseline='middle';c.font='400 70px Arial';c.fillText(letter,80,84);});
-      surface(key,.73,.76,.177,t);root.add(key);pickables.push(key);
-    });
-  });return root;
-}
-function phone(img,x,z,id) {
-  const root=object(x,z,.18,{kind:'case',id},'播放项目 ↗');shadow(root,4.6,6.8,.2);
-  const phone=new THREE.Group();phone.position.y=.58;phone.rotation.x=-1.37;root.add(phone);
-  phone.add(mesh(rounded(2.65,5.05,.23,.23),black));
-  const tex=createTexture(720,1400,(c,W,H)=>{
-    c.fillStyle='#101117';c.fillRect(0,0,W,H);cover(c,img,0,230,W,780);
-    c.fillStyle='#eeeef5';c.font='31px DeskSerif, serif';c.fillText('丈量一条海岸线',45,1130);
-    c.font='20px Arial';c.fillStyle='#a6a8b9';c.fillText('13:55 / 毕导团队参与项目',47,1190);
-    c.strokeStyle='#fff9';c.lineWidth=2;c.beginPath();c.arc(W/2,620,70,0,Math.PI*2);c.stroke();
-    c.fillStyle='#fffffff0';c.beginPath();c.moveTo(W/2-17,588);c.lineTo(W/2-17,652);c.lineTo(W/2+35,620);c.closePath();c.fill();
-  });
-  const scr=mesh(new THREE.PlaneGeometry(2.45,4.76),new THREE.MeshBasicMaterial({map:tex}));scr.position.z=.125;phone.add(scr);
-  const speaker=mesh(rounded(.7,.09,.025,.04),black);speaker.position.set(0,2.28,.14);phone.add(speaker);
-  const home=mesh(rounded(.65,.045,.01,.02),white);home.position.set(0,-2.25,.14);phone.add(home);
-  return root;
-}
-function clapper(x,z) {
-  const g=object(x,z,-.16,{kind:'case',id:'behind'},'查看幕后项目 ↗');shadow(g,5.6,4.1,.22);
-  g.userData.mobileZOffset=1.5;
-  slab(g,4.5,2.95,.13,black,.035);
-  const t=createTexture(1200,780,(c,W,H)=>{
-    c.fillStyle='#111216';c.fillRect(0,0,W,H);c.strokeStyle='#777b88';c.lineWidth=1;c.strokeRect(50,45,W-100,H-90);
-    c.fillStyle='#e7e7e7';c.font='500 72px DeskSerif, serif';c.fillText('一条视频',85,310);c.fillText('的诞生',85,410);
-    c.font='23px Arial';c.fillStyle='#a1a4ae';c.fillText('SELECTED WORK 03',86,625);c.fillText('AI / SCRIPT / EDIT',86,678);
-  });
-  surface(g,4.4,2.85,.137,t);
-  const arm=new THREE.Group();arm.position.set(-2.16,.18,-1.49);g.add(arm);
-  const bar=mesh(new THREE.BoxGeometry(4.5,.17,.55),black);bar.position.x=2.16;arm.add(bar);
-  for(let i=0;i<9;i++){
-    const s=mesh(new THREE.BoxGeometry(.23,.015,.55),white);s.position.set(.15+i*.49,.093,0);s.rotation.y=-.3;arm.add(s);
+canvas.addEventListener('pointercancel',()=>{down=null;});
+canvas.addEventListener('pointerleave',()=>{if(!down)pointer.set(0,0);hover=null;});
+canvas.addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.key===' ')&&!active){
+    e.preventDefault();
+    const candidates=objects.filter(g=>g.visible&&g.userData.action&&['paper','monitor','phone'].includes(g.userData.kind));
+    candidates.sort((a,b)=>Math.abs(a.userData.rest.z-viewZ)-Math.abs(b.userData.rest.z-viewZ));
+    openObject(candidates[0]);
   }
-  g.userData.arm=arm;return g;
+});
+
+function material(color,opts={}){return new THREE.MeshStandardMaterial({color,roughness:.6,metalness:0,...opts});}
+function mesh(geo,mat){const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;return m;}
+function rounded(w,h,d,r=.04,bevel=.012){
+  const s=new THREE.Shape(),x=-w/2,y=-h/2;
+  s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);
+  s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);
+  s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);
+  const g=new THREE.ExtrudeGeometry(s,{depth:d-2*bevel,bevelEnabled:bevel>0,bevelThickness:bevel,bevelSize:bevel,bevelSegments:2,curveSegments:5});
+  g.translate(0,0,-(d-2*bevel)/2);return g;
 }
-function monitor(img,x,z) {
-  const g=object(x,z,-.18,{kind:'tool',id:'science'},'打开科普工作台 ↗');shadow(g,7.0,5.6,.2);
-  slab(g,2.5,1.6,.12,grey,.06);
-  const stem=mesh(new THREE.CylinderGeometry(.12,.18,1.5,16),grey);stem.position.set(0,.86,-.3);g.add(stem);
-  const display=new THREE.Group();display.position.set(0,2.5,-.38);display.rotation.x=-.2;g.add(display);
-  display.add(mesh(rounded(5.5,3.6,.21,.12),black));
-  const tex=new THREE.Texture(img);tex.needsUpdate=true;tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=4;
-  const s=mesh(new THREE.PlaneGeometry(5.15,3.18),new THREE.MeshBasicMaterial({map:tex}));s.position.z=.12;display.add(s);
+function slab(parent,w,h,d,mat,r=.04){const m=mesh(rounded(w,h,d,r),mat);m.rotation.x=-Math.PI/2;m.position.y=d/2;parent.add(m);return m;}
+function surface(parent,w,h,y,texture,unlit=false){
+  const mat=unlit?new THREE.MeshBasicMaterial({map:texture,toneMapped:false}):material('#fff',{map:texture,roughness:.8});
+  const m=mesh(new THREE.PlaneGeometry(w,h),mat);m.rotation.x=-Math.PI/2;m.position.y=y;parent.add(m);return m;
+}
+function texture(w,h,paint){
+  const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d'),w,h);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t;
+}
+function cover(ctx,img,x,y,w,h){const r=Math.max(w/img.width,h/img.height),sw=w/r,sh=h/r;ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,x,y,w,h);}
+function wrap(c,text,x,y,width,lineHeight,maxLines=100){
+  let line='',lines=0;
+  for(const char of text){if(c.measureText(line+char).width>width&&line&&!/[，。！？：；、）】》”’]/.test(char)){c.fillText(line,x,y);y+=lineHeight;line='';if(++lines>=maxLines)return y;}line+=char;}
+  if(line){c.fillText(line,x,y);y+=lineHeight;}return y;
+}
+function object(x,z,angle,action,title,kind='prop'){
+  const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=angle;
+  g.userData={rest:new THREE.Vector3(x,0,z),restQ:g.quaternion.clone(),action,title,kind,revealAt:null,scale:1,face:'floor',width:3,height:4.2,center:new THREE.Vector3()};
+  g.userData.owner=g;g.visible=false;scene.add(g);objects.push(g);
+  if(action)pickables.push(g);return g;
+}
+function contact(g,w,h,opacity=.17){
+  const t=texture(128,128,(c,W,H)=>{const r=c.createRadialGradient(W/2,H/2,1,W/2,H/2,W/2);r.addColorStop(0,'rgba(51,52,78,1)');r.addColorStop(.5,'rgba(51,52,78,.35)');r.addColorStop(1,'rgba(51,52,78,0)');c.fillStyle=r;c.fillRect(0,0,W,H);});
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:t,transparent:true,opacity,depthWrite:false,toneMapped:false}));
+  m.rotation.x=-Math.PI/2;m.position.set(g.position.x,.001,g.position.z);scene.add(m);g.userData.contact=m;g.userData.contactOpacity=opacity;
+}
+function caseBack(id){
+  const p=projects.find(p=>p.id===id),n=narrative[id],e=evidence[id];
+  return texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#f7f6f0';c.fillRect(0,0,W,H);c.fillStyle='#777882';c.font='31px Arial';c.fillText('刘俊威 / 我负责的部分',88,100);
+    c.fillStyle='#202127';c.font='500 65px DeskSerif,serif';let y=wrap(c,p.name,84,210,W-168,87,2)+20;
+    c.font='35px Arial';c.fillStyle='#505563';y=wrap(c,n.summary,88,y,W-176,54)+30;
+    c.strokeStyle='#cfd0d8';c.lineWidth=2;c.beginPath();c.moveTo(88,y);c.lineTo(W-88,y);c.stroke();y+=65;
+    c.fillStyle='#202127';c.font='43px Arial';c.fillText(e.bilibili.views+' 播放',88,y);c.fillText(e.douyin.likes+' 赞',680,y);y+=75;
+    n.steps.forEach((s,i)=>{c.fillStyle='#293039';c.font='500 40px DeskSerif,serif';c.fillText('0'+(i+1)+'  '+s[0],88,y);y+=55;c.fillStyle='#505661';c.font='36px Arial';y=wrap(c,s[1],88,y,W-176,54,4)+34;});
+  });
+}
+function paper(front,backTexture,x,z,angle,action,title,w=3,h=4.2){
+  const g=object(x,z,angle,action,title,'paper');
+  const side=material('#dddde1',{roughness:.85});
+  const frontMat=new THREE.MeshBasicMaterial({color:'#fff',map:front,toneMapped:false});
+  const backMat=new THREE.MeshBasicMaterial({color:'#fff',map:backTexture,toneMapped:false});
+  const geo=new THREE.BoxGeometry(w,.018,h,12,1,18);
+  // BoxGeometry's underside is rotated to be readable when the paper turns over its long axis.
+  if(backTexture){backTexture.center.set(.5,.5);backTexture.rotation=Math.PI;}
+  const body=mesh(geo,[side,side,frontMat,backMat,side,side]);g.add(body);
+  g.userData.paper={mesh:body,base:Float32Array.from(geo.attributes.position.array),bend:0};
+  g.userData.width=w;g.userData.height=h;g.userData.back=!!backTexture;
+  contact(g,w+1,h+.6,.17);papers.push(g);return g;
+}
+function polaroid(img,id,x,z,angle,caption,primary=true){
+  const p=projects.find(p=>p.id===id);
+  const t=texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#f7f7f3';c.fillRect(0,0,W,H);
+    cover(c,img,60,60,1080,1210);
+    c.fillStyle='#15161c';c.font='500 64px DeskSerif,serif';c.textAlign='center';c.fillText(caption||p.name,W/2,1487,1080);
+  });
+  const g=paper(t,caseBack(id),x,z,angle,{kind:'case',id},p.name);
+  g.userData.primary=primary;
+  g.userData.panel={x:0,z:-.4375,w:2.7,h:3.025,y:.035};
+  if(primary)projectPhotos.set(id,g);return g;
+}
+function note(id,x,z,angle){
+  const p=projects.find(p=>p.id===id),n=narrative[id];
+  const t=texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#797b84';c.font='30px Arial';c.fillText('我的参与',105,135);
+    c.fillStyle='#252830';c.font='500 63px DeskSerif,serif';let y=wrap(c,p.name,100,285,1000,84,2)+70;
+    c.font='40px DeskSerif,serif';c.fillStyle='#4b505d';y=wrap(c,n.summary,105,y,990,70)+70;
+    c.font='37px DeskSerif,serif';n.steps.forEach(s=>{c.fillStyle='#242832';c.fillText(s[0],105,y);y+=57;c.fillStyle='#6e727b';c.font='32px DeskSerif,serif';y=wrap(c,s[1],105,y,990,53,3)+50;c.font='37px DeskSerif,serif';});
+  });
+  return paper(t,caseBack(id),x,z,angle,{kind:'case',id},p.name+' · 我的参与',2.8,4.2);
+}
+function keyboard(text,x,z,angle,action){
+  const root=object(x,z,angle,action,text.replace('/',' '),'keyboard');
+  const lines=text.split('/'),width=Math.max(...lines.map(l=>l.length))*.99;
+  root.userData.width=width;root.userData.height=lines.length*.99;root.userData.center.set(0,.12,0);
+  contact(root,width+1,lines.length+1,.16);
+  const rim=material('#4e535e',{roughness:.27,metalness:.65});
+  let n=0;
+  lines.forEach((line,row)=>[...line].forEach((letter,i)=>{
+    const key=new THREE.Group();key.position.set((i-(line.length-1)/2)*.99,.12,(row-(lines.length-1)/2)*.99);
+    const angle=Math.sin(i*12.3+row*8.9)*.07;
+    key.rotation.y=angle;key.userData={owner:root,key,rest:key.position.clone(),angle,index:n++,pressedAt:-1e6};
+    slab(key,.93,.93,.055,rim,.025);slab(key,.9,.9,.225,black,.025);
+    const t=texture(192,192,c=>{c.fillStyle='#eff0f6';c.textAlign='center';c.textBaseline='middle';c.font='400 85px Arial';c.fillText(letter,96,101);});
+    const m=surface(key,.88,.88,.233,t);m.material.transparent=true;m.material.alphaTest=.02;
+    root.add(key);keys.push(key);
+  }));return root;
+}
+function phone(img,x,z,id){
+  const g=object(x,z,-.3,{kind:'case',id},'丈量一条海岸线','phone');
+  g.userData.width=2.65;g.userData.height=5.05;
+  slab(g,2.65,5.05,.24,black,.22);
+  const tex=texture(720,1400,(c,W,H)=>{
+    c.fillStyle='#11131c';c.fillRect(0,0,W,H);cover(c,img,0,170,W,950);
+    c.fillStyle='#f4f4f7';c.font='36px DeskSerif,serif';c.fillText('丈量一条海岸线',42,1250);
+    c.font='26px Arial';c.fillStyle='#bac0cd';c.fillText('PLAY / 13:55',44,1320);
+    c.strokeStyle='#fff9';c.lineWidth=2;c.beginPath();c.arc(W/2,650,70,0,Math.PI*2);c.stroke();
+    c.fillStyle='#fff';c.beginPath();c.moveTo(W/2-18,613);c.lineTo(W/2-18,687);c.lineTo(W/2+40,650);c.closePath();c.fill();
+  });
+  surface(g,2.44,4.8,.245,tex,true);slab(g,.7,.12,.014,black,.06).position.set(0,.26,-2.28);
+  g.userData.panel={x:0,z:0,w:2.44,h:4.8,y:.27};contact(g,3.6,6,.19);return g;
+}
+function clapper(x,z){
+  const g=object(x,z,-.2,{kind:'case',id:'behind'},'一条视频的诞生','clapper');
+  g.userData.width=3.8;g.userData.height=2.8;
+  slab(g,3.8,2.5,.15,black);
+  const t=texture(1200,800,(c,W,H)=>{
+    c.fillStyle='#13141a';c.fillRect(0,0,W,H);c.fillStyle='#efeff4';c.font='500 87px DeskSerif,serif';c.fillText('一条视频的诞生',90,350,1040);
+    c.strokeStyle='#737984';c.lineWidth=2;c.strokeRect(70,80,W-140,H-150);
+    c.font='30px Arial';c.fillText('AI / SCRIPT / EDIT',90,650);
+  });surface(g,3.76,2.46,.16,t);
+  const arm=new THREE.Group();arm.position.set(-1.85,.18,-1.4);g.add(arm);
+  const bar=mesh(new THREE.BoxGeometry(3.8,.16,.45),black);bar.position.x=1.85;arm.add(bar);
+  for(let i=0;i<8;i++){const s=mesh(new THREE.BoxGeometry(.22,.012,.45),white);s.position.set(.15+i*.47,.087,0);s.rotation.y=-.25;arm.add(s);}
+  g.userData.arm=arm;contact(g,4.7,3.8,.18);return g;
+}
+function monitor(img,x,z){
+  const g=object(x,z,-.15,{kind:'tool',id:'science'},'科普工作台','monitor');
+  g.userData.width=4;g.userData.height=2.65;g.userData.face='upright';g.userData.center.set(0,2.0,-.38);
+  slab(g,2,1.5,.12,grey,.06);
+  const stem=mesh(new THREE.CylinderGeometry(.12,.15,1.3,12),grey);stem.position.set(0,.72,-.68);g.add(stem);
+  const screen=new THREE.Group();screen.position.set(0,2.0,-.38);g.add(screen);
+  screen.add(mesh(rounded(4.1,2.8,.18,.12),black));
+  const t=new THREE.Texture(img);t.needsUpdate=true;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;
+  const panel=mesh(new THREE.PlaneGeometry(3.86,2.47),new THREE.MeshBasicMaterial({map:t}));panel.position.z=.1;screen.add(panel);
+  contact(g,5.6,4,.2);return g;
+}
+function motionCard(x,z){
+  const t=texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#71829f';c.fillRect(0,0,W,H);c.fillStyle='#f7f6ed';c.font='bold 147px Arial';c.fillText('MOTION',80,270);c.fillText('LAB',80,450);
+    c.strokeStyle='#d8e1ed';c.lineWidth=2;c.strokeRect(85,610,1030,500);
+    for(let i=0;i<5;i++){c.globalAlpha=.18+i*.16;c.beginPath();c.moveTo(190+i*155,730);c.lineTo(190+i*155,980);c.lineTo(340+i*155,855);c.closePath();c.fill();}
+    c.globalAlpha=1;c.font='500 75px DeskSerif,serif';c.fillText('动效镜头库',85,1460);
+  });
+  const b=texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#f7f6f0';c.fillRect(0,0,W,H);const t=tools.find(t=>t.id==='motion');c.fillStyle='#242932';c.font='500 78px DeskSerif,serif';c.fillText(t.name,100,230);
+    c.font='43px DeskSerif,serif';let y=wrap(c,t.detail,100,440,1000,77)+100;c.font='39px DeskSerif,serif';t.features.forEach(f=>{c.fillText(f,100,y);y+=125;});
+  });return paper(t,b,x,z,.22,{kind:'tool',id:'motion'},'动效镜头库');
+}
+function notebook(x,z){
+  const t=texture(1560,1900,(c,W,H)=>{
+    c.fillStyle='#f6f5f0';c.fillRect(0,0,W,H);c.fillStyle='#262b34';c.font='500 100px DeskSerif,serif';c.fillText('用好奇心，',135,290);c.fillText('做值得看完的内容。',135,450,1300);
+    c.strokeStyle='#c8c9ce';c.beginPath();c.moveTo(140,600);c.lineTo(1420,600);c.stroke();
+    c.font='65px DeskSerif,serif';c.fillText('刘俊威',140,810);c.font='45px DeskSerif,serif';c.fillText('短视频内容策划与剪辑',140,920);
+    c.fillStyle='#5e6470';c.font='43px DeskSerif,serif';let y=wrap(c,'工科背景让我习惯追问原理，做内容则让我学习如何把它讲清楚。',140,1110,1240,80)+90;
+    wrap(c,'曾在毕导团队参与科普视频制作，用 AI 辅助选题和脚本，也参与剪辑、发布与复盘。',140,y,1240,80);
+  });return paper(t,null,x,z,-.12,{kind:'about'},'认识刘俊威',3.8,4.63);
+}
+function floorText(text,x,z,w,color='#b39d50',size=84){
+  const g=object(x,z,0,null,text,'label');g.userData.width=w;g.userData.height=.3;
+  const t=texture(1800,180,(c,W,H)=>{
+    c.fillStyle=color;c.font='500 '+size+'px DeskSerif,serif';c.textBaseline='middle';
+    const chars=[...text.replace(/\s/g,'')],total=chars.reduce((sum,ch)=>sum+c.measureText(ch).width,0),tracking=(W-100-total)/(chars.length-1);
+    let x=50;chars.forEach(ch=>{c.fillText(ch,x,H/2);x+=c.measureText(ch).width+tracking;});
+  });
+  const m=surface(g,w,w*.1,.018,t,true);m.material.transparent=true;m.material.alphaTest=.02;
   return g;
 }
-function motionCard(x,z) {
-  const g=object(x,z,.18,{kind:'tool',id:'motion'},'打开动效镜头库 ↗');shadow(g,5.4,4.8,.18);
-  g.userData.mobileZOffset=2;
-  slab(g,3.9,4.25,.22,blue,.12);
-  const t=createTexture(1000,1090,(c,W,H)=>{
-    c.fillStyle='#657da2';c.fillRect(0,0,W,H);c.fillStyle='#f2f2e9';c.font='bold 125px Arial';c.fillText('MOTION',62,210);c.fillText('LAB',62,360);
-    c.lineWidth=2;c.strokeStyle='#dde1ea';c.strokeRect(65,440,870,370);
-    for(let i=0;i<5;i++){c.globalAlpha=.13+i*.16;c.beginPath();c.moveTo(190+i*110,515);c.lineTo(190+i*110,735);c.lineTo(330+i*110,625);c.closePath();c.fill();}
-    c.globalAlpha=1;c.font='47px DeskSerif,serif';c.fillText('动效镜头库',63,970);
-    c.textAlign='right';c.font='65px Arial';c.fillText('↗',925,970);
-  });
-  surface(g,3.87,4.22,.228,t);return g;
-}
-function notebook(x,z) {
-  const g=object(x,z,.12,{kind:'about'},'认识刘俊威 ↗');shadow(g,7.3,5.3,.19);
-  slab(g,6.0,4.65,.15,grey,.035);
-  const t=createTexture(1560,1200,(c,W,H)=>{
-    c.fillStyle='#f3f2ec';c.fillRect(0,0,W,H);c.fillStyle='#272b33';c.font='500 122px DeskSerif,serif';c.fillText('用好奇心，',105,285);c.fillText('做值得看完的内容。',105,455);
-    c.strokeStyle='#c1c2bf';c.beginPath();c.moveTo(110,580);c.lineTo(1450,580);c.stroke();
-    c.font='43px DeskSerif,serif';c.fillText('刘俊威',112,735);
-    c.font='29px Arial';c.fillStyle='#737982';c.fillText('短视频内容策划与剪辑',113,815);c.fillText('AI 辅助选题 / 脚本 / 剪辑 / 发布复盘',113,888);
-    c.font='25px Arial';c.fillText('ABOUT ME',113,1090);c.textAlign='right';c.fillText('↗',1445,1090);
-  });
-  surface(g,5.97,4.62,.158,t);
-  for(let i=0;i<11;i++){const ring=mesh(new THREE.TorusGeometry(.075,.014,5,12),grey);ring.position.set(-2.98,.15,-1.9+i*.38);ring.rotation.y=Math.PI/2;g.add(ring);}
-  return g;
-}
-async function nameModel() {
-  const response=await fetch('../assets/sculpture-v13/name-wordmark.bin');
-  if(!response.ok)throw Error('姓名模型加载失败');
+async function nameModel(){
+  const response=await fetch('../assets/sculpture-v13/name-wordmark.bin');if(!response.ok)throw Error('姓名模型加载失败');
   const b=await response.arrayBuffer(),[n,count,scale,indexBytes]=new Uint32Array(b,0,4);
-  const packed=new Int16Array(b,16,n*3),pos=new Float32Array(n*3);
-  for(let i=0;i<pos.length;i++)pos[i]=packed[i]/scale;
+  const packed=new Int16Array(b,16,n*3),pos=new Float32Array(n*3);for(let i=0;i<pos.length;i++)pos[i]=packed[i]/scale;
   const offset=16+Math.ceil(packed.byteLength/4)*4;
   const ind=indexBytes===2?new Uint16Array(b,offset,count):new Uint32Array(b,offset,count);
-  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setIndex(new THREE.BufferAttribute(ind,1));
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setIndex(new THREE.BufferAttribute(ind,1));
   const normalOffset=offset+ind.byteLength;
-  if(b.byteLength===normalOffset+n*6)g.setAttribute('normal',new THREE.BufferAttribute(new Int16Array(b,normalOffset,n*3),3,true));
-  else g.computeVertexNormals();
-  g.computeBoundingBox();g.center();
-  const s=7.2/(g.boundingBox.max.x-g.boundingBox.min.x);g.scale(s,s,s*.72);
-  const root=object(-2.1,-1.0,0,null,'');
-  root.userData.identity=true;
-  const m=mesh(g,material('#f7f7fa',{roughness:.33,metalness:.09}));m.rotation.x=-Math.PI/2;
-  g.computeBoundingBox();m.position.y=(g.boundingBox.max.z-g.boundingBox.min.z)/2+.035;root.add(m);
-  shadow(root,8.1,3.6,.12);
-  const label=floorText('L I U   J U N W E I',-2.1,1.0,7.0,'#a88d4c',65);
-  label.userData.identity=true;
-  return [root,label];
+  if(b.byteLength===normalOffset+n*6)geo.setAttribute('normal',new THREE.BufferAttribute(new Int16Array(b,normalOffset,n*3),3,true));else geo.computeVertexNormals();
+  geo.computeBoundingBox();geo.center();const s=7.2/(geo.boundingBox.max.x-geo.boundingBox.min.x);geo.scale(s,s,s*.65);geo.computeBoundingBox();
+  const p=geo.attributes.position.array,index=geo.index.array,parts=[[],[],[]];
+  for(let i=0;i<index.length;i+=3){const x=(p[index[i]*3]+p[index[i+1]*3]+p[index[i+2]*3])/3;parts[x< -1.2?0:x<1.2?1:2].push(index[i],index[i+1],index[i+2]);}
+  const root=object(-2.4,-1.05,0,null,'刘俊威','name');root.userData.width=7.2;root.userData.height=2.6;
+  parts.forEach((indices,i)=>{
+    const g=new THREE.BufferGeometry();g.setAttribute('position',geo.attributes.position);g.setAttribute('normal',geo.attributes.normal);g.setIndex(indices);
+    const m=mesh(g,material('#fafaff',{roughness:.7,metalness:0}));m.rotation.x=-Math.PI/2;
+    m.userData.depth=(geo.boundingBox.max.z-geo.boundingBox.min.z)/2;m.userData.index=i;root.add(m);identities.push(m);
+  });contact(root,8.1,3.3,.13);
+  const label=floorText('LIU JUNWEI',-2.4,.3,7.15);label.userData.identity=true;
 }
-function loadImage(src) {return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(Error('无法加载 '+src));i.src=src;});}
-function resize() {
-  if(!renderer)return;
-  const aspect=innerWidth/innerHeight,w=aspect<.8?8.6:10.5*aspect;
-  camera.left=-w/2;camera.right=w/2;camera.top=w/aspect/2;camera.bottom=-w/aspect/2;camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  const mobile=aspect<.8;
-  objects.forEach(g=>{
-    g.position.x=mobile?(g.userData.identity?0:g.userData.rest.x*.52):g.userData.rest.x;
-    g.position.z=g.userData.rest.z+(mobile?(g.userData.mobileZOffset||0):0);
-    g.userData.size=mobile?.83:1;
+function loadImage(src){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(Error('无法加载 '+src));i.src=src;});}
+function studioEnvironment(){
+  const faces=Array.from({length:6},(_,i)=>{
+    const c=document.createElement('canvas');c.width=c.height=256;const ctx=c.getContext('2d');
+    const gradient=ctx.createLinearGradient(0,0,0,256);gradient.addColorStop(0,'#edf0fa');gradient.addColorStop(.55,i===3?'#9c9fae':'#9dabc1');gradient.addColorStop(1,'#424957');
+    ctx.fillStyle=gradient;ctx.fillRect(0,0,256,256);
+    if(i!==3){const glow=ctx.createRadialGradient(90,65,8,90,65,150);glow.addColorStop(0,'#fff');glow.addColorStop(.25,'#fff');glow.addColorStop(1,'#ffffff00');ctx.fillStyle=glow;ctx.fillRect(0,0,256,256);}
+    if(i===2||i===0){ctx.fillStyle='#fff';ctx.fillRect(35,20,175,42);}return c;
   });
+  const cube=new THREE.CubeTexture(faces);cube.colorSpace=THREE.SRGBColorSpace;cube.needsUpdate=true;
+  const generator=new THREE.PMREMGenerator(renderer);scene.environment=generator.fromCubemap(cube).texture;scene.environmentIntensity=.65;
+  cube.dispose();generator.dispose();
+}
+function resize(){
+  if(!renderer)return;
+  mobile=innerWidth/innerHeight<.8;camera.aspect=innerWidth/innerHeight;camera.fov=mobile?80:50;camera.updateProjectionMatrix();
+  renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.7:2));renderer.setSize(innerWidth,innerHeight);
+  objects.forEach(g=>{const d=g.userData;d.scale=mobile?(d.kind==='name'?.79:.72):1;});
   getScroll();
 }
-function render(now) {
-  frame=requestAnimationFrame(render);
-  const dt=Math.min((now-lastTime)/1000||.016,.05);lastTime=now;
-  if(document.hidden)return;
-  if(reduced.matches && now-drawAt<80)return;
-  drawAt=now;
-  const still=paused||reduced.matches||dialog.open||!menu.hidden;
-  if(!still)activeTime+=dt;
-  viewZ=THREE.MathUtils.lerp(viewZ,scrollGoal,still?1:1-Math.exp(-dt*7));
-  const intro=entered?ease((now-enteringAt)/1500):0;
-  camera.zoom=reduced.matches?1:1.19-.19*intro;camera.updateProjectionMatrix();
-  const mx=Math.abs(mouse.x)<2&&!still?mouse.x:0,my=Math.abs(mouse.y)<2&&!still?mouse.y:0;
-  const cameraZ=viewZ+(innerWidth/innerHeight<.8?3.5:0);
-  camera.position.set(mx*.19,18+my*.1,cameraZ+13);
-  camera.lookAt(mx*.08,0,cameraZ);
-  light.position.set(-9,19,cameraZ-9);light.target.position.set(0,0,cameraZ);
-  const selected=pick();
-  if(hovered!==selected){
-    hovered=selected;
-    interactionLabel.textContent=selected?.userData.label||'';
-    interactionLabel.classList.toggle('is-visible',!!selected&&selected.userData.hitAction.kind!=='key');
-    canvas.style.cursor=selected?'url("../assets/cursors/pointer.svg") 15 3, pointer':'';
+function restingPosition(g){
+  const d=g.userData;
+  return new THREE.Vector3(mobile?(d.kind==='name'||d.identity?0:d.rest.x*(d.primary?.48:.64)):d.rest.x,d.rest.y,d.rest.z);
+}
+function setPaperBend(g,amount){
+  const p=g.userData.paper;if(!p||Math.abs(p.bend-amount)<.0004)return;p.bend=amount;
+  const a=p.mesh.geometry.attributes.position,b=p.base,h=g.userData.height,w=g.userData.width;
+  for(let i=0;i<a.count;i++){const x=b[i*3],z=b[i*3+2],u=(z/h+.5);a.array[i*3+1]=b[i*3+1]+amount*(u*u+.1*x*x/(w*w));}
+  a.needsUpdate=true;p.mesh.geometry.computeVertexNormals();
+}
+function cameraUpdate(now,dt,still){
+  viewZ=still?scrollGoal:damp(viewZ,scrollGoal,6.5,dt);
+  const intro=still?1:outQuint((now-enterAt)/3000);
+  const targetY=mobile?9:7.5;
+  camera.position.set(0,THREE.MathUtils.lerp(60,targetY,intro)+focus*(mobile?4.5:2.2),viewZ+THREE.MathUtils.lerp(-60,7.5,intro));
+  const pitch=active||still?0:pointer.y*Math.PI*.05,yaw=active||still?0:pointer.x*-Math.PI*.1;
+  cameraPitch=still?pitch:damp(cameraPitch,pitch,3,dt);cameraYaw=still?yaw:damp(cameraYaw,yaw,3,dt);
+  qRig.setFromEuler(new THREE.Euler(cameraPitch,cameraYaw,0,'YXZ'));camera.quaternion.copy(qRig).multiply(qBase);
+  camera.updateMatrixWorld();
+  scene.fog.near=THREE.MathUtils.lerp(12,mobile?6:12,focus);
+  scene.fog.far=THREE.MathUtils.lerp(25,mobile?16:25,focus);
+  light.position.set(-5,18,viewZ+2);light.target.position.set(0,0,viewZ+2);light.target.updateMatrixWorld();
+  if(entered&&now>enterAt+3050){
+    document.body.classList.remove('is-entering');
+    if(canvas.dataset.phase==='entering')canvas.dataset.phase='browsing';
   }
-  objects.forEach(g=>{
-    const target=entered&&Math.abs(g.userData.rest.z-viewZ)<21?1:0;
-    g.userData.reveal=THREE.MathUtils.lerp(g.userData.reveal,target,still?1:1-Math.exp(-dt*4));
-    const r=ease(g.userData.reveal),hover=hovered===g&&!still?1:0;
-    g.position.y=THREE.MathUtils.lerp(g.position.y,g.userData.rest.y+(1-r)*.2+hover*.12,still?1:1-Math.exp(-dt*12));
-    const s=(g.userData.size||1)*(.96+.04*r);g.scale.setScalar(s);
-    g.rotation.y=THREE.MathUtils.lerp(g.rotation.y,g.userData.rest.ry+hover*mx*.025,.12);
-    if(g.userData.arm)g.userData.arm.rotation.y=THREE.MathUtils.lerp(g.userData.arm.rotation.y,hover?-.18:0,.1);
-  });
-  pickables.forEach(g=>{
-    if(g.userData.hitAction?.kind!=='key')return;
-    const press=now-(g.userData.pressedAt||-1000)<170;
-    g.position.y=THREE.MathUtils.lerp(g.position.y,press?-.035:hovered===g?.1:.03,.3);
-  });
-  renderer.render(scene,camera);
 }
-function useFallback(err) {
-  console.warn('创作桌面使用静态作品浏览。',err?.message||err);
-  fallback=true;$('#fallback').hidden=false;document.body.classList.add('has-fallback');
-  $('#load-status').textContent='作品已就绪';canvas.dataset.state='fallback';
+function renderObject(g,now,dt,still){
+  const d=g.userData;
+  if(d.revealAt===null&&entered&&(d.kind==='name'||d.rest.z<camera.position.z))d.revealAt=Math.max(now,enterAt+(d.kind==='name'?600:d.identity?1300:750));
+  if(d.revealAt===null)return;
+  const elapsed=still?1e5:Math.max(0,now-d.revealAt),progress=clamp(elapsed/2200);
+  g.visible=elapsed>0;
+  const base=restingPosition(g),qRest=d.restQ.clone(),s=d.scale;
+  if(d.kind!=='name'&&d.kind!=='label'&&d.kind!=='keyboard'){
+    base.x+=(Math.sign(d.rest.x)||1)*6*(1-outQuart(elapsed/2600));
+    base.y+=(d.kind==='paper'?5:3)*(1-bounce(elapsed/1500));
+    const twist=(1-outQuart(elapsed/1400));
+    qRest.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(twist*.8,twist*.9,twist*.65)));
+  }
+  const isHover=hover===g&&!active&&!still;
+  d.hoverMix=still?0:damp(d.hoverMix||0,isHover?1:0,7,dt);base.y+=d.hoverMix*.3;
+  g.position.copy(base);g.quaternion.copy(qRest);g.scale.setScalar(s);
+  if(d.kind==='label'){
+    const r=still?1:outQuart(elapsed/1200);g.scale.y=Math.max(.001,r);g.scale.z=Math.max(.001,r)*s;
+  }
+  let bend=d.kind==='paper'?(1-outQuart(elapsed/2000))*.65+(isHover?-.15:.035):0;
+  if(active===g){
+    const fitHeight=mobile?.63:.76,fitWidth=mobile?.79:.72;
+    const tan=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+    const distance=Math.max(d.height/(2*tan*fitHeight),d.width/(2*tan*camera.aspect*fitWidth));
+    camera.getWorldDirection(vForward);
+    vTarget.copy(camera.position).addScaledVector(vForward,distance);
+    qDrag.setFromEuler(new THREE.Euler(dragPitch,dragYaw,0,'YXZ'));
+    qFace.copy(camera.quaternion).multiply(qDrag);
+    if(d.face==='floor')qFace.multiply(qFloorToFace);
+    if(d.back)qFace.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),flip*Math.PI));
+    vCenter.copy(d.center).applyQuaternion(qFace);vTarget.sub(vCenter);
+    if(focusTo){
+      g.position.lerpVectors(d.focusStart.position,vTarget,focus);
+      g.quaternion.slerpQuaternions(d.focusStart.quaternion,qFace,focus);
+      g.scale.setScalar(THREE.MathUtils.lerp(d.focusStart.scale,1,focus));
+    }else{
+      const t=focusFrom?1-focus/focusFrom:1;
+      g.position.lerpVectors(d.returnStart.position,base,t);
+      g.quaternion.slerpQuaternions(d.returnStart.quaternion,qRest,t);
+      g.scale.setScalar(THREE.MathUtils.lerp(d.returnStart.scale,s,t));
+    }
+    bend*=1-focus;
+  }
+  if(d.paper){d.bendValue=still?bend:damp(d.bendValue||0,bend,9,dt);setPaperBend(g,d.bendValue);}
+  if(d.arm)d.arm.rotation.y=damp(d.arm.rotation.y,isHover?-.2:0,7,dt);
+  if(d.contact){
+    d.contact.visible=g.visible;d.contact.position.x=mobile?(d.kind==='name'?0:d.rest.x*(d.primary?.48:.64)):d.rest.x;
+    d.contact.position.z=d.rest.z;d.contact.scale.setScalar(s);
+    d.contact.material.opacity=d.contactOpacity*clamp(elapsed/1400)*(active===g?1-focus:1);
+  }
+  if(d.kind==='keyboard'){
+    g.children.forEach(key=>{
+      const k=key.userData;if(!k.key)return;
+      const t=still?1e5:Math.max(0,elapsed-k.index*105);
+      key.visible=t>0;key.position.copy(k.rest);
+      key.position.x+=(Math.sign(d.rest.x)||1)*(5+Math.sin(k.index)*2)*(1-outQuart(t/2000));
+      key.position.y+=4*(1-bounce(t/1500));
+      const r=1-bounce(t/1500);key.rotation.set(r*.8,k.angle+r*1.5,r*.6);
+      if(isHover&&t>2000)key.position.y+=.12*Math.sin(clamp((now-(d.hoverAt||now)-k.index*18)/350)*Math.PI/2);
+      if(now-k.pressedAt<220)key.position.y-=.11*Math.sin(clamp((now-k.pressedAt)/220)*Math.PI);
+    });
+  }
 }
-async function init() {
-  try {
+function updateVideo(){
+  if(!playing||!active||focus<.995||Math.abs(flip)>.005){video.hidden=true;return;}
+  const panel=active.userData.panel;if(!panel)return;
+  active.updateWorldMatrix(true,false);
+  const points=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,z])=>{
+    const v=new THREE.Vector3(panel.x+x*panel.w/2,panel.y,panel.z+z*panel.h/2);
+    active.localToWorld(v);v.project(camera);return {x:(v.x+1)*innerWidth/2,y:(1-v.y)*innerHeight/2};
+  });
+  const [p0,p1,p2,p3]=points,dx1=p1.x-p2.x,dx2=p3.x-p2.x,dx3=p0.x-p1.x+p2.x-p3.x;
+  const dy1=p1.y-p2.y,dy2=p3.y-p2.y,dy3=p0.y-p1.y+p2.y-p3.y,den=dx1*dy2-dx2*dy1;
+  const a=den?(dx3*dy2-dx2*dy3)/den:0,b=den?(dx1*dy3-dx3*dy1)/den:0;
+  const W=Math.round(Math.hypot(p1.x-p0.x,p1.y-p0.y)),H=Math.round(Math.hypot(p3.x-p0.x,p3.y-p0.y));
+  const matrix=[(p1.x-p0.x+a*p1.x)/W,(p1.y-p0.y+a*p1.y)/W,0,a/W,(p3.x-p0.x+b*p3.x)/H,(p3.y-p0.y+b*p3.y)/H,0,b/H,0,0,1,0,p0.x,p0.y,0,1];
+  video.style.width=W+'px';video.style.height=H+'px';video.style.transform='matrix3d('+matrix.join(',')+')';
+  const iframe=video.querySelector('iframe'),fit=Math.min(W/320,H/640);
+  if(iframe){
+    iframe.style.width='320px';iframe.style.height='640px';
+    iframe.style.transform='translate('+(W-320*fit)/2+'px,'+(H-640*fit)/2+'px) scale('+fit+')';
+  }
+  video.hidden=false;
+}
+function render(now){
+  frame=requestAnimationFrame(render);const dt=Math.min((now-lastTime)/1000||.016,.05);lastTime=now;
+  if(document.hidden)return;
+  if(reduced.matches&&now-drawAt<60)return;drawAt=now;
+  const still=paused||reduced.matches;
+  if(active){
+    const t=still?1:outQuart((now-focusAt)/(focusTo?800:1000));focus=THREE.MathUtils.lerp(focusFrom,focusTo,t);
+    flip=still?flipTo:damp(flip,flipTo,7,dt);
+    if(focusTo&&t===1&&!uiReady){uiReady=true;inspector.classList.add('is-ready');canvas.dataset.phase='inspecting';}
+    if(!focusTo&&t===1){active=null;focus=0;flip=flipTo=0;inspector.hidden=true;document.body.classList.remove('is-inspecting');$('.desk-controls').inert=false;canvas.dataset.focus='';canvas.dataset.phase='browsing';}
+  }
+  cameraUpdate(now,dt,still);
+  const selected=ready?cast():null;
+  if(selected?.root!==hover){hover=selected?.root||null;if(hover)hover.userData.hoverAt=now;}
+  canvas.style.cursor=active?(down?.drag?'grabbing':'grab'):(hover?'url("../assets/cursors/pointer.svg") 15 3, pointer':'');
+  objects.forEach(g=>renderObject(g,now,dt,still));
+  identities.forEach(m=>{
+    const start=enterAt+1000+m.userData.index*333;
+    m.visible=still||now>=start;
+    const t=still?1:back((now-start)/1500);
+    m.scale.z=Math.max(.001,t);m.position.y=.015+m.userData.depth*Math.max(.001,t);
+  });
+  renderer.render(scene,camera);updateVideo();
+}
+function useFallback(err){
+  console.warn('创作桌面使用静态作品浏览。',err?.message||err);fallback=true;$('#fallback').hidden=false;document.body.classList.add('has-fallback');
+  canvas.dataset.state='fallback';$('#enter').disabled=false;$('#load-status').hidden=true;ready=true;
+}
+async function init(){
+  try{
+    history.scrollRestoration='manual';scrollTo(0,0);
     renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
-    renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+    renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1;
     renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
-    scene=new THREE.Scene();scene.background=new THREE.Color(floorColor);
-    camera=new THREE.OrthographicCamera(-9,9,5, -5,.1,160);
-    ivory=material('#f9f8f3');black=material('#111217',{roughness:.36,metalness:.12});
-    grey=material('#a9acba',{roughness:.36,metalness:.32});white=material('#f7f7f8');
-    gold=material('#b8a05c',{roughness:.3,metalness:.7});blue=material('#657da2',{roughness:.42});
-    scene.add(new THREE.HemisphereLight('#ffffff','#a0a4bc',2.4));
-    light=new THREE.DirectionalLight('#fffef8',3.1);light.castShadow=true;
-    light.shadow.mapSize.set(2048,2048);light.shadow.camera.left=-18;light.shadow.camera.right=18;
-    light.shadow.camera.top=16;light.shadow.camera.bottom=-16;light.shadow.camera.near=.5;light.shadow.camera.far=65;
-    light.shadow.bias=-.00015;light.shadow.normalBias=.025;light.shadow.radius=4;
-    scene.add(light,light.target);
-    const fill=new THREE.DirectionalLight('#e5e9ff',.65);fill.position.set(6,8,4);scene.add(fill);
-    const floor=new THREE.Mesh(new THREE.PlaneGeometry(250,250),material(floorColor,{roughness:1,metalness:0}));
-    floor.rotation.x=-Math.PI/2;floor.position.y=-.025;floor.receiveShadow=true;scene.add(floor);
+    scene=new THREE.Scene();scene.background=new THREE.Color('#fff');scene.fog=new THREE.Fog('#fff',12,25);
+    studioEnvironment();
+    camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,.08,180);
+    ivory=material('#f5f5f8');black=material('#08090d',{roughness:.24,metalness:.25});grey=material('#a7acbb',{roughness:.3,metalness:.45});white=material('#fff');blue=material('#7285a5');
+    scene.add(new THREE.HemisphereLight('#fff','#b8bbd0',2.1));
+    light=new THREE.DirectionalLight('#fff',2.7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);
+    Object.assign(light.shadow.camera,{left:-15,right:15,top:15,bottom:-15,near:.1,far:40});light.shadow.bias=-.0002;light.shadow.normalBias=.012;light.shadow.radius=3;
+    scene.add(light,light.target);const fill=new THREE.DirectionalLight('#c4d2f0',.4);fill.position.set(6,8,3);scene.add(fill);
+    const floor=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.MeshBasicMaterial({color:'#d5d6e1',toneMapped:false}));floor.rotation.x=-Math.PI/2;floor.position.y=-.035;scene.add(floor);
+    const shadows=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.ShadowMaterial({opacity:.19,color:'#676d87',depthWrite:false}));shadows.rotation.x=-Math.PI/2;shadows.position.y=-.03;shadows.receiveShadow=true;scene.add(shadows);
     resize();frame=requestAnimationFrame(render);
     await document.fonts.load('500 30px DeskSerif');
-    const [dry,coast,behind,science]=await Promise.all([
-      loadImage(ASSETS+images['dry-ice']),loadImage(ASSETS+images.coastline),loadImage(ASSETS+images.behind),loadImage(ASSETS+'science-workbench.jpg')
+    const [dry,coast,behind,science,dryDetail,coastDetail,behindDetail]=await Promise.all([
+      loadImage(ASSETS+images['dry-ice']),loadImage(ASSETS+images.coastline),loadImage(ASSETS+images.behind),loadImage(ASSETS+'science-workbench.jpg'),
+      loadImage(ASSETS+'evidence/dry-ice-experiment.jpg'),loadImage(ASSETS+'evidence/coast-dimension.jpg'),loadImage(ASSETS+'evidence/behind-ai.jpg')
     ]);
     await nameModel();
-    polaroid(dry,'重新认识干冰白雾',1,-3.45,4.6,.13,'dry-ice');
-    keyboard('SCIENCE/FILM',2.65,4.1);
-    polaroid(coast,'丈量一条海岸线',2,-3.45,13.2,-.11,'coastline');
-    phone(coast,3.3,13.1,'coastline');
-    polaroid(behind,'一条视频的诞生',3,-3.35,21.5,.1,'behind');
-    clapper(3.1,21.4);
-    monitor(science,-3.35,31.0);
-    motionCard(3.35,30.4);
-    floorText('科普工作台',-5.6,33.3,5,'#454b5d',65);
-    floorText('把重复的步骤，做成工具。',-1.9,35.2,7,'#6d7283',45);
-    notebook(-1.0,40.8);
-    keyboard('LIU/JUNWEI',3.25,39.2);
-    floorText('认识一下。',-2.0,37.4,5,'#454b5d',70);
-    resize();ready=true;canvas.dataset.state='ready';
-    $('#load-status').textContent='桌面已就绪';
-  } catch(err) {if(frame)cancelAnimationFrame(frame);useFallback(err);}
+    polaroid(dry,'dry-ice',-3.3,4.95,-.2);
+    keyboard('SCIENCE/FILM',3.3,5.7,.1,{kind:'case',id:'dry-ice'});
+    note('dry-ice',-5.7,10.8,-.1);polaroid(dryDetail,'dry-ice',-.5,11.4,.1,'实验里的白雾',false);
+    phone(coast,7.5,11.1,'coastline');
+    keyboard('COAST/LINE',-3.5,18.0,-.15,{kind:'case',id:'coastline'});
+    polaroid(coast,'coastline',3.3,18.2,.2);
+    note('coastline',-5.2,24.4,.1);polaroid(coastDetail,'coastline',.3,24.5,-.12,'越细看，越长',false);
+    polaroid(behind,'behind',-3.3,32.0,-.15);
+    keyboard('BEHIND/SCENES',3.3,32.3,.12,{kind:'case',id:'behind'});
+    note('behind',-5.3,38.2,-.12);polaroid(behindDetail,'behind',.2,38.3,.17,'从选题到成片',false);clapper(6.2,38);
+    keyboard('CREATIVE/TOOLS',-3.3,47.0,-.16,{kind:'tool',id:'science'});monitor(science,4.1,47.3);
+    motionCard(-2.6,53.6);
+    const scienceInfo=tools.find(t=>t.id==='science');
+    const st=texture(1200,1680,(c,W,H)=>{c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#2e3441';c.font='500 76px DeskSerif,serif';c.fillText('科普工作台',100,250);c.font='42px DeskSerif,serif';let y=wrap(c,scienceInfo.detail,100,480,1000,76)+110;scienceInfo.features.forEach(f=>{c.fillText(f,100,y);y+=130;});});
+    paper(st,null,3.9,53.6,-.18,{kind:'tool',id:'science'},'科普工作台');
+    notebook(-2.9,62);keyboard('LIU/JUNWEI',3.7,61.6,.12,{kind:'about'});
+    resize();ready=true;canvas.dataset.state='ready';canvas.dataset.phase='waiting';
+    $('#enter').disabled=false;$('#load-status').hidden=true;
+  }catch(err){if(frame)cancelAnimationFrame(frame);useFallback(err);}
 }
 addEventListener('resize',resize,{passive:true});
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();if(frame)cancelAnimationFrame(frame);useFallback('WebGL context lost');});
