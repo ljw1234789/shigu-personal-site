@@ -9,7 +9,7 @@
 @media(max-width:1160px){.layout{grid-template-columns:230px minmax(280px,1fr)}.detail{grid-column:1/-1}.player-column{position:static}.transcript{max-height:500px}.works{max-height:650px}}
 @media(max-width:680px){header{padding:18px}.layout{display:flex;flex-direction:column;padding:18px}.works{max-height:240px}.player-column{order:1}.catalog{order:0}.detail{order:2}video{max-height:65vh}.tools button{flex:1}h1{font-size:22px}.status{gap:8px 16px}}
 </style>
-<link rel="stylesheet" href="../../library.css"><link rel="stylesheet" href="../../study-theme.css"></head>
+<link rel="stylesheet" href="../../library.css?v=20261103-3"><link rel="stylesheet" href="../../study-theme.css?v=20261103-3"></head>
 <body class="study-page"><a class="study-back" href="../../">← 返回刘俊威的研究档案</a>
 <header><div class="eyebrow">英俊姐妹日记 · 公开作品研究</div><h1>原片、原声定位与拍剪笔记</h1><p class="muted">先看完整原片，再逐句回看、检查画面，最后用自己的话讲清楚。</p><div class="status" id="status"></div></header>
 <main class="layout">
@@ -23,7 +23,7 @@
 <div class="panel" id="panel-learning" hidden><p class="meta">按原片写下依据。记录只保存在这台电脑的浏览器中，不会自动计为研究验收通过。</p><div id="questions"></div><label class="checkrow"><input type="checkbox" id="watched">我已自己完整回看本条原片</label><p class="meta" id="saved" aria-live="polite"></p><button id="export">导出我的学习记录</button></div>
 </section>
 </main>
-<script src="data.js"></script>
+<script src="data.js?v=20261103-3"></script>
 <script>
 (()=>{'use strict';
 const data=window.YINGJUN_REVIEW_DATA;const $=id=>document.getElementById(id);const v=$('video');let selected=null,segments=[],current=0,segmentButtons=[],stopAt=null,repeatIndex=null;
@@ -56,4 +56,4 @@ $('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({a
 select(data.items.find(r=>r.id===(new URLSearchParams(location.search).get('id')||'7593246079882136883'))||data.items[0]);
 })();
 </script>
-<script src="../../study-player.js"></script></body></html>
+<script src="../../study-player.js?v=20261103-3"></script><script src="../../study-transcript.js?v=20261103-3"></script></body></html>

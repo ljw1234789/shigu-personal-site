@@ -121,16 +121,24 @@ for item in entries:
     target.write_text(s)
     if item.get('primary') and p.suffix in {'.txt','.md'}:item['search']=s[:60000]
 
+# Preserve time-locator labels, with an explicit opt-in view of untouched ASR text.
+for r in study['items']:
+    raw=ROOTS['yingjun']/'内部分析素材'/r['id']/'自动转写-large-v3-turbo-未听审.json'
+    body=json.loads(raw.read_text())['result']['segments']
+    r['machine_segments']=[{k:s[k] for k in ['start','end','text']} for s in body if s.get('text','').strip()]
+    assert len(r['machine_segments'])==len(r['segments'])
+    assert all(abs(a['start']-b['start'])<.02 for a,b in zip(r['machine_segments'],r['segments']))
+    r['machine_source']=str(raw)
 # The existing learning UI keeps its transcript/decision panels and real native video.
 study=rewrite(study,study_source,OUT/'yingjun/study')
 (OUT/'yingjun/study/data.js').write_text('window.YINGJUN_REVIEW_DATA='+json.dumps(study,ensure_ascii=False,separators=(',',':'))+';\n')
 html=(ROOTS['yingjun']/'原片联动学习/看片与逐句核对.html').read_text()
-html=html.replace('src="研究数据.js"','src="data.js"').replace('</head>','<link rel="stylesheet" href="../../library.css"><link rel="stylesheet" href="../../study-theme.css"></head>')
+html=html.replace('src="研究数据.js"','src="data.js?v=20261103-3"').replace('</head>','<link rel="stylesheet" href="../../library.css?v=20261103-3"><link rel="stylesheet" href="../../study-theme.css?v=20261103-3"></head>')
 html=html.replace('<body>','<body class="study-page"><a class="study-back" href="../../">← 返回刘俊威的研究档案</a>')
 html=html.replace("select(data.items.find(r=>r.id==='7593246079882136883')||data.items[0]);","select(data.items.find(r=>r.id===(new URLSearchParams(location.search).get('id')||'7593246079882136883'))||data.items[0]);")
 html=html.replace('showList();highlight()}','showList();highlight();renderCaptionFrames(r);renderClaimChecks(r)}',1)
 html=html.replace('renderCaptionFrames(selected);renderClaimChecks(selected);','')
-html=html.replace('</body>','<script src="../../study-player.js"></script></body>')
+html=html.replace('</body>','<script src="../../study-player.js?v=20261103-3"></script><script src="../../study-transcript.js?v=20261103-3"></script></body>')
 (OUT/'yingjun/study/index.html').write_text(html)
 
 # Preserve every original report resource, add only the site's reading palette.

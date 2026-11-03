@@ -2,7 +2,7 @@ const $=s=>document.querySelector(s);
 const e=(tag,text='',cls='')=>{const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;};
 const fmt=n=>Number(n).toLocaleString('zh-CN');
 const time=n=>Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0');
-async function get(url){const r=await fetch(url);if(!r.ok)throw Error(url);return r.json();}
+async function get(url){const r=await fetch(url+'?v=20261103-3');if(!r.ok)throw Error(url);return r.json();}
 function link(label,href,cls=''){const a=e('a',label,cls);a.href=href;return a;}
 function image(src,alt){const img=e('img');img.src=src;img.alt=alt;img.loading='lazy';img.decoding='async';return img;}
 function pager(button,render){button.addEventListener('click',()=>render(false));}
