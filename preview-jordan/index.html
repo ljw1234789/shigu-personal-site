@@ -9,7 +9,7 @@
   <script>
     if (location.protocol === 'file:') {
       const target = new URL('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/');
-      target.searchParams.set('v', 'desk-spread2');
+      target.searchParams.set('v', 'fast-contact1');
       if (new URLSearchParams(location.search).get('enter') === '1') target.searchParams.set('enter', '1');
       const chapter = new URLSearchParams(location.search).get('chapter');
       if (['projects','dry-ice','coastline','behind','tools','research','practice','yingjun','yingjun-oppo','yingjun-vivo','yingjun-ces','about'].includes(chapter)) target.searchParams.set('chapter', chapter);
@@ -20,18 +20,18 @@
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../assets/fonts/ljw-editorial-serif.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="modulepreload" href="../assets/vendor/three.module.js">
-  <link rel="preload" href="name-wordmark.bin.gz" as="fetch" crossorigin>
-  <link rel="stylesheet" href="style.css?v=desk-spread2">
-  <link rel="stylesheet" href="quick.css?v=desk-spread2">
+  <link rel="stylesheet" href="style.css?v=fast-contact1">
+  <link rel="stylesheet" href="quick.css?v=fast-contact1">
   <link rel="stylesheet" href="../cursor.css?v=20261029-3">
   <script src="../site-data.js"></script>
   <script src="../project-evidence.js"></script>
   <script src="../portfolio-narrative.js?v=interview3"></script>
   <script src="../tool-catalog.js"></script>
   <script src="../research/portfolio-content.js?v=integrated1"></script>
-  <script src="study-videos.js?v=desk-spread2"></script>
-  <script src="quick.js?v=desk-spread2" defer></script>
-  <script type="module" src="desk.js?v=desk-spread2"></script>
+  <script src="profile.js?v=fast-contact1"></script>
+  <script src="study-videos.js?v=fast-contact1"></script>
+  <script src="quick.js?v=fast-contact1" defer></script>
+  <script type="module" src="desk.js?v=fast-contact1"></script>
 </head>
 <body class="scroll-home">
   <div class="entry" id="entry">
@@ -41,11 +41,11 @@
   <header class="site-bar">
     <button class="menu-button" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="navigation" aria-expanded="false"><i></i><i></i><i></i></button>
     <p class="desk-position" id="desk-position">短视频内容策划与剪辑<span>AI 辅助选题 · 脚本 · 剪辑 · 发布复盘</span></p>
-    <button class="identity" data-jump="0" aria-label="回到刘俊威的姓名">刘俊威<span>↗</span></button>
+    <button class="identity" data-jump="84" aria-label="联系刘俊威">刘俊威<span>↗</span></button>
   </header>
   <nav class="navigation" id="navigation" aria-label="作品集导航" hidden>
     <p>刘俊威<span>短视频内容策划与剪辑</span></p>
-    <button data-jump="0"><span>01</span>回到桌面<b>↗</b></button>
+    <button data-jump="0"><span>01</span>回到作品<b>↗</b></button>
     <button data-jump="0.8"><span>02</span>英俊姐妹日记 · 原片研究<b>↗</b></button>
     <div class="study-jumps" aria-label="三条研究原片"><button data-jump="3.85">实况拼图 ↗</button><button data-jump="4.15" data-mobile-jump="7.25">vivo 开箱 ↗</button><button data-jump="4.45" data-mobile-jump="10.65">CES 盘点 ↗</button></div>
     <button data-jump="16.5"><span>03</span>重新认识干冰白雾<b>↗</b></button>
@@ -53,7 +53,7 @@
     <button data-jump="44"><span>05</span>一条视频的诞生<b>↗</b></button>
     <button data-jump="59"><span>06</span>创作工具<b>↗</b></button>
     <button data-jump="74"><span>07</span>创作资料袋<b>↗</b></button>
-    <button data-jump="84"><span>08</span>关于我<b>↗</b></button>
+    <button data-jump="84"><span>08</span>关于我 · 联系<b>↗</b></button>
     <a href="../research/">内容研究档案 · 英俊姐妹日记 / 毕导 ↗</a>
     <a href="../overview.html">阅读版总览 ↗</a>
   </nav>
@@ -62,17 +62,17 @@
     <div class="desk-viewport" id="viewport"><canvas id="desk" tabindex="0" aria-label="立体创作桌面。滚动浏览，点击物件展开；也可按回车展开当前物件，按 Escape 收回。"></canvas></div>
     <div class="scroll-track" id="scroll-track" aria-hidden="true"></div>
     <div class="fallback" id="fallback" hidden>
-      <img class="fallback-name" src="../assets/sculpture-v13/wordmark.svg" alt="刘俊威">
-      <p>短视频内容策划与剪辑</p>
       <section class="fallback-study" id="fallback-study" aria-label="英俊姐妹日记研究原片"></section>
       <button data-case="dry-ice"><img src="../assets/projects/dry-ice-hd.jpg" alt=""><span>重新认识干冰白雾 ↗</span></button>
       <button data-case="coastline"><img src="../assets/projects/coastline-hd.jpg" alt=""><span>丈量一条海岸线 ↗</span></button>
       <button data-case="behind"><img src="../assets/projects/behind-hd.jpg" alt=""><span>一条视频的诞生 ↗</span></button>
       <section class="fallback-research"><h2>内容研究</h2><p>把公开内容的观察，整理为选题、脚本和拍剪判断。</p><a href="../research/bidao/report/">毕导 · 完整 IP 报告 ↗</a><a href="../research/yingjun/study/">英俊姐妹日记 · 原片与研究 ↗</a><a href="../research/#picks">十条选片与重剪计划 ↗</a></section>
+      <section class="fallback-contact"><img class="fallback-name" src="../assets/sculpture-v13/wordmark.svg" alt="刘俊威">
+      <p>短视频内容策划与剪辑</p><div class="contact-line">微信号 <strong>a2004liujunwei2026</strong><button type="button" data-copy-wechat>复制微信号</button></div></section>
     </div>
   </main>
   <p class="asset-status" id="asset-status" role="status" hidden>正在载入作品… <button type="button" data-jump="0.8">跳到作品 ↓</button></p>
-  <div class="desk-caption" id="desk-caption"><span id="section-number">01 / 08</span><span id="section-name">刘俊威的创作桌面</span></div>
+  <div class="desk-caption" id="desk-caption"><span id="section-number">01 / 08</span><span id="section-name">视频作品与内容研究</span></div>
   <div class="desk-controls">
     <button class="study-entry-button" type="button" data-jump="0.8" aria-label="查看英俊姐妹日记的三条视频">英俊视频 <span>03</span></button>
     <button class="index-button" id="quick-toggle" type="button" data-quick>快速看作品 <span>↗</span></button>
@@ -86,10 +86,10 @@
   </section>
   <div class="video-surface" id="video-surface" hidden></div>
   <section class="quick-reader" id="quick-reader" aria-label="作品快速阅读" hidden>
-    <header class="quick-bar"><a class="quick-brand" href="#works" data-quick>刘俊威</a><nav aria-label="快速阅读导航"><a href="#works" data-quick>英俊视频</a><a href="#work-dry-ice">干冰白雾</a><a href="#work-coastline">海岸线</a><a href="#work-behind">幕后制作</a></nav><button type="button" data-quick-close>回到创作桌面 ↗</button></header>
+    <header class="quick-bar"><a class="quick-brand" href="#works" data-quick>刘俊威</a><nav aria-label="快速阅读导航"><a href="#works" data-quick>英俊视频</a><a href="#work-dry-ice">干冰白雾</a><a href="#work-coastline">海岸线</a><a href="#work-behind">幕后制作</a></nav><button type="button" data-quick-contact>联系我</button><button type="button" data-quick-close>回到创作桌面 ↗</button></header>
     <main class="quick-shell"><section class="quick-study" id="quick-study" aria-labelledby="quick-study-title"><header><h2 id="quick-study-title">英俊姐妹日记</h2><p>原片研究</p></header><div class="quick-study-grid" id="quick-study-videos"></div></section><section class="quick-intro"><p class="quick-kicker">短视频内容策划与剪辑</p><h1 id="quick-title"><span>三条视频，</span><span>我负责的部分。</span></h1><p>毕导团队参与项目。我的工作覆盖 AI 辅助选题、脚本、剪辑与发布复盘。</p><nav class="quick-case-index" aria-label="三条案例"><a href="#work-dry-ice">重新认识干冰白雾 ↘</a><a href="#work-coastline">丈量一条海岸线 ↘</a><a href="#work-behind">一条视频的诞生 ↘</a></nav></section>
-    <div id="quick-cases"></div><section class="quick-research" id="quick-research"><h2>需要时，再展开资料。</h2><p>成片依据、两组内容研究与十条选片计划，已收进桌面的创作资料袋。</p><nav aria-label="重点资料"><a href="?v=desk-spread2&amp;enter=1&amp;chapter=research">在桌面打开资料袋 ↗</a><a href="../research/">完整资料目录 ↗</a><a href="../research/downloads/interview-essentials.zip" download>下载重点资料包 ↓</a></nav></section>
-    <footer class="quick-footer"><span>刘俊威 · 内容策划与剪辑</span><div><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">GitHub ↗</a><button type="button" data-quick-share>分享作品集 ↗</button></div></footer></main>
+    <div id="quick-cases"></div><section class="quick-research" id="quick-research"><h2>需要时，再展开资料。</h2><p>成片依据、两组内容研究与十条选片计划，已收进桌面的创作资料袋。</p><nav aria-label="重点资料"><a href="?v=fast-contact1&amp;enter=1&amp;chapter=research">在桌面打开资料袋 ↗</a><a href="../research/">完整资料目录 ↗</a><a href="../research/downloads/interview-essentials.zip" download>下载重点资料包 ↓</a></nav></section>
+    <footer class="quick-footer" id="quick-contact"><div class="quick-contact"><h2>刘俊威</h2><p>短视频内容策划与剪辑</p><p class="wechat-line">微信号 <strong>a2004liujunwei2026</strong><button type="button" data-copy-wechat>复制微信号</button></p></div><div><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">GitHub ↗</a><button type="button" data-quick-share>分享作品集 ↗</button></div></footer></main>
   </section>
   <noscript><p>请打开 <a href="../overview.html">刘俊威的阅读版总览</a> 查看视频和个人贡献。</p></noscript>
 </body>

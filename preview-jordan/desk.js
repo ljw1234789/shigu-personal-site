@@ -9,12 +9,15 @@ const evidence = window.PROJECT_EVIDENCE.projects;
 const narrative = window.PORTFOLIO_NARRATIVE;
 const research = window.PORTFOLIO_RESEARCH;
 const studyVideos = window.DESK_STUDY_VIDEOS || [];
+const profile = window.PORTFOLIO_PROFILE;
 const tools = window.CREATIVE_TOOLS.filter(t => ['science','motion'].includes(t.id));
 const order = ['dry-ice','coastline','behind'];
 const images = {'dry-ice':'dry-ice-hd.jpg',coastline:'coastline-hd.jpg',behind:'behind-hd.jpg'};
 const videoTimes = {'dry-ice':'10:25',coastline:'13:55',behind:'03:43'};
 const ASSETS = '../assets/projects/';
-const MAX_TRAVEL = 84;
+const MAX_TRAVEL = 88;
+const IDENTITY_Z = 81.8;
+const CONTACT_Z = 86.6;
 const VIEW_LEAD = 3.4;
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fallbackStudy=$('#fallback-study');
@@ -31,13 +34,29 @@ const bounce = t => {t=clamp(t);const n=7.5625,d=2.75;if(t<1/d)return n*t*t;if(t
 const damp = (a,b,s,dt) => THREE.MathUtils.lerp(a,b,1-Math.exp(-s*dt));
 const objects=[],pickables=[],keys=[],identities=[],papers=[];
 const projectPhotos = new Map();
+const primedMedia = new Map();
+let identityRequested=false;
+function primeMedia(id){
+  if(primedMedia.has(id)||navigator.connection?.saveData||document.hidden||active)return;
+  const item=studyVideos.find(item=>item.id===id),source=item?.media||'media/'+id+'.mp4';
+  if(!item&&!order.includes(id))return;
+  const media=document.createElement('video');media.preload='metadata';media.playsInline=true;media.src=source;
+  media.addEventListener('error',()=>{if(primedMedia.get(id)===media)primedMedia.delete(id);},{once:true});
+  primedMedia.set(id,media);media.load();
+  if(primedMedia.size>3){const [key,old]=primedMedia.entries().next().value;old.removeAttribute('src');old.load();primedMedia.delete(key);}
+}
+function requestIdentity(){
+  if(identityRequested)return;identityRequested=true;
+  const timer=setTimeout(()=>fallbackName(),1500);
+  nameModel().catch(()=>fallbackName()).finally(()=>clearTimeout(timer));
+}
 const pointer = new THREE.Vector2(0,0),ray = new THREE.Raycaster();
 const qBase = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/4,0,0));
 const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),Math.PI/2);
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'刘俊威的创作桌面'],[.8,'英俊姐妹日记 · 原片研究'],[14.8,'重新认识干冰白雾'],[27,'丈量一条海岸线'],[41,'一条视频的诞生'],[55,'创作工具'],[69,'创作资料袋'],[79,'关于我']];
+const sectionStops=[[0,'视频作品与内容研究'],[.8,'英俊姐妹日记 · 原片研究'],[14.8,'重新认识干冰白雾'],[27,'丈量一条海岸线'],[41,'一条视频的诞生'],[55,'创作工具'],[69,'创作资料袋'],[79,'关于我 · 联系']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
 const startsInQuick=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
@@ -107,7 +126,7 @@ function setInspection(){
   let name=d.title||'',html='',description='';
   if(a.kind==='case'){
     const p=projects.find(p=>p.id===a.id),n=narrative[a.id];name=p.name;
-    html=(d.panel?'<button data-inspect="play">'+(playing?'关闭播放器 □':'播放成片 ▷')+'</button>':'')+
+    html='<p class="case-role-strip">我的参与：AI 辅助选题 · 脚本 · 剪辑 · 发布复盘</p>'+(d.panel?'<button data-inspect="play">'+(playing?'关闭播放器 □':'播放成片 ▷')+'</button>':'')+
       (d.back?'<button data-inspect="flip">'+(flipTo?'回到封面 ↻':'我的贡献 ↻')+'</button>':'')+
       '<button data-quick="'+a.id+'">清晰看职责 ↗</button>'+
       '<a href="'+evidence[a.id].bilibili.url+'" target="_blank" rel="noopener">B 站原片 ↗</a>';
@@ -115,7 +134,7 @@ function setInspection(){
   }else if(a.kind==='study-video'){
     const p=studyVideos.find(item=>item.id===a.id);name='英俊姐妹日记 · 原片研究 / '+p.name;
     description=p.type+'。收录公开原片，用于内容研究。';
-    html='<button data-inspect="play">'+(playing?'关闭播放器 □':'播放原片 ▷')+'</button>'+
+    html='<button data-inspect="play">'+(playing?'关闭播放器 □':'播放原片 ▷')+'</button>'+(playing?'<button data-inspect="quality">'+(videoSession?.quality==='hd'?'切换流畅版':'切换清晰版')+'</button>':'')+
       '<a href="'+esc(p.study)+'">对应视频笔记 ↗</a><a href="'+esc(p.original)+'" target="_blank" rel="noopener">抖音原片 ↗</a>';
   }else if(a.kind==='tool'){
     const t=tools.find(t=>t.id===a.id);name=t.name;description=t.detail;
@@ -134,7 +153,7 @@ function setInspection(){
       '<a href="../research/downloads/interview-essentials.zip" download>资料包 ↓</a>';
   }else if(a.kind==='about'){
     name='刘俊威 · 短视频内容策划与剪辑';description='工科背景，曾在毕导团队参与科普视频制作。用 AI 辅助选题、脚本、剪辑与发布复盘。';
-    html='<a href="../research/">我的内容研究 ↗</a><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a>';
+    html='<div class="contact-line">微信号 <strong>'+esc(profile.wechat)+'</strong><button data-copy-wechat>复制微信号</button></div><a href="../research/">我的内容研究 ↗</a><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">GitHub ↗</a>';
   }
   actions.innerHTML=html+'<button data-inspect="close">收回桌面 ×</button>';
   $('#inspection-title').textContent=name;
@@ -177,24 +196,25 @@ function stopVideo(){
     session.closed=true;clearTimeout(session.timer);
     session.media.pause();session.media.removeAttribute('src');session.media.load();
   }
-  video.replaceChildren();video.hidden=true;delete video.dataset.state;
+  video.replaceChildren();video.hidden=true;delete video.dataset.state;delete video.dataset.startupMs;
 }
-function startVideo(){
+function startVideo(quality='fast',resumeTime=0){
   if(!active?.userData.panel)return;
   stopVideo();
   flipTo=0;dragYaw=dragPitch=0;playing=true;
   const action=active.userData.action,isStudy=action.kind==='study-video';
   const p=isStudy?studyVideos.find(p=>p.id===action.id):projects.find(p=>p.id===action.id);
-  const media=document.createElement('video');
-  media.controls=true;media.playsInline=true;media.preload='metadata';
+  const media=quality==='fast'&&primedMedia.get(p.id)||document.createElement('video');
+  primedMedia.delete(p.id);
+  media.controls=true;media.playsInline=true;media.preload='auto';
   media.poster=isStudy?p.poster:ASSETS+images[p.id];media.setAttribute('aria-label',p.name+(isStudy?' · 研究原片':' · 完整视频'));
-  const source=isStudy?p.media:'media/'+p.id+'.mp4';
+  const source=isStudy?(quality==='hd'?p.hdMedia:p.media):'media/'+p.id+'.mp4';
   const status=document.createElement('div');status.className='video-status';
   status.setAttribute('role','status');status.setAttribute('aria-live','polite');
   const message=document.createElement('p'),button=document.createElement('button'),original=document.createElement('a');
   button.type='button';original.textContent=isStudy?'打开抖音原片 ↗':'打开 B 站原片 ↗';original.href=isStudy?p.original:evidence[p.id].bilibili.url;original.target='_blank';original.rel='noopener';
   status.append(message,button,original);
-  const session={media,timer:0,closed:false,pending:false};videoSession=session;
+  const session={media,timer:0,closed:false,pending:false,quality,startAt:performance.now(),started:false};videoSession=session;
   const current=()=>videoSession===session&&!session.closed;
   const show=(state,text,action='',showOriginal=false)=>{
     if(!current())return;
@@ -219,7 +239,7 @@ function startVideo(){
       else if(error.name!=='AbortError')show('error','视频暂时无法播放','重新加载',true);
     }).finally(()=>{if(current())session.pending=false;});
   };
-  media.addEventListener('playing',()=>{if(current()){clearWait();show('playing','');}});
+  media.addEventListener('playing',()=>{if(current()){clearWait();show('playing','');if(!session.started){session.started=true;video.dataset.startupMs=String(Math.round(performance.now()-session.startAt));}}});
   media.addEventListener('pause',()=>{
     if(!current()||media.ended||['error','slow'].includes(video.dataset.state))return;
     // Failed sources may emit pause after error. Keep the retry state instead
@@ -242,7 +262,11 @@ function startVideo(){
     requestPlay();
   });
   video.dataset.host=active.userData.device?'device':'paper';
-  video.replaceChildren(media,status);media.src=source;setInspection();requestPlay();
+  video.replaceChildren(media,status);
+  if(media.getAttribute('src')!==source)media.src=source;
+  const seek=()=>{if(resumeTime>0)media.currentTime=Math.min(resumeTime,Math.max(0,media.duration-.1));};
+  if(media.readyState>=1)seek();else media.addEventListener('loadedmetadata',seek,{once:true});
+  setInspection();requestPlay();
 }
 function closeObject(){
   if(!active||focusTo===0)return;
@@ -257,6 +281,7 @@ actions.addEventListener('click',e=>{
   if(tab&&active?.userData.folder){active.userData.folder.selected=Number(tab.dataset.folder);dragYaw=dragPitch=0;setInspection();return;}
   const b=e.target.closest('[data-inspect]');if(!b||!active)return;
   if(b.dataset.inspect==='close')return closeObject();
+  if(b.dataset.inspect==='quality')return startVideo(videoSession?.quality==='hd'?'fast':'hd',videoSession?.media.currentTime||0);
   if(b.dataset.inspect==='flip'){
     stopVideo();flipTo=flipTo?0:1;dragYaw=dragPitch=0;setInspection();return;
   }
@@ -385,7 +410,9 @@ function polaroid(img,id,x,z,angle,caption,primary=true){
   const t=texture(1200,1680,(c,W,H)=>{
     c.fillStyle='#f7f7f3';c.fillRect(0,0,W,H);
     cover(c,img,60,60,1080,1210);
+    if(primary){c.fillStyle='#52718c';c.font='38px DeskSerif,serif';c.textAlign='left';c.fillText('毕导团队 · 参与作品',60,1370);}
     c.fillStyle='#15161c';c.font='500 64px DeskSerif,serif';c.textAlign='center';c.fillText(caption||p.name,W/2,1487,1080);
+    if(primary){c.fillStyle='#52718c';c.font='36px DeskSerif,serif';c.fillText('选题 · 脚本 · 剪辑 · 发布复盘',W/2,1580,1080);}
   });
   const g=paper(t,caseBack(id),x,z,angle,{kind:'case',id},p.name);
   g.userData.primary=primary;
@@ -400,8 +427,8 @@ function studySpread(){
   const base=texture(2440,1820,(c,W,H)=>{
     c.fillStyle='#dce9f3';c.fillRect(0,0,W,H);
     c.strokeStyle='#b3c9dc';c.lineWidth=3;c.strokeRect(45,45,W-90,H-90);
-    c.fillStyle='#345c7c';c.font='500 70px DeskSerif,serif';c.fillText('英俊姐妹日记',1560,160,760);
-    c.fillStyle='#597a94';c.font='32px Arial';c.fillText('原片研究 / 03',1560,219);
+    c.fillStyle='#345c7c';c.font='500 106px DeskSerif,serif';c.fillText('英俊姐妹日记',130,180,1400);
+    c.fillStyle='#597a94';c.font='42px Arial';c.fillText('原片研究 / 03',1910,175);
   });
   const mat=paper(base,null,0,4,0,null,'英俊视频选片底页',12.2,9.1);
   mat.userData.kind='mat';mat.userData.desktopOnly=true;mat.userData.paper.mesh.position.y=-.02;
@@ -426,7 +453,7 @@ function studyVideoCard(img,item,index){
   });
   const g=paper(t,null,item.x,item.z,[-.075,.035,.08][index],{kind:'study-video',id:item.id},item.name+' · 原片研究',3.4,6.45);
   g.userData.rest.y=.018+index*.012;
-  g.userData.baseScale=1.02;g.userData.mobileScale=.84;g.userData.primary=true;
+  g.userData.baseScale=item.scale||1.02;g.userData.mobileScale=item.id==='yingjun-oppo'?.79:.96;g.userData.primary=true;
   g.userData.mobileRest={x:item.mobileX,z:item.mobileZ};
   g.userData.autoPlay=true;
   // The source is 720 × 1280: fit its complete portrait frame without side bars.
@@ -534,14 +561,16 @@ function motionCard(x,z){
   });return paper(t,b,x,z,.22,{kind:'tool',id:'motion'},'动效镜头库');
 }
 function notebook(x,z){
-  const t=texture(1560,1900,(c,W,H)=>{
-    c.fillStyle='#f6f5f0';c.fillRect(0,0,W,H);c.fillStyle='#262b34';c.font='500 100px DeskSerif,serif';c.fillText('用好奇心，',135,290);c.fillText('做值得看完的内容。',135,450,1300);
-    c.strokeStyle='#c8c9ce';c.beginPath();c.moveTo(140,600);c.lineTo(1420,600);c.stroke();
-    c.font='65px DeskSerif,serif';c.fillText('刘俊威',140,810);c.font='45px DeskSerif,serif';c.fillText('短视频内容策划与剪辑',140,920);
-    c.fillStyle='#5e6470';c.font='43px DeskSerif,serif';let y=wrap(c,'工科背景让我习惯追问原理，做内容则让我学习如何把它讲清楚。',140,1110,1240,80)+90;
-    wrap(c,'曾在毕导团队参与科普视频制作，用 AI 辅助选题和脚本，也参与剪辑、发布与复盘。',140,y,1240,80);
-    c.fillStyle='#52718c';c.font='35px DeskSerif,serif';c.fillText('内容研究 / 英俊姐妹日记 · 毕导',140,1710);
-  });return paper(t,null,x,z,-.12,{kind:'about'},'认识刘俊威',3.8,4.63);
+  const t=texture(1740,1140,(c,W,H)=>{
+    c.fillStyle='#f2f7fc';c.fillRect(0,0,W,H);c.strokeStyle='#a9c1d6';c.lineWidth=3;c.strokeRect(45,45,W-90,H-90);
+    c.fillStyle='#264d6a';c.font='500 150px DeskSerif,serif';c.fillText(profile.name,120,260);
+    c.font='62px DeskSerif,serif';c.fillText(profile.role,125,385);
+    c.fillStyle='#45657c';c.font='48px DeskSerif,serif';wrap(c,'工科背景，曾在毕导团队参与科普视频制作。',125,540,1490,75,2);
+    c.font='46px Arial';c.fillText('AI 辅助选题 / 脚本 / 剪辑 / 发布复盘',125,690,1490);
+    c.strokeStyle='#b8ccdd';c.beginPath();c.moveTo(125,790);c.lineTo(1615,790);c.stroke();
+    c.fillStyle='#264d6a';c.font='70px Arial';c.fillText('微信号  '+profile.wechat,125,950,1490);
+  });
+  const card=paper(t,null,x,z,-.04,{kind:'about'},'刘俊威 · 联系方式',5.8,3.8);setFolderFog(card,false);return card;
 }
 const FOLDER_DOCS=[
   {title:'案例依据',lead:'让成片、职责与来源能被核对。',lines:['三条已参与的团队作品','成片截图与时间定位','公开数据、反馈与来源'],links:[{label:'快速看三条作品',url:'#works',quick:true},{label:'完整成片依据',url:'../research/#participation'}]},
@@ -608,13 +637,13 @@ async function nameModel(){
     scene.remove(old);objects.splice(i,1);
     old.traverse(o=>{if(o.isMesh){o.geometry.dispose();for(const m of [].concat(o.material)){m.map?.dispose();m.dispose();}}});
   }
-  const root=object(-2.4,-1.05,0,null,'刘俊威','name');root.userData.width=7.2;root.userData.height=2.6;
+  const root=object(0,IDENTITY_Z,0,null,'刘俊威','name');root.userData.width=7.2;root.userData.height=2.6;
   parts.forEach((indices,i)=>{
     const g=new THREE.BufferGeometry();g.setAttribute('position',geo.attributes.position);g.setAttribute('normal',geo.attributes.normal);g.setIndex(indices);
     const m=mesh(g,material('#fafaff',{roughness:.7,metalness:0}));m.rotation.x=-Math.PI/2;
     m.userData.depth=(geo.boundingBox.max.z-geo.boundingBox.min.z)/2;m.userData.index=i;root.add(m);identities.push(m);
   });contact(root,8.1,3.3,.13);
-  const label=floorText('LIU JUNWEI',-2.4,.3,7.15);label.userData.identity=true;
+  const label=floorText('LIU JUNWEI',0,IDENTITY_Z+1.65,7.15);label.userData.identity=true;
   canvas.dataset.nameMode='sculpture';
 }
 function loadImage(src,timeout=6500){return new Promise((resolve,reject)=>{
@@ -633,8 +662,8 @@ async function fallbackName(){
     if(img){c.drawImage(img,0,0,W,H);c.globalCompositeOperation='source-in';c.fillStyle='#f6f6fa';c.fillRect(0,0,W,H);}
     else{c.fillStyle='#f6f6fa';c.font='500 400px DeskSerif,serif';c.textAlign='center';c.fillText('刘俊威',W/2,440);}
   });
-  const root=object(-2.4,-1.05,0,null,'刘俊威','name');root.userData.fallbackName=true;const face=surface(root,7.2,2.88,.03,t,true);face.material.transparent=true;
-  const label=floorText('LIU JUNWEI',-2.4,.9,7.15);label.userData.identity=true;label.userData.fallbackName=true;
+  const root=object(0,IDENTITY_Z,0,null,'刘俊威','name');root.userData.fallbackName=true;const face=surface(root,7.2,2.88,.03,t,true);face.material.transparent=true;
+  const label=floorText('LIU JUNWEI',0,IDENTITY_Z+1.65,7.15);label.userData.identity=true;label.userData.fallbackName=true;
   canvas.dataset.nameMode='vector';
 }
 function studioEnvironment(){
@@ -719,7 +748,8 @@ function renderObject(g,now,dt,still){
     const tan=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
     const fitWidth=Math.max(.18,Math.min(mobile?.83:.72,1-2*(mobile?24:80)/innerWidth));
     const fitTop=Math.max(.18,Math.min(mobile?.66:.76,1-2*(mobile?140:76)/innerHeight));
-    const fitBottom=Math.max(.18,Math.min(mobile?.64:.70,1-2*(mobile?150:100)/innerHeight));
+    const extraActions=['case','about'].includes(d.action?.kind);
+    const fitBottom=Math.max(.18,Math.min(mobile?.64:.70,1-2*(mobile?(extraActions?190:150):(extraActions?130:100))/innerHeight));
     qFit.copy(camera.quaternion).invert().multiply(qFace);
     let distance=2;
     // Fit the entire object, including a laptop's keyboard and screen depth,
@@ -805,8 +835,9 @@ function render(now){
     if(!focusTo&&t===1){active=null;focus=0;flip=flipTo=0;inspector.hidden=true;document.body.classList.remove('is-inspecting');$('.desk-controls').inert=false;canvas.dataset.focus='';canvas.dataset.phase='browsing';}
   }
   cameraUpdate(now,dt,still);
+  if(ready&&scrollGoal>65)requestIdentity();
   const selected=ready?cast():null;
-  if(selected?.root!==hover){hover=selected?.root||null;if(hover)hover.userData.hoverAt=now;}
+  if(selected?.root!==hover){hover=selected?.root||null;if(hover){hover.userData.hoverAt=now;const a=hover.userData.action;if(a?.kind==='study-video'||a?.kind==='case')primeMedia(a.id);}}
   canvas.style.cursor=active?(down?.drag?'grabbing':'grab'):(hover?'url("../assets/cursors/pointer.svg") 15 3, pointer':'');
   objects.forEach(g=>renderObject(g,now,dt,still));
   identities.forEach(m=>{
@@ -839,8 +870,6 @@ async function init(){
     const floor=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.MeshBasicMaterial({color:'#d5d6e1',toneMapped:false}));floor.rotation.x=-Math.PI/2;floor.position.y=-.035;scene.add(floor);
     const shadows=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.ShadowMaterial({opacity:.19,color:'#676d87',depthWrite:false}));shadows.rotation.x=-Math.PI/2;shadows.position.y=-.03;shadows.receiveShadow=true;scene.add(shadows);
     resize();frame=requestAnimationFrame(render);canvas.dataset.state='loading';
-    const nameTimer=setTimeout(()=>fallbackName(),1800);
-    const nameTask=nameModel().catch(()=>fallbackName()).finally(()=>clearTimeout(nameTimer));
     await Promise.race([document.fonts.load('500 30px DeskSerif').catch(()=>[]),new Promise(resolve=>setTimeout(resolve,1800))]);
     const asset=(src,label)=>loadImage(src).catch(()=>placeholderImage(label));
     const [dry,coast,behind,science,dryDetail,coastDetail,behindDetail]=await Promise.all([
@@ -867,10 +896,12 @@ async function init(){
     paper(st,null,3.9,65.6,-.18,{kind:'tool',id:'science'},'科普工作台');
     assetFolder(0,74);
     await Promise.all(studyVideos.map((item,i)=>asset(item.poster,item.name).then(img=>studyVideoCard(img,item,i))));
-    notebook(-2.9,84);keyboard('LIU/JUNWEI',3.7,83.6,.12,{kind:'about'});
+    notebook(0,CONTACT_Z);
     resize();ready=true;canvas.dataset.state='ready';
     if(!entered)canvas.dataset.phase='waiting';
     $('#load-status').hidden=true;$('#asset-status').hidden=true;
+    const warm=()=>{if(scrollGoal<15)studyVideos.forEach(item=>primeMedia(item.id));};
+    if('requestIdleCallback' in window)requestIdleCallback(warm,{timeout:2500});else setTimeout(warm,800);
     const chapter=new URLSearchParams(location.search).get('chapter');
     const chapterPositions={projects:.8,'dry-ice':16.5,coastline:30,behind:44,tools:59,research:74,practice:74,yingjun:.8,...Object.fromEntries(studyVideos.map(item=>[item.id,mobile?item.mobileZ:item.z])),about:84};
     const quickRouteNow=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
@@ -878,7 +909,6 @@ async function init(){
       if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}
       else if(enterRequested)enterDesk();
     }
-    await nameTask;
   }catch(err){if(frame)cancelAnimationFrame(frame);useFallback(err);}
 }
 addEventListener('resize',resize,{passive:true});

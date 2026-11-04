@@ -1,0 +1,44 @@
+[
+  {
+    "id": "yingjun-oppo",
+    "source_sha256": "5f54ed15e9ae21954368bdf6098f2abaa6766d6db6a36102f2d0433c9a1dc6a6",
+    "stream_sha256": "464144c6d82ff1614c1e05704e20a611d669bed79d15b54dfa1a0cf301217ee9",
+    "source_public_bytes": 29257176,
+    "stream_bytes": 10360027,
+    "duration": 190.8,
+    "width": 432,
+    "height": 768,
+    "codec": "h264",
+    "audio": "aac",
+    "faststart": true,
+    "keyframeSeconds": 1
+  },
+  {
+    "id": "yingjun-vivo",
+    "source_sha256": "6699d982e7c107a7d3de5b8adad14de8a94476821fd35f63d959250df506f1c8",
+    "stream_sha256": "ddb323867e999ab37d33de3f474f1d6419211f310cd6cc5b82749937e20231c4",
+    "source_public_bytes": 19640541,
+    "stream_bytes": 5668430,
+    "duration": 135.304,
+    "width": 432,
+    "height": 768,
+    "codec": "h264",
+    "audio": "aac",
+    "faststart": true,
+    "keyframeSeconds": 1
+  },
+  {
+    "id": "yingjun-ces",
+    "source_sha256": "7f222c5537c3cef47a59ffce0b2133f11b04ffe7db757274663a872e24d85db0",
+    "stream_sha256": "05657d0e4831110fd85b3f5ba1d2b68fd7e19359a0840307bf54efe121d32282",
+    "source_public_bytes": 12909341,
+    "stream_bytes": 4680678,
+    "duration": 83.48,
+    "width": 432,
+    "height": 768,
+    "codec": "h264",
+    "audio": "aac",
+    "faststart": true,
+    "keyframeSeconds": 1
+  }
+]

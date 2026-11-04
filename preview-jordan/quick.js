@@ -11,7 +11,7 @@
   let active = false, savedScroll = 0, returnFocus = null;
   const studyHost=document.getElementById('quick-study-videos');
   if(studyHost){
-    studyHost.innerHTML=(window.DESK_STUDY_VIDEOS||[]).map(item=>`<article class="quick-study-card"><video controls playsinline preload="none" poster="${safe(item.poster)}" src="${safe(item.media)}" data-study-source="${safe(item.media)}" aria-label="${safe(item.name)}研究原片"></video><h3>${safe(item.name)}</h3><p>${safe(item.type)} · ${clock(item.duration)}</p></article>`).join('');
+    studyHost.innerHTML=(window.DESK_STUDY_VIDEOS||[]).map(item=>`<article class="quick-study-card"><video controls playsinline preload="none" poster="${safe(item.poster)}" src="${safe(item.media)}" data-study-source="${safe(item.media)}" aria-label="${safe(item.name)}研究原片"></video><h3>${safe(item.name)}</h3><p>${safe(item.type)} · ${clock(item.duration)}</p><a href="${safe(item.hdMedia)}" target="_blank" rel="noopener">清晰原片 ↗</a></article>`).join('');
     studyHost.querySelectorAll('video').forEach(v=>v.addEventListener('play',()=>host.querySelectorAll('video').forEach(other=>{if(other!==v)other.pause();})));
   }
 
@@ -99,13 +99,14 @@
     else close(false);
   }
   document.addEventListener('click',event=>{
+    if(event.target.closest('[data-quick-contact]')){event.preventDefault();document.getElementById('quick-contact').scrollIntoView({behavior:'instant',block:'start'});return;}
     const trigger=event.target.closest('[data-quick]');
     if(trigger){event.preventDefault();open(trigger.dataset.quick);return;}
     if(event.target.closest('[data-quick-close]')){event.preventDefault();close();return;}
     const playButton=event.target.closest('[data-quick-play]');
     if(playButton)play(playButton.dataset.quickPlay,playButton.dataset.playMode);
     const share=event.target.closest('[data-quick-share]');
-    if(share)navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=desk-main1').then(()=>{share.textContent='链接已复制 ✓';}).catch(()=>{share.textContent='请复制地址栏链接';});
+    if(share)navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=fast-contact1').then(()=>{share.textContent='链接已复制 ✓';}).catch(()=>{share.textContent='请复制地址栏链接';});
   });
   document.addEventListener('keydown',event=>{if(active&&event.key==='Escape'&&!document.fullscreenElement){event.preventDefault();close();}});
   addEventListener('popstate',route);addEventListener('hashchange',route);

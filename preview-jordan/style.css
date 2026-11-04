@@ -30,7 +30,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #31466c;outline-offset:5p
 .desk-viewport{position:fixed;inset:0;overflow:hidden}
 #desk{width:100%;height:100%;display:block;touch-action:pan-y}
 body.is-inspecting #desk{touch-action:none}
-.scroll-track{height:calc(100svh + 12600px)}
+.scroll-track{height:calc(100svh + 13200px)}
 .navigation{position:fixed;inset:0;z-index:30;padding:95px max(8vw,32px) 40px;background:#e6e6efed;backdrop-filter:blur(15px);overflow:auto;overscroll-behavior:contain}
 .navigation>p{display:flex;justify-content:space-between;font-family:DeskSerif,serif;font-size:23px;margin:0 0 35px}
 .navigation>p span{font-family:Arial,"PingFang SC",sans-serif;font-size:13px;color:#6b6d76;align-self:center}
@@ -100,3 +100,7 @@ body.has-fallback .scroll-track,body.has-fallback .desk-viewport,body.has-fallba
 .inspection-title{font-size:16px;color:#264d6a}.folder-tabs{display:flex;gap:6px}.folder-tabs button{padding:10px 12px;border:1px solid #9ab5cd;border-radius:2px;font-size:14px}.folder-tabs button[aria-pressed="true"]{background:#264d6a;color:#f6faff}.folder-tabs button:after{display:none}.inspection-actions:has(.folder-tabs){flex-wrap:wrap;gap:12px 22px;max-width:90vw;width:max-content}.inspection-actions:has(.folder-tabs) .folder-tabs{flex-basis:100%;justify-content:center}.inspection-actions:has(.folder-tabs)>a{font-size:14px}@media(max-width:760px){.inspection-title{font-size:15px}.folder-tabs button{font-size:13px;min-height:42px}.inspection-actions:has(.folder-tabs){width:94vw;max-width:94vw;gap:3px 17px}.inspection-actions:has(.folder-tabs)>a{font-size:12px}}
 
 .inspection-actions>button,.inspection-actions>a{font-size:14px;min-height:42px}.index-button{font-size:13px}@media(max-width:760px){.inspection-actions>button,.inspection-actions>a{font-size:13px;min-height:42px}.index-button{font-size:12px}}
+
+.case-role-strip{flex-basis:100%;margin:0;padding:0 0 7px;color:#264d6a;font:500 16px/1.6 DeskSerif,serif;white-space:normal;text-align:center}.inspection-actions:has(.case-role-strip),.inspection-actions:has(.contact-line){flex-wrap:wrap;gap:2px 22px;width:max-content;max-width:94vw}.contact-line{display:flex;flex-basis:100%;align-items:center;justify-content:center;gap:12px;white-space:normal;color:#264d6a;font-size:16px}.contact-line strong{font-weight:500}.contact-line button{color:#264d6a;border-bottom:1px solid #a7bfd1;padding:8px!important}@media(max-width:760px){.case-role-strip{font-size:14px}.contact-line{flex-wrap:wrap;gap:4px 12px;font-size:15px}.inspection-actions:has(.contact-line){gap:2px 18px;width:94vw}}
+
+.fallback-contact{margin-top:40px;padding:35px 0;border-top:1px solid #b8ccdd}.fallback-contact>p{font-size:18px;color:#45657c}.fallback-contact .contact-line{justify-content:flex-start;margin-top:25px}
