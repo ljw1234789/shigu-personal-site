@@ -8,6 +8,7 @@ body.is-quick .entry,body.is-quick .site-bar,body.is-quick #main,body.is-quick .
 .quick-bar nav{display:flex;gap:25px;font-size:14px}
 .quick-bar button{font:inherit;font-size:14px;line-height:1.6;border:1px solid #aac0d1;background:transparent;padding:9px 15px;border-radius:2px}
 .quick-shell{width:min(1160px,calc(100% - 56px));margin:auto}
+.quick-study{padding:36px 0;border-bottom:1px solid #bfd0df}.quick-study header{display:flex;align-items:baseline;gap:20px;margin-bottom:24px}.quick-study h2{font:500 clamp(30px,4vw,44px)/1.4 DeskSerif,serif;margin:0}.quick-study header p{color:#587185;margin:0;font-size:15px}.quick-study-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}.quick-study-card{min-width:0}.quick-study-card video{display:block;height:min(55svh,500px);max-width:100%;width:auto;aspect-ratio:9/16;object-fit:contain;margin:auto;background:#e3edf5}.quick-study-card h3{font:500 22px/1.5 DeskSerif,serif;margin:18px 0 4px}.quick-study-card p{margin:0;color:#587185;font-size:14px}@media(max-width:760px){.quick-study-grid{grid-template-columns:1fr;gap:30px}.quick-study header{display:block}.quick-study header p{margin-top:7px}.quick-study-card h3,.quick-study-card p{text-align:center}}
 .quick-intro{padding:55px 0 32px;border-bottom:1px solid #bfd0df}
 .quick-intro .quick-kicker{margin:0 0 14px;color:#526e83;font-size:15px}
 .quick-intro h1{font:500 clamp(36px,4vw,56px)/1.35 DeskSerif,serif;margin:0 0 18px}

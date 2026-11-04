@@ -37,7 +37,7 @@ const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'英俊姐妹日记 · 原片研究'],[63,'创作工具'],[77,'创作资料袋'],[87,'关于我']];
+const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'英俊姐妹日记 · 原片研究'],[22.8,'重新认识干冰白雾'],[35,'丈量一条海岸线'],[49,'一条视频的诞生'],[63,'创作工具'],[77,'创作资料袋'],[87,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
 const startsInQuick=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
@@ -403,6 +403,7 @@ function studyVideoCard(img,item,index){
     c.fillStyle='#52718c';c.font='32px Arial';c.fillText(item.type+' / '+Math.floor(item.duration/60)+':'+String(Math.floor(item.duration%60)).padStart(2,'0'),60,1884);
   });
   const g=paper(t,null,item.x,item.z,index%2?.12:-.1,{kind:'study-video',id:item.id},item.name+' · 原片研究',3.4,6.45);
+  g.userData.baseScale=.86;g.userData.primary=true;
   g.userData.autoPlay=true;
   // The source is 720 × 1280: fit its complete portrait frame without side bars.
   g.userData.panel={x:0,z:-.358333,w:3,h:16/3,y:.035};
@@ -821,18 +822,18 @@ async function init(){
       asset(ASSETS+images['dry-ice'],'重新认识干冰白雾'),asset(ASSETS+images.coastline,'丈量一条海岸线'),asset(ASSETS+images.behind,'一条视频的诞生'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
       asset('dry-ice-experiment-clean.png','实验里的白雾'),asset('coast-dimension-clean.png','海岸线的尺度'),asset('behind-ai-clean.png','从选题到成片')
     ]);
-    polaroid(dry,'dry-ice',-3.3,4.95,-.2);
-    keyboard('SCIENCE/FILM',3.3,5.7,.1,{kind:'case',id:'dry-ice'});
-    note('dry-ice',-5.7,10.8,-.1);polaroid(dryDetail,'dry-ice',-.5,11.4,.1,'实验里的白雾',false);
-    phone(dry,4.8,11.1,'dry-ice',-.23);
-    keyboard('COAST/LINE',-3.5,18.0,-.15,{kind:'case',id:'coastline'});
-    polaroid(coast,'coastline',3.3,18.2,.2);
-    note('coastline',-5.2,24.4,.1);polaroid(coastDetail,'coastline',.3,24.5,-.12,'越细看，越长',false);
-    tablet(coast,4.8,24.5,'coastline',.18);
-    polaroid(behind,'behind',-3.3,32.0,-.15);
-    keyboard('BEHIND/SCENES',3.3,32.3,.12,{kind:'case',id:'behind'});
-    note('behind',-5.3,38.2,-.12);polaroid(behindDetail,'behind',.2,38.3,.17,'从选题到成片',false);
-    laptop(behind,4.8,38.4,'behind',-.18);clapper(.8,42.9);
+    polaroid(dry,'dry-ice',-3.3,24.95,-.2);
+    keyboard('SCIENCE/FILM',3.3,25.7,.1,{kind:'case',id:'dry-ice'});
+    note('dry-ice',-5.7,30.8,-.1);polaroid(dryDetail,'dry-ice',-.5,31.4,.1,'实验里的白雾',false);
+    phone(dry,4.8,31.1,'dry-ice',-.23);
+    keyboard('COAST/LINE',-3.5,38.0,-.15,{kind:'case',id:'coastline'});
+    polaroid(coast,'coastline',3.3,38.2,.2);
+    note('coastline',-5.2,44.4,.1);polaroid(coastDetail,'coastline',.3,44.5,-.12,'越细看，越长',false);
+    tablet(coast,4.8,44.5,'coastline',.18);
+    polaroid(behind,'behind',-3.3,52.0,-.15);
+    keyboard('BEHIND/SCENES',3.3,52.3,.12,{kind:'case',id:'behind'});
+    note('behind',-5.3,58.2,-.12);polaroid(behindDetail,'behind',.2,58.3,.17,'从选题到成片',false);
+    laptop(behind,4.8,58.4,'behind',-.18);clapper(.8,62.9);
     keyboard('CREATIVE/TOOLS',-3.3,67.0,-.16,{kind:'tool',id:'science'});monitor(science,4.1,67.3);
     motionCard(-2.6,73.6);
     const scienceInfo=tools.find(t=>t.id==='science');
@@ -845,7 +846,7 @@ async function init(){
     if(!entered)canvas.dataset.phase='waiting';
     $('#load-status').hidden=true;$('#asset-status').hidden=true;
     const chapter=new URLSearchParams(location.search).get('chapter');
-    const chapterPositions={projects:4.5,'dry-ice':4.5,coastline:18,behind:32,tools:67,research:82,practice:82,yingjun:47,...Object.fromEntries(studyVideos.map(item=>[item.id,item.z])),about:92};
+    const chapterPositions={projects:4.5,'dry-ice':24.5,coastline:38,behind:52,tools:67,research:82,practice:82,yingjun:4.5,...Object.fromEntries(studyVideos.map(item=>[item.id,item.z])),about:92};
     const quickRouteNow=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
     if(!quickRouteNow&&!window.PORTFOLIO_QUICK?.active){
       if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}

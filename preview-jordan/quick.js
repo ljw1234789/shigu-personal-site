@@ -9,6 +9,11 @@
   const safe = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clock = value => Math.floor(value/60)+':'+String(Math.floor(value%60)).padStart(2,'0');
   let active = false, savedScroll = 0, returnFocus = null;
+  const studyHost=document.getElementById('quick-study-videos');
+  if(studyHost){
+    studyHost.innerHTML=(window.DESK_STUDY_VIDEOS||[]).map(item=>`<article class="quick-study-card"><video controls playsinline preload="none" poster="${safe(item.poster)}" src="${safe(item.media)}" data-study-source="${safe(item.media)}" aria-label="${safe(item.name)}研究原片"></video><h3>${safe(item.name)}</h3><p>${safe(item.type)} · ${clock(item.duration)}</p></article>`).join('');
+    studyHost.querySelectorAll('video').forEach(v=>v.addEventListener('play',()=>host.querySelectorAll('video').forEach(other=>{if(other!==v)other.pause();})));
+  }
 
   document.getElementById('quick-cases').innerHTML = ids.map((id,i) => {
     const p=projects.find(p=>p.id===id),n=narrative[id],e=evidence[id];
@@ -72,8 +77,9 @@
     const hash=valid?'#work-'+valid:'#works';
     if(push&&location.hash!==hash)history.pushState({quick:true},'',location.pathname+location.search+hash);
     const target=valid?document.getElementById('work-'+valid):host;
+    host.querySelectorAll('[data-study-source]').forEach(v=>{if(!v.getAttribute('src'))v.src=v.dataset.studySource;});
     target.scrollIntoView({behavior:'instant',block:'start'});
-    const heading=valid?document.getElementById('quick-title-'+valid):document.getElementById('quick-title');
+    const heading=valid?document.getElementById('quick-title-'+valid):document.getElementById('quick-study-title');
     heading.tabIndex=-1;heading.focus({preventScroll:true});
   }
   function close(replace=true){
