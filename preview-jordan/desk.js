@@ -8,14 +8,20 @@ const projects = window.PERSONAL_SITE.projects;
 const evidence = window.PROJECT_EVIDENCE.projects;
 const narrative = window.PORTFOLIO_NARRATIVE;
 const research = window.PORTFOLIO_RESEARCH;
+const studyVideos = window.DESK_STUDY_VIDEOS || [];
 const tools = window.CREATIVE_TOOLS.filter(t => ['science','motion'].includes(t.id));
 const order = ['dry-ice','coastline','behind'];
 const images = {'dry-ice':'dry-ice-hd.jpg',coastline:'coastline-hd.jpg',behind:'behind-hd.jpg'};
 const videoTimes = {'dry-ice':'10:25',coastline:'13:55',behind:'03:43'};
 const ASSETS = '../assets/projects/';
-const MAX_TRAVEL = 72;
+const MAX_TRAVEL = 92;
 const VIEW_LEAD = 3.4;
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fallbackStudy=$('#fallback-study');
+if(fallbackStudy){
+  fallbackStudy.innerHTML='<h2>英俊姐妹日记 · 原片研究</h2>'+studyVideos.map(item=>'<article><video controls playsinline preload="none" poster="'+esc(item.poster)+'" src="'+esc(item.media)+'" aria-label="'+esc(item.name)+' · 研究原片"></video><h3>'+esc(item.name)+'</h3></article>').join('');
+  fallbackStudy.querySelectorAll('video').forEach(media=>media.addEventListener('play',()=>document.querySelectorAll('video').forEach(other=>{if(other!==media)other.pause();})));
+}
 const clamp = t => Math.max(0,Math.min(1,t));
 const outQuart = t => 1-Math.pow(1-clamp(t),4);
 const outQuint = t => 1-Math.pow(1-clamp(t),5);
@@ -31,7 +37,7 @@ const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'创作资料袋'],[67,'关于我']];
+const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'创作资料袋'],[67,'英俊姐妹日记 · 原片研究'],[87,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
 const startsInQuick=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
@@ -106,6 +112,11 @@ function setInspection(){
       '<button data-quick="'+a.id+'">清晰看职责 ↗</button>'+
       '<a href="'+evidence[a.id].bilibili.url+'" target="_blank" rel="noopener">B 站原片 ↗</a>';
     description=p.name+'。我的参与：'+n.deliverables.map(([title,text])=>title+'：'+text).join('');
+  }else if(a.kind==='study-video'){
+    const p=studyVideos.find(item=>item.id===a.id);name='英俊姐妹日记 · 原片研究 / '+p.name;
+    description=p.type+'。收录公开原片，用于内容研究。';
+    html='<button data-inspect="play">'+(playing?'关闭播放器 □':'播放原片 ▷')+'</button>'+
+      '<a href="'+esc(p.study)+'">对应视频笔记 ↗</a><a href="'+esc(p.original)+'" target="_blank" rel="noopener">抖音原片 ↗</a>';
   }else if(a.kind==='tool'){
     const t=tools.find(t=>t.id===a.id);name=t.name;description=t.detail;
     html=(d.back?'<button data-inspect="flip">'+(flipTo?'回到正面 ↻':'工具介绍 ↻')+'</button>':'')+
@@ -158,7 +169,7 @@ function openObject(g){
   canvas.dataset.focus=g.userData.action.id||g.userData.action.kind;
   canvas.dataset.objectKind=g.userData.kind;
   canvas.dataset.phase='lifting';
-  if(g.userData.device)startVideo();
+  if(g.userData.device||g.userData.autoPlay)startVideo();
 }
 function stopVideo(){
   const session=videoSession;videoSession=null;playing=false;
@@ -172,15 +183,16 @@ function startVideo(){
   if(!active?.userData.panel)return;
   stopVideo();
   flipTo=0;dragYaw=dragPitch=0;playing=true;
-  const p=projects.find(p=>p.id===active.userData.action.id);
+  const action=active.userData.action,isStudy=action.kind==='study-video';
+  const p=isStudy?studyVideos.find(p=>p.id===action.id):projects.find(p=>p.id===action.id);
   const media=document.createElement('video');
   media.controls=true;media.playsInline=true;media.preload='metadata';
-  media.poster=ASSETS+images[p.id];media.setAttribute('aria-label',p.name+' · 完整视频');
-  const source='media/'+p.id+'.mp4';
+  media.poster=isStudy?p.poster:ASSETS+images[p.id];media.setAttribute('aria-label',p.name+(isStudy?' · 研究原片':' · 完整视频'));
+  const source=isStudy?p.media:'media/'+p.id+'.mp4';
   const status=document.createElement('div');status.className='video-status';
   status.setAttribute('role','status');status.setAttribute('aria-live','polite');
   const message=document.createElement('p'),button=document.createElement('button'),original=document.createElement('a');
-  button.type='button';original.textContent='打开 B 站原片 ↗';original.href=evidence[p.id].bilibili.url;original.target='_blank';original.rel='noopener';
+  button.type='button';original.textContent=isStudy?'打开抖音原片 ↗':'打开 B 站原片 ↗';original.href=isStudy?p.original:evidence[p.id].bilibili.url;original.target='_blank';original.rel='noopener';
   status.append(message,button,original);
   const session={media,timer:0,closed:false,pending:false};videoSession=session;
   const current=()=>videoSession===session&&!session.closed;
@@ -382,6 +394,19 @@ function polaroid(img,id,x,z,angle,caption,primary=true){
 function note(id,x,z,angle){
   const p=projects.find(p=>p.id===id);
   return paper(caseBack(id),caseBack(id),x,z,angle,{kind:'case',id},p.name+' · 我的参与',2.8,4.2);
+}
+function studyVideoCard(img,item,index){
+  const t=texture(1020,1935,(c,W,H)=>{
+    c.fillStyle='#f5f8fc';c.fillRect(0,0,W,H);cover(c,img,60,60,900,1600);
+    c.fillStyle='#52718c';c.font='38px DeskSerif,serif';c.fillText('英俊姐妹日记 · 原片研究',60,1738);
+    c.fillStyle='#264d6a';c.font='500 54px DeskSerif,serif';c.fillText(item.name,60,1820,900);
+    c.fillStyle='#52718c';c.font='32px Arial';c.fillText(item.type+' / '+Math.floor(item.duration/60)+':'+String(Math.floor(item.duration%60)).padStart(2,'0'),60,1884);
+  });
+  const g=paper(t,null,item.x,item.z,index%2?.12:-.1,{kind:'study-video',id:item.id},item.name+' · 原片研究',3.4,6.45);
+  g.userData.autoPlay=true;
+  // The source is 720 × 1280: fit its complete portrait frame without side bars.
+  g.userData.panel={x:0,z:-.358333,w:3,h:16/3,y:.035};
+  return g;
 }
 function keyboard(text,x,z,angle,action){
   const root=object(x,z,angle,action,text.replace('/',' '),'keyboard');
@@ -814,12 +839,13 @@ async function init(){
     const st=texture(1200,1680,(c,W,H)=>{c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#2e3441';c.font='500 76px DeskSerif,serif';c.fillText('科普工作台',100,250);c.font='42px DeskSerif,serif';let y=wrap(c,scienceInfo.detail,100,480,1000,76)+110;scienceInfo.features.forEach(f=>{c.fillText(f,100,y);y+=130;});});
     paper(st,null,3.9,53.6,-.18,{kind:'tool',id:'science'},'科普工作台');
     assetFolder(0,62);
-    notebook(-2.9,72);keyboard('LIU/JUNWEI',3.7,71.6,.12,{kind:'about'});
+    await Promise.all(studyVideos.map((item,i)=>asset(item.poster,item.name).then(img=>studyVideoCard(img,item,i))));
+    notebook(-2.9,92);keyboard('LIU/JUNWEI',3.7,91.6,.12,{kind:'about'});
     resize();ready=true;canvas.dataset.state='ready';
     if(!entered)canvas.dataset.phase='waiting';
     $('#load-status').hidden=true;$('#asset-status').hidden=true;
     const chapter=new URLSearchParams(location.search).get('chapter');
-    const chapterPositions={projects:4.5,'dry-ice':4.5,coastline:18,behind:32,tools:47,research:62,practice:62,about:72};
+    const chapterPositions={projects:4.5,'dry-ice':4.5,coastline:18,behind:32,tools:47,research:62,practice:62,yingjun:71.5,...Object.fromEntries(studyVideos.map(item=>[item.id,item.z])),about:92};
     const quickRouteNow=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
     if(!quickRouteNow&&!window.PORTFOLIO_QUICK?.active){
       if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}

@@ -30,7 +30,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #31466c;outline-offset:5p
 .desk-viewport{position:fixed;inset:0;overflow:hidden}
 #desk{width:100%;height:100%;display:block;touch-action:pan-y}
 body.is-inspecting #desk{touch-action:none}
-.scroll-track{height:calc(100svh + 10800px)}
+.scroll-track{height:calc(100svh + 13800px)}
 .navigation{position:fixed;inset:0;z-index:30;padding:95px max(8vw,32px) 40px;background:#e6e6efed;backdrop-filter:blur(15px);overflow:auto;overscroll-behavior:contain}
 .navigation>p{display:flex;justify-content:space-between;font-family:DeskSerif,serif;font-size:23px;margin:0 0 35px}
 .navigation>p span{font-family:Arial,"PingFang SC",sans-serif;font-size:13px;color:#6b6d76;align-self:center}
@@ -39,6 +39,8 @@ body.is-inspecting #desk{touch-action:none}
 .navigation>button b{margin-left:auto;font-family:Arial,sans-serif;font-size:30px;font-weight:400;transition:transform .2s}
 .navigation>button:hover b{transform:translate(4px,-4px)}
 .navigation>a{display:inline-block;margin-top:25px;font-size:12px;color:#525567;text-decoration:none}
+.study-jumps{display:flex;flex-wrap:wrap;gap:12px 28px;padding:0 0 18px 40px}.study-jumps button{border:0;background:transparent;padding:8px 0;font:15px DeskSerif,serif;color:#264d6a}
+.fallback-study{padding:24px 0}.fallback-study h2{font:500 30px DeskSerif,serif;color:#264d6a}.fallback-study article{display:inline-block;vertical-align:top;width:min(100%,300px);margin:12px 24px 24px 0}.fallback-study video{display:block;width:100%;aspect-ratio:9/16;background:#e3ebf3;object-fit:contain}.fallback-study h3{font:500 21px DeskSerif,serif;color:#264d6a}
 .desk-caption{position:fixed;left:35px;bottom:27px;z-index:20;display:flex;gap:18px;align-items:center;font-size:10px;pointer-events:none;color:#51535d;transition:opacity .3s}
 .desk-caption span:first-child{font-variant-numeric:tabular-nums;font-size:9px;color:#777986}
 .desk-controls{position:fixed;right:165px;top:18px;display:flex;align-items:center;gap:18px;z-index:32;transition:opacity .3s}
