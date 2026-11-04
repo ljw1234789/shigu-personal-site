@@ -696,7 +696,7 @@ function renderObject(g,now,dt,still){
   if(d.revealAt===null&&entered&&(d.kind==='name'||(mobile&&d.mobileRest?d.mobileRest.z:d.rest.z)<camera.position.z))d.revealAt=Math.max(now,enterAt+(d.kind==='name'?600:d.identity?1300:750));
   if(d.revealAt===null)return;
   const elapsed=still?1e5:Math.max(0,now-d.revealAt),progress=clamp(elapsed/2200);
-  g.visible=elapsed>0&&!(mobile&&d.desktopOnly);
+  g.visible=elapsed>0&&(!(mobile&&d.desktopOnly)||active===g);
   const base=restingPosition(g),qRest=d.restQ.clone(),s=d.scale;
   if(d.kind!=='name'&&d.kind!=='label'&&d.kind!=='keyboard'&&d.kind!=='mat'){
     base.x+=(Math.sign(d.rest.x)||1)*6*(1-outQuart(elapsed/2600));
