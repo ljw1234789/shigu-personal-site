@@ -13,7 +13,7 @@ const order = ['dry-ice','coastline','behind'];
 const images = {'dry-ice':'dry-ice-hd.jpg',coastline:'coastline-hd.jpg',behind:'behind-hd.jpg'};
 const videoTimes = {'dry-ice':'10:25',coastline:'13:55',behind:'03:43'};
 const ASSETS = '../assets/projects/';
-const MAX_TRAVEL = 80;
+const MAX_TRAVEL = 72;
 const VIEW_LEAD = 3.4;
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp = t => Math.max(0,Math.min(1,t));
@@ -31,10 +31,10 @@ const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'内容研究'],[66,'选片与重剪计划'],[75,'关于我']];
+const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'创作资料袋'],[67,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
-let enterRequested=new URLSearchParams(location.search).get('enter')==='1';
+let enterRequested=new URLSearchParams(location.search).get('enter')==='1'||document.body.dataset.enterDesk==='1';
 let frame=0,lastTime=0,drawAt=0,scrollGoal=0,viewZ=0,scrollPosition=0;
 let hover=null,down=null,dragYaw=0,dragPitch=0,cameraYaw=0,cameraPitch=0;
 let active=null,focus=0,focusFrom=0,focusTo=0,focusAt=0,flip=0,flipTo=0;
@@ -45,9 +45,11 @@ function setMenu(open){
   menu.hidden=!open;
   $('#menu-toggle').setAttribute('aria-expanded',String(open));
   $('#menu-toggle').setAttribute('aria-label',open?'关闭导航':'打开导航');
+  $('#desk-position').hidden=open||scrollGoal>=2;
 }
 $('#menu-toggle').addEventListener('click',()=>setMenu(menu.hidden));
-$('#work-index').addEventListener('click',()=>setMenu(true));
+document.addEventListener('portfolio:quick-open',()=>{closeObject();setMenu(false);});
+document.addEventListener('portfolio:quick-close',()=>{enterRequested=true;enterDesk();getScroll();});
 function enterDesk(){
   if((!scene&&!fallback)||entered)return;
   entered=true;enterAt=performance.now()+120;
@@ -77,10 +79,11 @@ function jump(z){
 }
 document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>jump(Number(b.dataset.jump))));
 document.addEventListener('keydown',e=>{
-  if(document.fullscreenElement)return;
+  if(document.fullscreenElement||e.defaultPrevented||window.PORTFOLIO_QUICK?.active)return;
   if(e.key==='Escape'){if(active)closeObject();else setMenu(false);}
 });
 function getScroll(){
+  if(window.PORTFOLIO_QUICK?.active)return;
   const next=scrollY;
   if(active&&Math.abs(next-scrollPosition)>2)closeObject();
   scrollPosition=next;
@@ -90,6 +93,7 @@ function getScroll(){
   $('#section-number').textContent=String(index+1).padStart(2,'0')+' / '+String(sectionStops.length).padStart(2,'0');
   $('#section-name').textContent=sectionStops[index][1];
   $('#scroll-cue').style.opacity=scrollGoal<1?'1':'0';
+  $('#desk-position').hidden=!menu.hidden||scrollGoal>=2;
 }
 addEventListener('scroll',getScroll,{passive:true});
 
@@ -101,8 +105,9 @@ function setInspection(){
     const p=projects.find(p=>p.id===a.id),n=narrative[a.id];name=p.name;
     html=(d.panel?'<button data-inspect="play">'+(playing?'关闭播放器 □':'播放成片 ▷')+'</button>':'')+
       (d.back?'<button data-inspect="flip">'+(flipTo?'回到封面 ↻':'我的贡献 ↻')+'</button>':'')+
+      '<button data-quick="'+a.id+'">清晰看职责 ↗</button>'+
       '<a href="'+evidence[a.id].bilibili.url+'" target="_blank" rel="noopener">B 站原片 ↗</a>';
-    description=p.name+'。我的参与：'+n.summary+'。'+n.steps.map(s=>s[0]+'：'+s[1]).join('。');
+    description=p.name+'。我的参与：'+n.deliverables.map(([title,text])=>title+'：'+text).join('');
   }else if(a.kind==='tool'){
     const t=tools.find(t=>t.id===a.id);name=t.name;description=t.detail;
     html=(d.back?'<button data-inspect="flip">'+(flipTo?'回到正面 ↻':'工具介绍 ↻')+'</button>':'')+
@@ -113,6 +118,11 @@ function setInspection(){
     description=item.summary+(item.boundary||'尚未实剪。');
     html=(d.back?'<button data-inspect="flip">'+(flipTo?'回到封面 ↻':a.id==='selection'?'重剪计划 ↻':'研究判断 ↻')+'</button>':'')+
       item.links.slice(0,2).map(link=>'<a href="../'+esc(link.url)+'">'+esc(link.label)+' ↗</a>').join('');
+  }else if(a.kind==='folder'){
+    const folder=d.folder,doc=FOLDER_DOCS[folder.selected];name='创作资料袋 · '+doc.title;description=doc.lead;
+    html='<div class="folder-tabs" role="group" aria-label="资料袋分层">'+FOLDER_DOCS.map((item,i)=>'<button data-folder="'+i+'" aria-pressed="'+(i===folder.selected)+'">'+item.title+'</button>').join('')+'</div>'+
+      doc.links.map(link=>'<a href="'+esc(link.url)+'"'+(link.quick?' data-quick=""':'')+'>'+esc(link.label)+' ↗</a>').join('')+
+      '<a href="../research/downloads/interview-essentials.zip" download>资料包 ↓</a>';
   }else if(a.kind==='about'){
     name='刘俊威 · 短视频内容策划与剪辑';description='工科背景，曾在毕导团队参与科普视频制作。用 AI 辅助选题、脚本、剪辑与发布复盘。';
     html='<a href="../research/">我的内容研究 ↗</a><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a>';
@@ -140,6 +150,7 @@ function openObject(g){
   if(active===g)return;
   setMenu(false);active=g;focusFrom=0;focusTo=1;focusAt=performance.now();focus=0;
   g.userData.inspectionCorners=inspectionCorners(g);
+  if(g.userData.folder){g.userData.inspectionCorners=[];const width=mobile?2.85:3.65;for(const x of [-width,width])for(const y of [0,.85])for(const z of [-4.5,2.2])g.userData.inspectionCorners.push(new THREE.Vector3(x,y,z));setFolderFog(g,false);}
   g.userData.focusStart={position:g.position.clone(),quaternion:g.quaternion.clone(),scale:g.scale.x};
   flip=flipTo=0;dragYaw=dragPitch=0;playing=false;uiReady=false;
   g.userData.revealAt=-1e6;g.visible=true;
@@ -225,13 +236,15 @@ function startVideo(){
 }
 function closeObject(){
   if(!active||focusTo===0)return;
-  stopVideo();inspector.classList.remove('is-ready');uiReady=false;
+  stopVideo();if(active.userData.folder)setFolderFog(active,true);inspector.classList.remove('is-ready');uiReady=false;
   inspector.inert=true;inspector.setAttribute('aria-hidden','true');
   active.userData.returnStart={position:active.position.clone(),quaternion:active.quaternion.clone(),scale:active.scale.x};
   focusFrom=focus;focusTo=0;focusAt=performance.now();
   canvas.dataset.phase='returning';
 }
 actions.addEventListener('click',e=>{
+  const tab=e.target.closest('[data-folder]');
+  if(tab&&active?.userData.folder){active.userData.folder.selected=Number(tab.dataset.folder);dragYaw=dragPitch=0;setInspection();return;}
   const b=e.target.closest('[data-inspect]');if(!b||!active)return;
   if(b.dataset.inspect==='close')return closeObject();
   if(b.dataset.inspect==='flip'){
@@ -256,7 +269,8 @@ function cast(){
   });
   if(!hit)return null;
   let o=hit.object;while(o&&!o.userData.owner)o=o.parent;
-  return {root:o.userData.owner,key:o.userData.key||null};
+  let f=hit.object;while(f&&f.userData.fileIndex===undefined)f=f.parent;
+  return {root:o.userData.owner,key:o.userData.key||null,fileIndex:f?.userData.fileIndex};
 }
 function point(e){pointer.set(e.clientX/innerWidth*2-1,1-e.clientY/innerHeight*2);}
 canvas.addEventListener('pointerdown',e=>{
@@ -277,7 +291,7 @@ canvas.addEventListener('pointerup',e=>{
   if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
   if(previous.drag||Math.hypot(e.clientX-previous.x,e.clientY-previous.y)>10)return;
   point(e);const hit=cast();
-  if(active){if(hit?.root!==active)closeObject();return;}
+  if(active){if(hit?.root!==active)closeObject();else if(active.userData.folder&&hit.fileIndex!==undefined&&focus>.98){active.userData.folder.selected=hit.fileIndex;setInspection();}return;}
   if(hit?.key)hit.key.userData.pressedAt=performance.now();
   if(hit?.root)openObject(hit.root);
 });
@@ -286,7 +300,7 @@ canvas.addEventListener('pointerleave',()=>{if(!down)pointer.set(0,0);hover=null
 canvas.addEventListener('keydown',e=>{
   if((e.key==='Enter'||e.key===' ')&&!active){
     e.preventDefault();
-    const candidates=objects.filter(g=>g.visible&&g.userData.action&&['paper','monitor','phone','tablet','laptop'].includes(g.userData.kind));
+    const candidates=objects.filter(g=>g.visible&&g.userData.action&&['paper','monitor','phone','tablet','laptop','folder'].includes(g.userData.kind));
     candidates.sort((a,b)=>Math.abs(a.userData.rest.z-viewZ)-Math.abs(b.userData.rest.z-viewZ));
     openObject(candidates[0]);
   }
@@ -330,14 +344,16 @@ function contact(g,w,h,opacity=.17){
   m.rotation.x=-Math.PI/2;m.position.set(g.position.x,.001,g.position.z);scene.add(m);g.userData.contact=m;g.userData.contactOpacity=opacity;
 }
 function caseBack(id){
-  const p=projects.find(p=>p.id===id),n=narrative[id],e=evidence[id];
+  const p=projects.find(p=>p.id===id),n=narrative[id];
   return texture(1200,1680,(c,W,H)=>{
-    c.fillStyle='#f7f6f0';c.fillRect(0,0,W,H);c.fillStyle='#777882';c.font='31px Arial';c.fillText('刘俊威 / 我负责的部分',88,100);
-    c.fillStyle='#202127';c.font='500 65px DeskSerif,serif';let y=wrap(c,p.name,84,210,W-168,87,2)+20;
-    c.font='35px Arial';c.fillStyle='#505563';y=wrap(c,n.summary,88,y,W-176,54)+30;
-    c.strokeStyle='#cfd0d8';c.lineWidth=2;c.beginPath();c.moveTo(88,y);c.lineTo(W-88,y);c.stroke();y+=65;
-    c.fillStyle='#202127';c.font='43px Arial';c.fillText(e.bilibili.views+' 播放',88,y);c.fillText(e.douyin.likes+' 赞',680,y);y+=75;
-    n.steps.forEach((s,i)=>{c.fillStyle='#293039';c.font='500 40px DeskSerif,serif';c.fillText('0'+(i+1)+'  '+s[0],88,y);y+=55;c.fillStyle='#505661';c.font='36px Arial';y=wrap(c,s[1],88,y,W-176,54,4)+34;});
+    c.fillStyle='#f7f9fc';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='42px Arial';c.fillText('刘俊威 / 我负责的部分',88,112);
+    c.fillStyle='#264d6a';c.font='500 80px DeskSerif,serif';wrap(c,p.name,84,255,W-168,104,2);
+    let y=415;
+    n.deliverables.forEach(([title,text],i)=>{
+      c.strokeStyle='#c1d0de';c.lineWidth=2;c.beginPath();c.moveTo(88,y-54);c.lineTo(W-88,y-54);c.stroke();
+      c.fillStyle='#264d6a';c.font='500 62px DeskSerif,serif';c.fillText('0'+(i+1)+'  '+title,88,y);y+=95;
+      c.fillStyle='#456176';c.font='58px Arial';y=wrap(c,text,88,y,W-176,81,3)+60;
+    });
   });
 }
 function paper(front,backTexture,x,z,angle,action,title,w=3,h=4.2){
@@ -366,14 +382,8 @@ function polaroid(img,id,x,z,angle,caption,primary=true){
   if(primary)projectPhotos.set(id,g);return g;
 }
 function note(id,x,z,angle){
-  const p=projects.find(p=>p.id===id),n=narrative[id];
-  const t=texture(1200,1680,(c,W,H)=>{
-    c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#797b84';c.font='30px Arial';c.fillText('我的参与',105,135);
-    c.fillStyle='#252830';c.font='500 63px DeskSerif,serif';let y=wrap(c,p.name,100,285,1000,84,2)+70;
-    c.font='40px DeskSerif,serif';c.fillStyle='#4b505d';y=wrap(c,n.summary,105,y,990,70)+70;
-    c.font='37px DeskSerif,serif';n.steps.forEach(s=>{c.fillStyle='#242832';c.fillText(s[0],105,y);y+=57;c.fillStyle='#6e727b';c.font='32px DeskSerif,serif';y=wrap(c,s[1],105,y,990,53,3)+50;c.font='37px DeskSerif,serif';});
-  });
-  return paper(t,caseBack(id),x,z,angle,{kind:'case',id},p.name+' · 我的参与',2.8,4.2);
+  const p=projects.find(p=>p.id===id);
+  return paper(caseBack(id),caseBack(id),x,z,angle,{kind:'case',id},p.name+' · 我的参与',2.8,4.2);
 }
 function keyboard(text,x,z,angle,action){
   const root=object(x,z,angle,action,text.replace('/',' '),'keyboard');
@@ -485,49 +495,39 @@ function notebook(x,z){
     c.fillStyle='#52718c';c.font='35px DeskSerif,serif';c.fillText('内容研究 / 英俊姐妹日记 · 毕导',140,1710);
   });return paper(t,null,x,z,-.12,{kind:'about'},'认识刘俊威',3.8,4.63);
 }
-function researchDossier(item,img,x,z,angle){
-  const front=texture(1200,1680,(c,W,H)=>{
-    c.fillStyle='#f6f7f5';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='31px Arial';c.fillText('刘俊威 / 公开内容研究',84,104);
-    c.fillStyle='#264d6a';c.font='500 90px DeskSerif,serif';c.fillText(item.name,80,237,1020);
-    c.font='32px Arial';c.fillText(item.label,84,300);
-    cover(c,img,80,352,1040,585,item.focalY);
-    c.font='500 69px DeskSerif,serif';let y=wrap(c,item.question,80,1050,1040,82,2)+18;
-    c.fillStyle='#516576';c.font='43px Arial';wrap(c,item.summary,84,y,1025,57,3);
-    c.strokeStyle='#bbcad6';c.lineWidth=2;c.beginPath();c.moveTo(84,1455);c.lineTo(1116,1455);c.stroke();
-    c.fillStyle='#264d6a';c.font='500 45px DeskSerif,serif';c.fillText(item.count+' '+item.unit,84,1540);
-    c.font='31px Arial';c.fillText('翻面，看研究判断 ↻',84,1610);
-  });
-  const back=texture(1200,1680,(c,W,H)=>{
-    c.fillStyle='#f6f7f5';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='31px Arial';c.fillText('公开成片观察 / 我的研究判断',88,108);
-    c.fillStyle='#264d6a';c.font='500 70px DeskSerif,serif';c.fillText(item.name,82,240,1030);
-    c.fillStyle='#5c6b78';c.font='30px Arial';wrap(c,item.scope,88,310,1024,46,2);
-    let y=452;
-    item.observations.forEach((observation,i)=>{
-      c.strokeStyle='#bbcad6';c.lineWidth=2;c.beginPath();c.moveTo(88,y-45);c.lineTo(1112,y-45);c.stroke();
-      c.fillStyle='#264d6a';c.font='500 43px DeskSerif,serif';y=wrap(c,'0'+(i+1)+'  '+observation.title,88,y+12,1024,61,2)+28;
-      c.fillStyle='#516576';c.font='42px Arial';y=wrap(c,observation.text,88,y,1024,60,4)+65;
+const FOLDER_DOCS=[
+  {title:'案例依据',lead:'让成片、职责与来源能被核对。',lines:['三条已参与的团队作品','成片截图与时间定位','公开数据、反馈与来源'],links:[{label:'快速看三条作品',url:'#works',quick:true},{label:'完整成片依据',url:'../research/#participation'}]},
+  {title:'内容研究',lead:'把公开内容的观察，变成创作判断。',lines:['毕导 / IP 与科普内容','英俊姐妹日记 / 数码内容','结构分析、画面依据与纠错'],links:[{label:'毕导完整报告',url:'../research/bidao/report/'},{label:'英俊账号研究',url:'../research/view.html?id=1fef94b08d83e1a9'}]},
+  {title:'选片计划',lead:'两个账号各选五条，准备下一次实剪。',lines:['原片截图与选片理由','观看任务与重组顺序','重剪方案 / 尚未实剪'],links:[{label:'十条选片与画面',url:'../research/#picks'},{label:'完整重剪计划',url:'../research/view.html?id=8d95aa271543c773'}]}
+];
+function setFolderFog(g,enabled){g.traverse(node=>{if(!node.isMesh)return;for(const mat of [].concat(node.material)){if(mat.fog!==enabled){mat.fog=enabled;mat.needsUpdate=true;}}});}
+function assetFolder(x,z){
+  const g=object(x,z,-.1,{kind:'folder'},'创作资料袋','folder');
+  g.userData.width=5.6;g.userData.height=4.1;g.userData.center.set(0,.2,-.4);
+  const bluePaper=material('#d4e2ef',{roughness:.96});slab(g,5.6,4.1,.06,bluePaper,.055);
+  const cards=FOLDER_DOCS.map((doc,i)=>{
+    const page=new THREE.Group();page.userData.fileIndex=i;g.add(page);
+    const t=texture(1200,1520,(c,W,H)=>{
+      c.fillStyle='#f9fbfd';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='39px Arial';c.fillText('刘俊威 / 重点资料',90,110);
+      c.fillStyle='#264d6a';c.font='500 100px DeskSerif,serif';c.fillText(doc.title,84,285);
+      c.font='52px Arial';wrap(c,doc.lead,90,420,W-180,78,2);
+      doc.lines.forEach((line,j)=>{const y=700+j*205;c.strokeStyle='#bdcedd';c.lineWidth=2;c.beginPath();c.moveTo(90,y-60);c.lineTo(W-90,y-60);c.stroke();c.font='500 62px DeskSerif,serif';wrap(c,line,90,y+26,W-180,84,2);});
     });
-    c.fillStyle='#6d7a86';c.font='29px Arial';wrap(c,item.boundary,88,1538,1024,45,2);
+    slab(page,3.8,4.8,.018,white,.015);surface(page,3.76,4.76,.022,t,true);
+    const tab=texture(400,140,(c,W,H)=>{c.fillStyle=i===0?'#dbe9f5':i===1?'#e8f0f7':'#c7dcec';c.fillRect(0,0,W,H);c.fillStyle='#264d6a';c.font='500 67px DeskSerif,serif';c.textAlign='center';c.fillText(doc.title,W/2,94);});
+    const label=surface(page,1.4,.49,.03,tab,true);label.position.set((i-1)*1.25,.035,-2.53);
+    return page;
   });
-  return paper(front,back,x,z,angle,{kind:'research',id:item.id},item.name+' · 内容研究',3.8,5.32);
-}
-function researchSelection(frames,x,z){
-  const front=texture(1200,1680,(c,W,H)=>{
-    c.fillStyle='#f6f7f5';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='31px Arial';c.fillText('刘俊威 / 选片与重剪计划',84,106);
-    c.fillStyle='#264d6a';c.font='500 83px DeskSerif,serif';c.fillText('下一条，',80,268);c.fillText('准备怎样剪。',80,376);
-    frames.forEach((img,i)=>{const x=80+(i%2)*535,y=466+Math.floor(i/2)*372;cover(c,img,x,y,505,284);c.fillStyle='#52718c';c.font='29px Arial';c.fillText(research.practice.frames[i].title,x,y+330);});
-    c.fillStyle='#264d6a';c.font='500 52px DeskSerif,serif';c.fillText('5 条数码 + 5 条科普',84,1345);
-    c.fillStyle='#516576';c.font='35px Arial';wrap(c,research.practice.summary,84,1420,1032,57,2);
-    c.font='30px Arial';c.fillText(research.practice.status,84,1605);
+  const front=texture(1400,650,(c,W,H)=>{
+    c.fillStyle='#d9e7f3';c.fillRect(0,0,W,H);c.strokeStyle='#9bb7cf';c.lineWidth=3;c.strokeRect(30,30,W-60,H-60);
+    c.fillStyle='#264d6a';c.font='500 148px DeskSerif,serif';c.fillText('创作资料',95,285);
+    c.font='53px Arial';c.fillText('案例依据  /  内容研究  /  选片计划',100,455);
   });
-  const back=texture(1200,1680,(c,W,H)=>{
-    c.fillStyle='#f6f7f5';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='31px Arial';c.fillText('从研究，到可执行的剪辑任务',88,108);
-    c.fillStyle='#264d6a';c.font='500 70px DeskSerif,serif';c.fillText('保留问题，重组表达。',82,260,1030);
-    const steps=[['先选观看任务','教程看懂操作，体验看见差别，验证看清条件。每条只围绕一个明确的观看收益。'],['再写重组顺序','从原片结果、操作与人物讲解中挑选证据，记录原时间码和准备调整的顺序。'],['最后保留工作痕迹','实剪后再补成片、前后对照和工程说明；目前只展示选片、抽样画面与方案。']];
-    let y=445;steps.forEach(([title,text],i)=>{c.fillStyle='#264d6a';c.font='500 48px DeskSerif,serif';c.fillText('0'+(i+1)+'  '+title,88,y);y+=87;c.fillStyle='#516576';c.font='39px Arial';y=wrap(c,text,88,y,1024,65,4)+130;});
-    c.fillStyle='#6d7a86';c.font='31px Arial';wrap(c,'选片与重剪计划，尚未实剪。完成后的练习标注“自主重剪练习，非账号委托”。',88,1500,1024,48,3);
-  });
-  return paper(front,back,x,z,.08,{kind:'research',id:'selection'},'十条选片 · 重剪计划',3.8,5.32);
+  const pocket=surface(g,5.6,2.55,.24,front,true);pocket.position.z=.77;
+  const flap=new THREE.Group();flap.position.set(0,.255,-2.05);g.add(flap);
+  const flapTexture=texture(1400,520,(c,W,H)=>{c.fillStyle='#e5eef7';c.fillRect(0,0,W,H);c.strokeStyle='#9bb7cf';c.lineWidth=3;c.beginPath();c.moveTo(30,30);c.lineTo(W-30,30);c.lineTo(W-65,H-40);c.lineTo(65,H-40);c.closePath();c.stroke();c.fillStyle='#264d6a';c.font='500 72px DeskSerif,serif';c.textAlign='center';c.fillText('刘俊威 · 重点资料',W/2,300);});
+  const lid=surface(flap,5.6,2.1,.01,flapTexture,true);lid.position.z=1.05;const lidBack=mesh(lid.geometry,new THREE.MeshBasicMaterial({color:'#dce9f4',side:THREE.BackSide,toneMapped:false}));lidBack.rotation.copy(lid.rotation);lidBack.position.copy(lid.position);lidBack.position.y-=.001;flap.add(lidBack);
+  g.userData.folder={cards,flap,selected:0};contact(g,6.6,5.3,.2);return g;
 }
 function floorText(text,x,z,w,color='#b39d50',size=84){
   const g=object(x,z,0,null,text,'label');g.userData.width=w;g.userData.height=.3;
@@ -701,6 +701,19 @@ function renderObject(g,now,dt,still){
     d.contact.position.z=d.rest.z;d.contact.scale.setScalar(s);
     d.contact.material.opacity=d.contactOpacity*clamp(elapsed/1400)*(active===g?1-focus:1);
   }
+  if(d.folder){
+    const f=d.folder,opened=active===g?focus:0,settle=(a,b)=>still?b:damp(a,b,8,dt);
+    f.flap.rotation.x=settle(f.flap.rotation.x,-opened*3.18);
+    f.cards.forEach((card,i)=>{
+      const chosen=i===f.selected,side=i<f.selected?-1:1;
+      const targetX=opened*(chosen?0:side*(mobile?.55:1.65+.14*i));
+      const targetY=.08+i*.018+opened*(chosen?.63:.2);
+      const targetZ=-.12+opened*(chosen?-1.0:-.3-i*.1);
+      card.position.x=settle(card.position.x,targetX);card.position.y=settle(card.position.y,targetY);card.position.z=settle(card.position.z,targetZ);
+      const size=.75+opened*(chosen?(mobile?.5:.3):.02);card.scale.setScalar(settle(card.scale.x,size));
+      card.rotation.y=settle(card.rotation.y,opened*(chosen?0:side*.09));
+    });
+  }
   if(d.kind==='keyboard'){
     g.children.forEach(key=>{
       const k=key.userData;if(!k.key)return;
@@ -733,7 +746,7 @@ function updateVideo(){
 }
 function render(now){
   frame=requestAnimationFrame(render);const dt=Math.min((now-lastTime)/1000||.016,.05);lastTime=now;
-  if(document.hidden)return;
+  if(document.hidden||window.PORTFOLIO_QUICK?.active)return;
   if(reduced.matches&&now-drawAt<60)return;drawAt=now;
   const still=paused||reduced.matches;
   if(active){
@@ -782,7 +795,6 @@ async function init(){
     const nameTask=nameModel().catch(()=>fallbackName()).finally(()=>clearTimeout(nameTimer));
     await Promise.race([document.fonts.load('500 30px DeskSerif').catch(()=>[]),new Promise(resolve=>setTimeout(resolve,1800))]);
     const asset=(src,label)=>loadImage(src).catch(()=>placeholderImage(label));
-    const researchAssets=Promise.all([...research.accounts.map(item=>asset('../'+item.cover,item.name)),...research.practice.frames.map(item=>asset('../'+item.url,item.title))]);
     const [dry,coast,behind,science,dryDetail,coastDetail,behindDetail]=await Promise.all([
       asset(ASSETS+images['dry-ice'],'重新认识干冰白雾'),asset(ASSETS+images.coastline,'丈量一条海岸线'),asset(ASSETS+images.behind,'一条视频的诞生'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
       asset('dry-ice-experiment-clean.png','实验里的白雾'),asset('coast-dimension-clean.png','海岸线的尺度'),asset('behind-ai-clean.png','从选题到成片')
@@ -804,18 +816,13 @@ async function init(){
     const scienceInfo=tools.find(t=>t.id==='science');
     const st=texture(1200,1680,(c,W,H)=>{c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#2e3441';c.font='500 76px DeskSerif,serif';c.fillText('科普工作台',100,250);c.font='42px DeskSerif,serif';let y=wrap(c,scienceInfo.detail,100,480,1000,76)+110;scienceInfo.features.forEach(f=>{c.fillText(f,100,y);y+=130;});});
     paper(st,null,3.9,53.6,-.18,{kind:'tool',id:'science'},'科普工作台');
-    floorText('CONTENT RESEARCH',0,58.1,7.4,'#74869b',62);
-    const researchImages=await researchAssets;
-    research.accounts.forEach((item,i)=>researchDossier(item,researchImages[i],i===0?-3.1:3.1,62,i===0?-.12:.12));
-    const selectionImages=researchImages.slice(research.accounts.length);
-    researchSelection(selectionImages,-2.8,70.5);
-    keyboard('NEXT/CUT',3.7,70.5,.12,{kind:'research',id:'selection'});
-    notebook(-2.9,80);keyboard('LIU/JUNWEI',3.7,79.6,.12,{kind:'about'});
+    assetFolder(0,62);
+    notebook(-2.9,72);keyboard('LIU/JUNWEI',3.7,71.6,.12,{kind:'about'});
     resize();ready=true;canvas.dataset.state='ready';
     if(!entered)canvas.dataset.phase='waiting';
     $('#load-status').hidden=true;$('#asset-status').hidden=true;
     const chapter=new URLSearchParams(location.search).get('chapter');
-    const chapterPositions={research:62,practice:70.5,about:80};
+    const chapterPositions={research:62,practice:62,about:72};
     if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}
     await nameTask;
   }catch(err){if(frame)cancelAnimationFrame(frame);useFallback(err);}

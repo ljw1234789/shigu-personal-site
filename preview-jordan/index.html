@@ -9,8 +9,11 @@
   <script>
     if (location.protocol === 'file:') {
       const target = new URL('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/');
-      target.searchParams.set('v', 'research-integrated1');
+      target.searchParams.set('v', 'interview3');
       if (new URLSearchParams(location.search).get('enter') === '1') target.searchParams.set('enter', '1');
+      const chapter = new URLSearchParams(location.search).get('chapter');
+      if (['research','practice','about'].includes(chapter)) target.searchParams.set('chapter', chapter);
+      if (location.hash === '#works' || location.hash.startsWith('#work-')) target.hash = location.hash;
       location.replace(target.href);
     }
   </script>
@@ -18,22 +21,25 @@
   <link rel="preload" href="../assets/fonts/ljw-editorial-serif.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="modulepreload" href="../assets/vendor/three.module.js">
   <link rel="preload" href="name-wordmark.bin.gz" as="fetch" crossorigin>
-  <link rel="stylesheet" href="style.css?v=research-integrated1">
+  <link rel="stylesheet" href="style.css?v=interview3">
+  <link rel="stylesheet" href="quick.css?v=interview3">
   <link rel="stylesheet" href="../cursor.css?v=20261029-3">
   <script src="../site-data.js"></script>
   <script src="../project-evidence.js"></script>
-  <script src="../portfolio-narrative.js"></script>
+  <script src="../portfolio-narrative.js?v=interview3"></script>
   <script src="../tool-catalog.js"></script>
   <script src="../research/portfolio-content.js?v=integrated1"></script>
-  <script type="module" src="desk.js?v=research-integrated1"></script>
+  <script src="quick.js?v=interview3" defer></script>
+  <script type="module" src="desk.js?v=interview3"></script>
 </head>
 <body class="scroll-home">
   <div class="entry" id="entry">
-    <a class="entry-button" id="enter" href="?enter=1"><span>进入刘俊威的作品集</span></a>
-    <p id="load-status" role="status">正在准备桌面</p>
+    <div class="entry-intro"><p class="entry-name">刘俊威</p><h2>短视频内容策划<br>与剪辑。</h2><p class="entry-role">在毕导团队参与科普视频制作。<br>AI 辅助选题、脚本撰写、剪辑与发布复盘。</p><div class="entry-actions"><a href="#works" data-quick>快速看作品 ↗</a><a class="entry-button" id="enter" href="?enter=1">进入创作桌面 ↗</a></div></div>
+    <p id="load-status" role="status">桌面正在准备，作品可以先看。</p>
   </div>
   <header class="site-bar">
     <button class="menu-button" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="navigation" aria-expanded="false"><i></i><i></i><i></i></button>
+    <p class="desk-position" id="desk-position">短视频内容策划与剪辑<span>AI 辅助选题 · 脚本 · 剪辑 · 发布复盘</span></p>
     <button class="identity" data-jump="0" aria-label="回到刘俊威的姓名">刘俊威<span>↗</span></button>
   </header>
   <nav class="navigation" id="navigation" aria-label="作品集导航" hidden>
@@ -43,9 +49,8 @@
     <button data-jump="18"><span>03</span>丈量一条海岸线<b>↗</b></button>
     <button data-jump="32"><span>04</span>一条视频的诞生<b>↗</b></button>
     <button data-jump="47"><span>05</span>创作工具<b>↗</b></button>
-    <button data-jump="62"><span>06</span>内容研究<b>↗</b></button>
-    <button data-jump="70.5"><span>07</span>选片与重剪计划<b>↗</b></button>
-    <button data-jump="80"><span>08</span>关于我<b>↗</b></button>
+    <button data-jump="62"><span>06</span>创作资料袋<b>↗</b></button>
+    <button data-jump="72"><span>07</span>关于我<b>↗</b></button>
     <a href="../research/">内容研究档案 · 英俊姐妹日记 / 毕导 ↗</a>
     <a href="../">查看现有网站 ↗</a>
   </nav>
@@ -63,9 +68,9 @@
     </div>
   </main>
   <p class="asset-status" id="asset-status" role="status" hidden>正在载入作品… <button type="button" data-jump="4.5">跳到作品 ↓</button></p>
-  <div class="desk-caption" id="desk-caption"><span id="section-number">01 / 08</span><span id="section-name">刘俊威的创作桌面</span></div>
+  <div class="desk-caption" id="desk-caption"><span id="section-number">01 / 07</span><span id="section-name">刘俊威的创作桌面</span></div>
   <div class="desk-controls">
-    <button class="index-button" id="work-index" type="button">作品清单 <span>↗</span></button>
+    <button class="index-button" id="quick-toggle" type="button" data-quick>快速看作品 <span>↗</span></button>
     <button class="motion-button" id="motion-toggle" type="button" aria-label="暂停桌面动态" aria-pressed="false">Ⅱ</button>
   </div>
   <div class="scroll-cue" id="scroll-cue" aria-hidden="true">往下滚动 <span>↓</span></div>
@@ -75,6 +80,12 @@
     <div class="sr-only" id="inspection-description" aria-live="polite"></div>
   </section>
   <div class="video-surface" id="video-surface" hidden></div>
+  <section class="quick-reader" id="quick-reader" aria-label="作品快速阅读" hidden>
+    <header class="quick-bar"><a class="quick-brand" href="#works" data-quick>刘俊威</a><nav aria-label="快速阅读导航"><a href="#work-dry-ice">干冰白雾</a><a href="#work-coastline">海岸线</a><a href="#work-behind">幕后制作</a></nav><button type="button" data-quick-close>回到创作桌面 ↗</button></header>
+    <main class="quick-shell"><section class="quick-intro"><p class="quick-kicker">短视频内容策划与剪辑</p><h1 id="quick-title"><span>三条视频，</span><span>我负责的部分。</span></h1><p>毕导团队参与项目。我的工作覆盖 AI 辅助选题、脚本、剪辑与发布复盘。</p><nav class="quick-case-index" aria-label="三条案例"><a href="#work-dry-ice">重新认识干冰白雾 ↘</a><a href="#work-coastline">丈量一条海岸线 ↘</a><a href="#work-behind">一条视频的诞生 ↘</a></nav></section>
+    <div id="quick-cases"></div><section class="quick-research" id="quick-research"><h2>需要时，再展开资料。</h2><p>成片依据、两组内容研究与十条选片计划，已收进桌面的创作资料袋。</p><nav aria-label="重点资料"><a href="?v=interview3&amp;enter=1&amp;chapter=research">在桌面打开资料袋 ↗</a><a href="../research/">完整资料目录 ↗</a><a href="../research/downloads/interview-essentials.zip" download>下载重点资料包 ↓</a></nav></section>
+    <footer class="quick-footer"><span>刘俊威 · 内容策划与剪辑</span><div><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">GitHub ↗</a><button type="button" data-quick-share>分享作品集 ↗</button></div></footer></main>
+  </section>
   <noscript><p>请打开 <a href="../portfolio.html">刘俊威的完整作品集</a> 查看视频和个人贡献。</p></noscript>
 </body>
 </html>

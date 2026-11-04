@@ -30,7 +30,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #31466c;outline-offset:5p
 .desk-viewport{position:fixed;inset:0;overflow:hidden}
 #desk{width:100%;height:100%;display:block;touch-action:pan-y}
 body.is-inspecting #desk{touch-action:none}
-.scroll-track{height:calc(100svh + 12000px)}
+.scroll-track{height:calc(100svh + 10800px)}
 .navigation{position:fixed;inset:0;z-index:30;padding:95px max(8vw,32px) 40px;background:#e6e6efed;backdrop-filter:blur(15px);overflow:auto;overscroll-behavior:contain}
 .navigation>p{display:flex;justify-content:space-between;font-family:DeskSerif,serif;font-size:23px;margin:0 0 35px}
 .navigation>p span{font-family:Arial,"PingFang SC",sans-serif;font-size:13px;color:#6b6d76;align-self:center}
@@ -91,3 +91,7 @@ body.has-fallback .scroll-track,body.has-fallback .desk-viewport,body.has-fallba
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
 .fallback-research{padding:30px 0;border-top:1px solid #bfc3cf}.fallback-research h2{font:500 32px DeskSerif,serif}.fallback-research p{font-size:15px;line-height:1.8;color:#586678}.fallback-research a{display:block;color:#314f70;text-underline-offset:5px;padding:14px 0;font-size:16px}
+
+.inspection-title{font-size:16px;color:#264d6a}.folder-tabs{display:flex;gap:6px}.folder-tabs button{padding:10px 12px;border:1px solid #9ab5cd;border-radius:2px;font-size:14px}.folder-tabs button[aria-pressed="true"]{background:#264d6a;color:#f6faff}.folder-tabs button:after{display:none}.inspection-actions:has(.folder-tabs){flex-wrap:wrap;gap:12px 22px;max-width:90vw;width:max-content}.inspection-actions:has(.folder-tabs) .folder-tabs{flex-basis:100%;justify-content:center}.inspection-actions:has(.folder-tabs)>a{font-size:14px}@media(max-width:760px){.inspection-title{font-size:15px}.folder-tabs button{font-size:13px;min-height:42px}.inspection-actions:has(.folder-tabs){width:94vw;max-width:94vw;gap:3px 17px}.inspection-actions:has(.folder-tabs)>a{font-size:12px}}
+
+.inspection-actions>button,.inspection-actions>a{font-size:14px;min-height:42px}.index-button{font-size:13px}@media(max-width:760px){.inspection-actions>button,.inspection-actions>a{font-size:13px;min-height:42px}.index-button{font-size:12px}}
