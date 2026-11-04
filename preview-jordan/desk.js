@@ -7,12 +7,13 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const projects = window.PERSONAL_SITE.projects;
 const evidence = window.PROJECT_EVIDENCE.projects;
 const narrative = window.PORTFOLIO_NARRATIVE;
+const research = window.PORTFOLIO_RESEARCH;
 const tools = window.CREATIVE_TOOLS.filter(t => ['science','motion'].includes(t.id));
 const order = ['dry-ice','coastline','behind'];
 const images = {'dry-ice':'dry-ice-hd.jpg',coastline:'coastline-hd.jpg',behind:'behind-hd.jpg'};
 const videoTimes = {'dry-ice':'10:25',coastline:'13:55',behind:'03:43'};
 const ASSETS = '../assets/projects/';
-const MAX_TRAVEL = 62;
+const MAX_TRAVEL = 80;
 const VIEW_LEAD = 3.4;
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp = t => Math.max(0,Math.min(1,t));
@@ -30,7 +31,7 @@ const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'关于我']];
+const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'内容研究'],[66,'选片与重剪计划'],[75,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
 let enterRequested=new URLSearchParams(location.search).get('enter')==='1';
@@ -86,7 +87,7 @@ function getScroll(){
   const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
   scrollGoal=clamp(next/max)*MAX_TRAVEL;
   let index=0;sectionStops.forEach((s,i)=>{if(scrollGoal>=s[0])index=i;});
-  $('#section-number').textContent='0'+(index+1)+' / 06';
+  $('#section-number').textContent=String(index+1).padStart(2,'0')+' / '+String(sectionStops.length).padStart(2,'0');
   $('#section-name').textContent=sectionStops[index][1];
   $('#scroll-cue').style.opacity=scrollGoal<1?'1':'0';
 }
@@ -106,6 +107,12 @@ function setInspection(){
     const t=tools.find(t=>t.id===a.id);name=t.name;description=t.detail;
     html=(d.back?'<button data-inspect="flip">'+(flipTo?'回到正面 ↻':'工具介绍 ↻')+'</button>':'')+
       '<a href="'+esc(t.url)+'" target="_blank" rel="noopener">打开'+esc(t.name)+' ↗</a>';
+  }else if(a.kind==='research'){
+    const item=a.id==='selection'?research.practice:research.accounts.find(item=>item.id===a.id);
+    name=a.id==='selection'?'十条选片 · 重剪计划':item.name+' · 内容研究';
+    description=item.summary+(item.boundary||'尚未实剪。');
+    html=(d.back?'<button data-inspect="flip">'+(flipTo?'回到封面 ↻':a.id==='selection'?'重剪计划 ↻':'研究判断 ↻')+'</button>':'')+
+      item.links.slice(0,2).map(link=>'<a href="../'+esc(link.url)+'">'+esc(link.label)+' ↗</a>').join('');
   }else if(a.kind==='about'){
     name='刘俊威 · 短视频内容策划与剪辑';description='工科背景，曾在毕导团队参与科普视频制作。用 AI 辅助选题、脚本、剪辑与发布复盘。';
     html='<a href="../research/">我的内容研究 ↗</a><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a>';
@@ -305,7 +312,7 @@ function texture(w,h,paint){
   const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d'),w,h);
   const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t;
 }
-function cover(ctx,img,x,y,w,h){const r=Math.max(w/img.width,h/img.height),sw=w/r,sh=h/r;ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,x,y,w,h);}
+function cover(ctx,img,x,y,w,h,focalY=.5){const r=Math.max(w/img.width,h/img.height),sw=w/r,sh=h/r;ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)*focalY,sw,sh,x,y,w,h);}
 function wrap(c,text,x,y,width,lineHeight,maxLines=100){
   let line='',lines=0;
   for(const char of text){if(c.measureText(line+char).width>width&&line&&!/[，。！？：；、）】》”’]/.test(char)){c.fillText(line,x,y);y+=lineHeight;line='';if(++lines>=maxLines)return y;}line+=char;}
@@ -477,6 +484,50 @@ function notebook(x,z){
     wrap(c,'曾在毕导团队参与科普视频制作，用 AI 辅助选题和脚本，也参与剪辑、发布与复盘。',140,y,1240,80);
     c.fillStyle='#52718c';c.font='35px DeskSerif,serif';c.fillText('内容研究 / 英俊姐妹日记 · 毕导',140,1710);
   });return paper(t,null,x,z,-.12,{kind:'about'},'认识刘俊威',3.8,4.63);
+}
+function researchDossier(item,img,x,z,angle){
+  const front=texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#f6f7f5';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='31px Arial';c.fillText('刘俊威 / 公开内容研究',84,104);
+    c.fillStyle='#264d6a';c.font='500 90px DeskSerif,serif';c.fillText(item.name,80,237,1020);
+    c.font='32px Arial';c.fillText(item.label,84,300);
+    cover(c,img,80,352,1040,585,item.focalY);
+    c.font='500 69px DeskSerif,serif';let y=wrap(c,item.question,80,1050,1040,82,2)+18;
+    c.fillStyle='#516576';c.font='43px Arial';wrap(c,item.summary,84,y,1025,57,3);
+    c.strokeStyle='#bbcad6';c.lineWidth=2;c.beginPath();c.moveTo(84,1455);c.lineTo(1116,1455);c.stroke();
+    c.fillStyle='#264d6a';c.font='500 45px DeskSerif,serif';c.fillText(item.count+' '+item.unit,84,1540);
+    c.font='31px Arial';c.fillText('翻面，看研究判断 ↻',84,1610);
+  });
+  const back=texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#f6f7f5';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='31px Arial';c.fillText('公开成片观察 / 我的研究判断',88,108);
+    c.fillStyle='#264d6a';c.font='500 70px DeskSerif,serif';c.fillText(item.name,82,240,1030);
+    c.fillStyle='#5c6b78';c.font='30px Arial';wrap(c,item.scope,88,310,1024,46,2);
+    let y=452;
+    item.observations.forEach((observation,i)=>{
+      c.strokeStyle='#bbcad6';c.lineWidth=2;c.beginPath();c.moveTo(88,y-45);c.lineTo(1112,y-45);c.stroke();
+      c.fillStyle='#264d6a';c.font='500 43px DeskSerif,serif';y=wrap(c,'0'+(i+1)+'  '+observation.title,88,y+12,1024,61,2)+28;
+      c.fillStyle='#516576';c.font='42px Arial';y=wrap(c,observation.text,88,y,1024,60,4)+65;
+    });
+    c.fillStyle='#6d7a86';c.font='29px Arial';wrap(c,item.boundary,88,1538,1024,45,2);
+  });
+  return paper(front,back,x,z,angle,{kind:'research',id:item.id},item.name+' · 内容研究',3.8,5.32);
+}
+function researchSelection(frames,x,z){
+  const front=texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#f6f7f5';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='31px Arial';c.fillText('刘俊威 / 选片与重剪计划',84,106);
+    c.fillStyle='#264d6a';c.font='500 83px DeskSerif,serif';c.fillText('下一条，',80,268);c.fillText('准备怎样剪。',80,376);
+    frames.forEach((img,i)=>{const x=80+(i%2)*535,y=466+Math.floor(i/2)*372;cover(c,img,x,y,505,284);c.fillStyle='#52718c';c.font='29px Arial';c.fillText(research.practice.frames[i].title,x,y+330);});
+    c.fillStyle='#264d6a';c.font='500 52px DeskSerif,serif';c.fillText('5 条数码 + 5 条科普',84,1345);
+    c.fillStyle='#516576';c.font='35px Arial';wrap(c,research.practice.summary,84,1420,1032,57,2);
+    c.font='30px Arial';c.fillText(research.practice.status,84,1605);
+  });
+  const back=texture(1200,1680,(c,W,H)=>{
+    c.fillStyle='#f6f7f5';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='31px Arial';c.fillText('从研究，到可执行的剪辑任务',88,108);
+    c.fillStyle='#264d6a';c.font='500 70px DeskSerif,serif';c.fillText('保留问题，重组表达。',82,260,1030);
+    const steps=[['先选观看任务','教程看懂操作，体验看见差别，验证看清条件。每条只围绕一个明确的观看收益。'],['再写重组顺序','从原片结果、操作与人物讲解中挑选证据，记录原时间码和准备调整的顺序。'],['最后保留工作痕迹','实剪后再补成片、前后对照和工程说明；目前只展示选片、抽样画面与方案。']];
+    let y=445;steps.forEach(([title,text],i)=>{c.fillStyle='#264d6a';c.font='500 48px DeskSerif,serif';c.fillText('0'+(i+1)+'  '+title,88,y);y+=87;c.fillStyle='#516576';c.font='39px Arial';y=wrap(c,text,88,y,1024,65,4)+130;});
+    c.fillStyle='#6d7a86';c.font='31px Arial';wrap(c,'选片与重剪计划，尚未实剪。完成后的练习标注“自主重剪练习，非账号委托”。',88,1500,1024,48,3);
+  });
+  return paper(front,back,x,z,.08,{kind:'research',id:'selection'},'十条选片 · 重剪计划',3.8,5.32);
 }
 function floorText(text,x,z,w,color='#b39d50',size=84){
   const g=object(x,z,0,null,text,'label');g.userData.width=w;g.userData.height=.3;
@@ -731,6 +782,7 @@ async function init(){
     const nameTask=nameModel().catch(()=>fallbackName()).finally(()=>clearTimeout(nameTimer));
     await Promise.race([document.fonts.load('500 30px DeskSerif').catch(()=>[]),new Promise(resolve=>setTimeout(resolve,1800))]);
     const asset=(src,label)=>loadImage(src).catch(()=>placeholderImage(label));
+    const researchAssets=Promise.all([...research.accounts.map(item=>asset('../'+item.cover,item.name)),...research.practice.frames.map(item=>asset('../'+item.url,item.title))]);
     const [dry,coast,behind,science,dryDetail,coastDetail,behindDetail]=await Promise.all([
       asset(ASSETS+images['dry-ice'],'重新认识干冰白雾'),asset(ASSETS+images.coastline,'丈量一条海岸线'),asset(ASSETS+images.behind,'一条视频的诞生'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
       asset('dry-ice-experiment-clean.png','实验里的白雾'),asset('coast-dimension-clean.png','海岸线的尺度'),asset('behind-ai-clean.png','从选题到成片')
@@ -752,10 +804,19 @@ async function init(){
     const scienceInfo=tools.find(t=>t.id==='science');
     const st=texture(1200,1680,(c,W,H)=>{c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#2e3441';c.font='500 76px DeskSerif,serif';c.fillText('科普工作台',100,250);c.font='42px DeskSerif,serif';let y=wrap(c,scienceInfo.detail,100,480,1000,76)+110;scienceInfo.features.forEach(f=>{c.fillText(f,100,y);y+=130;});});
     paper(st,null,3.9,53.6,-.18,{kind:'tool',id:'science'},'科普工作台');
-    notebook(-2.9,62);keyboard('LIU/JUNWEI',3.7,61.6,.12,{kind:'about'});
+    floorText('CONTENT RESEARCH',0,58.1,7.4,'#74869b',62);
+    const researchImages=await researchAssets;
+    research.accounts.forEach((item,i)=>researchDossier(item,researchImages[i],i===0?-3.1:3.1,62,i===0?-.12:.12));
+    const selectionImages=researchImages.slice(research.accounts.length);
+    researchSelection(selectionImages,-2.8,70.5);
+    keyboard('NEXT/CUT',3.7,70.5,.12,{kind:'research',id:'selection'});
+    notebook(-2.9,80);keyboard('LIU/JUNWEI',3.7,79.6,.12,{kind:'about'});
     resize();ready=true;canvas.dataset.state='ready';
     if(!entered)canvas.dataset.phase='waiting';
     $('#load-status').hidden=true;$('#asset-status').hidden=true;
+    const chapter=new URLSearchParams(location.search).get('chapter');
+    const chapterPositions={research:62,practice:70.5,about:80};
+    if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}
     await nameTask;
   }catch(err){if(frame)cancelAnimationFrame(frame);useFallback(err);}
 }

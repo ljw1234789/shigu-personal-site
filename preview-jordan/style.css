@@ -30,7 +30,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #31466c;outline-offset:5p
 .desk-viewport{position:fixed;inset:0;overflow:hidden}
 #desk{width:100%;height:100%;display:block;touch-action:pan-y}
 body.is-inspecting #desk{touch-action:none}
-.scroll-track{height:calc(100svh + 9300px)}
+.scroll-track{height:calc(100svh + 12000px)}
 .navigation{position:fixed;inset:0;z-index:30;padding:95px max(8vw,32px) 40px;background:#e6e6efed;backdrop-filter:blur(15px);overflow:auto;overscroll-behavior:contain}
 .navigation>p{display:flex;justify-content:space-between;font-family:DeskSerif,serif;font-size:23px;margin:0 0 35px}
 .navigation>p span{font-family:Arial,"PingFang SC",sans-serif;font-size:13px;color:#6b6d76;align-self:center}
@@ -89,3 +89,5 @@ body.has-fallback .scroll-track,body.has-fallback .desk-viewport,body.has-fallba
  .inspection-actions{z-index:1}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+.fallback-research{padding:30px 0;border-top:1px solid #bfc3cf}.fallback-research h2{font:500 32px DeskSerif,serif}.fallback-research p{font-size:15px;line-height:1.8;color:#586678}.fallback-research a{display:block;color:#314f70;text-underline-offset:5px;padding:14px 0;font-size:16px}

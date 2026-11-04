@@ -31,6 +31,7 @@
       <figure class="case-evidence-figure"><img src="${e.still.src}" alt="${safe(e.still.caption)}" width="945" height="540" loading="lazy"><figcaption><span>成片截图 · ${e.still.time}</span><span>${e.still.caption}</span></figcaption></figure>
       <section class="case-feedback"><h3>观众反馈与复盘观察</h3><ul>${e.feedback.map(t=>`<li>${t}</li>`).join('')}</ul><p>基于原页可见评论整理。</p></section>
       <section class="case-next-step"><h3>下一步，我会怎样改进</h3><p>${narrative.next}</p></section>
+      <section class="case-next-step case-research-extension"><h3>继续看，我怎样研究内容</h3><p>这条作品的结构观察、观众反馈与公开数据，也整理进了我的科普内容研究。</p><p><a href="research/#participation">作品研究与原始依据 ↗</a>　<a href="research/bidao/report/">毕导完整 IP 报告 ↗</a></p></section>
       <details class="case-source-record"><summary>查看完整数据与来源 <span>2026.10.29</span></summary><div class="platform-records">
         <section><h4>哔哩哔哩 <a href="${b.url}" target="_blank" rel="noopener">核对原页 ↗</a></h4><p>${b.author} · ${b.published}</p><dl>${cells([['播放',b.views],['弹幕',b.danmaku],['点赞',b.likes],['投币',b.coins],['收藏',b.saves],['分享',b.shares]])}</dl></section>
         <section><h4>抖音 <a href="${d.url}" target="_blank" rel="noopener">核对原页 ↗</a></h4><p>${d.author} · ${d.published}</p><dl>${cells([['点赞',d.likes],['评论',d.comments],['收藏',d.saves],['分享',d.shares]])}</dl></section></div><p>保留平台显示精度。“万”为近似展示值；播放次数不等于独立人数，两个平台的数据分别列示。未取得后台播放、完播率、转化率或个人贡献比例。</p></details>
@@ -43,6 +44,9 @@
   projects.forEach(p => { details[`project-${p.id}`] = {title:p.name, body:()=>projectContent(p)}; });
   tools.forEach(t => { details[`tool-${t.id}`] = {title:t.name, body:()=>toolContent(t), tool:true}; });
   details.site = { title:'关于网站', body:()=>`<div class="window-content site-info"><h3>内容、作品与工具。</h3><p>个人介绍、参与项目与创作工具：刘俊威。</p><p>首页的立体字质感、云状光影和版式参考 <a href="https://haoqi.design/" target="_blank" rel="noopener">Haoqi Design</a>。姓名立体字基于<a href="https://github.com/CyanoHao/Resource-Han-Rounded" target="_blank" rel="noopener">资源圆体</a>重新建模，保留<a href="assets/fonts/OFL-ResourceHanRounded.txt" target="_blank">资源圆体 OFL 许可</a>。结尾使用 Fredoka。早期字形保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">霞鹜文楷</a> 与 <a href="assets/fonts/OFL-Fredoka.txt" target="_blank">Fredoka</a> 的 OFL 许可。早期网格排版与作品动效参考 <a href="https://wodniack.dev/" target="_blank" rel="noopener">Antoine Wodniack</a>，入场节奏参考 <a href="https://www.ondastudio.co/" target="_blank" rel="noopener">Onda Studio</a>。原桌面交互参考 <a href="https://www.sharyap.com/" target="_blank" rel="noopener">Sharlene Yap</a>。</p><p>场景画面与独立 3D 世界基于 <a href="https://github.com/brunosimon/folio-2025" target="_blank" rel="noopener">Bruno Simon · Folio 2025</a>，保留 <a href="world/BRUNO-LICENSE.md" target="_blank">MIT 许可</a>。圆润立体姓名基于 <a href="https://github.com/lxgw/LxgwWenKai" target="_blank" rel="noopener">霞鹜文楷</a>构建，保留 <a href="assets/fonts/OFL-LXGWWenKai.txt" target="_blank">OFL 许可</a>。导航姓名采用 <a href="https://github.com/TrionesType/zhuque" target="_blank" rel="noopener">朱雀仿宋</a>子集，保留 <a href="assets/fonts/OFL-ZhuqueFangsong.txt" target="_blank">OFL 许可</a>。</p></div>` };
+  function stopCaseMedia() {
+    content.querySelectorAll('video').forEach(media=>{media.pause();media.removeAttribute('src');media.load();});
+  }
   function openDetail(id, push = true, trigger = null) {
     const detail = details[id]; if (!detail) return;
     if (current === id && dialog.open) return;
@@ -50,7 +54,7 @@
       returnFocus = trigger || document.activeElement;
       baseHash = Object.hasOwn(details, location.hash.slice(1)) ? (id.startsWith('project-')?'#projects':id.startsWith('tool-')?'#tools':'') : location.hash;
     }
-    current = id; heading.textContent = detail.title;
+    stopCaseMedia(); current = id; heading.textContent = detail.title;
     const project = id.startsWith('project-');
     dialog.classList.toggle('is-project-detail',project);
     dialog.querySelector('.detail-close').textContent = project ? '← 返回作品' : id.startsWith('tool-') ? '← 返回工具' : '×';
@@ -67,7 +71,7 @@
   function closeDetail(route = true) {
     if (!dialog.open) return;
     if (route && history.state?.detailOverlay) { history.back(); return; }
-    dialog.close(); content.replaceChildren(); current = '';
+    stopCaseMedia(); dialog.close(); content.replaceChildren(); current = '';
     document.body.classList.remove('detail-open');
     if (route) history.replaceState(null, '', `${location.pathname}${location.search}${baseHash}`);
     if (returnFocus?.isConnected && returnFocus !== document.body) returnFocus.focus({preventScroll:true});
@@ -94,12 +98,22 @@
     const play = event.target.closest('[data-play]');
     if (play) {
       const p=projects.find(p=>p.video===play.dataset.play); if(!p)return;
-      const frame=document.createElement('iframe'); frame.className='video-frame'; frame.title=p.title;
-      frame.src=`https://open.douyin.com/player/video?vid=${p.video}&autoplay=0`;
-      frame.allow='fullscreen; autoplay; encrypted-media; picture-in-picture'; frame.allowFullscreen=true; frame.referrerPolicy='unsafe-url';
-      play.parentElement.replaceChildren(frame); content.querySelector('[data-stop]').hidden=false; return;
+      stopCaseMedia();
+      const player=play.parentElement,media=document.createElement('video'),status=document.createElement('p');
+      media.className='video-frame';media.controls=true;media.playsInline=true;media.preload='metadata';
+      media.poster='assets/projects/'+p.id+'-hd.jpg';media.src='preview-jordan/media/'+p.id+'.mp4';media.setAttribute('aria-label',p.name+'完整视频');
+      player.classList.add('case-native-player');status.className='case-native-status';status.setAttribute('role','status');status.textContent='正在载入完整视频…';
+      media.addEventListener('playing',()=>{status.hidden=true;});
+      media.addEventListener('waiting',()=>{status.textContent='正在缓冲…';status.hidden=false;});
+      media.addEventListener('error',()=>{status.innerHTML='视频暂时未能载入。<button type="button" data-native-retry>重试播放 ↻</button>，也可打开下方 B 站原片。';status.hidden=false;});
+      player.replaceChildren(media,status);content.querySelector('[data-stop]').hidden=false;
+      // Keep play() in the initiating click so browsers retain the user gesture.
+      media.play().catch(()=>{if(!media.error){status.innerHTML='<button type="button" data-native-retry>点击播放 ▷</button>';status.hidden=false;}});return;
     }
-    if (event.target.closest('[data-stop]')) { const detail=details[current]; if(detail)content.innerHTML=detail.body(); return; }
+    if(event.target.closest('[data-native-retry]')){
+      const media=content.querySelector('video');if(media){if(media.error)media.load();media.play().catch(()=>{});}return;
+    }
+    if (event.target.closest('[data-stop]')) { const detail=details[current]; if(detail){stopCaseMedia();content.innerHTML=detail.body();} return; }
     if (event.target.closest('[data-copy-site]')) {
       try { await navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/'); showToast('网站链接已复制'); }
       catch { showToast('请复制浏览器地址栏中的网站链接'); }
