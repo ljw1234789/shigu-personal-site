@@ -14,7 +14,7 @@ const order = ['dry-ice','coastline','behind'];
 const images = {'dry-ice':'dry-ice-hd.jpg',coastline:'coastline-hd.jpg',behind:'behind-hd.jpg'};
 const videoTimes = {'dry-ice':'10:25',coastline:'13:55',behind:'03:43'};
 const ASSETS = '../assets/projects/';
-const MAX_TRAVEL = 92;
+const MAX_TRAVEL = 84;
 const VIEW_LEAD = 3.4;
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fallbackStudy=$('#fallback-study');
@@ -37,7 +37,7 @@ const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'英俊姐妹日记 · 原片研究'],[22.8,'重新认识干冰白雾'],[35,'丈量一条海岸线'],[49,'一条视频的诞生'],[63,'创作工具'],[77,'创作资料袋'],[87,'关于我']];
+const sectionStops=[[0,'刘俊威的创作桌面'],[.8,'英俊姐妹日记 · 原片研究'],[14.8,'重新认识干冰白雾'],[27,'丈量一条海岸线'],[41,'一条视频的诞生'],[55,'创作工具'],[69,'创作资料袋'],[79,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
 const startsInQuick=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
@@ -81,7 +81,7 @@ function jump(z){
   // animation that can keep moving after the visitor changes scroll direction.
   scrollTo({top:z/MAX_TRAVEL*max,behavior:'instant'});
 }
-document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>jump(Number(b.dataset.jump))));
+document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>jump(Number(mobile&&b.dataset.mobileJump?b.dataset.mobileJump:b.dataset.jump))));
 document.addEventListener('keydown',e=>{
   if(document.fullscreenElement||e.defaultPrevented||window.PORTFOLIO_QUICK?.active)return;
   if(e.key==='Escape'){if(active)closeObject();else setMenu(false);}
@@ -311,7 +311,8 @@ canvas.addEventListener('keydown',e=>{
   if((e.key==='Enter'||e.key===' ')&&!active){
     e.preventDefault();
     const candidates=objects.filter(g=>g.visible&&g.userData.action&&['paper','monitor','phone','tablet','laptop','folder'].includes(g.userData.kind));
-    candidates.sort((a,b)=>Math.abs(a.userData.rest.z-viewZ)-Math.abs(b.userData.rest.z-viewZ));
+    const depth=g=>mobile&&g.userData.mobileRest?g.userData.mobileRest.z:g.userData.rest.z;
+    candidates.sort((a,b)=>Math.abs(depth(a)-viewZ)-Math.abs(depth(b)-viewZ));
     openObject(candidates[0]);
   }
 });
@@ -395,6 +396,27 @@ function note(id,x,z,angle){
   const p=projects.find(p=>p.id===id);
   return paper(caseBack(id),caseBack(id),x,z,angle,{kind:'case',id},p.name+' · 我的参与',2.8,4.2);
 }
+function studySpread(){
+  const base=texture(2440,1820,(c,W,H)=>{
+    c.fillStyle='#dce9f3';c.fillRect(0,0,W,H);
+    c.strokeStyle='#b3c9dc';c.lineWidth=3;c.strokeRect(45,45,W-90,H-90);
+    c.fillStyle='#345c7c';c.font='500 70px DeskSerif,serif';c.fillText('英俊姐妹日记',1560,160,760);
+    c.fillStyle='#597a94';c.font='32px Arial';c.fillText('原片研究 / 03',1560,219);
+  });
+  const mat=paper(base,null,0,4,0,null,'英俊视频选片底页',12.2,9.1);
+  mat.userData.kind='mat';mat.userData.desktopOnly=true;mat.userData.paper.mesh.position.y=-.02;
+  mat.userData.contact.position.y=-.028;
+  const notes=texture(1620,1050,(c,W,H)=>{
+    c.fillStyle='#f5f9fd';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='40px DeskSerif,serif';c.fillText('英俊姐妹日记 / 内容观察',100,120);
+    c.fillStyle='#264d6a';c.font='500 76px DeskSerif,serif';c.fillText('把功能，讲成会用的内容。',100,275,1420);
+    ['操作教程 / 入口 → 动作 → 结果','开箱体验 / 外观 → 细节 → 感受','展会盘点 / 问题 → 产品 → 场景'].forEach((line,i)=>{
+      c.strokeStyle='#c0d1df';c.lineWidth=2;c.beginPath();c.moveTo(100,390+i*177);c.lineTo(1520,390+i*177);c.stroke();
+      c.fillStyle='#345a75';c.font='48px DeskSerif,serif';c.fillText(line,100,490+i*177,1420);
+    });
+  });
+  const note=paper(notes,null,.5,11.25,-.06,{kind:'research',id:'yingjun'},'英俊姐妹日记 · 内容观察',5.4,3.5);
+  note.userData.desktopOnly=true;
+}
 function studyVideoCard(img,item,index){
   const t=texture(1020,1935,(c,W,H)=>{
     c.fillStyle='#f5f8fc';c.fillRect(0,0,W,H);cover(c,img,60,60,900,1600);
@@ -402,8 +424,10 @@ function studyVideoCard(img,item,index){
     c.fillStyle='#264d6a';c.font='500 54px DeskSerif,serif';c.fillText(item.name,60,1820,900);
     c.fillStyle='#52718c';c.font='32px Arial';c.fillText(item.type+' / '+Math.floor(item.duration/60)+':'+String(Math.floor(item.duration%60)).padStart(2,'0'),60,1884);
   });
-  const g=paper(t,null,item.x,item.z,index%2?.12:-.1,{kind:'study-video',id:item.id},item.name+' · 原片研究',3.4,6.45);
-  g.userData.baseScale=.86;g.userData.primary=true;
+  const g=paper(t,null,item.x,item.z,[-.075,.035,.08][index],{kind:'study-video',id:item.id},item.name+' · 原片研究',3.4,6.45);
+  g.userData.rest.y=.018+index*.012;
+  g.userData.baseScale=1.02;g.userData.mobileScale=.84;g.userData.primary=true;
+  g.userData.mobileRest={x:item.mobileX,z:item.mobileZ};
   g.userData.autoPlay=true;
   // The source is 720 × 1280: fit its complete portrait frame without side bars.
   g.userData.panel={x:0,z:-.358333,w:3,h:16/3,y:.035};
@@ -632,16 +656,17 @@ function resize(){
   camera.updateProjectionMatrix();
   qBase.setFromEuler(new THREE.Euler(-THREE.MathUtils.degToRad(mobile?55:45),0,0));
   renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.7:2));renderer.setSize(innerWidth,innerHeight);
-  objects.forEach(g=>{const d=g.userData;d.scale=(mobile?(d.kind==='name'?.79:d.kind==='keyboard'?.45:(d.device||d.kind==='monitor')?.54:.72):1)*(d.baseScale||1);});
+  objects.forEach(g=>{const d=g.userData;d.scale=(mobile?(d.kind==='name'?.79:d.kind==='keyboard'?.45:(d.device||d.kind==='monitor')?.54:.72):1)*(d.baseScale||1)*(mobile?(d.mobileScale||1):1);});
   getScroll();
 }
 function compactX(d){
+  if(d.mobileRest)return d.mobileRest.x;
   const ratio=d.primary?.48:d.kind==='keyboard'?.43:(d.device||d.kind==='monitor')?.5:.64;
   return d.kind==='name'||d.identity?0:d.rest.x*ratio;
 }
 function restingPosition(g){
   const d=g.userData;
-  return new THREE.Vector3(mobile?compactX(d):d.rest.x,d.rest.y,d.rest.z);
+  return new THREE.Vector3(mobile?compactX(d):d.rest.x,d.rest.y,mobile&&d.mobileRest?d.mobileRest.z:d.rest.z);
 }
 function setPaperBend(g,amount){
   const p=g.userData.paper;if(!p||Math.abs(p.bend-amount)<.0004)return;p.bend=amount;
@@ -668,12 +693,12 @@ function cameraUpdate(now,dt,still){
 }
 function renderObject(g,now,dt,still){
   const d=g.userData;
-  if(d.revealAt===null&&entered&&(d.kind==='name'||d.rest.z<camera.position.z))d.revealAt=Math.max(now,enterAt+(d.kind==='name'?600:d.identity?1300:750));
+  if(d.revealAt===null&&entered&&(d.kind==='name'||(mobile&&d.mobileRest?d.mobileRest.z:d.rest.z)<camera.position.z))d.revealAt=Math.max(now,enterAt+(d.kind==='name'?600:d.identity?1300:750));
   if(d.revealAt===null)return;
   const elapsed=still?1e5:Math.max(0,now-d.revealAt),progress=clamp(elapsed/2200);
-  g.visible=elapsed>0;
+  g.visible=elapsed>0&&!(mobile&&d.desktopOnly);
   const base=restingPosition(g),qRest=d.restQ.clone(),s=d.scale;
-  if(d.kind!=='name'&&d.kind!=='label'&&d.kind!=='keyboard'){
+  if(d.kind!=='name'&&d.kind!=='label'&&d.kind!=='keyboard'&&d.kind!=='mat'){
     base.x+=(Math.sign(d.rest.x)||1)*6*(1-outQuart(elapsed/2600));
     base.y+=(d.kind==='paper'?5:3)*(1-bounce(elapsed/1500));
     const twist=(1-outQuart(elapsed/1400));
@@ -722,7 +747,7 @@ function renderObject(g,now,dt,still){
   if(d.arm)d.arm.rotation.y=damp(d.arm.rotation.y,isHover?-.2:0,7,dt);
   if(d.contact){
     d.contact.visible=g.visible;d.contact.position.x=mobile?compactX(d):d.rest.x;
-    d.contact.position.z=d.rest.z;d.contact.scale.setScalar(s);
+    d.contact.position.z=mobile&&d.mobileRest?d.mobileRest.z:d.rest.z;d.contact.scale.setScalar(s);
     d.contact.material.opacity=d.contactOpacity*clamp(elapsed/1400)*(active===g?1-focus:1);
   }
   if(d.folder){
@@ -822,31 +847,32 @@ async function init(){
       asset(ASSETS+images['dry-ice'],'重新认识干冰白雾'),asset(ASSETS+images.coastline,'丈量一条海岸线'),asset(ASSETS+images.behind,'一条视频的诞生'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
       asset('dry-ice-experiment-clean.png','实验里的白雾'),asset('coast-dimension-clean.png','海岸线的尺度'),asset('behind-ai-clean.png','从选题到成片')
     ]);
-    polaroid(dry,'dry-ice',-3.3,24.95,-.2);
-    keyboard('SCIENCE/FILM',3.3,25.7,.1,{kind:'case',id:'dry-ice'});
-    note('dry-ice',-5.7,30.8,-.1);polaroid(dryDetail,'dry-ice',-.5,31.4,.1,'实验里的白雾',false);
-    phone(dry,4.8,31.1,'dry-ice',-.23);
-    keyboard('COAST/LINE',-3.5,38.0,-.15,{kind:'case',id:'coastline'});
-    polaroid(coast,'coastline',3.3,38.2,.2);
-    note('coastline',-5.2,44.4,.1);polaroid(coastDetail,'coastline',.3,44.5,-.12,'越细看，越长',false);
-    tablet(coast,4.8,44.5,'coastline',.18);
-    polaroid(behind,'behind',-3.3,52.0,-.15);
-    keyboard('BEHIND/SCENES',3.3,52.3,.12,{kind:'case',id:'behind'});
-    note('behind',-5.3,58.2,-.12);polaroid(behindDetail,'behind',.2,58.3,.17,'从选题到成片',false);
-    laptop(behind,4.8,58.4,'behind',-.18);clapper(.8,62.9);
-    keyboard('CREATIVE/TOOLS',-3.3,67.0,-.16,{kind:'tool',id:'science'});monitor(science,4.1,67.3);
-    motionCard(-2.6,73.6);
+    studySpread();
+    polaroid(dry,'dry-ice',-3.3,16.95,-.2);
+    keyboard('SCIENCE/FILM',3.3,17.7,.1,{kind:'case',id:'dry-ice'});
+    note('dry-ice',-5.7,22.8,-.1);polaroid(dryDetail,'dry-ice',-.5,23.4,.1,'实验里的白雾',false);
+    phone(dry,4.8,23.1,'dry-ice',-.23);
+    keyboard('COAST/LINE',-3.5,30.0,-.15,{kind:'case',id:'coastline'});
+    polaroid(coast,'coastline',3.3,30.2,.2);
+    note('coastline',-5.2,36.4,.1);polaroid(coastDetail,'coastline',.3,36.5,-.12,'越细看，越长',false);
+    tablet(coast,4.8,36.5,'coastline',.18);
+    polaroid(behind,'behind',-3.3,44.0,-.15);
+    keyboard('BEHIND/SCENES',3.3,44.3,.12,{kind:'case',id:'behind'});
+    note('behind',-5.3,50.2,-.12);polaroid(behindDetail,'behind',.2,50.3,.17,'从选题到成片',false);
+    laptop(behind,4.8,50.4,'behind',-.18);clapper(.8,54.9);
+    keyboard('CREATIVE/TOOLS',-3.3,59.0,-.16,{kind:'tool',id:'science'});monitor(science,4.1,59.3);
+    motionCard(-2.6,65.6);
     const scienceInfo=tools.find(t=>t.id==='science');
     const st=texture(1200,1680,(c,W,H)=>{c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#2e3441';c.font='500 76px DeskSerif,serif';c.fillText('科普工作台',100,250);c.font='42px DeskSerif,serif';let y=wrap(c,scienceInfo.detail,100,480,1000,76)+110;scienceInfo.features.forEach(f=>{c.fillText(f,100,y);y+=130;});});
-    paper(st,null,3.9,73.6,-.18,{kind:'tool',id:'science'},'科普工作台');
-    assetFolder(0,82);
+    paper(st,null,3.9,65.6,-.18,{kind:'tool',id:'science'},'科普工作台');
+    assetFolder(0,74);
     await Promise.all(studyVideos.map((item,i)=>asset(item.poster,item.name).then(img=>studyVideoCard(img,item,i))));
-    notebook(-2.9,92);keyboard('LIU/JUNWEI',3.7,91.6,.12,{kind:'about'});
+    notebook(-2.9,84);keyboard('LIU/JUNWEI',3.7,83.6,.12,{kind:'about'});
     resize();ready=true;canvas.dataset.state='ready';
     if(!entered)canvas.dataset.phase='waiting';
     $('#load-status').hidden=true;$('#asset-status').hidden=true;
     const chapter=new URLSearchParams(location.search).get('chapter');
-    const chapterPositions={projects:4.5,'dry-ice':24.5,coastline:38,behind:52,tools:67,research:82,practice:82,yingjun:4.5,...Object.fromEntries(studyVideos.map(item=>[item.id,item.z])),about:92};
+    const chapterPositions={projects:.8,'dry-ice':16.5,coastline:30,behind:44,tools:59,research:74,practice:74,yingjun:.8,...Object.fromEntries(studyVideos.map(item=>[item.id,mobile?item.mobileZ:item.z])),about:84};
     const quickRouteNow=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
     if(!quickRouteNow&&!window.PORTFOLIO_QUICK?.active){
       if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}
