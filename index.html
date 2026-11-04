@@ -1,78 +1,24 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#bad9e9">
-<title>刘俊威的个人网站</title><meta name="description" content="你好，我是刘俊威。一个工科背景的内容创作者，用 AI 做内容，也把想法做成工具。我的视频项目、内容研究、创作工具与工作经历。">
-<meta property="og:title" content="刘俊威的个人网站"><meta property="og:description" content="视频作品、参与职责与创作工具，向下浏览即可了解。"><meta property="og:image" content="https://ljw1234789.github.io/shigu-personal-site/assets/hero-blue-white-20261102.png?v=blue-white-20261102">
-<link rel="icon" href="favicon.svg?v=20261027" type="image/svg+xml"><link rel="stylesheet" href="desktop.css?v=20261027-seasons1">
-<script src="tool-presentation.js?v=20261101" defer></script><script src="tool-catalog.js?v=refined-20261101" defer></script><script src="site-data.js?v=20261029-2" defer></script><script src="project-evidence.js?v=20261029-1" defer></script><script src="portfolio-narrative.js?v=interview3" defer></script><script src="research/portfolio-content.js?v=integrated1" defer></script><script src="homepage.js?v=interview3" defer></script><script src="research/portfolio-section.js?v=interview3" defer></script><script src="editorial.js?v=focused-20261102" defer></script>
-<link rel="preload" href="assets/fonts/ljw-signature.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="entrance.css?v=name-03-full-20261102">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#d8d9e3"><title>刘俊威的个人网站</title>
+<meta name="description" content="刘俊威的创作桌面：视频作品、个人贡献、创作工具与重点资料。">
+<meta property="og:title" content="刘俊威的个人网站"><meta property="og:description" content="在创作桌面上浏览作品、个人贡献与重点资料。"><meta property="og:image" content="https://ljw1234789.github.io/shigu-personal-site/assets/hero-blue-white-20261102.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <script>
-// Prepare the curtain before first paint; a failed script can never trap the page.
-(()=>{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&(!location.hash||location.hash==='#top')){document.documentElement.classList.add('intro-pending');setTimeout(()=>{document.documentElement.classList.add('intro-text-ready');document.documentElement.classList.remove('intro-pending','intro-running');document.querySelectorAll('[data-intro-inert]').forEach(el=>{el.inert=false;el.removeAttribute('data-intro-inert')});document.getElementById('site-entrance')?.remove();document.dispatchEvent(new Event('portfolio:intro-text'))},15000)}})();
+(()=>{
+ const target=location.protocol==='file:'?new URL('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/'):new URL('preview-jordan/',location.href);
+ target.searchParams.set('v','desk-main1');
+ const hash=location.hash,params=new URLSearchParams(location.search);
+ const chapters=['projects','dry-ice','coastline','behind','tools','research','practice','about'];
+ const aliases={'#projects':'projects','#cases':'projects','#tools':'tools','#content-research':'research','#research':'research','#experience':'about','#about':'about'};
+ let chapter=aliases[hash]||params.get('chapter');
+ if(hash.startsWith('#project-')&&['dry-ice','coastline','behind'].includes(hash.slice(9)))chapter=hash.slice(9);
+ if(chapters.includes(chapter))target.searchParams.set('chapter',chapter);
+ if(hash==='#works'||['dry-ice','coastline','behind'].some(id=>hash==='#work-'+id))target.hash=hash;
+ location.replace(target.href);
+})();
 </script>
-<link rel="stylesheet" href="name-display.css?v=20261029-2"><link rel="stylesheet" href="homepage.css?v=interview3"><link rel="stylesheet" href="editorial.css?v=align-20261102"><link rel="stylesheet" href="evidence.css?v=20261029-1"><link rel="stylesheet" href="detail-pages.css?v=refined-20261030-2"><link rel="stylesheet" href="cursor.css?v=20261029-3"><script src="entrance.js?v=blue-white-20261102" defer></script>
-<link rel="preload" href="assets/fonts/ljw-editorial-serif.woff2?v=type-system-20261102" as="font" type="font/woff2" crossorigin>
-<link rel="modulepreload" href="assets/vendor/three.module.js"><link rel="modulepreload" href="assets/vendor/three.core.js">
-<link rel="preload" href="assets/sculpture-v13/name-wordmark.bin?v=name-03-full-20261102" as="fetch" crossorigin>
-<script type="module" src="name-sculpture.js?v=focused-20261102"></script>
-<script type="module" src="scroll-motion.js?v=film-20261102"></script>
-<link rel="stylesheet" href="tool-presentation.css?v=refined-20261101"><link rel="stylesheet" href="typography.css?v=type-system-20261102">
-<link rel="stylesheet" href="palette.css?v=blue-white-20261102">
-<link rel="stylesheet" href="portfolio-direction.css?v=roman-slender-20261102"><link rel="stylesheet" href="research/portfolio-section.css?v=interview3">
-</head>
-<body class="scroll-home portfolio-focused" id="top">
-<div id="site-entrance" class="site-entrance">
-  <div class="entrance-center" aria-hidden="true"><div class="entrance-progress"></div></div>
-  <canvas id="entrance-dots" aria-hidden="true"></canvas>
-  <button class="entrance-skip" type="button">跳过 ↗</button>
-</div>
-<div class="folio-grid" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-<header class="desktop-bar page-header">
-  <a class="desktop-brand" href="#top" aria-label="刘俊威的个人网站，返回顶部">刘俊威<span class="brand-dot">.</span></a>
-  <nav class="page-nav" aria-label="首页导航"><a href="#projects">作品</a><a href="#tools">工具</a><a href="#content-research">研究</a><a href="#experience">关于我</a></nav>
-  <div class="desktop-controls"><button id="motion-toggle" aria-label="暂停页面动效" aria-pressed="false" title="暂停页面动效">动态 [Ⅱ]</button></div>
-</header>
-<main class="portfolio-page" id="page-main" data-intro-surface>
-  <section class="portfolio-hero page-surface" aria-labelledby="intro-title" id="intro">
-    <h1 class="sr-only" id="intro-title">刘俊威</h1>
-    <p class="hero-position">短视频内容策划与剪辑</p>
-    <div class="sculpture-stage" id="name-stage" aria-hidden="true"><span class="sculpture-fallback"><img src="assets/sculpture-v13/wordmark.svg" alt="" width="1349" height="472" fetchpriority="high"></span><canvas id="name-canvas"></canvas></div>
-    <p class="hero-roman-name"><img src="assets/brand/liu-junwei-wordmark.svg?v=slender-20261102" alt="LIU JUNWEI" width="746" height="106"></p>
-    <div class="hero-bottom"><h2 class="hero-statement" aria-label="用好奇心，做值得看完的内容。"><span data-resolve>用好奇心，</span><span data-resolve>做值得看完的内容。</span></h2><a class="hero-work-link" href="preview-jordan/?v=interview3#works" aria-label="浏览作品"><span>快速看作品</span><b aria-hidden="true">↘</b></a></div>
-    <nav class="hero-case-links" aria-label="精选案例直达"><a href="#project-dry-ice" data-detail="project-dry-ice"><span>01</span><strong>重新认识干冰白雾</strong><b aria-hidden="true">↗</b></a><a href="#project-coastline" data-detail="project-coastline"><span>02</span><strong>丈量一条海岸线</strong><b aria-hidden="true">↗</b></a><a href="#project-behind" data-detail="project-behind"><span>03</span><strong>一条视频的诞生</strong><b aria-hidden="true">↗</b></a></nav>
-
-  </section>
-
-  <section class="work-section" id="projects" aria-labelledby="projects-title">
-    <div class="work-stage">
-      <header class="work-heading"><h2 id="projects-title">精选作品 <sup>03</sup></h2><p>毕导团队参与项目</p></header>
-      <div class="case-grid" id="case-grid"></div>
-
-    </div>
-  </section>
-  <section class="folio-research" id="content-research" aria-labelledby="research-title">
-    <header class="folio-research-heading"><div><p>公开内容研究</p><h2 id="research-title">把观察，整理成创作判断。</h2></div><a href="preview-jordan/?v=interview3&amp;enter=1&amp;chapter=research">打开创作资料袋 ↗</a></header>
-    <div class="folio-research-grid" id="portfolio-research"></div>
-    <p class="research-compact-footer"><a href="research/">完整研究档案 ↗</a><a href="research/#picks">十条选片与重剪计划 ↗</a><a href="research/downloads/interview-essentials.zip" download>重点资料包 ↓</a></p>
-    <noscript><p><a href="research/">打开研究资料 ↗</a></p></noscript>
-  </section>
-  <section class="content-section page-surface" id="tools" aria-labelledby="tools-title">
-    <header class="page-section-heading" data-reveal><h2 id="tools-title"><span class="title-mask"><span>创作工具</span></span><sup>02</sup></h2><p>把创作中的重复步骤，<br>做成顺手的小工具。</p></header>
-    <div class="tools-core"><a class="tool-showcase" href="#tool-science" data-detail="tool-science"><img src="assets/projects/science-workbench.jpg?v=refined-20261101" alt="科普工作台实际界面：依据、文案与分镜在同一工作流中" width="1280" height="720" loading="lazy"><span><strong>科普工作台</strong><span>从观众问题到分镜，把依据放进创作流程。</span><b>打开工具 ↗</b></span></a>
-    <div class="homepage-tools" id="homepage-tools"></div><a class="tool-more-link" href="tools.html">全部工具 ↗</a></div>
-  </section>
-  <section class="content-section page-surface experience-section" id="experience" aria-labelledby="experience-title" data-reveal>
-    <div class="experience-heading"><h2 id="experience-title">工作经历</h2><h3>毕导团队</h3><p>科普视频内容创作</p><p class="experience-intro">用 AI 辅助选题和写脚本，也参与剪辑、发布与复盘。工科背景让我习惯追问原理，做内容则让我学习如何把它讲清楚。</p></div>
-    <div class="experience-results" id="work-results" aria-label="所列项目的公开表现"></div><ol class="experience-steps"><li><h4>选题与脚本</h4><p>从熟悉的现象和观众问题切入，借助 AI 发散角度，再把资料组织成能跟着理解的讲述顺序。</p></li><li><h4>剪辑与表达</h4><p>让画面、字幕与旁白相互对应，把抽象概念放进具体的视觉情境。</p></li><li><h4>发布与复盘</h4><p>整理发布内容，回看评论反馈，为下一条视频找到可以改进的地方。</p></li></ol>
-  </section>
-  <section class="closing-section page-surface" aria-label="更多入口">
-    <div class="closing-copy"><p>刘俊威</p><p>短视频内容策划与剪辑</p></div>
-    <div class="closing-actions"><button class="action" data-copy-site>分享我的作品集 ↗</button><a href="https://github.com/ljw1234789" target="_blank" rel="noopener">我的 GitHub ↗</a></div>
-  </section>
-</main>
-<footer class="page-footer" data-intro-surface><span>刘俊威 © 2026</span><button data-detail="site">关于网站</button><a href="#top">回到顶部 ↑</a></footer>
-<dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-title"><header class="detail-header"><span class="detail-brand" aria-hidden="true">刘俊威</span><h2 id="detail-title" tabindex="-1"></h2><div class="detail-theme-controls"><button type="button" data-detail-motion aria-label="暂停页面动效">Ⅱ</button></div><button class="detail-close" type="button" aria-label="关闭详情">×</button></header><div id="detail-content" class="detail-content"></div></dialog>
-<div id="desktop-status" class="toast" role="status" aria-live="polite"></div>
-<noscript><div class="scroll-noscript">可直接打开 <a href="portfolio.html">完整作品集</a> 或 <a href="tools.html">创作工具箱</a>。</div></noscript>
-</body></html>
+<style>body{margin:0;padding:12vh 8vw;background:#f0f6fb;color:#264d6a;font:18px/1.8 system-ui,sans-serif}a{color:inherit}</style>
+</head><body><p>正在打开刘俊威的创作桌面…</p><a href="preview-jordan/?v=desk-main1">进入创作桌面 ↗</a><noscript><p><a href="overview.html">打开阅读版总览 ↗</a></p></noscript></body></html>

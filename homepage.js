@@ -115,7 +115,7 @@
     }
     if (event.target.closest('[data-stop]')) { const detail=details[current]; if(detail){stopCaseMedia();content.innerHTML=detail.body();} return; }
     if (event.target.closest('[data-copy-site]')) {
-      try { await navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/?v=interview3'); showToast('网站链接已复制'); }
+      try { await navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=desk-main1'); showToast('网站链接已复制'); }
       catch { showToast('请复制浏览器地址栏中的网站链接'); }
     }
   });

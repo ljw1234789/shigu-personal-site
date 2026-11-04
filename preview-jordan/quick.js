@@ -99,7 +99,7 @@
     const playButton=event.target.closest('[data-quick-play]');
     if(playButton)play(playButton.dataset.quickPlay,playButton.dataset.playMode);
     const share=event.target.closest('[data-quick-share]');
-    if(share)navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/?v=interview3#works').then(()=>{share.textContent='链接已复制 ✓';}).catch(()=>{share.textContent='请复制地址栏链接';});
+    if(share)navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=desk-main1').then(()=>{share.textContent='链接已复制 ✓';}).catch(()=>{share.textContent='请复制地址栏链接';});
   });
   document.addEventListener('keydown',event=>{if(active&&event.key==='Escape'&&!document.fullscreenElement){event.preventDefault();close();}});
   addEventListener('popstate',route);addEventListener('hashchange',route);

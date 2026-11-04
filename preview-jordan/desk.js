@@ -34,7 +34,8 @@ const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
 const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'创作资料袋'],[67,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
-let enterRequested=new URLSearchParams(location.search).get('enter')==='1'||document.body.dataset.enterDesk==='1';
+const startsInQuick=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
+let enterRequested=!startsInQuick||new URLSearchParams(location.search).get('enter')==='1'||document.body.dataset.enterDesk==='1';
 let frame=0,lastTime=0,drawAt=0,scrollGoal=0,viewZ=0,scrollPosition=0;
 let hover=null,down=null,dragYaw=0,dragPitch=0,cameraYaw=0,cameraPitch=0;
 let active=null,focus=0,focusFrom=0,focusTo=0,focusAt=0,flip=0,flipTo=0;
@@ -51,7 +52,7 @@ $('#menu-toggle').addEventListener('click',()=>setMenu(menu.hidden));
 document.addEventListener('portfolio:quick-open',()=>{closeObject();setMenu(false);});
 document.addEventListener('portfolio:quick-close',()=>{enterRequested=true;enterDesk();getScroll();});
 function enterDesk(){
-  if((!scene&&!fallback)||entered)return;
+  if(!ready||(!scene&&!fallback)||entered)return;
   entered=true;enterAt=performance.now()+120;
   $('#asset-status').hidden=ready;
   canvas.dataset.phase='entering';
@@ -60,9 +61,6 @@ function enterDesk(){
   $('#menu-toggle').focus({preventScroll:true});
   if(paused||reduced.matches||fallback)document.body.classList.remove('is-entering');
 }
-$('#enter').addEventListener('click',e=>{
-  e.preventDefault();enterRequested=true;enterDesk();
-});
 function updateMotionButton(){
   const b=$('#motion-toggle');b.setAttribute('aria-pressed',String(paused));
   b.setAttribute('aria-label',paused?'播放桌面动态':'暂停桌面动态');b.textContent=paused?'▷':'Ⅱ';
@@ -497,7 +495,7 @@ function notebook(x,z){
 }
 const FOLDER_DOCS=[
   {title:'案例依据',lead:'让成片、职责与来源能被核对。',lines:['三条已参与的团队作品','成片截图与时间定位','公开数据、反馈与来源'],links:[{label:'快速看三条作品',url:'#works',quick:true},{label:'完整成片依据',url:'../research/#participation'}]},
-  {title:'内容研究',lead:'把公开内容的观察，变成创作判断。',lines:['毕导 / IP 与科普内容','英俊姐妹日记 / 数码内容','结构分析、画面依据与纠错'],links:[{label:'毕导完整报告',url:'../research/bidao/report/'},{label:'英俊账号研究',url:'../research/view.html?id=1fef94b08d83e1a9'}]},
+  {title:'内容研究',lead:'把公开内容的观察，变成创作判断。',lines:['毕导 / IP 与科普内容','英俊姐妹日记 / 74 条原片研究','原片播放、结构分析与画面依据'],links:[{label:'毕导完整报告',url:'../research/bidao/report/'},{label:'英俊原片与研究',url:'../research/yingjun/study/'}]},
   {title:'选片计划',lead:'两个账号各选五条，准备下一次实剪。',lines:['原片截图与选片理由','观看任务与重组顺序','重剪方案 / 尚未实剪'],links:[{label:'十条选片与画面',url:'../research/#picks'},{label:'完整重剪计划',url:'../research/view.html?id=8d95aa271543c773'}]}
 ];
 function setFolderFog(g,enabled){g.traverse(node=>{if(!node.isMesh)return;for(const mat of [].concat(node.material)){if(mat.fog!==enabled){mat.fog=enabled;mat.needsUpdate=true;}}});}
@@ -790,7 +788,6 @@ async function init(){
     const floor=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.MeshBasicMaterial({color:'#d5d6e1',toneMapped:false}));floor.rotation.x=-Math.PI/2;floor.position.y=-.035;scene.add(floor);
     const shadows=new THREE.Mesh(new THREE.PlaneGeometry(250,250),new THREE.ShadowMaterial({opacity:.19,color:'#676d87',depthWrite:false}));shadows.rotation.x=-Math.PI/2;shadows.position.y=-.03;shadows.receiveShadow=true;scene.add(shadows);
     resize();frame=requestAnimationFrame(render);canvas.dataset.state='loading';
-    if(enterRequested)enterDesk();
     const nameTimer=setTimeout(()=>fallbackName(),1800);
     const nameTask=nameModel().catch(()=>fallbackName()).finally(()=>clearTimeout(nameTimer));
     await Promise.race([document.fonts.load('500 30px DeskSerif').catch(()=>[]),new Promise(resolve=>setTimeout(resolve,1800))]);
@@ -822,8 +819,12 @@ async function init(){
     if(!entered)canvas.dataset.phase='waiting';
     $('#load-status').hidden=true;$('#asset-status').hidden=true;
     const chapter=new URLSearchParams(location.search).get('chapter');
-    const chapterPositions={research:62,practice:62,about:72};
-    if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}
+    const chapterPositions={projects:4.5,'dry-ice':4.5,coastline:18,behind:32,tools:47,research:62,practice:62,about:72};
+    const quickRouteNow=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
+    if(!quickRouteNow&&!window.PORTFOLIO_QUICK?.active){
+      if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}
+      else if(enterRequested)enterDesk();
+    }
     await nameTask;
   }catch(err){if(frame)cancelAnimationFrame(frame);useFallback(err);}
 }
