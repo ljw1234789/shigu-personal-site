@@ -45,6 +45,8 @@ body.is-inspecting #desk{touch-action:none}
 .desk-caption span:first-child{font-variant-numeric:tabular-nums;font-size:9px;color:#777986}
 .desk-controls{position:fixed;right:165px;top:18px;display:flex;align-items:center;gap:18px;z-index:32;transition:opacity .3s}
 .index-button,.motion-button{border:0;background:transparent;font-size:11px;padding:12px 8px}
+.study-entry-button{display:flex;align-items:center;gap:8px;border:0;border-bottom:1px solid #9ab3c8;background:transparent;color:#264d6a;font:500 14px DeskSerif,serif;padding:10px 4px;white-space:nowrap}
+.study-entry-button span{font:10px Arial,sans-serif;color:#587185}
 .index-button span{margin-left:12px;font-size:18px}
 .motion-button{width:30px;font-size:15px;padding:10px 3px}
 .scroll-cue{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);font-size:10px;color:#696c77;display:flex;align-items:center;gap:15px;z-index:5;transition:opacity .5s}
@@ -82,6 +84,7 @@ body.has-fallback .scroll-track,body.has-fallback .desk-viewport,body.has-fallba
  .site-bar{inset:13px 13px auto}.identity{font-size:11px}.menu-button{width:37px}
  .desk-caption{left:23px;bottom:23px;font-size:9px}.desk-caption span:first-child{display:none}
  .desk-controls{right:116px;top:13px;gap:8px}.index-button{font-size:10px}.index-button span{margin-left:8px}
+ .study-entry-button{position:fixed;left:23px;bottom:61px;padding:11px 13px;border:1px solid #9ab3c8;border-radius:2px;background:#f0f6fbf0;font-size:14px}
  .scroll-cue{bottom:62px;font-size:9px}
  .navigation{padding:100px 25px 35px}.navigation>p{display:block}.navigation>p span{display:block;margin-top:13px}.navigation>button{font-size:27px;padding:18px 0;gap:18px}
  .inspection-title{top:80px;font-size:11px;max-width:85vw;text-align:center;white-space:normal}

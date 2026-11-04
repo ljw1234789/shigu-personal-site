@@ -50,4 +50,6 @@
 
 新增三张可直接播放的竖版研究卡：实况拼图教程、vivo 冬日礼盒开箱、CES 国产科技盘点。图片从已有原片提取，媒体复用既有 GitHub Release 的 H.264/AAC 副本。点开卡片即请求播放，沿用场景内抬起、等比贴合、关闭停止与错误重试。标为公开原片研究，不作为刘俊威参与作品或已完成的重剪。
 
-导航可跳到三条卡片；`chapter=yingjun`、`chapter=yingjun-oppo`、`chapter=yingjun-vivo`、`chapter=yingjun-ces` 也可直达。资料袋仍在 62，个人介绍延至 92；桌面共八章。
+导航可跳到三条卡片；`chapter=yingjun`、`chapter=yingjun-oppo`、`chapter=yingjun-vivo`、`chapter=yingjun-ces` 也可直达。英俊三条卡片位于作品区之后、工具之前，依次在 47、52.5、58；工具在 67，资料袋在 82，个人介绍在 92；桌面共八章。
+
+顶部常驻“英俊视频 03”按钮，直接定位三张可播放卡片；手机端该入口位于左下角，避开顶部导航。

@@ -37,7 +37,7 @@ const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'创作工具'],[57,'创作资料袋'],[67,'英俊姐妹日记 · 原片研究'],[87,'关于我']];
+const sectionStops=[[0,'刘俊威的创作桌面'],[2.8,'重新认识干冰白雾'],[15,'丈量一条海岸线'],[29,'一条视频的诞生'],[43,'英俊姐妹日记 · 原片研究'],[63,'创作工具'],[77,'创作资料袋'],[87,'关于我']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
 const startsInQuick=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
@@ -833,19 +833,19 @@ async function init(){
     keyboard('BEHIND/SCENES',3.3,32.3,.12,{kind:'case',id:'behind'});
     note('behind',-5.3,38.2,-.12);polaroid(behindDetail,'behind',.2,38.3,.17,'从选题到成片',false);
     laptop(behind,4.8,38.4,'behind',-.18);clapper(.8,42.9);
-    keyboard('CREATIVE/TOOLS',-3.3,47.0,-.16,{kind:'tool',id:'science'});monitor(science,4.1,47.3);
-    motionCard(-2.6,53.6);
+    keyboard('CREATIVE/TOOLS',-3.3,67.0,-.16,{kind:'tool',id:'science'});monitor(science,4.1,67.3);
+    motionCard(-2.6,73.6);
     const scienceInfo=tools.find(t=>t.id==='science');
     const st=texture(1200,1680,(c,W,H)=>{c.fillStyle='#f9f8f3';c.fillRect(0,0,W,H);c.fillStyle='#2e3441';c.font='500 76px DeskSerif,serif';c.fillText('科普工作台',100,250);c.font='42px DeskSerif,serif';let y=wrap(c,scienceInfo.detail,100,480,1000,76)+110;scienceInfo.features.forEach(f=>{c.fillText(f,100,y);y+=130;});});
-    paper(st,null,3.9,53.6,-.18,{kind:'tool',id:'science'},'科普工作台');
-    assetFolder(0,62);
+    paper(st,null,3.9,73.6,-.18,{kind:'tool',id:'science'},'科普工作台');
+    assetFolder(0,82);
     await Promise.all(studyVideos.map((item,i)=>asset(item.poster,item.name).then(img=>studyVideoCard(img,item,i))));
     notebook(-2.9,92);keyboard('LIU/JUNWEI',3.7,91.6,.12,{kind:'about'});
     resize();ready=true;canvas.dataset.state='ready';
     if(!entered)canvas.dataset.phase='waiting';
     $('#load-status').hidden=true;$('#asset-status').hidden=true;
     const chapter=new URLSearchParams(location.search).get('chapter');
-    const chapterPositions={projects:4.5,'dry-ice':4.5,coastline:18,behind:32,tools:47,research:62,practice:62,yingjun:71.5,...Object.fromEntries(studyVideos.map(item=>[item.id,item.z])),about:92};
+    const chapterPositions={projects:4.5,'dry-ice':4.5,coastline:18,behind:32,tools:67,research:82,practice:82,yingjun:47,...Object.fromEntries(studyVideos.map(item=>[item.id,item.z])),about:92};
     const quickRouteNow=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
     if(!quickRouteNow&&!window.PORTFOLIO_QUICK?.active){
       if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}
