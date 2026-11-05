@@ -5,7 +5,7 @@
   const projects = window.PERSONAL_SITE.projects;
   const evidence = window.PROJECT_EVIDENCE.projects;
   const narrative = window.PORTFOLIO_NARRATIVE;
-  const ids = ['earth-flat','pizza-slice','life-progress'];
+  const ids = ['earth-flat','sound-candle','solar-distance'];
   const safe = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clock = value => Math.floor(value/60)+':'+String(Math.floor(value%60)).padStart(2,'0');
   let active = false, savedScroll = 0, returnFocus = null;
@@ -106,7 +106,7 @@
     const playButton=event.target.closest('[data-quick-play]');
     if(playButton)play(playButton.dataset.quickPlay,playButton.dataset.playMode);
     const share=event.target.closest('[data-quick-share]');
-    if(share)navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=viral-20261105').then(()=>{share.textContent='链接已复制 ✓';}).catch(()=>{share.textContent='请复制地址栏链接';});
+    if(share)navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=balanced-20261105').then(()=>{share.textContent='链接已复制 ✓';}).catch(()=>{share.textContent='请复制地址栏链接';});
   });
   document.addEventListener('keydown',event=>{if(active&&event.key==='Escape'&&!document.fullscreenElement){event.preventDefault();close();}});
   addEventListener('popstate',route);addEventListener('hashchange',route);

@@ -1,10 +1,10 @@
-/* Public metrics and film analysis. General user-confirmed responsibilities do not establish individual credits for this selection. */
+/* Public metrics and film analysis. General responsibilities do not establish individual project credits. */
 window.PROJECT_EVIDENCE = {
   "checkedAt": "2026.11.05",
   "role": "在毕导团队参与 AI 辅助选题、脚本撰写、视频剪辑，以及发布后的反馈整理与复盘。",
   "totals": {
-    "bilibiliViews": "约 3647.3 万",
-    "douyinLikes": "约 228.8 万"
+    "bilibiliViews": "约 2780.5 万",
+    "douyinLikes": "约 96.3 万"
   },
   "projects": {
     "earth-flat": {
@@ -58,113 +58,107 @@ window.PROJECT_EVIDENCE = {
         "recognition": "全站排行榜最高第 5 名"
       }
     },
-    "pizza-slice": {
-      "focus": "生活与几何",
-      "chapters": [],
-      "interview": [
-        "你在选题、脚本和剪辑中分别承担了哪些工作？",
-        "哪些成片段落可以对应你的职责？"
+    "sound-candle": {
+      "duration": "13:17",
+      "focus": "声音与实验",
+      "context": "从给蜡烛播放歌曲的反常识问题出发，用实验和图示讨论声音、气流与火焰的关系。",
+      "breakdown": [
+        {
+          "title": "先看到现象",
+          "text": "把音乐与烛火放在同一实验场景中，以反常识现象提出问题。"
+        },
+        {
+          "title": "用图示拆开机制",
+          "text": "05:00 的抽样画面用粒子与扬声器图示辅助解释，把难以直接观察的过程画出来。"
+        },
+        {
+          "title": "让解释回到依据",
+          "text": "10:00 的抽样画面展示文献段落，适合观察实验现象与解释依据怎样相互对应。"
+        }
       ],
-      "duration": "12:15",
+      "still": {
+        "src": "assets/projects/evidence/sound-candle-experiment.jpg",
+        "time": "05:00",
+        "caption": "公开成片中的烛火粒子与扬声器图示。"
+      },
+      "chapters": [],
+      "feedback": [
+        "复盘关注：观众能否区分实验现象、机制解释与适用条件。"
+      ],
+      "reflection": "以上为公开成片的内容观察与复盘建议，作品公开表现不自动代表个人贡献。",
+      "interview": [],
       "douyin": {
-        "url": "https://www.douyin.com/video/7531098913223216426",
+        "url": "https://www.douyin.com/video/7540973967792737575",
         "author": "毕导",
-        "published": "2025.07.26",
-        "likes": "54.2 万",
-        "comments": "9,611",
-        "saves": "6.5 万",
-        "shares": "9.6 万"
+        "published": "2025.08.21",
+        "likes": "26.5 万",
+        "comments": "4,092",
+        "saves": "2.9 万",
+        "shares": "5.8 万"
       },
       "bilibili": {
-        "url": "https://www.bilibili.com/video/BV16Hbdz2Eqq/",
+        "url": "https://www.bilibili.com/video/BV1Vqe3z4E1n/",
         "author": "毕导",
-        "published": "2025.07.26",
-        "views": "1280.5 万",
-        "danmaku": "3.0 万",
-        "likes": "42.2 万",
-        "coins": "13.2 万",
-        "saves": "13.5 万",
-        "shares": "2.1 万",
+        "published": "2025.08.21",
+        "views": "842.2 万",
+        "danmaku": "15.5 万",
+        "likes": "37.1 万",
+        "coins": "7.8 万",
+        "saves": "14.7 万",
+        "shares": "1.6 万",
         "recognition": "全站排行榜最高第 4 名"
-      },
-      "context": "以披萨弯折后更挺的日常现象为入口，借助纸张和曲面演示展开高斯曲率。",
+      }
+    },
+    "solar-distance": {
+      "duration": "11:15",
+      "focus": "天文与尺度",
+      "context": "从《两小儿辩日》的熟悉争论切入，通过天文图示与距离尺度比较，重新组织直觉和证据。",
       "breakdown": [
         {
-          "title": "先给出能操作的现象",
-          "text": "从拿起披萨时的弯折动作切入，让观众先认出自己做过的事。"
+          "title": "用熟悉故事提出新问题",
+          "text": "开头的角色演绎把“早上近还是中午近”的争论变成可进入的情境。"
         },
         {
-          "title": "用纸张承接几何解释",
-          "text": "抽样画面中，纸张、课堂白板与曲面模型共同承担抽象概念的讲解。"
+          "title": "把距离放到同一尺度",
+          "text": "06:00 的抽样画面把半年与一天的距离变化并列，用数字对照承接天文尺度。"
         },
         {
-          "title": "用对照保留几何条件",
-          "text": "06:10 的取样画面并列展示不同形状，让观众对照观察曲面的构成。"
+          "title": "故事与图示相互承接",
+          "text": "抽样画面包含角色演绎、天体图示和距离计算，可围绕不同表达形式的切换进行拆解。"
         }
       ],
       "still": {
-        "src": "assets/projects/evidence/pizza-slice-models.jpg",
-        "time": "06:10",
-        "caption": "公开成片中对照展示的曲面模型。"
+        "src": "assets/projects/evidence/solar-distance-diagram.jpg",
+        "time": "06:00",
+        "caption": "公开成片中半年与一天的距离变化对照。"
       },
-      "feedback": [
-        "复盘时重点关注：日常的“折一下”如何与曲率解释对应，哪些几何条件需要通过画面保留。"
-      ],
-      "reflection": "可围绕生活动作、实体演示和几何解释之间的衔接展开案例讨论；联合创作信息以原片署名为准。"
-    },
-    "life-progress": {
-      "focus": "感知与数学",
       "chapters": [],
-      "interview": [
-        "你在选题、脚本和剪辑中分别承担了哪些工作？",
-        "哪些成片段落可以对应你的职责？"
+      "feedback": [
+        "复盘关注：比较早晨与中午的距离时，观众是否理解不同尺度和观察条件。"
       ],
-      "duration": "12:19",
+      "reflection": "以上为公开成片的内容观察与复盘建议，作品公开表现不自动代表个人贡献。",
+      "interview": [],
       "douyin": {
-        "url": "https://www.douyin.com/video/7502844302737870119",
+        "url": "https://www.douyin.com/video/7520207378852138294",
         "author": "毕导",
-        "published": "2025.05.11",
-        "likes": "114.6 万",
-        "comments": "2.9 万",
-        "saves": "21.2 万",
-        "shares": "34.5 万"
+        "published": "2025.06.26",
+        "likes": "9.8 万",
+        "comments": "1,934",
+        "saves": "1.6 万",
+        "shares": "1.2 万"
       },
       "bilibili": {
-        "url": "https://www.bilibili.com/video/BV1VrVSz1Eme/",
+        "url": "https://www.bilibili.com/video/BV1scKDzjEcn/",
         "author": "毕导",
-        "published": "2025.05.10",
-        "views": "1076.7 万",
-        "danmaku": "3.5 万",
-        "likes": "78.9 万",
-        "coins": "43.1 万",
-        "saves": "35.7 万",
-        "shares": "13.5 万",
-        "recognition": "全站排行榜最高第 1 名"
-      },
-      "context": "从时间越过越快的生活感受出发，串联对数感知、人生时间轴与本福特定律。",
-      "breakdown": [
-        {
-          "title": "从生活感受进入问题",
-          "text": "用“为什么时间越过越快”的共同体验建立观看动机，再展开感知与数学的关系。"
-        },
-        {
-          "title": "让抽象比例能被看见",
-          "text": "抽样的 03:50 画面把人生时间展开为图形刻度，用视觉尺度承接关于时间感受的讲述。"
-        },
-        {
-          "title": "生活演示与图表交替",
-          "text": "成片抽样包含钢琴、商品与数字分布图，把数学概念连接到具体观看对象。"
-        }
-      ],
-      "still": {
-        "src": "assets/projects/evidence/life-progress-timeline.jpg",
-        "time": "03:50",
-        "caption": "公开成片中的人生时间轴图形。"
-      },
-      "feedback": [
-        "复盘时重点关注：观众是否区分对数感知的解释模型与个人的真实生活体验。"
-      ],
-      "reflection": "可围绕生活问题的切入、图形与旁白的对应，以及抽象解释的边界展开案例讨论。"
+        "published": "2025.06.26",
+        "views": "648.2 万",
+        "danmaku": "3.8 万",
+        "likes": "36.7 万",
+        "coins": "23.5 万",
+        "saves": "13.5 万",
+        "shares": "1.9 万",
+        "recognition": "全站排行榜最高第 6 名"
+      }
     }
   }
 };

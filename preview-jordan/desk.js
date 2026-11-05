@@ -11,9 +11,9 @@ const research = window.PORTFOLIO_RESEARCH;
 const studyVideos = window.DESK_STUDY_VIDEOS || [];
 const profile = window.PORTFOLIO_PROFILE;
 const tools = window.CREATIVE_TOOLS.filter(t => ['science','motion'].includes(t.id));
-const order = ['earth-flat','pizza-slice','life-progress'];
-const images = {'earth-flat':'earth-flat-hd.jpg','pizza-slice':'pizza-slice-hd.jpg','life-progress':'life-progress-hd.jpg'};
-const videoTimes = {'earth-flat':'11:40','pizza-slice':'12:15','life-progress':'12:19'};
+const order = ['earth-flat','sound-candle','solar-distance'];
+const images = {'earth-flat':'earth-flat-hd.jpg','sound-candle':'sound-candle-hd.jpg','solar-distance':'solar-distance-hd.jpg'};
+const videoTimes = {'earth-flat':'11:40','sound-candle':'13:17','solar-distance':'11:15'};
 const ASSETS = '../assets/projects/';
 const MAX_TRAVEL = 88;
 const IDENTITY_Z = 81.8;
@@ -56,7 +56,7 @@ const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'视频作品与内容研究'],[.8,'英俊姐妹日记 · 原片研究'],[14.8,'地球是平的？'],[27,'披萨里的几何'],[41,'人生进度条'],[55,'创作工具'],[69,'创作资料袋'],[79,'关于我 · 联系']];
+const sectionStops=[[0,'视频作品与内容研究'],[.8,'英俊姐妹日记 · 原片研究'],[14.8,'地球是平的？'],[27,'声音与烛火'],[41,'两小儿辩日'],[55,'创作工具'],[69,'创作资料袋'],[79,'关于我 · 联系']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
 const startsInQuick=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
@@ -524,11 +524,11 @@ function laptop(img,x,z,id,angle=-.1){
   contact(g,6.3,4.6,.2);return g;
 }
 function clapper(x,z){
-  const g=object(x,z,-.2,{kind:'case',id:'life-progress'},'人生进度条','clapper');
+  const g=object(x,z,-.2,{kind:'case',id:'solar-distance'},'两小儿辩日','clapper');
   g.userData.width=3.8;g.userData.height=2.8;
   slab(g,3.8,2.5,.15,black);
   const t=texture(1200,800,(c,W,H)=>{
-    c.fillStyle='#13141a';c.fillRect(0,0,W,H);c.fillStyle='#efeff4';c.font='500 87px DeskSerif,serif';c.fillText('人生进度条',90,350,1040);
+    c.fillStyle='#13141a';c.fillRect(0,0,W,H);c.fillStyle='#efeff4';c.font='500 87px DeskSerif,serif';c.fillText('两小儿辩日',90,350,1040);
     c.strokeStyle='#737984';c.lineWidth=2;c.strokeRect(70,80,W-140,H-150);
     c.font='30px Arial';c.fillText('AI / SCRIPT / EDIT',90,650);
   });surface(g,3.76,2.46,.16,t);
@@ -873,22 +873,22 @@ async function init(){
     await Promise.race([document.fonts.load('500 30px DeskSerif').catch(()=>[]),new Promise(resolve=>setTimeout(resolve,1800))]);
     const asset=(src,label)=>loadImage(src).catch(()=>placeholderImage(label));
     const [dry,coast,behind,science,dryDetail,coastDetail,behindDetail]=await Promise.all([
-      asset(ASSETS+images['earth-flat'],'地球是平的？'),asset(ASSETS+images['pizza-slice'],'披萨里的几何'),asset(ASSETS+images['life-progress'],'人生进度条'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
-      asset('earth-flat-evidence-clean.png','月球与光照'),asset('pizza-slice-models-clean.png','弯曲里的几何'),asset('life-progress-timeline-clean.png','时间的刻度')
+      asset(ASSETS+images['earth-flat'],'地球是平的？'),asset(ASSETS+images['sound-candle'],'声音与烛火'),asset(ASSETS+images['solar-distance'],'两小儿辩日'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
+      asset('earth-flat-evidence-clean.png','月球与光照'),asset('sound-candle-experiment-clean.png','声音里的实验'),asset('solar-distance-diagram-clean.png','太阳的距离')
     ]);
     studySpread();
     polaroid(dry,'earth-flat',-3.3,16.95,-.2);
     keyboard('EARTH/PROOF',3.3,17.7,.1,{kind:'case',id:'earth-flat'});
     note('earth-flat',-5.7,22.8,-.1);polaroid(dryDetail,'earth-flat',-.5,23.4,.1,'月球与光照',false);
     phone(dry,4.8,23.1,'earth-flat',-.23);
-    keyboard('PIZZA/MATH',-3.5,30.0,-.15,{kind:'case',id:'pizza-slice'});
-    polaroid(coast,'pizza-slice',3.3,30.2,.2);
-    note('pizza-slice',-5.2,36.4,.1);polaroid(coastDetail,'pizza-slice',.3,36.5,-.12,'弯曲里的几何',false);
-    tablet(coast,4.8,36.5,'pizza-slice',.18);
-    polaroid(behind,'life-progress',-3.3,44.0,-.15);
-    keyboard('TIME/LIFE',3.3,44.3,.12,{kind:'case',id:'life-progress'});
-    note('life-progress',-5.3,50.2,-.12);polaroid(behindDetail,'life-progress',.2,50.3,.17,'时间的刻度',false);
-    laptop(behind,4.8,50.4,'life-progress',-.18);clapper(.8,54.9);
+    keyboard('SOUND/FIRE',-3.5,30.0,-.15,{kind:'case',id:'sound-candle'});
+    polaroid(coast,'sound-candle',3.3,30.2,.2);
+    note('sound-candle',-5.2,36.4,.1);polaroid(coastDetail,'sound-candle',.3,36.5,-.12,'声音里的实验',false);
+    tablet(coast,4.8,36.5,'sound-candle',.18);
+    polaroid(behind,'solar-distance',-3.3,44.0,-.15);
+    keyboard('SUN/EARTH',3.3,44.3,.12,{kind:'case',id:'solar-distance'});
+    note('solar-distance',-5.3,50.2,-.12);polaroid(behindDetail,'solar-distance',.2,50.3,.17,'太阳的距离',false);
+    laptop(behind,4.8,50.4,'solar-distance',-.18);clapper(.8,54.9);
     keyboard('CREATIVE/TOOLS',-3.3,59.0,-.16,{kind:'tool',id:'science'});monitor(science,4.1,59.3);
     motionCard(-2.6,65.6);
     const scienceInfo=tools.find(t=>t.id==='science');
@@ -903,7 +903,7 @@ async function init(){
     const warm=()=>{if(scrollGoal<15)studyVideos.forEach(item=>primeMedia(item.id));};
     if('requestIdleCallback' in window)requestIdleCallback(warm,{timeout:2500});else setTimeout(warm,800);
     const chapter=new URLSearchParams(location.search).get('chapter');
-    const chapterPositions={projects:.8,'earth-flat':16.5,'pizza-slice':30,'life-progress':44,tools:59,research:74,practice:74,yingjun:.8,...Object.fromEntries(studyVideos.map(item=>[item.id,mobile?item.mobileZ:item.z])),about:84};
+    const chapterPositions={projects:.8,'earth-flat':16.5,'sound-candle':30,'solar-distance':44,tools:59,research:74,practice:74,yingjun:.8,...Object.fromEntries(studyVideos.map(item=>[item.id,mobile?item.mobileZ:item.z])),about:84};
     const quickRouteNow=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
     if(!quickRouteNow&&!window.PORTFOLIO_QUICK?.active){
       if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}

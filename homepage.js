@@ -14,7 +14,7 @@
     if(button){button.textContent=paused?'▷':'Ⅱ';button.setAttribute('aria-label',paused?'播放页面动效':'暂停页面动效');button.setAttribute('aria-pressed',String(paused));}
   }
   new MutationObserver(syncDetailTheme).observe(document.body,{attributes:true,attributeFilter:['class']});
-  const featured = ['earth-flat','pizza-slice','life-progress'].map(id=>projects.find(p=>p.id===id));
+  const featured = ['earth-flat','sound-candle','solar-distance'].map(id=>projects.find(p=>p.id===id));
   const workResults = document.getElementById('work-results');
   if(workResults){workResults.hidden=true;workResults.style.display='none';}
   document.getElementById('case-grid').innerHTML = `<div class="work-intro"><p>毕导 · 精选公开视频</p><span>选题切口 · 内容结构 · 画面表达</span></div>` + featured.map((p,i) => `<a class="case-card" href="#project-${p.id}" data-detail="project-${p.id}" aria-label="查看案例：${p.name}"><div class="case-cover"><img src="assets/projects/${p.id}-hd.jpg" alt="${p.title}" width="1600" height="900" loading="eager"><span class="case-play" aria-hidden="true">▶</span></div><div class="case-copy"><div class="case-topline"><span>${p.type}</span><span class="case-index">0${i+1} / 03</span></div><div class="case-caption"><h3>${p.name}</h3></div><p class="case-summary">${p.copy}</p><div class="case-role-points"><h4>内容拆解</h4><ul>${window.PORTFOLIO_NARRATIVE[p.id].deliverables.map(([label,text])=>`<li><strong>${label}</strong>${text}</li>`).join('')}</ul></div><div class="case-results"><span>B 站 <strong>${evidence.projects[p.id].bilibili.views}</strong> 播放</span><span>抖音 <strong>${evidence.projects[p.id].douyin.likes}</strong> 赞</span></div><span class="case-open-hint">看成片与案例 <b aria-hidden="true">↗</b></span></div></a>`).join('');
@@ -115,7 +115,7 @@
     }
     if (event.target.closest('[data-stop]')) { const detail=details[current]; if(detail){stopCaseMedia();content.innerHTML=detail.body();} return; }
     if (event.target.closest('[data-copy-site]')) {
-      try { await navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=viral-20261105'); showToast('网站链接已复制'); }
+      try { await navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=balanced-20261105'); showToast('网站链接已复制'); }
       catch { showToast('请复制浏览器地址栏中的网站链接'); }
     }
   });
