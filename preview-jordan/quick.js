@@ -5,20 +5,20 @@
   const projects = window.PERSONAL_SITE.projects;
   const evidence = window.PROJECT_EVIDENCE.projects;
   const narrative = window.PORTFOLIO_NARRATIVE;
-  const ids = ['dry-ice','coastline','behind'];
+  const ids = ['life-progress','pizza-slice','behind'];
   const safe = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clock = value => Math.floor(value/60)+':'+String(Math.floor(value%60)).padStart(2,'0');
   let active = false, savedScroll = 0, returnFocus = null;
   const studyHost=document.getElementById('quick-study-videos');
   if(studyHost){
-    studyHost.innerHTML=(window.DESK_STUDY_VIDEOS||[]).map(item=>`<article class="quick-study-card"><video controls playsinline preload="none" poster="${safe(item.poster)}" src="${safe(item.media)}" data-study-source="${safe(item.media)}" aria-label="${safe(item.name)}研究原片"></video><h3>${safe(item.name)}</h3><p>${safe(item.type)} · ${clock(item.duration)}</p><a href="${safe(item.hdMedia)}" target="_blank" rel="noopener">清晰原片 ↗</a></article>`).join('');
+    studyHost.innerHTML=(window.DESK_STUDY_VIDEOS||[]).map(item=>`<article class="quick-study-card"><video controls playsinline preload="none" poster="${safe(item.poster)}" src="${safe(item.media)}" data-study-source="${safe(item.media)}" aria-label="${safe(item.name)}研究原片"></video><h3>${safe(item.name)}</h3><p>${safe(item.published)} · ${safe(item.type)} · ${clock(item.duration)}</p><a href="${safe(item.hdMedia)}" target="_blank" rel="noopener">清晰原片 ↗</a></article>`).join('');
     studyHost.querySelectorAll('video').forEach(v=>v.addEventListener('play',()=>host.querySelectorAll('video').forEach(other=>{if(other!==v)other.pause();})));
   }
 
   document.getElementById('quick-cases').innerHTML = ids.map((id,i) => {
     const p=projects.find(p=>p.id===id),n=narrative[id],e=evidence[id];
     return `<article class="quick-case" id="work-${id}" aria-labelledby="quick-title-${id}">
-      <header class="quick-case-heading"><span>${String(i+1).padStart(2,'0')} / ${safe(p.type)}</span><h2 id="quick-title-${id}">${safe(p.name)}</h2><p>${safe(p.copy)}</p></header>
+      <header class="quick-case-heading"><span>${String(i+1).padStart(2,'0')} / ${safe(p.type)} · ${safe(p.date)}</span><h2 id="quick-title-${id}">${safe(p.name)}</h2><p>${safe(p.copy)}</p></header>
       <div class="quick-case-core"><div class="quick-visual">
         <video id="quick-video-${id}" controls playsinline preload="none" poster="../assets/projects/${id}-hd.jpg" src="media/${id}.mp4?v=interview3" aria-label="${safe(p.name)}完整视频"></video>
         <div class="quick-play-actions"><button type="button" data-quick-play="${id}" data-play-mode="preview">看 30 秒片段 ▷</button><button type="button" data-quick-play="${id}" data-play-mode="full">播放完整版 ↗</button></div>
@@ -28,7 +28,7 @@
       <details class="quick-evidence"><summary>成片依据、反馈与来源 <span>＋</span></summary><div class="quick-evidence-body">
         <figure><img src="../${e.still.src}" alt="${safe(e.still.caption)}" width="945" height="540" loading="lazy"><figcaption>${e.still.time} · ${safe(e.still.caption)}</figcaption></figure>
         <div><h4>我关注的反馈</h4>${e.feedback.map(text=>`<p>${safe(text)}</p>`).join('')}<h4>下一步怎么改</h4><p>${safe(n.next)}</p></div>
-        <p class="quick-scope">个人职责据已确认参与环节整理，成片定位用于核对画面；未提供原始草稿与逐次修改记录。数据沿用 2026.10.29 公开快照，属于团队作品表现。</p>
+        <p class="quick-scope">个人职责据已确认参与环节整理，成片定位用于核对画面；未提供原始草稿与逐次修改记录。数据核验于 2026.11.05，属于团队作品表现。</p>
         <nav aria-label="${safe(p.name)}来源"><a href="${e.bilibili.url}" target="_blank" rel="noopener">B 站原片 ↗</a><a href="${e.douyin.url}" target="_blank" rel="noopener">抖音原片 ↗</a></nav>
       </div></details></article>`;
   }).join('');
@@ -106,7 +106,7 @@
     const playButton=event.target.closest('[data-quick-play]');
     if(playButton)play(playButton.dataset.quickPlay,playButton.dataset.playMode);
     const share=event.target.closest('[data-quick-share]');
-    if(share)navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=fast-contact2').then(()=>{share.textContent='链接已复制 ✓';}).catch(()=>{share.textContent='请复制地址栏链接';});
+    if(share)navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=selection-20261105').then(()=>{share.textContent='链接已复制 ✓';}).catch(()=>{share.textContent='请复制地址栏链接';});
   });
   document.addEventListener('keydown',event=>{if(active&&event.key==='Escape'&&!document.fullscreenElement){event.preventDefault();close();}});
   addEventListener('popstate',route);addEventListener('hashchange',route);

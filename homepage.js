@@ -14,7 +14,7 @@
     if(button){button.textContent=paused?'▷':'Ⅱ';button.setAttribute('aria-label',paused?'播放页面动效':'暂停页面动效');button.setAttribute('aria-pressed',String(paused));}
   }
   new MutationObserver(syncDetailTheme).observe(document.body,{attributes:true,attributeFilter:['class']});
-  const featured = ['dry-ice','coastline','behind'].map(id=>projects.find(p=>p.id===id));
+  const featured = ['life-progress','pizza-slice','behind'].map(id=>projects.find(p=>p.id===id));
   const workResults = document.getElementById('work-results');
   if(workResults) workResults.innerHTML = `<div><strong>${evidence.totals.bilibiliViews}</strong><span>所列三条视频 · B 站累计播放</span></div><div><strong>${evidence.totals.douyinLikes}</strong><span>所列三条视频 · 抖音累计点赞</span></div>`;
   document.getElementById('case-grid').innerHTML = `<div class="work-intro"><p>毕导团队 · 我参与的三条视频</p><span>选题 · 脚本 · 剪辑 · 发布复盘</span></div>` + featured.map((p,i) => `<a class="case-card" href="#project-${p.id}" data-detail="project-${p.id}" aria-label="查看案例：${p.name}"><div class="case-cover"><img src="assets/projects/${p.id}-hd.jpg" alt="${p.title}" width="1600" height="900" loading="eager"><span class="case-play" aria-hidden="true">▶</span></div><div class="case-copy"><div class="case-topline"><span>${p.type}</span><span class="case-index">0${i+1} / 03</span></div><div class="case-caption"><h3>${p.name}</h3></div><p class="case-summary">${p.copy}</p><div class="case-role-points"><h4>我的具体贡献</h4><ul>${window.PORTFOLIO_NARRATIVE[p.id].deliverables.map(([label,text])=>`<li><strong>${label}</strong>${text}</li>`).join('')}</ul></div><div class="case-results"><span>B 站 <strong>${evidence.projects[p.id].bilibili.views}</strong> 播放</span><span>抖音 <strong>${evidence.projects[p.id].douyin.likes}</strong> 赞</span></div><span class="case-open-hint">看成片与案例 <b aria-hidden="true">↗</b></span></div></a>`).join('');
@@ -29,10 +29,10 @@
       <section class="case-contribution"><header><p>个人职责</p><h3>我负责的工作</h3></header><div class="contribution-grid">${narrative.deliverables.map(([name,text],i)=>`<article><span>0${i+1}</span><h4>${name}</h4><p>${text}</p></article>`).join('')}</div></section>
       <section class="case-reading"><header><p>成片表达分析</p><h3>${e.focus}</h3></header><p class="case-context">${e.context}</p><div class="case-reading-grid">${e.breakdown.map((item,i)=>`<article><span class="case-step">0${i+1}</span><h4>${item.title}</h4><p>${item.text}</p></article>`).join('')}</div></section>
       <figure class="case-evidence-figure"><img src="${e.still.src}" alt="${safe(e.still.caption)}" width="945" height="540" loading="lazy"><figcaption><span>成片截图 · ${e.still.time}</span><span>${e.still.caption}</span></figcaption></figure>
-      <section class="case-feedback"><h3>观众反馈与复盘观察</h3><ul>${e.feedback.map(t=>`<li>${t}</li>`).join('')}</ul><p>基于原页可见评论整理。</p></section>
+      <section class="case-feedback"><h3>观众反馈与复盘观察</h3><ul>${e.feedback.map(t=>`<li>${t}</li>`).join('')}</ul><p>依据成片内容提出复盘关注点；已采集评论的条目另作说明。</p></section>
       <section class="case-next-step"><h3>下一步，我会怎样改进</h3><p>${narrative.next}</p></section>
       <section class="case-next-step case-research-extension"><h3>继续看，我怎样研究内容</h3><p>这条作品的结构观察、观众反馈与公开数据，也整理进了我的科普内容研究。</p><p><a href="research/#participation">作品研究与原始依据 ↗</a>　<a href="research/bidao/report/">毕导完整 IP 报告 ↗</a></p></section>
-      <details class="case-source-record"><summary>查看完整数据与来源 <span>2026.10.29</span></summary><div class="platform-records">
+      <details class="case-source-record"><summary>查看完整数据与来源 <span>${evidence.checkedAt}</span></summary><div class="platform-records">
         <section><h4>哔哩哔哩 <a href="${b.url}" target="_blank" rel="noopener">核对原页 ↗</a></h4><p>${b.author} · ${b.published}</p><dl>${cells([['播放',b.views],['弹幕',b.danmaku],['点赞',b.likes],['投币',b.coins],['收藏',b.saves],['分享',b.shares]])}</dl></section>
         <section><h4>抖音 <a href="${d.url}" target="_blank" rel="noopener">核对原页 ↗</a></h4><p>${d.author} · ${d.published}</p><dl>${cells([['点赞',d.likes],['评论',d.comments],['收藏',d.saves],['分享',d.shares]])}</dl></section></div><p>保留平台显示精度。“万”为近似展示值；播放次数不等于独立人数，两个平台的数据分别列示。未取得后台播放、完播率、转化率或个人贡献比例。</p></details>
       ${e.chapters.length?`<details class="case-source-record"><summary>查看原页章节导航 <span>${e.duration}</span></summary><ol class="case-chapters">${e.chapters.map(([time,label])=>`<li><time>${time}</time><span>${label}</span></li>`).join('')}</ol><p>来自抖音原页标注“内容由 AI 生成”的章节导航，仅用于定位观看，不作为原始脚本或个人制作记录。</p></details>`:''}
@@ -115,7 +115,7 @@
     }
     if (event.target.closest('[data-stop]')) { const detail=details[current]; if(detail){stopCaseMedia();content.innerHTML=detail.body();} return; }
     if (event.target.closest('[data-copy-site]')) {
-      try { await navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=fast-contact2'); showToast('网站链接已复制'); }
+      try { await navigator.clipboard.writeText('https://ljw1234789.github.io/shigu-personal-site/?v=selection-20261105'); showToast('网站链接已复制'); }
       catch { showToast('请复制浏览器地址栏中的网站链接'); }
     }
   });

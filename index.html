@@ -9,16 +9,16 @@
 <script>
 (()=>{
  const target=location.protocol==='file:'?new URL('https://ljw1234789.github.io/shigu-personal-site/preview-jordan/'):new URL('preview-jordan/',location.href);
- target.searchParams.set('v','fast-contact2');
+ target.searchParams.set('v','selection-20261105');
  const hash=location.hash,params=new URLSearchParams(location.search);
- const chapters=['projects','dry-ice','coastline','behind','tools','research','practice','yingjun','yingjun-oppo','yingjun-vivo','yingjun-ces','about'];
+ const chapters=['projects','life-progress','pizza-slice','behind','tools','research','practice','yingjun','yingjun-vivo','yingjun-reno','yingjun-huawei','about'];
  const aliases={'#projects':'projects','#cases':'projects','#tools':'tools','#content-research':'research','#research':'research','#yingjun':'yingjun','#experience':'about','#about':'about'};
  let chapter=aliases[hash]||params.get('chapter');
- if(hash.startsWith('#project-')&&['dry-ice','coastline','behind'].includes(hash.slice(9)))chapter=hash.slice(9);
+ if(hash.startsWith('#project-')&&['life-progress','pizza-slice','behind'].includes(hash.slice(9)))chapter=hash.slice(9);
  if(chapters.includes(chapter))target.searchParams.set('chapter',chapter);
- if(hash==='#works'||['dry-ice','coastline','behind'].some(id=>hash==='#work-'+id))target.hash=hash;
+ if(hash==='#works'||['life-progress','pizza-slice','behind'].some(id=>hash==='#work-'+id))target.hash=hash;
  location.replace(target.href);
 })();
 </script>
 <style>body{margin:0;padding:12vh 8vw;background:#f0f6fb;color:#264d6a;font:18px/1.8 system-ui,sans-serif}a{color:inherit}</style>
-</head><body><p>正在打开刘俊威的创作桌面…</p><a href="preview-jordan/?v=fast-contact2">进入创作桌面 ↗</a><noscript><p><a href="overview.html">打开阅读版总览 ↗</a></p></noscript></body></html>
+</head><body><p>正在打开刘俊威的创作桌面…</p><a href="preview-jordan/?v=selection-20261105">进入创作桌面 ↗</a><noscript><p><a href="overview.html">打开阅读版总览 ↗</a></p></noscript></body></html>

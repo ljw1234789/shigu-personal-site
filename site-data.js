@@ -17,9 +17,51 @@ window.PERSONAL_SITE = (() => {
   const icon = (key) => `<svg viewBox="0 0 90 90" aria-hidden="true">${icons[key] || icons.folder}</svg>`;
   const toolIcon = tool => tool.id === 'batch' ? 'folder' : tool.id;
   const projects = [
-    {id:'behind',name:'一条视频的诞生',title:'首次公开！揭秘毕导视频制作全过程',date:'2025.09.13',type:'幕后制作',image:'behind-scenes',video:'7549017187839741224',likes:'7.3 万',comments:'793',saves:'5,035',shares:'1,075',question:'怎样让幕后故事，也值得被看见？',copy:'把一条科普视频从灵感到成片的过程，变成观众能跟着走的故事。'},
-    {id:'coastline',name:'丈量一条海岸线',title:'这条线看得清摸得着，但你永远测不出它的长度',date:'2026.02.11',type:'分形与自然',image:'coastline',video:'7605293710498254126',likes:'20.0 万',comments:'3,143',saves:'2.5 万',shares:'2.3 万',question:'看得见的海岸线，为什么量不完？',copy:'用真实海岸线与测量尺度的变化，把抽象的分形问题放进具体情境。'},
-    {id:'dry-ice',name:'重新认识干冰白雾',title:'这个现象你肯定见过，但初中教材上的解释几乎都是错的',date:'2026.03.27',type:'物理科普',image:'dry-ice',video:'7621787772751285519',likes:'51.4 万',comments:'1.0 万',saves:'9.6 万',shares:'8.7 万',question:'熟悉的现象，解释一定对吗？',copy:'从干冰周围的白雾出发，把容易混淆的现象与概念拆开讲。'}
-  ];
+  {
+    "id": "life-progress",
+    "name": "人生进度条",
+    "title": "这个定律，预言了你的人生进度条",
+    "date": "2025.05.10",
+    "type": "感知与数学",
+    "image": "life-progress",
+    "video": "7502844302737870119",
+    "likes": "114.6 万",
+    "comments": "2.9 万",
+    "saves": "21.2 万",
+    "shares": "34.5 万",
+    "question": "为什么时间越过越快？",
+    "copy": "从时间感受切入，用生活经验与图形表达解释对数感知。"
+  },
+  {
+    "id": "pizza-slice",
+    "name": "披萨里的几何",
+    "title": "你有一种绝妙的方法吃披萨，但你并不知道为什么",
+    "date": "2025.07.26",
+    "type": "生活与几何",
+    "image": "pizza-slice",
+    "video": "7531098913223216426",
+    "likes": "54.2 万",
+    "comments": "9,611",
+    "saves": "6.5 万",
+    "shares": "9.6 万",
+    "question": "折一下披萨，为什么更挺？",
+    "copy": "从拿起披萨的日常动作出发，用纸张和曲面演示引出几何原理。"
+  },
+  {
+    "id": "behind",
+    "name": "一条视频的诞生",
+    "title": "首次公开！揭秘毕导视频制作全过程",
+    "date": "2025.09.13",
+    "type": "幕后制作",
+    "image": "behind-scenes",
+    "video": "7549017187839741224",
+    "likes": "7.3 万",
+    "comments": "793",
+    "saves": "5,042",
+    "shares": "1,075",
+    "question": "怎样让幕后故事，也值得被看见？",
+    "copy": "把一条科普视频从灵感到成片的过程，变成观众能跟着走的故事。"
+  }
+];
   return { projects, icon, toolIcon };
 })();

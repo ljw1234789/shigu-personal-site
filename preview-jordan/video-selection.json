@@ -1,0 +1,97 @@
+{
+  "verifiedOn": "2026.11.05",
+  "dateTimezone": "Asia/Shanghai",
+  "requestedWindows": {
+    "bidao": [
+      "2025.04.01",
+      "2025.09.30"
+    ],
+    "yingjun": [
+      "2025.10.01",
+      "2026.09.30"
+    ]
+  },
+  "items": [
+    {
+      "group": "bidao",
+      "id": "life-progress",
+      "title": "【毕导】这个定律，预言了你的人生进度条",
+      "sourceId": "7502844302737870119",
+      "bvid": "BV1VrVSz1Eme",
+      "published": "2025.05.10",
+      "douyinPublished": "2025.05.11",
+      "author": "毕导",
+      "duration": 739,
+      "original": "https://www.bilibili.com/video/BV1VrVSz1Eme/",
+      "alternate": "https://www.douyin.com/video/7502844302737870119",
+      "media": "media/life-progress.mp4",
+      "verifiedOn": "2026.11.05"
+    },
+    {
+      "group": "bidao",
+      "id": "pizza-slice",
+      "title": "【毕导】你有一种绝妙的方法吃披萨，但你并不知道为什么",
+      "sourceId": "7531098913223216426",
+      "bvid": "BV16Hbdz2Eqq",
+      "published": "2025.07.26",
+      "douyinPublished": "2025.07.26",
+      "author": "毕导",
+      "duration": 735,
+      "original": "https://www.bilibili.com/video/BV16Hbdz2Eqq/",
+      "alternate": "https://www.douyin.com/video/7531098913223216426",
+      "media": "media/pizza-slice.mp4",
+      "verifiedOn": "2026.11.05"
+    },
+    {
+      "group": "bidao",
+      "id": "behind",
+      "title": "首次公开！揭秘毕导视频制作全过程",
+      "sourceId": "7549017187839741224",
+      "bvid": "BV1GdHrzkENs",
+      "published": "2025.09.13",
+      "douyinPublished": "2025.09.13",
+      "author": "毕的二阶导",
+      "duration": 223,
+      "original": "https://www.bilibili.com/video/BV1GdHrzkENs/",
+      "alternate": "https://www.douyin.com/video/7549017187839741224",
+      "media": "media/behind.mp4",
+      "verifiedOn": "2026.11.05"
+    },
+    {
+      "group": "yingjun",
+      "id": "yingjun-vivo",
+      "title": "你有一份来自vivo的冬日告白礼物，请注意查收！#硬核玩家计划#抖音知识年终大赏",
+      "sourceId": "7581421291396304180",
+      "published": "2025.12.08",
+      "author": "英俊姐妹日记",
+      "duration": 135.28,
+      "original": "https://www.douyin.com/video/7581421291396304180",
+      "media": "media/stream/yingjun-vivo.mp4",
+      "verifiedOn": "2026.11.05"
+    },
+    {
+      "group": "yingjun",
+      "id": "yingjun-reno",
+      "title": "好看又好用？OPPO Reno16系列上手体验！#opporeno16怦然星动#opporeno16实况神机",
+      "sourceId": "7641438653251685674",
+      "published": "2026.05.19",
+      "author": "英俊姐妹日记",
+      "duration": 109.967,
+      "original": "https://www.douyin.com/video/7641438653251685674",
+      "media": "media/stream/yingjun-reno.mp4",
+      "verifiedOn": "2026.11.05"
+    },
+    {
+      "group": "yingjun",
+      "id": "yingjun-huawei",
+      "title": "一支笔，改变了新款华为MateBook Fold 非凡大师#点睛之笔大有妙用#超大折敞开用#鸿蒙电脑#用鸿蒙的亿点理由#华为MateBook",
+      "sourceId": "7670528824794254655",
+      "published": "2026.08.06",
+      "author": "英俊姐妹日记",
+      "duration": 210.534,
+      "original": "https://www.douyin.com/video/7670528824794254655",
+      "media": "media/stream/yingjun-huawei.mp4",
+      "verifiedOn": "2026.11.05"
+    }
+  ]
+}
