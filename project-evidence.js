@@ -1,65 +1,62 @@
-/* Public source snapshot, 2026.11.05. Team results remain separate from individual responsibilities. */
+/* Public metrics and film analysis. General user-confirmed responsibilities do not establish individual credits for this selection. */
 window.PROJECT_EVIDENCE = {
   "checkedAt": "2026.11.05",
   "role": "在毕导团队参与 AI 辅助选题、脚本撰写、视频剪辑，以及发布后的反馈整理与复盘。",
   "totals": {
-    "bilibiliViews": "约 2516.7 万",
-    "douyinLikes": "约 176.1 万"
+    "bilibiliViews": "约 3647.3 万",
+    "douyinLikes": "约 228.8 万"
   },
   "projects": {
-    "life-progress": {
-      "focus": "感知与数学",
-      "chapters": [],
-      "interview": [
-        "你在选题、脚本和剪辑中分别承担了哪些工作？",
-        "哪些成片段落可以对应你的职责？"
-      ],
-      "duration": "12:19",
-      "douyin": {
-        "url": "https://www.douyin.com/video/7502844302737870119",
-        "author": "毕导",
-        "published": "2025.05.11",
-        "likes": "114.6 万",
-        "comments": "2.9 万",
-        "saves": "21.2 万",
-        "shares": "34.5 万"
-      },
-      "bilibili": {
-        "url": "https://www.bilibili.com/video/BV1VrVSz1Eme/",
-        "author": "毕导",
-        "published": "2025.05.10",
-        "views": "1076.7 万",
-        "danmaku": "3.5 万",
-        "likes": "78.9 万",
-        "coins": "43.1 万",
-        "saves": "35.7 万",
-        "shares": "13.5 万",
-        "recognition": "全站排行榜最高第 1 名"
-      },
-      "context": "从时间越过越快的生活感受出发，串联对数感知、人生时间轴与本福特定律。",
+    "earth-flat": {
+      "duration": "11:40",
+      "focus": "证据比较与科学论证",
+      "context": "以地平说争论切入，比较论证、模型与观察证据，讨论怎样回应看似有理的错误论证。",
       "breakdown": [
         {
-          "title": "从生活感受进入问题",
-          "text": "用“为什么时间越过越快”的共同体验建立观看动机，再展开感知与数学的关系。"
+          "title": "用争论建立观看动机",
+          "text": "标题把熟悉的科学常识放进网络争论，用反问建立观看动机。"
         },
         {
-          "title": "让抽象比例能被看见",
-          "text": "抽样的 03:50 画面把人生时间展开为图形刻度，用视觉尺度承接关于时间感受的讲述。"
+          "title": "让解释有可见对象",
+          "text": "03:00 的抽样画面用月球图示配合光照解释，让叙述对应到具体观察对象。"
         },
         {
-          "title": "生活演示与图表交替",
-          "text": "成片抽样包含钢琴、商品与数字分布图，把数学概念连接到具体观看对象。"
+          "title": "回到证据与解释",
+          "text": "这个选题适合观察：一条解释如何回应疑问，画面能否支持它的论证。"
         }
       ],
       "still": {
-        "src": "assets/projects/evidence/life-progress-timeline.jpg",
-        "time": "03:50",
-        "caption": "公开成片中的人生时间轴图形。"
+        "src": "assets/projects/evidence/earth-flat-demonstration.jpg",
+        "time": "03:00",
+        "caption": "公开成片中的月球与光照解释画面。"
       },
+      "chapters": [],
       "feedback": [
-        "复盘时重点关注：观众是否区分对数感知的解释模型与个人的真实生活体验。"
+        "复盘关注：观众能否区分视频中的反问、被讨论的错误说法与最终论证。"
       ],
-      "reflection": "可围绕生活问题的切入、图形与旁白的对应，以及抽象解释的边界展开案例讨论。"
+      "reflection": "适合拆解争议切口、证据排序和可视化解释；公开视频的传播表现不代表个人贡献。",
+      "interview": [],
+      "douyin": {
+        "url": "https://www.douyin.com/video/7553744577295846665",
+        "author": "毕导",
+        "published": "2025.09.25",
+        "likes": "60.0 万",
+        "comments": "2.9 万",
+        "saves": "7.3 万",
+        "shares": "6.4 万"
+      },
+      "bilibili": {
+        "url": "https://www.bilibili.com/video/BV1iCpozfE8w/",
+        "author": "毕导",
+        "published": "2025.09.22",
+        "views": "1290.1 万",
+        "danmaku": "1.9 万",
+        "likes": "37.3 万",
+        "coins": "5.7 万",
+        "saves": "13.0 万",
+        "shares": "9,501",
+        "recognition": "全站排行榜最高第 5 名"
+      }
     },
     "pizza-slice": {
       "focus": "生活与几何",
@@ -115,61 +112,59 @@ window.PROJECT_EVIDENCE = {
       ],
       "reflection": "可围绕生活动作、实体演示和几何解释之间的衔接展开案例讨论；联合创作信息以原片署名为准。"
     },
-    "behind": {
-      "duration": "03:43",
-      "focus": "幕后叙事与 AI 创作流程",
+    "life-progress": {
+      "focus": "感知与数学",
+      "chapters": [],
+      "interview": [
+        "你在选题、脚本和剪辑中分别承担了哪些工作？",
+        "哪些成片段落可以对应你的职责？"
+      ],
+      "duration": "12:19",
       "douyin": {
-        "url": "https://www.douyin.com/video/7549017187839741224",
+        "url": "https://www.douyin.com/video/7502844302737870119",
         "author": "毕导",
-        "published": "2025.09.13",
-        "likes": "7.3 万",
-        "comments": "793",
-        "saves": "5,042",
-        "shares": "1,075"
+        "published": "2025.05.11",
+        "likes": "114.6 万",
+        "comments": "2.9 万",
+        "saves": "21.2 万",
+        "shares": "34.5 万"
       },
       "bilibili": {
-        "url": "https://www.bilibili.com/video/BV1GdHrzkENs/",
-        "author": "毕的二阶导",
-        "published": "2025.09.13",
-        "views": "159.6 万",
-        "danmaku": "851",
-        "likes": "9.0 万",
-        "coins": "7,011",
-        "saves": "2.0 万",
-        "shares": "419",
-        "recognition": ""
+        "url": "https://www.bilibili.com/video/BV1VrVSz1Eme/",
+        "author": "毕导",
+        "published": "2025.05.10",
+        "views": "1076.7 万",
+        "danmaku": "3.5 万",
+        "likes": "78.9 万",
+        "coins": "43.1 万",
+        "saves": "35.7 万",
+        "shares": "13.5 万",
+        "recognition": "全站排行榜最高第 1 名"
       },
-      "context": "从观众熟悉的科普成片切入，展示内容生产的幕后环节。B 站简介注明豆包电脑版对本期视频提供支持。",
+      "context": "从时间越过越快的生活感受出发，串联对数感知、人生时间轴与本福特定律。",
       "breakdown": [
         {
-          "title": "把幕后流程变成内容",
-          "text": "题目直接承诺展示制作全过程，让观众从“看结果”转向理解一条视频如何产生。03:43 的短时长适合集中呈现流程与关键工具。"
+          "title": "从生活感受进入问题",
+          "text": "用“为什么时间越过越快”的共同体验建立观看动机，再展开感知与数学的关系。"
         },
         {
-          "title": "AI 出现在具体使用场景里",
-          "text": "抽样画面中，约 01:32 提到选题时询问 AI；02:47 展示豆包对屏幕选区的理解与讨论。AI 的作用通过实际界面呈现。"
+          "title": "让抽象比例能被看见",
+          "text": "抽样的 03:50 画面把人生时间展开为图形刻度，用视觉尺度承接关于时间感受的讲述。"
         },
         {
-          "title": "用案例连接抽象流程",
-          "text": "00:45 的抽样画面出现烧水与声音测量的具体问题。具体问题、实验画面和工具界面，使幕后介绍有可见的内容对象。"
+          "title": "生活演示与图表交替",
+          "text": "成片抽样包含钢琴、商品与数字分布图，把数学概念连接到具体观看对象。"
         }
       ],
       "still": {
-        "src": "assets/projects/evidence/behind-ai.jpg",
-        "time": "02:47",
-        "caption": "公开成片中的豆包屏幕选区讨论界面。"
+        "src": "assets/projects/evidence/life-progress-timeline.jpg",
+        "time": "03:50",
+        "caption": "公开成片中的人生时间轴图形。"
       },
-      "chapters": [],
       "feedback": [
-        "本次首屏可见评论包含对具体细节的讨论，也有对往期视频的回忆。这个样本更能提示观众的内容记忆点，不能据此推断完整受众偏好。"
+        "复盘时重点关注：观众是否区分对数感知的解释模型与个人的真实生活体验。"
       ],
-      "reflection": "这个案例适合展开讲 AI 如何辅助内容生产，以及人如何筛选、判断和组织最终表达。品牌支持信息可作为项目背景，不能据此推断个人负责了商务合作。",
-      "interview": [
-        "你亲自提出或筛选过哪个选题？为什么保留它？",
-        "哪一段脚本经过了你的修改，修改前后有什么不同？",
-        "AI 给出的内容，你否定过哪些？最后怎样核查？",
-        "你负责的剪辑范围是什么，能对应到哪些成片时码？"
-      ]
+      "reflection": "可围绕生活问题的切入、图形与旁白的对应，以及抽象解释的边界展开案例讨论。"
     }
   }
 };

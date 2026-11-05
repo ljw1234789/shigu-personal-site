@@ -11,9 +11,9 @@ const research = window.PORTFOLIO_RESEARCH;
 const studyVideos = window.DESK_STUDY_VIDEOS || [];
 const profile = window.PORTFOLIO_PROFILE;
 const tools = window.CREATIVE_TOOLS.filter(t => ['science','motion'].includes(t.id));
-const order = ['life-progress','pizza-slice','behind'];
-const images = {'life-progress':'life-progress-hd.jpg','pizza-slice':'pizza-slice-hd.jpg',behind:'behind-hd.jpg'};
-const videoTimes = {'life-progress':'12:19','pizza-slice':'12:15',behind:'03:43'};
+const order = ['earth-flat','pizza-slice','life-progress'];
+const images = {'earth-flat':'earth-flat-hd.jpg','pizza-slice':'pizza-slice-hd.jpg','life-progress':'life-progress-hd.jpg'};
+const videoTimes = {'earth-flat':'11:40','pizza-slice':'12:15','life-progress':'12:19'};
 const ASSETS = '../assets/projects/';
 const MAX_TRAVEL = 88;
 const IDENTITY_Z = 81.8;
@@ -56,7 +56,7 @@ const qFloorToFace = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1
 const qRig = new THREE.Quaternion(),qFace = new THREE.Quaternion(),qDrag = new THREE.Quaternion();
 const vForward=new THREE.Vector3(),vTarget=new THREE.Vector3(),vCenter=new THREE.Vector3();
 const vFit=new THREE.Vector3(),qFit=new THREE.Quaternion();
-const sectionStops=[[0,'视频作品与内容研究'],[.8,'英俊姐妹日记 · 原片研究'],[14.8,'人生进度条'],[27,'披萨里的几何'],[41,'一条视频的诞生'],[55,'创作工具'],[69,'创作资料袋'],[79,'关于我 · 联系']];
+const sectionStops=[[0,'视频作品与内容研究'],[.8,'英俊姐妹日记 · 原片研究'],[14.8,'地球是平的？'],[27,'披萨里的几何'],[41,'人生进度条'],[55,'创作工具'],[69,'创作资料袋'],[79,'关于我 · 联系']];
 let scene,camera,renderer,light,ivory,black,grey,white,blue;
 let ready=false,entered=false,enterAt=0,paused=reduced.matches,fallback=false;
 const startsInQuick=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
@@ -126,11 +126,11 @@ function setInspection(){
   let name=d.title||'',html='',description='';
   if(a.kind==='case'){
     const p=projects.find(p=>p.id===a.id),n=narrative[a.id];name=p.name;
-    html='<p class="case-role-strip">我的参与：AI 辅助选题 · 脚本 · 剪辑 · 发布复盘</p>'+(d.panel?'<button data-inspect="play">'+(playing?'关闭播放器 □':'播放成片 ▷')+'</button>':'')+
-      (d.back?'<button data-inspect="flip">'+(flipTo?'回到封面 ↻':'我的贡献 ↻')+'</button>':'')+
-      '<button data-quick="'+a.id+'">清晰看职责 ↗</button>'+
+    html='<p class="case-role-strip">作品看点：'+esc(evidence[a.id].focus)+'</p>'+(d.panel?'<button data-inspect="play">'+(playing?'关闭播放器 □':'播放成片 ▷')+'</button>':'')+
+      (d.back?'<button data-inspect="flip">'+(flipTo?'回到封面 ↻':'内容拆解 ↻')+'</button>':'')+
+      '<button data-quick="'+a.id+'">清晰看案例 ↗</button>'+
       '<a href="'+evidence[a.id].bilibili.url+'" target="_blank" rel="noopener">B 站原片 ↗</a>';
-    description=p.name+'。我的参与：'+n.deliverables.map(([title,text])=>title+'：'+text).join('');
+    description=p.name+'。内容拆解：'+n.deliverables.map(([title,text])=>title+'：'+text).join('');
   }else if(a.kind==='study-video'){
     const p=studyVideos.find(item=>item.id===a.id);name='英俊姐妹日记 · '+p.published+' / '+p.name;
     description=p.type+'。收录公开原片，用于内容研究。';
@@ -382,7 +382,7 @@ function contact(g,w,h,opacity=.17){
 function caseBack(id){
   const p=projects.find(p=>p.id===id),n=narrative[id];
   return texture(1200,1680,(c,W,H)=>{
-    c.fillStyle='#f7f9fc';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='42px Arial';c.fillText('刘俊威 / 我负责的部分',88,112);
+    c.fillStyle='#f7f9fc';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='42px Arial';c.fillText('毕导 / 作品看点与拆解',88,112);
     c.fillStyle='#264d6a';c.font='500 80px DeskSerif,serif';wrap(c,p.name,84,255,W-168,104,2);
     let y=415;
     n.deliverables.forEach(([title,text],i)=>{
@@ -410,9 +410,9 @@ function polaroid(img,id,x,z,angle,caption,primary=true){
   const t=texture(1200,1680,(c,W,H)=>{
     c.fillStyle='#f7f7f3';c.fillRect(0,0,W,H);
     cover(c,img,60,60,1080,1210);
-    if(primary){c.fillStyle='#52718c';c.font='38px DeskSerif,serif';c.textAlign='left';c.fillText('毕导团队 · '+p.date,60,1370);}
+    if(primary){c.fillStyle='#52718c';c.font='38px DeskSerif,serif';c.textAlign='left';c.fillText('毕导 · '+p.date,60,1370);}
     c.fillStyle='#15161c';c.font='500 64px DeskSerif,serif';c.textAlign='center';c.fillText(caption||p.name,W/2,1487,1080);
-    if(primary){c.fillStyle='#52718c';c.font='36px DeskSerif,serif';c.fillText('选题 · 脚本 · 剪辑 · 发布复盘',W/2,1580,1080);}
+    if(primary){c.fillStyle='#52718c';c.font='36px DeskSerif,serif';c.fillText('B 站 '+evidence[id].bilibili.views+' 播放',W/2,1580,1080);}
   });
   const g=paper(t,caseBack(id),x,z,angle,{kind:'case',id},p.name);
   g.userData.primary=primary;
@@ -421,7 +421,7 @@ function polaroid(img,id,x,z,angle,caption,primary=true){
 }
 function note(id,x,z,angle){
   const p=projects.find(p=>p.id===id);
-  return paper(caseBack(id),caseBack(id),x,z,angle,{kind:'case',id},p.name+' · 我的参与',2.8,4.2);
+  return paper(caseBack(id),caseBack(id),x,z,angle,{kind:'case',id},p.name+' · 内容拆解',2.8,4.2);
 }
 function studySpread(){
   const base=texture(2440,1820,(c,W,H)=>{
@@ -436,7 +436,7 @@ function studySpread(){
   const notes=texture(1620,1050,(c,W,H)=>{
     c.fillStyle='#f5f9fd';c.fillRect(0,0,W,H);c.fillStyle='#52718c';c.font='40px DeskSerif,serif';c.fillText('英俊姐妹日记 / 内容观察',100,120);
     c.fillStyle='#264d6a';c.font='500 76px DeskSerif,serif';c.fillText('把功能，讲成会用的内容。',100,275,1420);
-    ['开箱体验 / 外观 → 细节 → 感受','产品体验 / 外观 → 功能 → 使用','办公场景 / 任务 → 操作 → 结果'].forEach((line,i)=>{
+    ['新品体验 / 问题 → 测试 → 感受','操作教程 / 入口 → 动作 → 结果','办公场景 / 任务 → 操作 → 结果'].forEach((line,i)=>{
       c.strokeStyle='#c0d1df';c.lineWidth=2;c.beginPath();c.moveTo(100,390+i*177);c.lineTo(1520,390+i*177);c.stroke();
       c.fillStyle='#345a75';c.font='48px DeskSerif,serif';c.fillText(line,100,490+i*177,1420);
     });
@@ -449,7 +449,7 @@ function studyVideoCard(img,item,index){
     c.fillStyle='#f5f8fc';c.fillRect(0,0,W,H);cover(c,img,60,60,900,1600);
     c.fillStyle='#52718c';c.font='38px DeskSerif,serif';c.fillText('英俊姐妹日记 · '+item.published,60,1738);
     c.fillStyle='#264d6a';c.font='500 54px DeskSerif,serif';c.fillText(item.name,60,1820,900);
-    c.fillStyle='#52718c';c.font='32px Arial';c.fillText(item.type+' / '+Math.floor(item.duration/60)+':'+String(Math.floor(item.duration%60)).padStart(2,'0'),60,1884);
+    c.fillStyle='#52718c';c.font='32px Arial';c.fillText('抖音 '+item.likesLabel+' 赞 / '+Math.floor(item.duration/60)+':'+String(Math.floor(item.duration%60)).padStart(2,'0'),60,1884);
   });
   const g=paper(t,null,item.x,item.z,[-.075,.035,.08][index],{kind:'study-video',id:item.id},item.name+' · 原片研究',3.4,6.45);
   g.userData.rest.y=.018+index*.012;
@@ -524,11 +524,11 @@ function laptop(img,x,z,id,angle=-.1){
   contact(g,6.3,4.6,.2);return g;
 }
 function clapper(x,z){
-  const g=object(x,z,-.2,{kind:'case',id:'behind'},'一条视频的诞生','clapper');
+  const g=object(x,z,-.2,{kind:'case',id:'life-progress'},'人生进度条','clapper');
   g.userData.width=3.8;g.userData.height=2.8;
   slab(g,3.8,2.5,.15,black);
   const t=texture(1200,800,(c,W,H)=>{
-    c.fillStyle='#13141a';c.fillRect(0,0,W,H);c.fillStyle='#efeff4';c.font='500 87px DeskSerif,serif';c.fillText('一条视频的诞生',90,350,1040);
+    c.fillStyle='#13141a';c.fillRect(0,0,W,H);c.fillStyle='#efeff4';c.font='500 87px DeskSerif,serif';c.fillText('人生进度条',90,350,1040);
     c.strokeStyle='#737984';c.lineWidth=2;c.strokeRect(70,80,W-140,H-150);
     c.font='30px Arial';c.fillText('AI / SCRIPT / EDIT',90,650);
   });surface(g,3.76,2.46,.16,t);
@@ -573,7 +573,7 @@ function notebook(x,z){
   const card=paper(t,null,x,z,-.04,{kind:'about'},'刘俊威 · 联系方式',5.8,3.8);setFolderFog(card,false);return card;
 }
 const FOLDER_DOCS=[
-  {title:'案例依据',lead:'让成片、职责与来源能被核对。',lines:['三条已参与的团队作品','成片截图与时间定位','公开数据、反馈与来源'],links:[{label:'快速看三条作品',url:'#works',quick:true},{label:'完整成片依据',url:'../research/#participation'}]},
+  {title:'案例依据',lead:'让成片、拆解与来源能被核对。',lines:['三条精选公开视频','成片截图与时间定位','公开数据、反馈与来源'],links:[{label:'快速看三条视频',url:'#works',quick:true},{label:'完整成片依据',url:'../research/#participation'}]},
   {title:'内容研究',lead:'把公开内容的观察，变成创作判断。',lines:['毕导 / IP 与科普内容','英俊姐妹日记 / 74 条原片研究','原片播放、结构分析与画面依据'],links:[{label:'毕导完整报告',url:'../research/bidao/report/'},{label:'英俊原片与研究',url:'../research/yingjun/study/'}]},
   {title:'选片计划',lead:'两个账号各选五条，准备下一次实剪。',lines:['原片截图与选片理由','观看任务与重组顺序','重剪方案 / 尚未实剪'],links:[{label:'十条选片与画面',url:'../research/#picks'},{label:'完整重剪计划',url:'../research/view.html?id=8d95aa271543c773'}]}
 ];
@@ -873,22 +873,22 @@ async function init(){
     await Promise.race([document.fonts.load('500 30px DeskSerif').catch(()=>[]),new Promise(resolve=>setTimeout(resolve,1800))]);
     const asset=(src,label)=>loadImage(src).catch(()=>placeholderImage(label));
     const [dry,coast,behind,science,dryDetail,coastDetail,behindDetail]=await Promise.all([
-      asset(ASSETS+images['life-progress'],'人生进度条'),asset(ASSETS+images['pizza-slice'],'披萨里的几何'),asset(ASSETS+images.behind,'一条视频的诞生'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
-      asset('life-progress-timeline-clean.png','时间的刻度'),asset('pizza-slice-models-clean.png','弯曲里的几何'),asset('behind-ai-clean.png','从选题到成片')
+      asset(ASSETS+images['earth-flat'],'地球是平的？'),asset(ASSETS+images['pizza-slice'],'披萨里的几何'),asset(ASSETS+images['life-progress'],'人生进度条'),asset(ASSETS+'science-workbench.jpg','科普工作台'),
+      asset('earth-flat-evidence-clean.png','月球与光照'),asset('pizza-slice-models-clean.png','弯曲里的几何'),asset('life-progress-timeline-clean.png','时间的刻度')
     ]);
     studySpread();
-    polaroid(dry,'life-progress',-3.3,16.95,-.2);
-    keyboard('TIME/LIFE',3.3,17.7,.1,{kind:'case',id:'life-progress'});
-    note('life-progress',-5.7,22.8,-.1);polaroid(dryDetail,'life-progress',-.5,23.4,.1,'时间的刻度',false);
-    phone(dry,4.8,23.1,'life-progress',-.23);
+    polaroid(dry,'earth-flat',-3.3,16.95,-.2);
+    keyboard('EARTH/PROOF',3.3,17.7,.1,{kind:'case',id:'earth-flat'});
+    note('earth-flat',-5.7,22.8,-.1);polaroid(dryDetail,'earth-flat',-.5,23.4,.1,'月球与光照',false);
+    phone(dry,4.8,23.1,'earth-flat',-.23);
     keyboard('PIZZA/MATH',-3.5,30.0,-.15,{kind:'case',id:'pizza-slice'});
     polaroid(coast,'pizza-slice',3.3,30.2,.2);
     note('pizza-slice',-5.2,36.4,.1);polaroid(coastDetail,'pizza-slice',.3,36.5,-.12,'弯曲里的几何',false);
     tablet(coast,4.8,36.5,'pizza-slice',.18);
-    polaroid(behind,'behind',-3.3,44.0,-.15);
-    keyboard('BEHIND/SCENES',3.3,44.3,.12,{kind:'case',id:'behind'});
-    note('behind',-5.3,50.2,-.12);polaroid(behindDetail,'behind',.2,50.3,.17,'从选题到成片',false);
-    laptop(behind,4.8,50.4,'behind',-.18);clapper(.8,54.9);
+    polaroid(behind,'life-progress',-3.3,44.0,-.15);
+    keyboard('TIME/LIFE',3.3,44.3,.12,{kind:'case',id:'life-progress'});
+    note('life-progress',-5.3,50.2,-.12);polaroid(behindDetail,'life-progress',.2,50.3,.17,'时间的刻度',false);
+    laptop(behind,4.8,50.4,'life-progress',-.18);clapper(.8,54.9);
     keyboard('CREATIVE/TOOLS',-3.3,59.0,-.16,{kind:'tool',id:'science'});monitor(science,4.1,59.3);
     motionCard(-2.6,65.6);
     const scienceInfo=tools.find(t=>t.id==='science');
@@ -903,7 +903,7 @@ async function init(){
     const warm=()=>{if(scrollGoal<15)studyVideos.forEach(item=>primeMedia(item.id));};
     if('requestIdleCallback' in window)requestIdleCallback(warm,{timeout:2500});else setTimeout(warm,800);
     const chapter=new URLSearchParams(location.search).get('chapter');
-    const chapterPositions={projects:.8,'life-progress':16.5,'pizza-slice':30,behind:44,tools:59,research:74,practice:74,yingjun:.8,...Object.fromEntries(studyVideos.map(item=>[item.id,mobile?item.mobileZ:item.z])),about:84};
+    const chapterPositions={projects:.8,'earth-flat':16.5,'pizza-slice':30,'life-progress':44,tools:59,research:74,practice:74,yingjun:.8,...Object.fromEntries(studyVideos.map(item=>[item.id,mobile?item.mobileZ:item.z])),about:84};
     const quickRouteNow=location.hash==='#works'||order.some(id=>location.hash==='#work-'+id);
     if(!quickRouteNow&&!window.PORTFOLIO_QUICK?.active){
       if(Object.hasOwn(chapterPositions,chapter)){enterRequested=true;enterDesk();jump(chapterPositions[chapter]);}

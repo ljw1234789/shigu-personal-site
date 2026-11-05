@@ -17,9 +17,9 @@ window.PORTFOLIO_RESEARCH = {
       links: [
         { label: '完整 IP 报告', url: 'research/bidao/report/' },
         { label: '10 条历史样本', url: 'research/view.html?id=798439875aa8317a' },
-        { label: '我的参与作品', url: 'research/#participation' }
+        { label: '精选公开视频', url: 'research/#participation' }
       ],
-      boundary: '账号内容研究；个人参与的三条团队作品另列。'
+      boundary: '账号内容研究；本次精选公开视频另列；个人一般职责在介绍中说明。'
     },
     {
       id: 'yingjun', name: '英俊姐妹日记', label: '数码内容与拍剪研究', focalY: .25,
