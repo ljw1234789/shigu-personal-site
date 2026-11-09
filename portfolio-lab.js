@@ -8,8 +8,31 @@ function selectFilm(id,changeHash=false){const tab=$(`[data-film="${id}"]`);if(!
 $$('[data-film]').forEach(b=>b.addEventListener('click',()=>selectFilm(b.dataset.film,true)));
 $$('[data-play]').forEach(b=>b.addEventListener('click',()=>{const p=b.closest('.film-panel'),v=$('video',p),status=$('.film-status',p);pauseOthers(v);v.hidden=false;b.hidden=true;if(!v.getAttribute('src'))v.src=v.dataset.src;status.textContent='正在载入视频…';v.play().catch(()=>{if(!v.error)status.textContent='点击视频播放键继续观看。'});}));
 $$('video').forEach(v=>{const p=v.closest('.film-panel'),status=$('.film-status',p);let stall;v.addEventListener('play',()=>pauseOthers(v));v.addEventListener('loadedmetadata',()=>{if(v.videoWidth&&v.videoHeight)v.parentElement.style.aspectRatio=v.videoWidth+'/'+v.videoHeight;});v.addEventListener('playing',()=>{clearTimeout(stall);status.textContent='';});v.addEventListener('waiting',()=>{clearTimeout(stall);stall=setTimeout(()=>{if(!v.paused)status.textContent='正在缓冲，也可以通过上方链接打开平台原片。'},7000);});v.addEventListener('pause',()=>clearTimeout(stall));v.addEventListener('error',()=>{clearTimeout(stall);status.textContent='暂时未能载入，请重试或打开平台原片。';const button=$('[data-play]',p);button.hidden=false;$('span',button).textContent='重新播放';});});
-function setStep(id){$$('.workflow-tabs button').forEach(b=>{const yes=b.dataset.step===id;b.setAttribute('aria-selected',yes);b.tabIndex=yes?0:-1;});$$('.workflow-panel').forEach(p=>p.hidden=p.id!=='panel-'+id);}
-$$('[data-step]').forEach(b=>b.addEventListener('click',()=>setStep(b.dataset.step)));
+const workflowTabs=$$('.workflow-tabs button'),workflowPanels=$$('.workflow-panel');
+const workflowMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let workflowTimer=0,workflowVisible=false,workflowKeyboardFocus=false;
+function armWorkflow(){
+  clearTimeout(workflowTimer);
+  if(!workflowVisible||document.hidden||workflowMotion.matches||workflowKeyboardFocus)return;
+  workflowTimer=setTimeout(()=>{
+    const active=workflowTabs.findIndex(b=>b.getAttribute('aria-selected')==='true');
+    setStep(workflowTabs[(active+1)%workflowTabs.length].dataset.step);
+  },7000);
+}
+function setStep(id){
+  workflowTabs.forEach(b=>{const yes=b.dataset.step===id;b.setAttribute('aria-selected',yes);b.tabIndex=yes?0:-1;});
+  workflowPanels.forEach(p=>{const hidden=p.id!=='panel-'+id;p.hidden=hidden;p.setAttribute('aria-hidden',String(hidden));});
+  armWorkflow();
+}
+workflowTabs.forEach(b=>b.addEventListener('click',()=>setStep(b.dataset.step)));
+const workflow=$('.workflow');
+workflow.addEventListener('focusin',e=>{workflowKeyboardFocus=e.target.matches(':focus-visible');armWorkflow();});
+workflow.addEventListener('focusout',()=>requestAnimationFrame(()=>{workflowKeyboardFocus=workflow.contains(document.activeElement)&&document.activeElement.matches(':focus-visible');armWorkflow();}));
+if('IntersectionObserver'in window)new IntersectionObserver(es=>{workflowVisible=es[0].isIntersecting;armWorkflow();},{rootMargin:'-70px 0px 0px',threshold:.5}).observe($('.workflow-tabs'));
+else {workflowVisible=true;armWorkflow();}
+document.addEventListener('visibilitychange',armWorkflow);
+workflowMotion.addEventListener('change',armWorkflow);
+setStep('topic');
 $$('[role=tablist]').forEach(list=>list.addEventListener('keydown',e=>{const tabs=$$('[role=tab]',list),at=tabs.indexOf(document.activeElement);if(at<0)return;let next;if(e.key==='ArrowRight')next=(at+1)%tabs.length;else if(e.key==='ArrowLeft')next=(at-1+tabs.length)%tabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=tabs.length-1;else return;e.preventDefault();tabs[next].focus();tabs[next].click();}));
 const theme=$('.theme-toggle');function themeLabel(){theme.setAttribute('aria-label',document.documentElement.dataset.theme==='dark'?'切换浅色外观':'切换深色外观');}themeLabel();theme.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('ljw-lab-theme',next)}catch(e){}themeLabel();drawStatic();});
 const menu=$('.menu-toggle'),mobile=$('.mobile-nav');menu.addEventListener('click',()=>{mobile.hidden=!mobile.hidden;menu.setAttribute('aria-expanded',!mobile.hidden);menu.setAttribute('aria-label',mobile.hidden?'打开导航':'关闭导航');});$$('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{mobile.hidden=true;menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','打开导航');}));document.addEventListener('keydown',e=>{if(e.key==='Escape'){mobile.hidden=true;menu.setAttribute('aria-expanded','false');}});
@@ -22,6 +45,3 @@ function paint(moving,time=0,delta=1){ctx.clearRect(0,0,cw,ch);const dark=docume
 function drawStatic(){if(ctx&&cw)paint(false);}function frame(t){raf=0;if(!visible||document.hidden||reduce.matches)return;const delta=last?Math.min((t-last)/16.67,2):1;last=t;clock+=delta*16.67;paint(true,clock,delta);raf=requestAnimationFrame(frame);}function start(){if(visible&&!document.hidden&&!reduce.matches&&!raf){last=0;raf=requestAnimationFrame(frame);}}function stop(){if(raf)cancelAnimationFrame(raf);raf=0;}function scatter(x=cw*.5,y=ch*.5){if(reduce.matches){points.forEach(p=>p.tone=(p.tone+1)%5);drawStatic();return;}for(const p of points){const dx=p.x-x,dy=p.y-y,dist=Math.max(Math.hypot(dx,dy),1),f=Math.max(0,1-dist/(cw*.6))*17;p.vx+=dx/dist*f;p.vy+=dy/dist*f;}start();}
 canvas.addEventListener('pointermove',e=>{const b=canvas.getBoundingClientRect();pointer.x=e.clientX-b.left;pointer.y=e.clientY-b.top;});canvas.addEventListener('pointerleave',()=>{pointer.x=-999;pointer.y=-999;});canvas.addEventListener('click',e=>{const b=canvas.getBoundingClientRect();scatter(e.clientX-b.left,e.clientY-b.top);});$('#scatter-pixels').addEventListener('click',()=>scatter());new ResizeObserver(resize).observe(canvas);new IntersectionObserver(e=>{visible=e[0].isIntersecting;if(visible)start();else stop();}).observe(canvas);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else start();});reduce.addEventListener('change',()=>{stop();if(reduce.matches)drawStatic();else start();});
 })();
-
-// A persistent pause control complements hover and reduced-motion support.
-(()=>{const box=document.querySelector('.ai-marquee'),button=document.querySelector('.ai-marquee-toggle');if(!box||!button)return;button.addEventListener('click',()=>{const paused=box.classList.toggle('is-paused');button.setAttribute('aria-pressed',String(paused));button.setAttribute('aria-label',paused?'继续软件名称滚动':'暂停软件名称滚动');button.textContent=paused?'▷':'Ⅱ';});})();
