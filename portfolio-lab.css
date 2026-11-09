@@ -39,3 +39,8 @@
 .workflow-tabs{grid-area:1/1}
 .workflow-panel{grid-area:2/1;min-width:0}
 .workflow-panel[hidden]{display:grid!important;visibility:hidden;pointer-events:none;animation:none}
+
+/* Reserve one consistent case slot while the three representative works rotate. */
+.film-panels{display:grid;grid-template-columns:minmax(0,1fr)}
+.film-panels>.film-panel{grid-area:1/1;min-width:0}
+.film-panels>.film-panel[hidden]{display:block!important;visibility:hidden;pointer-events:none;animation:none}

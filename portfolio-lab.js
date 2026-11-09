@@ -3,35 +3,52 @@
 const $=(q,r=document)=>r.querySelector(q),$$=(q,r=document)=>[...r.querySelectorAll(q)];
 const groups=window.LJW_CASES||[];
 $('#case-studies').innerHTML=groups.map((g,gi)=>`<article class="case-study" id="${g.id}" aria-labelledby="case-${g.id}"><header class="case-header"><div><h3 id="case-${g.id}">${g.name}</h3><span class="case-field">${g.field}</span><p class="case-company">${g.company}</p></div><div class="case-employment"><b>${g.role}</b><br>${g.dates}</div></header><div class="case-intro"><div><h4>${g.headline}</h4><p>${g.context}</p></div><div class="case-role"><span>我的分工</span><p>${g.responsibility}</p></div></div><div class="case-output">${g.output.map(x=>`<div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div><div class="film-tabs" role="tablist" aria-label="${g.name}代表作">${g.films.map((f,i)=>`<button class="film-tab" role="tab" id="select-${f.id}" aria-controls="work-${f.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-film="${f.id}"><img src="${f.poster}" alt="" loading="lazy" width="64" height="58"><span><span class="film-tab-name">${f.name}</span><span class="film-tab-meta">${f.platform} ${f.views} 万播放</span></span></button>`).join('')}</div>${g.films.map((f,i)=>`<div class="film-panel" id="work-${f.id}" role="tabpanel" aria-labelledby="select-${f.id}" ${i?'hidden':''}><div class="film-layout ${f.portrait?'portrait-layout':''}"><div class="film-media"><img src="${f.poster}" alt="${f.name}视频封面" loading="lazy"><video controls playsinline preload="none" poster="${f.poster}" data-src="${f.media}" aria-label="${f.name}完整视频" hidden></video><button class="film-play" data-play="${f.id}" aria-label="播放${f.name}"><span>播放成片 · ${f.duration}</span></button></div><div class="film-copy"><p class="film-meta">${f.date} / ${g.field}</p><h4>${f.name}</h4><p class="film-angle">${f.angle}</p><div class="film-number"><strong>${f.views}</strong><span>万次播放</span><small>${f.platform} · 团队作品表现</small></div><p class="film-my-role"><b>我的参与：</b>${gi===0?'选题、脚本为主，参与剪辑。':'选题、脚本、拍摄、剪辑；配合团队制作。'}</p><a class="film-source" href="${f.source}" target="_blank" rel="noopener">${f.platform}原片 <span>↗</span></a><p class="film-status" aria-live="polite" role="status"></p></div></div><details class="film-details"><summary><span>展开案例：从问题到成片</span><b aria-hidden="true">＋</b></summary><div class="case-breakdown"><div><h5>要解决的问题</h5><p>${f.problem}</p></div><div><h5>${f.judgmentLabel||'我的判断'}</h5><p>${f.judgment}</p></div><div><h5>具体参与的工作</h5><ol>${f.actions.map(a=>`<li><b>${a[0]}：</b>${a[1]}</li>`).join('')}</ol></div><div class="metric-source">数据记录：2026.11.05。${gi===0?'抖音播放量来自已留存的星图页面。':'B 站播放量来自原片页面留存记录。'}数据为团队作品表现。<a href="${f.source}" target="_blank" rel="noopener">查看原片及平台数据 ↗</a></div></div></details></div>`).join('')}</article>`).join('');
+const rotationMotion=matchMedia('(prefers-reduced-motion: reduce)');
+const filmRotations=new Map();
+// Mouse reading, keyboard focus, playback, and expanded details all suspend rotation.
+function createAutoTabs(root,tabs,select,blocked=()=>false){
+  let timer=0,visible=false,hovering=false;
+  function restart(){
+    clearTimeout(timer);
+    if(!visible||document.hidden||rotationMotion.matches||hovering||root.querySelector(':focus-visible')||blocked())return;
+    timer=setTimeout(()=>{
+      const active=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');
+      select(tabs[(active+1)%tabs.length]);
+    },3000);
+  }
+  root.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch'){hovering=true;restart();}});
+  root.addEventListener('pointerleave',e=>{if(e.pointerType!=='touch'){hovering=false;restart();}});
+  root.addEventListener('focusin',restart);
+  root.addEventListener('focusout',()=>requestAnimationFrame(restart));
+  root.addEventListener('toggle',restart,true);
+  document.addEventListener('visibilitychange',restart);
+  rotationMotion.addEventListener('change',restart);
+  if('IntersectionObserver'in window)new IntersectionObserver(es=>{visible=es[0].isIntersecting;restart();},{rootMargin:'-70px 0px 0px',threshold:.05}).observe(root);
+  else {visible=true;restart();}
+  return {restart};
+}
 const pauseOthers=except=>$$('video').forEach(v=>{if(v!==except)v.pause()});
-function selectFilm(id,changeHash=false){const tab=$(`[data-film="${id}"]`);if(!tab)return;const group=tab.closest('.case-study');pauseOthers();$$('.film-tab',group).forEach(b=>{const active=b===tab;b.setAttribute('aria-selected',active);b.tabIndex=active?0:-1;});$$('.film-panel',group).forEach(p=>p.hidden=p.id!=='work-'+id);if(changeHash)history.replaceState(null,'','#work-'+id);}
+function selectFilm(id,changeHash=false){const tab=$(`[data-film="${id}"]`);if(!tab)return;const group=tab.closest('.case-study');$$('video',group).forEach(v=>v.pause());$$('.film-tab',group).forEach(b=>{const active=b===tab;b.setAttribute('aria-selected',active);b.tabIndex=active?0:-1;});$$('.film-panel',group).forEach(p=>{const hidden=p.id!=='work-'+id;p.hidden=hidden;p.setAttribute('aria-hidden',String(hidden));if(hidden)$$('details[open]',p).forEach(d=>d.open=false);});filmRotations.get(group)?.restart();if(changeHash)history.replaceState(null,'','#work-'+id);}
 $$('[data-film]').forEach(b=>b.addEventListener('click',()=>selectFilm(b.dataset.film,true)));
 $$('[data-play]').forEach(b=>b.addEventListener('click',()=>{const p=b.closest('.film-panel'),v=$('video',p),status=$('.film-status',p);pauseOthers(v);v.hidden=false;b.hidden=true;if(!v.getAttribute('src'))v.src=v.dataset.src;status.textContent='正在载入视频…';v.play().catch(()=>{if(!v.error)status.textContent='点击视频播放键继续观看。'});}));
 $$('video').forEach(v=>{const p=v.closest('.film-panel'),status=$('.film-status',p);let stall;v.addEventListener('play',()=>pauseOthers(v));v.addEventListener('loadedmetadata',()=>{if(v.videoWidth&&v.videoHeight)v.parentElement.style.aspectRatio=v.videoWidth+'/'+v.videoHeight;});v.addEventListener('playing',()=>{clearTimeout(stall);status.textContent='';});v.addEventListener('waiting',()=>{clearTimeout(stall);stall=setTimeout(()=>{if(!v.paused)status.textContent='正在缓冲，也可以通过上方链接打开平台原片。'},7000);});v.addEventListener('pause',()=>clearTimeout(stall));v.addEventListener('error',()=>{clearTimeout(stall);status.textContent='暂时未能载入，请重试或打开平台原片。';const button=$('[data-play]',p);button.hidden=false;$('span',button).textContent='重新播放';});});
+$$('.case-study').forEach(group=>{
+  const panels=$$('.film-panel',group),stage=document.createElement('div');
+  stage.className='film-panels';panels[0].before(stage);panels.forEach(p=>{stage.append(p);p.setAttribute('aria-hidden',String(p.hidden));});
+  const rotation=createAutoTabs(group,$$('.film-tab',group),tab=>selectFilm(tab.dataset.film),()=>
+    !!group.querySelector('details[open]')||$$('video',group).some(v=>!v.paused&&!v.ended));
+  filmRotations.set(group,rotation);
+  $$('video',group).forEach(v=>['play','playing','pause','ended','error'].forEach(event=>v.addEventListener(event,rotation.restart)));
+});
 const workflowTabs=$$('.workflow-tabs button'),workflowPanels=$$('.workflow-panel');
-const workflowMotion=matchMedia('(prefers-reduced-motion: reduce)');
-let workflowTimer=0,workflowVisible=false,workflowKeyboardFocus=false;
-function armWorkflow(){
-  clearTimeout(workflowTimer);
-  if(!workflowVisible||document.hidden||workflowMotion.matches||workflowKeyboardFocus)return;
-  workflowTimer=setTimeout(()=>{
-    const active=workflowTabs.findIndex(b=>b.getAttribute('aria-selected')==='true');
-    setStep(workflowTabs[(active+1)%workflowTabs.length].dataset.step);
-  },7000);
-}
+let workflowRotation;
 function setStep(id){
   workflowTabs.forEach(b=>{const yes=b.dataset.step===id;b.setAttribute('aria-selected',yes);b.tabIndex=yes?0:-1;});
   workflowPanels.forEach(p=>{const hidden=p.id!=='panel-'+id;p.hidden=hidden;p.setAttribute('aria-hidden',String(hidden));});
-  armWorkflow();
+  workflowRotation?.restart();
 }
 workflowTabs.forEach(b=>b.addEventListener('click',()=>setStep(b.dataset.step)));
-const workflow=$('.workflow');
-workflow.addEventListener('focusin',e=>{workflowKeyboardFocus=e.target.matches(':focus-visible');armWorkflow();});
-workflow.addEventListener('focusout',()=>requestAnimationFrame(()=>{workflowKeyboardFocus=workflow.contains(document.activeElement)&&document.activeElement.matches(':focus-visible');armWorkflow();}));
-if('IntersectionObserver'in window)new IntersectionObserver(es=>{workflowVisible=es[0].isIntersecting;armWorkflow();},{rootMargin:'-70px 0px 0px',threshold:.5}).observe($('.workflow-tabs'));
-else {workflowVisible=true;armWorkflow();}
-document.addEventListener('visibilitychange',armWorkflow);
-workflowMotion.addEventListener('change',armWorkflow);
+workflowRotation=createAutoTabs($('.workflow'),workflowTabs,tab=>setStep(tab.dataset.step));
 setStep('topic');
 $$('[role=tablist]').forEach(list=>list.addEventListener('keydown',e=>{const tabs=$$('[role=tab]',list),at=tabs.indexOf(document.activeElement);if(at<0)return;let next;if(e.key==='ArrowRight')next=(at+1)%tabs.length;else if(e.key==='ArrowLeft')next=(at-1+tabs.length)%tabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=tabs.length-1;else return;e.preventDefault();tabs[next].focus();tabs[next].click();}));
 const theme=$('.theme-toggle');function themeLabel(){theme.setAttribute('aria-label',document.documentElement.dataset.theme==='dark'?'切换浅色外观':'切换深色外观');}themeLabel();theme.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('ljw-lab-theme',next)}catch(e){}themeLabel();drawStatic();});
