@@ -44,3 +44,8 @@
 .film-panels{display:grid;grid-template-columns:minmax(0,1fr)}
 .film-panels>.film-panel{grid-area:1/1;min-width:0}
 .film-panels>.film-panel[hidden]{display:block!important;visibility:hidden;pointer-events:none;animation:none}
+
+/* Display punctuation stays lighter than the title and cannot wrap on its own. */
+h1 .title-tail,h2 .title-tail{display:inline-block;white-space:nowrap}
+h1 .title-punctuation,h2 .title-punctuation{font-size:.65em;font-weight:400;line-height:0;letter-spacing:0;vertical-align:.05em}
+#method-title .method-phrase{display:inline-block;white-space:nowrap}
