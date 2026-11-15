@@ -14,6 +14,7 @@ Push the repository to GitHub, then open **Settings → Pages** and select **Dep
 
 - 首页、作品索引与案例页共享 folio.css / folio.js。画廊和案例共用 portfolio-lab-data.js，原有的 Reno16 证据链接仍可直达关于页中的案例档案。
 - 展示片为已公开的六条团队作品的静音节选，源时间码与合成过程在 scripts/build-studio-reel.py。首页播放 12 秒短预览，点击打开完整版；减弱动态模式下不自动播放。
+- 桌面支持分行遮罩入场、滚轮缓停和悬停作品预览。六段悬停素材由 scripts/build-hover-previews.py 从已公开作品生成，只在鼠标悬停时加载；触屏、键盘和减弱动态模式保留原生滚动。
 - 工具箱及其他项目继续使用各自的地址。GitHub Pages 的发布源仍是 main 分支根目录。
 
 ## 创作工具箱

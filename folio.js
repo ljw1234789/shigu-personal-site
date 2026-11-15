@@ -27,6 +27,43 @@
     return img;
   };
 
+  // Preserve native touch, keyboard, zoom and inner scrollers. Wheel input on the
+  // desktop page receives a measured, time-based ease rather than per-event jumps.
+  let glide = 0, glideTarget = 0, glideY = 0, glideTime = 0;
+  const stopGlide = () => { if (glide) cancelAnimationFrame(glide); glide = 0; };
+  const limitY = y => Math.max(0, Math.min(document.documentElement.scrollHeight - innerHeight, y));
+  function glideFrame(time) {
+    const dt = Math.min(55, Math.max(1, time - glideTime));
+    glideTime = time;
+    const left = limitY(glideTarget) - glideY;
+    if (Math.abs(left) < .65) {
+      window.scrollTo({ top: Math.round(limitY(glideTarget)), behavior: 'instant' });
+      glide = 0;
+      return;
+    }
+    glideY += left * (1 - Math.exp(-dt / 177));
+    window.scrollTo({ top: Math.round(glideY), behavior: 'instant' });
+    glide = requestAnimationFrame(glideFrame);
+  }
+  addEventListener('wheel', e => {
+    if (!precise.matches || reduced.matches || e.defaultPrevented || e.ctrlKey || e.metaKey || e.shiftKey ||
+        !e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY) ||
+        document.querySelector('dialog[open]') || e.target.closest('textarea, select, input, [data-native-scroll]')) return;
+    if (!e.cancelable) return;
+    e.preventDefault();
+    const scale = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1;
+    if (!glide) {
+      glideY = scrollY;
+      glideTarget = glideY;
+      glideTime = performance.now();
+      glide = requestAnimationFrame(glideFrame);
+    }
+    glideTarget = limitY(glideTarget + e.deltaY * scale);
+  }, { passive:false });
+  for (const event of ['pointerdown','hashchange','popstate','resize']) addEventListener(event, stopGlide, {passive:true});
+  addEventListener('keydown', e => { if (['Home','End','PageUp','PageDown','ArrowUp','ArrowDown',' '].includes(e.key)) stopGlide(); });
+  reduced.addEventListener('change',stopGlide);
+
   const header = $('.folio-header');
   const toggle = $('.folio-toggle');
   const nav = $('.folio-nav');
@@ -59,6 +96,44 @@
     try { await navigator.clipboard.writeText(contact.dataset.wechat); text.textContent = '微信号已复制。'; }
     catch (_) { text.textContent = '可选中按钮上的微信号手动复制。'; }
   });
+  function rollPill(button) {
+    const text=button.textContent.trim();
+    const windowLabel=el('span','roll-window');
+    const tracks=el('span','roll-track');
+    const copy=el('span','',text);
+    copy.setAttribute('aria-hidden','true');
+    tracks.append(el('span','',text),copy);
+    windowLabel.append(tracks);
+    button.replaceChildren(windowLabel);
+    button.classList.add('roll-pill');
+  }
+
+  const hoverStops=new Set();
+  function cardMotion(card, cover, film) {
+    const clip=el('video','card-loop');
+    clip.muted=true;clip.loop=true;clip.playsInline=true;clip.preload='none';
+    clip.disablePictureInPicture=true;clip.tabIndex=-1;clip.setAttribute('aria-hidden','true');
+    cover.append(clip);
+    let hovering=false;
+    function start(e) {
+      if(e.pointerType!=='mouse'||!precise.matches||reduced.matches||document.hidden)return;
+      hovering=true;
+      if(!clip.getAttribute('src'))clip.src='assets/studio/hover/'+encodeURIComponent(film.id)+'.mp4';
+      clip.play().catch(()=>{});
+    }
+    function stop(){hovering=false;clip.pause();cover.classList.remove('is-previewing');}
+    clip.addEventListener('playing',()=>{if(hovering)cover.classList.add('is-previewing');else clip.pause();});
+    clip.addEventListener('error',stop);
+    card.addEventListener('pointerenter',start);
+    card.addEventListener('pointerleave',stop);
+    card.addEventListener('blur',stop);
+    hoverStops.add(stop);
+    return stop;
+  }
+  const pauseHovers=()=>hoverStops.forEach(stop=>stop());
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseHovers();});
+  reduced.addEventListener('change',pauseHovers);
+  precise.addEventListener('change',pauseHovers);
 
   const grid = $('#project-grid');
   if (grid) {
@@ -70,6 +145,7 @@
       const cover = el('div', 'project-image');
       cover.dataset.cursor = 'arrow';
       cover.append(asset(f.poster,''));
+      cardMotion(a,cover,f);
       const caption = el('p');
       caption.append(el('b', '', f.name), document.createTextNode(' – ' + (selected ? f.angle : g.name + ' · ' + g.field)));
       a.append(cover, caption);
@@ -77,6 +153,7 @@
     });
     const buttons = $$('[data-filter]');
     function filter(value, announce) {
+      pauseHovers();
       const group = buttons.some(b => b.dataset.filter === value) ? value : 'all';
       let index = 0;
       buttons.forEach(b => b.setAttribute('aria-pressed', String(group === b.dataset.filter)));
@@ -160,6 +237,60 @@
       project.append(head,cover,notes,nextLink);
     }
   }
+
+  $$('.nav-contact,.folio-pill').forEach(rollPill);
+
+  // Build visual line masks from the rendered line breaks. The intersection
+  // observer watches the unmasked parent, so filtered cards still reveal.
+  const masks=[];
+  function wrapLines(node, text, split) {
+    node.textContent=text;
+    const lines=[];
+    if (split&&node.firstChild&&node.getBoundingClientRect().width) {
+      const child=node.firstChild;
+      const range=document.createRange();
+      let y=null, at=0, line='';
+      for (const ch of text) {
+        range.setStart(child,at);
+        at+=ch.length;
+        range.setEnd(child,at);
+        const next=range.getBoundingClientRect().top;
+        if(y!==null&&line.trim()&&Math.abs(next-y)>3) {lines.push(line);line='';}
+        line+=ch;
+        y=next;
+      }
+      if(line.trim())lines.push(line);
+    } else lines.push(text);
+    const nodes=lines.map((line,i)=>{
+      const clip=el('span','rise-window');
+      const ink=el('span','rise-ink',line);
+      ink.style.setProperty('--line-i',i);
+      clip.append(ink);return clip;
+    });
+    if(nodes.length)node.replaceChildren(...nodes);
+  }
+  if(!reduced.matches) {
+    $$('.folio-home .folio-split[data-rise], .folio-home h2[data-rise], .folio-home .insights-head[data-rise]').forEach(block=>{
+      const parts=block.matches('h2')?[block]:$$('h2, :scope > p',block);
+      const plain=parts.filter(p=>!p.children.length&&p.textContent.trim());
+      if(!plain.length)return;
+      plain.forEach(node=>{
+        const text=node.textContent,split=node.tagName==='P';
+        wrapLines(node,text,split);
+        masks.push({node,text,split});
+      });
+      block.classList.add('has-line-reveal');
+    });
+  }
+  let maskWidth=innerWidth, maskTick=0;
+  addEventListener('resize',()=>{
+    if(maskWidth===innerWidth||!masks.length)return;
+    cancelAnimationFrame(maskTick);
+    maskTick=requestAnimationFrame(()=>{
+      maskWidth=innerWidth;
+      masks.forEach(({node,text,split})=>wrapLines(node,text,split));
+    });
+  },{passive:true});
 
   const reel = $('.folio-reel');
   const dialog = $('.folio-dialog');
@@ -248,25 +379,60 @@
   viewport();
 
   const pointer = el('div','folio-cursor');
+  const glyph = el('span','cursor-glyph');
+  pointer.append(glyph);
   pointer.setAttribute('aria-hidden','true');
   document.body.append(pointer);
+  let px=0,py=0,tx=0,ty=0,entry=false,cursorFrame=0,cursorTime=0,angle=0,stretch=0;
   const hidePointer = () => {
-    pointer.classList.remove('is-visible','is-action');
+    entry=false;
+    if(cursorFrame)cancelAnimationFrame(cursorFrame);
+    cursorFrame=0;
+    pointer.classList.remove('is-visible','is-action','is-link');
     document.body.classList.remove('has-folio-cursor');
   };
-  addEventListener('pointermove', e => {
-    if (!precise.matches || reduced.matches || e.pointerType !== 'mouse' || dialog?.open) return hidePointer();
-    if (!e.target.closest('main,footer')) return hidePointer();
-    const active = e.target.closest('[data-cursor]');
+  function pointerMode(target) {
+    const active = target?.closest('[data-cursor]');
     const action = active && active.dataset.cursor;
     pointer.classList.toggle('is-action',!!action);
-    pointer.textContent = action === 'play' ? '▷' : action ? '↗' : '';
-    pointer.style.setProperty('--x',e.clientX+'px');
-    pointer.style.setProperty('--y',e.clientY+'px');
+    pointer.classList.toggle('is-link',!action&&!!target?.closest('a,button,summary'));
+    glyph.textContent = action === 'play' ? '▷' : action ? '↗' : '';
+  }
+  function moveCursor(time) {
+    cursorFrame=0;
+    if(!entry)return;
+    const dt=Math.max(1,Math.min(40,time-cursorTime));
+    cursorTime=time;
+    const dx=tx-px,dy=ty-py,d=Math.hypot(dx,dy);
+    const ease=1-Math.exp(-dt/65);
+    px+=dx*ease;py+=dy*ease;
+    if(d>1)angle=Math.atan2(dy,dx)*180/Math.PI;
+    stretch+=(Math.min(.27,d*.0025)-stretch)*Math.min(1,dt/55);
+    pointer.style.setProperty('--x',px.toFixed(2)+'px');
+    pointer.style.setProperty('--y',py.toFixed(2)+'px');
+    pointer.style.setProperty('--cursor-angle',angle.toFixed(2)+'deg');
+    pointer.style.setProperty('--long',(1+stretch).toFixed(3));
+    pointer.style.setProperty('--short',(1-.62*stretch).toFixed(3));
+    if(d>.25||stretch>.002)cursorFrame=requestAnimationFrame(moveCursor);
+  }
+  function point(e) {
+    if(!precise.matches||reduced.matches||dialog?.open||e.altKey) return hidePointer();
+    if(e.clientX>document.documentElement.clientWidth||e.clientY<0)return hidePointer();
+    tx=e.clientX;ty=e.clientY;
+    if(!entry) {px=tx;py=ty;entry=true;}
+    pointerMode(e.target);
+    pointer.style.setProperty('--x',px+'px');
+    pointer.style.setProperty('--y',py+'px');
     pointer.classList.add('is-visible');
-    document.body.classList.toggle('has-folio-cursor',!!action);
-  },{passive:true});
+    document.body.classList.add('has-folio-cursor');
+    if(!cursorFrame){cursorTime=performance.now();cursorFrame=requestAnimationFrame(moveCursor);}
+  }
+  addEventListener('pointermove',e=>{if(e.pointerType==='mouse')point(e);else hidePointer();},{passive:true});
+  addEventListener('wheel',point,{passive:true});
   document.addEventListener('pointerleave',hidePointer);
   addEventListener('blur',hidePointer);
-  addEventListener('scroll',hidePointer,{passive:true});
+  addEventListener('scroll',()=>{if(entry)pointerMode(document.elementFromPoint(tx,ty));},{passive:true});
+  reduced.addEventListener('change',hidePointer);
+  precise.addEventListener('change',hidePointer);
+  reel?.addEventListener('click',hidePointer);
 })();

@@ -52,8 +52,10 @@ body.folio{margin:0;background:#fff;color:#000;font-family:var(--font);font-size
 
 .folio-lead{text-align:center;padding:clamp(122px,12.42vw,232px) 0 clamp(62px,6.02vw,115px)}
 .folio-lead h1{max-width:90%;margin-inline:auto}
-.folio-lead h1 span{display:block}
+.folio-lead h1>span{display:block}
 .folio-lead h1 .lead-mobile{display:none}
+.hero-line{overflow:clip}
+.hero-line>span{display:inline-block;vertical-align:top}
 .folio-lead p{max-width:35em;margin:clamp(19px,1.99vw,38px) auto 0;font-size:clamp(17px,1.5vw,28px);line-height:1.22;letter-spacing:.014em}
 .folio-preview{margin-bottom:clamp(64px,7.45vw,145px)}
 .folio-reel{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;overflow:hidden;border-radius:var(--round);background:#17171a url("assets/studio/reel-poster.jpg") center/cover;isolation:isolate}
@@ -123,12 +125,35 @@ body.reel-open{overflow:hidden}
 .folio-selected .project-card[data-group="yingjun"] .project-image{aspect-ratio:.742}
 .project-image img{height:100%;object-fit:cover;transition:transform .66s var(--curved)}
 .project-card:hover img,.project-card:focus-visible img{transform:scale(1.055)}
+.project-image .card-loop{
+  position:absolute;inset:0;height:100%;object-fit:cover;opacity:0;pointer-events:none;
+  transform:scale(1.025);transition:opacity .24s,transform .62s var(--curved);
+}
+.project-image.is-previewing .card-loop{opacity:1;transform:none}
 .project-card p{margin-top:clamp(14px,1.83vw,35px);font-size:clamp(15px,1.25vw,23px);line-height:1.35}
 .project-card b{font-weight:620}
 .folio-center{text-align:center;margin-top:clamp(84px,14vw,260px)}
 .folio-pill{display:inline-flex;justify-content:center;align-items:center;gap:8px;border:1px solid currentColor!important;border-radius:99px;padding:clamp(13px,1.28vw,25px) clamp(19px,1.95vw,37px);background:transparent;font-size:clamp(14px,1.28vw,24px);line-height:1.08;transition:background .25s,color .25s,border-color .25s}
 .folio-pill:hover{color:#fff;background:#000}
 .folio-inverse .folio-pill:hover,.folio-footer .folio-pill:hover,.folio-selected .folio-pill:hover{color:#000;background:#fff;border-color:#fff!important}
+.folio .roll-pill{position:relative;isolation:isolate;overflow:hidden;transform:scaleX(1);transition:transform .55s var(--curved),color .34s,border-color .34s}
+.roll-pill .roll-window{display:block;overflow:hidden;line-height:1.08}
+.roll-track{position:relative;display:block;transition:transform .63s var(--curved)}
+.roll-track>span{display:block}
+.roll-track>span+span{position:absolute;inset:100% 0 auto}
+.folio .roll-pill::before{
+  content:"";position:absolute;z-index:-1;inset:0;background:var(--ripple,#000);border-radius:50% 50% 0 0;
+  transform:translateY(103%) scale(1.15);transition:transform .58s var(--curved),border-radius .7s var(--curved);
+}
+.folio .roll-pill:is(:hover,:focus-visible){transform:scaleX(1.032)}
+.folio .roll-pill:is(:hover,:focus-visible)::before{transform:translateY(0) scale(1.03);border-radius:inherit}
+.folio .roll-pill:is(:hover,:focus-visible) .roll-track{transform:translateY(-100%)}
+.folio-nav .nav-contact.roll-pill{--ripple:#fff;border:1px solid #000;padding-block:calc(.72em - 1px)}
+.folio-nav .nav-contact.roll-pill:is(:hover,:focus-visible){background:#000;color:#000}
+.folio-nav .nav-contact.roll-pill .roll-window{color:#fff;mix-blend-mode:difference}
+.folio .folio-pill.roll-pill:hover{background:transparent}
+.folio :is(.folio-inverse,.folio-footer,.folio-selected) .folio-pill.roll-pill{--ripple:#fff}
+.folio .folio-outro .folio-pill.roll-pill:hover{background:#fff;color:#fff}
 
 .folio-fan{position:relative;margin-top:calc(-1 * clamp(24px,5vw,94px));padding:clamp(78px,9.4vw,176px) 0 clamp(40px,7vw,130px);border-radius:clamp(24px,5vw,94px) clamp(24px,5vw,94px) 0 0;background:#fff;text-align:center}
 .fan-stack{position:relative;isolation:isolate;max-width:900px;height:clamp(325px,44vw,650px);margin:clamp(40px,6.15vw,115px) auto 0;display:grid;place-items:center}
@@ -138,7 +163,7 @@ body.reel-open{overflow:hidden}
 .fan-card:nth-child(3){--card-x:75%;--card-y:-23%;--card-a:10deg;background:#eff0f6}
 .fan-card:nth-child(4){--card-x:-42%;--card-y:45%;--card-a:-15deg}
 .fan-card:nth-child(5){--card-x:44%;--card-y:43%;--card-a:15deg}
-.fan-card:is(:hover,:focus-visible){z-index:1;transform:translate(var(--card-x),calc(var(--card-y) - 9%)) rotate(0) scale(1.04);box-shadow:var(--shadow)}
+.fan-card:is(:hover,:focus-visible) b{text-decoration:underline;text-underline-offset:3px}
 .fan-card span{display:block;font-size:clamp(13px,1.14vw,20px);font-weight:560}
 .fan-card p{margin-top:12px;font-size:clamp(12px,1.08vw,20px);line-height:1.35}
 .fan-card b{display:block;margin-top:9px;font-weight:400}
@@ -227,16 +252,50 @@ body.reel-open{overflow:hidden}
 .folio-about-page .case-study,.folio-about-page .workflow{border-radius:var(--round);overflow:clip}
 .folio-about-page .section-kicker i{background:#000}
 
-.folio-cursor{position:fixed;z-index:45;left:0;top:0;pointer-events:none;translate:calc(var(--x) - 50%) calc(var(--y) - 50%);display:grid;place-items:center;width:10px;aspect-ratio:1;background:white;color:black;border-radius:50%;mix-blend-mode:difference;opacity:0;transition:width .3s var(--curved),opacity .22s;font-size:0}
+.folio-cursor{
+  --cursor-size:8px;position:fixed;z-index:45;left:0;top:0;pointer-events:none;width:0;height:0;
+  transform:translate3d(var(--x,0px),var(--y,0px),0);mix-blend-mode:exclusion;opacity:0;
+  transition:opacity .19s;
+}
 .folio-cursor.is-visible{opacity:1}
-.folio-cursor.is-action{width:62px;mix-blend-mode:normal;background:#111;color:white;font-size:21px;font-weight:400}
-.folio.has-folio-cursor [data-cursor]:hover,.folio.has-folio-cursor [data-cursor]:hover *{cursor:none}
+.folio-cursor.is-link{--cursor-size:20px}
+.folio-cursor.is-action{--cursor-size:63.5px}
+.folio-cursor::before{
+  content:"";position:absolute;width:var(--cursor-size);height:var(--cursor-size);background:#fff;border-radius:50%;
+  transform:translate(-50%,-50%) rotate(var(--cursor-angle,0deg)) scale(var(--long,1),var(--short,1));
+  transition:width .32s var(--curved),height .32s var(--curved);
+}
+.cursor-glyph{position:absolute;display:grid;place-items:center;width:22px;height:22px;translate:-50% -50%;opacity:0;color:#0b0b0b;font-size:17px;line-height:1;transition:opacity .25s}
+.folio-cursor.is-action .cursor-glyph{opacity:1}
+.folio.has-folio-cursor :is(main,footer,.folio-header),
+.folio.has-folio-cursor :is(main,footer,.folio-header) :is(a,button,summary,[data-cursor],video){cursor:none}
+.rise-window{display:block;overflow:clip}
+.rise-ink{display:block}
 @media(prefers-reduced-motion:no-preference){
   [data-rise].will-rise{transition:opacity .55s,translate .68s var(--curved)}
   [data-rise].will-rise:not(.has-risen):not(:focus-within){opacity:0;translate:0 12px}
-  .folio-lead h1,.folio-lead p{animation:lead-in .75s var(--curved) both}
-  .folio-lead p{animation-delay:.08s}
-  @keyframes lead-in{from{opacity:0;clip-path:inset(0 0 100% 0);translate:0 11px}to{opacity:1;clip-path:inset(0 0 0 0);translate:none}}
+  [data-rise].will-rise.has-line-reveal{opacity:1!important;translate:none!important}
+  .has-line-reveal.will-rise .rise-ink{transition:transform .86s var(--curved);transition-delay:calc(.047s * var(--line-i,0))}
+  .has-line-reveal.will-rise:not(.has-risen):not(:focus-within) .rise-ink{transform:translateY(108%)}
+  .folio-home .hero-line>span{
+    animation:word-rise .9s cubic-bezier(.2,.65,.24,1) both;
+    animation-delay:calc(var(--line-delay,.30s) + var(--word-delay,0s))
+  }
+  .folio-home .hero-line>span:nth-child(2){--word-delay:.057s}
+  .folio-home .lead-desktop:nth-child(2){--line-delay:.426s}
+  .folio-home .lead-mobile:nth-child(4){--line-delay:.40s}
+  .folio-home .lead-mobile:nth-child(5){--line-delay:.51s}
+  .folio-home .folio-lead p{animation:caption-rise .92s .37s var(--curved) both}
+  .folio-home .folio-preview{animation:reel-arrive 1.17s .26s cubic-bezier(.22,.69,.25,1) both;transform-origin:50% 0}
+  .folio-home .folio-wordmark,.folio-home .folio-nav>*{animation:nav-arrive .67s var(--nav-wait,.16s) var(--curved) both}
+  .folio-home .folio-nav>*:nth-child(3){--nav-wait:.20s}
+  .folio-home .folio-nav>*:nth-child(4){--nav-wait:.245s}
+  .folio-home .folio-nav>*:nth-child(5){--nav-wait:.29s}
+  .folio-home .folio-nav>*:nth-child(6){--nav-wait:.335s}
+  @keyframes word-rise{from{transform:translateY(106%)}to{transform:translateY(0)}}
+  @keyframes caption-rise{from{opacity:0;clip-path:inset(100% 0 0);translate:0 13px}to{opacity:1;clip-path:inset(0);translate:none}}
+  @keyframes reel-arrive{from{opacity:0;transform:translateY(36px) scale(.73)}to{opacity:1;transform:none}}
+  @keyframes nav-arrive{from{opacity:0;translate:0 7px}to{opacity:1;translate:none}}
 }
 @media(max-width:760px){
   html{scroll-padding-top:72px}
