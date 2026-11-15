@@ -278,23 +278,23 @@ body.reel-open{overflow:hidden}
   .has-line-reveal.will-rise .rise-ink{transition:transform .86s var(--curved);transition-delay:calc(.047s * var(--line-i,0))}
   .has-line-reveal.will-rise:not(.has-risen):not(:focus-within) .rise-ink{transform:translateY(108%)}
   .folio-home .hero-line>span{
-    animation:word-rise .9s cubic-bezier(.2,.65,.24,1) both;
-    animation-delay:calc(var(--line-delay,.30s) + var(--word-delay,0s))
+    animation:word-rise .91s cubic-bezier(.38,.05,.30,1) both;
+    animation-delay:calc(var(--line-delay,.385s) + var(--word-delay,0s))
   }
   .folio-home .hero-line>span:nth-child(2){--word-delay:.057s}
-  .folio-home .lead-desktop:nth-child(2){--line-delay:.426s}
-  .folio-home .lead-mobile:nth-child(4){--line-delay:.40s}
-  .folio-home .lead-mobile:nth-child(5){--line-delay:.51s}
-  .folio-home .folio-lead p{animation:caption-rise .92s .37s var(--curved) both}
-  .folio-home .folio-preview{animation:reel-arrive 1.17s .26s cubic-bezier(.22,.69,.25,1) both;transform-origin:50% 0}
-  .folio-home .folio-wordmark,.folio-home .folio-nav>*{animation:nav-arrive .67s var(--nav-wait,.16s) var(--curved) both}
-  .folio-home .folio-nav>*:nth-child(3){--nav-wait:.20s}
-  .folio-home .folio-nav>*:nth-child(4){--nav-wait:.245s}
-  .folio-home .folio-nav>*:nth-child(5){--nav-wait:.29s}
-  .folio-home .folio-nav>*:nth-child(6){--nav-wait:.335s}
+  .folio-home .lead-desktop:nth-child(2){--line-delay:.715s}
+  .folio-home .lead-mobile:nth-child(4){--line-delay:.605s}
+  .folio-home .lead-mobile:nth-child(5){--line-delay:.835s}
+  .folio-home .folio-lead p{animation:caption-rise .96s .57s var(--curved) both}
+  .folio-home .folio-preview{animation:reel-arrive 1.29s .36s cubic-bezier(.34,.15,.35,1) both;transform-origin:50% 0}
+  .folio-home .folio-wordmark,.folio-home .folio-nav>*{animation:nav-arrive .82s var(--nav-wait,.23s) var(--curved) both}
+  .folio-home .folio-nav>*:nth-child(3){--nav-wait:.27s}
+  .folio-home .folio-nav>*:nth-child(4){--nav-wait:.31s}
+  .folio-home .folio-nav>*:nth-child(5){--nav-wait:.355s}
+  .folio-home .folio-nav>*:nth-child(6){--nav-wait:.40s}
   @keyframes word-rise{from{transform:translateY(106%)}to{transform:translateY(0)}}
   @keyframes caption-rise{from{opacity:0;clip-path:inset(100% 0 0);translate:0 13px}to{opacity:1;clip-path:inset(0);translate:none}}
-  @keyframes reel-arrive{from{opacity:0;transform:translateY(36px) scale(.73)}to{opacity:1;transform:none}}
+  @keyframes reel-arrive{from{opacity:0;transform:translateY(36px) scale(.78)}to{opacity:1;transform:none}}
   @keyframes nav-arrive{from{opacity:0;translate:0 7px}to{opacity:1;translate:none}}
 }
 @media(max-width:760px){

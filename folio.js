@@ -109,16 +109,26 @@
   }
 
   const hoverStops=new Set();
+  const previewAssets=new WeakMap();
+  const nearPreviews='IntersectionObserver' in window?new IntersectionObserver(entries=>entries.forEach(({target,isIntersecting})=>{
+    if(!isIntersecting||!precise.matches||reduced.matches||navigator.connection?.saveData)return;
+    const clip=previewAssets.get(target);
+    if(clip&&!clip.getAttribute('src')){clip.preload='metadata';clip.src=clip.dataset.src;}
+    nearPreviews.unobserve(target);
+  }),{rootMargin:'120px 0px'}):null;
   function cardMotion(card, cover, film) {
     const clip=el('video','card-loop');
     clip.muted=true;clip.loop=true;clip.playsInline=true;clip.preload='none';
     clip.disablePictureInPicture=true;clip.tabIndex=-1;clip.setAttribute('aria-hidden','true');
+    clip.dataset.src='assets/studio/hover/'+encodeURIComponent(film.id)+'.mp4';
     cover.append(clip);
+    previewAssets.set(cover,clip);
+    nearPreviews?.observe(cover);
     let hovering=false;
     function start(e) {
       if(e.pointerType!=='mouse'||!precise.matches||reduced.matches||document.hidden)return;
       hovering=true;
-      if(!clip.getAttribute('src'))clip.src='assets/studio/hover/'+encodeURIComponent(film.id)+'.mp4';
+      if(!clip.getAttribute('src'))clip.src=clip.dataset.src;
       clip.play().catch(()=>{});
     }
     function stop(){hovering=false;clip.pause();cover.classList.remove('is-previewing');}
