@@ -10,6 +10,12 @@ Serve this directory with a static HTTP server, for example `python3 -m http.ser
 
 Push the repository to GitHub, then open **Settings → Pages** and select **Deploy from a branch**, `main`, and `/ (root)`.
 
+## 作品集首页（2026-11-15）
+
+- 首页为静态网页，样式和动效在 portfolio-studio.css / portfolio-studio.js。画廊与案例共用 portfolio-lab-data.js，保留作品与 Reno16 证据的原有直达链接。
+- 展示片为已公开的六条团队作品的静音节选，源时间码与合成过程在 scripts/build-studio-reel.py。只有速览进入视口且系统未要求减少动态时才自动播放；各案例的完整视频仍需点击播放。
+- 工具箱及其他项目继续使用各自的地址。GitHub Pages 的发布源仍是 main 分支根目录。
+
 ## 创作工具箱
 
 `tools.html` 是六个小工具的统一入口，`tool-catalog.js` 维护公开介绍和访问地址。首页共用同一份目录，旧 `workbench.html` 跳转到新工作台。
