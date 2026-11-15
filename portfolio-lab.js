@@ -3,23 +3,54 @@
 const $=(q,r=document)=>r.querySelector(q),$$=(q,r=document)=>[...r.querySelectorAll(q)];
 const groups=window.LJW_CASES||[];
 
-function renderCaseEvidence(evidence){
+function renderCaseEvidence(evidence, source){
   if(!evidence) return '';
-  const {auditContext,audit,image,width,height,alt,caption,recut}=evidence;
+  const {shotPlan,image,width,height,alt,caption,recut}=evidence;
   return `${renderCaseWorkflow(evidence.workflow)}
-  <section class="case-proof" id="reno16-shots" aria-label="分镜审核与剪辑复盘">
-    <div>
-      <h5>分镜审核</h5><p class="case-proof-note">${auditContext}</p>
-      <dl>${audit.map(([label,text])=>`<div><dt>${label}</dt><dd>${text}</dd></div>`).join('')}</dl>
+  <section class="case-proof" id="reno16-shots" aria-labelledby="reno16-shots-title">
+    <header class="case-shot-header">
+      <div>
+        <h5 id="reno16-shots-title">Reno16 后摄自拍分镜表</h5>
+        <p id="reno16-shots-source"><strong>按发布成片倒推。</strong>口播按原片字幕摘录，机位和验收标准供复拍参考。</p>
+      </div>
+      <a class="case-evidence-link" href="${source}" target="_blank" rel="noopener">查看原片 <span aria-hidden="true">↗</span></a>
+    </header>
+    ${renderCaseShotPlan(shotPlan)}
+    <div class="case-recut">
+      <div><h6>试剪对照</h6><p>${recut}</p></div>
+      <figure>
+        <a href="${image}" target="_blank" rel="noopener" aria-label="放大查看发布版与试剪对照"><img src="${image}" width="${width}" height="${height}" alt="${alt}" loading="lazy"></a>
+        <figcaption>${caption}</figcaption>
+      </figure>
     </div>
-    <figure>
-      <h5>剪辑复盘</h5><p>${recut}</p>
-      <a href="${image}" target="_blank" rel="noopener" aria-label="放大查看发布版与试剪对照"><img src="${image}" width="${width}" height="${height}" alt="${alt}" loading="lazy"></a>
-      <figcaption>${caption}</figcaption>
-    </figure>
   </section>
   ${renderCaseTimeline(evidence.timeline)}
   ${renderWorkflowComparison(evidence.workflow)}`;
+}
+
+function renderCaseShotPlan(shotPlan){
+  const columns = ['成片时码', '原片口播', '画面内容', '景别', '机位', '验收标准'];
+  const cell = (label, content) => `<td role="cell"><span class="case-shot-label" aria-hidden="true">${label}</span><div>${content}</div></td>`;
+  return `<table class="case-shot-plan" role="table" aria-labelledby="reno16-shots-title" aria-describedby="reno16-shots-source">
+    <thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">镜号</th>
+      ${columns.map(label => `<th role="columnheader" scope="col">${label}</th>`).join('')}
+    </tr></thead>
+    <tbody role="rowgroup">${shotPlan.shots.map(shot => {
+      const values = [
+        `<span class="case-shot-time">${shot.time}</span>`,
+        `“${shot.dialogue}”`,
+        shot.action,
+        shot.size,
+        shot.camera,
+        `<ul>${shot.checks.map(check => `<li>${check}</li>`).join('')}</ul>`
+      ];
+      return `<tr role="row">
+        <th role="rowheader" scope="row"><span class="case-shot-number">镜 ${shot.number}</span> <strong>${shot.name}</strong></th>
+        ${columns.map((label,i) => cell(label, values[i])).join('')}
+      </tr>`;
+    }).join('')}</tbody>
+  </table>
+  <p class="case-shooting-note"><strong>拍摄提醒</strong> ${shotPlan.shootingNote}</p>`;
 }
 
 function renderCaseWorkflow(workflow){
@@ -66,7 +97,7 @@ function renderWorkflowComparison(workflow){
     </table>
   </details>`;
 }
-$('#case-studies').innerHTML=groups.map(g=>`<article class="case-study" id="${g.id}" aria-labelledby="case-${g.id}"><header class="case-header"><div><h3 id="case-${g.id}">${g.name}</h3><span class="case-field">${g.field}</span><p class="case-company">${g.company}</p></div><div class="case-employment"><b>${g.role}</b><br>${g.dates}</div></header><div class="case-intro"><div><h4>${g.headline}</h4><p>${g.context}</p></div><div class="case-role"><span>我的分工</span><p>${g.responsibility}</p></div></div><div class="case-output">${g.output.map(x=>`<div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div><div class="film-tabs" role="tablist" aria-label="${g.name}代表作">${g.films.map((f,i)=>`<button class="film-tab" role="tab" id="select-${f.id}" aria-controls="work-${f.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-film="${f.id}"><img src="${f.poster}" alt="" loading="lazy" width="64" height="58"><span><span class="film-tab-name">${f.name}</span><span class="film-tab-meta">${f.platform} ${f.views} 万播放</span></span></button>`).join('')}</div>${g.films.map((f,i)=>`<div class="film-panel" id="work-${f.id}" role="tabpanel" aria-labelledby="select-${f.id}" ${i?'hidden':''}><div class="film-layout ${f.portrait?'portrait-layout':''}"><div class="film-media"><img src="${f.poster}" alt="${f.name}视频封面" loading="lazy"><video controls playsinline preload="none" poster="${f.poster}" data-src="${f.media}" aria-label="${f.name}完整视频" hidden></video><button class="film-play" data-play="${f.id}" aria-label="播放${f.name}"><span>播放成片 · ${f.duration}</span></button></div><div class="film-copy"><p class="film-meta">${f.date} / ${g.field}${f.releaseNote?` · ${f.releaseNote}`:''}</p><h4>${f.name}</h4><p class="film-angle">${f.angle}</p><div class="film-number"><strong>${f.views}</strong><span>万次播放</span><small>${f.platform} · 团队作品表现</small></div><p class="film-my-role"><b>我的参与：</b>${g.filmRole}</p><a class="film-source" href="${f.source}" target="_blank" rel="noopener">${f.platform}原片 <span>↗</span></a><p class="film-status" aria-live="polite" role="status"></p></div></div><details class="film-details"><summary><span>${f.evidence?'看商单流程与剪辑拆解':'展开案例：从问题到成片'}</span><b aria-hidden="true">＋</b></summary><div class="case-breakdown"><div><h5>要解决的问题</h5><p>${f.problem}</p></div><div><h5>${f.judgmentLabel||'我的判断'}</h5><p>${f.judgment}</p></div><div><h5>具体参与的工作</h5><ol>${f.actions.map(a=>`<li><b>${a[0]}：</b>${a[1]}</li>`).join('')}</ol></div>${renderCaseEvidence(f.evidence)}<div class="metric-source">${g.metricNote}<a href="${f.source}" target="_blank" rel="noopener">查看原片 ↗</a></div></div></details></div>`).join('')}</article>`).join('');
+$('#case-studies').innerHTML=groups.map(g=>`<article class="case-study" id="${g.id}" aria-labelledby="case-${g.id}"><header class="case-header"><div><h3 id="case-${g.id}">${g.name}</h3><span class="case-field">${g.field}</span><p class="case-company">${g.company}</p></div><div class="case-employment"><b>${g.role}</b><br>${g.dates}</div></header><div class="case-intro"><div><h4>${g.headline}</h4><p>${g.context}</p></div><div class="case-role"><span>我的分工</span><p>${g.responsibility}</p></div></div><div class="case-output">${g.output.map(x=>`<div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div><div class="film-tabs" role="tablist" aria-label="${g.name}代表作">${g.films.map((f,i)=>`<button class="film-tab" role="tab" id="select-${f.id}" aria-controls="work-${f.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-film="${f.id}"><img src="${f.poster}" alt="" loading="lazy" width="64" height="58"><span><span class="film-tab-name">${f.name}</span><span class="film-tab-meta">${f.platform} ${f.views} 万播放</span></span></button>`).join('')}</div>${g.films.map((f,i)=>`<div class="film-panel" id="work-${f.id}" role="tabpanel" aria-labelledby="select-${f.id}" ${i?'hidden':''}><div class="film-layout ${f.portrait?'portrait-layout':''}"><div class="film-media"><img src="${f.poster}" alt="${f.name}视频封面" loading="lazy"><video controls playsinline preload="none" poster="${f.poster}" data-src="${f.media}" aria-label="${f.name}完整视频" hidden></video><button class="film-play" data-play="${f.id}" aria-label="播放${f.name}"><span>播放成片 · ${f.duration}</span></button></div><div class="film-copy"><p class="film-meta">${f.date} / ${g.field}${f.releaseNote?` · ${f.releaseNote}`:''}</p><h4>${f.name}</h4><p class="film-angle">${f.angle}</p><div class="film-number"><strong>${f.views}</strong><span>万次播放</span><small>${f.platform} · 团队作品表现</small></div><p class="film-my-role"><b>我的参与：</b>${g.filmRole}</p><a class="film-source" href="${f.source}" target="_blank" rel="noopener">${f.platform}原片 <span>↗</span></a><p class="film-status" aria-live="polite" role="status"></p></div></div><details class="film-details"><summary><span>${f.evidence?'看商单流程与剪辑拆解':'展开案例：从问题到成片'}</span><b aria-hidden="true">＋</b></summary><div class="case-breakdown"><div><h5>要解决的问题</h5><p>${f.problem}</p></div><div><h5>${f.judgmentLabel||'我的判断'}</h5><p>${f.judgment}</p></div><div><h5>具体参与的工作</h5><ol>${f.actions.map(a=>`<li><b>${a[0]}：</b>${a[1]}</li>`).join('')}</ol></div>${renderCaseEvidence(f.evidence,f.source)}<div class="metric-source">${g.metricNote}<a href="${f.source}" target="_blank" rel="noopener">查看原片 ↗</a></div></div></details></div>`).join('')}</article>`).join('');
 const rotationMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const filmRotations=new Map();
 // Mouse reading, keyboard focus, playback, and expanded details all suspend rotation.
