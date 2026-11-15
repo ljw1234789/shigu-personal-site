@@ -18,7 +18,28 @@ function renderCaseEvidence(evidence){
     </figure>
   </section>`;
 }
-$('#case-studies').innerHTML=groups.map(g=>`<article class="case-study" id="${g.id}" aria-labelledby="case-${g.id}"><header class="case-header"><div><h3 id="case-${g.id}">${g.name}</h3><span class="case-field">${g.field}</span><p class="case-company">${g.company}</p></div><div class="case-employment"><b>${g.role}</b><br>${g.dates}</div></header><div class="case-intro"><div><h4>${g.headline}</h4><p>${g.context}</p></div><div class="case-role"><span>我的分工</span><p>${g.responsibility}</p></div></div><div class="case-output">${g.output.map(x=>`<div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div><div class="film-tabs" role="tablist" aria-label="${g.name}代表作">${g.films.map((f,i)=>`<button class="film-tab" role="tab" id="select-${f.id}" aria-controls="work-${f.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-film="${f.id}"><img src="${f.poster}" alt="" loading="lazy" width="64" height="58"><span><span class="film-tab-name">${f.name}</span><span class="film-tab-meta">${f.platform} ${f.views} 万播放</span></span></button>`).join('')}</div>${g.films.map((f,i)=>`<div class="film-panel" id="work-${f.id}" role="tabpanel" aria-labelledby="select-${f.id}" ${i?'hidden':''}><div class="film-layout ${f.portrait?'portrait-layout':''}"><div class="film-media"><img src="${f.poster}" alt="${f.name}视频封面" loading="lazy"><video controls playsinline preload="none" poster="${f.poster}" data-src="${f.media}" aria-label="${f.name}完整视频" hidden></video><button class="film-play" data-play="${f.id}" aria-label="播放${f.name}"><span>播放成片 · ${f.duration}</span></button></div><div class="film-copy"><p class="film-meta">${f.date} / ${g.field}${f.releaseNote?` · ${f.releaseNote}`:''}</p><h4>${f.name}</h4><p class="film-angle">${f.angle}</p><div class="film-number"><strong>${f.views}</strong><span>万次播放</span><small>${f.platform} · 团队作品表现</small></div><p class="film-my-role"><b>我的参与：</b>${g.filmRole}</p><a class="film-source" href="${f.source}" target="_blank" rel="noopener">${f.platform}原片 <span>↗</span></a><p class="film-status" aria-live="polite" role="status"></p></div></div><details class="film-details"><summary><span>${f.evidence?'看分镜审核和试剪对照':'展开案例：从问题到成片'}</span><b aria-hidden="true">＋</b></summary><div class="case-breakdown"><div><h5>要解决的问题</h5><p>${f.problem}</p></div><div><h5>${f.judgmentLabel||'我的判断'}</h5><p>${f.judgment}</p></div><div><h5>具体参与的工作</h5><ol>${f.actions.map(a=>`<li><b>${a[0]}：</b>${a[1]}</li>`).join('')}</ol></div>${renderCaseEvidence(f.evidence)}<div class="metric-source">${g.metricNote}<a href="${f.source}" target="_blank" rel="noopener">查看原片 ↗</a></div></div></details></div>`).join('')}</article>`).join('');
+function renderCaseRewrite(rewrite){
+  if(!rewrite) return '';
+  const {id,title,beats,shotReview,caption}=rewrite;
+  return `<figure class="case-rewrite" id="${id}" aria-labelledby="${id}-title">
+    <div class="rewrite-sheet">
+      <header class="rewrite-header">
+        <h5 id="${id}-title">${title}</h5>
+        <span>OPPO Reno16 · 后摄自拍</span>
+      </header>
+      <table class="rewrite-table" aria-label="后摄自拍的分镜与口播">
+        <thead><tr><th scope="col">画面</th><th scope="col">口播</th></tr></thead>
+        <tbody>${beats.map(([time,shot,line])=>`<tr>
+          <td><span class="rewrite-time">${time}</span>${shot}</td>
+          <td class="rewrite-voice">${line}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+      <p class="rewrite-review"><strong>审分镜</strong> ${shotReview}</p>
+    </div>
+    <figcaption>${caption}</figcaption>
+  </figure>`;
+}
+$('#case-studies').innerHTML=groups.map(g=>`<article class="case-study" id="${g.id}" aria-labelledby="case-${g.id}"><header class="case-header"><div><h3 id="case-${g.id}">${g.name}</h3><span class="case-field">${g.field}</span><p class="case-company">${g.company}</p></div><div class="case-employment"><b>${g.role}</b><br>${g.dates}</div></header><div class="case-intro"><div><h4>${g.headline}</h4><p>${g.context}</p></div><div class="case-role"><span>我的分工</span><p>${g.responsibility}</p></div></div><div class="case-output">${g.output.map(x=>`<div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div><div class="film-tabs" role="tablist" aria-label="${g.name}代表作">${g.films.map((f,i)=>`<button class="film-tab" role="tab" id="select-${f.id}" aria-controls="work-${f.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-film="${f.id}"><img src="${f.poster}" alt="" loading="lazy" width="64" height="58"><span><span class="film-tab-name">${f.name}</span><span class="film-tab-meta">${f.platform} ${f.views} 万播放</span></span></button>`).join('')}</div>${g.films.map((f,i)=>`<div class="film-panel" id="work-${f.id}" role="tabpanel" aria-labelledby="select-${f.id}" ${i?'hidden':''}><div class="film-layout ${f.portrait?'portrait-layout':''}"><div class="film-media"><img src="${f.poster}" alt="${f.name}视频封面" loading="lazy"><video controls playsinline preload="none" poster="${f.poster}" data-src="${f.media}" aria-label="${f.name}完整视频" hidden></video><button class="film-play" data-play="${f.id}" aria-label="播放${f.name}"><span>播放成片 · ${f.duration}</span></button></div><div class="film-copy"><p class="film-meta">${f.date} / ${g.field}${f.releaseNote?` · ${f.releaseNote}`:''}</p><h4>${f.name}</h4><p class="film-angle">${f.angle}</p><div class="film-number"><strong>${f.views}</strong><span>万次播放</span><small>${f.platform} · 团队作品表现</small></div><p class="film-my-role"><b>我的参与：</b>${g.filmRole}</p><a class="film-source" href="${f.source}" target="_blank" rel="noopener">${f.platform}原片 <span>↗</span></a><p class="film-status" aria-live="polite" role="status"></p></div></div><details class="film-details"><summary><span>${f.rewrite?'看分镜审核、试剪对照和 30 秒重写版':'展开案例：从问题到成片'}</span><b aria-hidden="true">＋</b></summary><div class="case-breakdown"><div><h5>要解决的问题</h5><p>${f.problem}</p></div><div><h5>${f.judgmentLabel||'我的判断'}</h5><p>${f.judgment}</p></div><div><h5>具体参与的工作</h5><ol>${f.actions.map(a=>`<li><b>${a[0]}：</b>${a[1]}</li>`).join('')}</ol></div>${renderCaseEvidence(f.evidence)}${renderCaseRewrite(f.rewrite)}<div class="metric-source">${g.metricNote}<a href="${f.source}" target="_blank" rel="noopener">查看原片 ↗</a></div></div></details></div>`).join('')}</article>`).join('');
 const rotationMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const filmRotations=new Map();
 // Mouse reading, keyboard focus, playback, and expanded details all suspend rotation.
@@ -70,7 +91,30 @@ $$('[role=tablist]').forEach(list=>list.addEventListener('keydown',e=>{const tab
 const theme=$('.theme-toggle');function themeLabel(){theme.setAttribute('aria-label',document.documentElement.dataset.theme==='dark'?'切换浅色外观':'切换深色外观');}themeLabel();theme.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('ljw-lab-theme',next)}catch(e){}themeLabel();drawStatic();});
 const menu=$('.menu-toggle'),mobile=$('.mobile-nav');menu.addEventListener('click',()=>{mobile.hidden=!mobile.hidden;menu.setAttribute('aria-expanded',!mobile.hidden);menu.setAttribute('aria-label',mobile.hidden?'打开导航':'关闭导航');});$$('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{mobile.hidden=true;menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','打开导航');}));document.addEventListener('keydown',e=>{if(e.key==='Escape'){mobile.hidden=true;menu.setAttribute('aria-expanded','false');}});
 $('#copy-wechat').addEventListener('click',async()=>{const status=$('#copy-status');try{await navigator.clipboard.writeText('a2004liujunwei2026');status.textContent='微信号已复制。'}catch(e){status.textContent='微信号：a2004liujunwei2026，可长按或选中复制。'}});
-const aliases={projects:'works',cases:'works',experience:'about',research:'tools','content-research':'tools',practice:'ai','yingjun-oppo':'yingjun-reno'};function route(){let id=location.hash.slice(1)||new URLSearchParams(location.search).get('chapter');if(!id)return;id=id.replace(/^project-/,'work-');if(id.startsWith('work-'))selectFilm(id.slice(5));else if(groups.some(g=>g.films.some(f=>f.id===id))){selectFilm(id);id='work-'+id;}else id=aliases[id]||id;const target=document.getElementById(id);if(target)requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'instant'}));}addEventListener('hashchange',route);route();
+const aliases={
+  projects:'works', cases:'works', experience:'about', research:'tools',
+  'content-research':'tools', practice:'ai', 'yingjun-oppo':'yingjun-reno'
+};
+function route(){
+  let id=location.hash.slice(1)||new URLSearchParams(location.search).get('chapter');
+  if(!id) return;
+  id=(aliases[id]||id).replace(/^project-/,'work-');
+  if(id.startsWith('work-')) selectFilm(id.slice(5));
+  else if(groups.some(group=>group.films.some(film=>film.id===id))){
+    selectFilm(id);
+    id='work-'+id;
+  }
+  const target=document.getElementById(id);
+  if(!target) return;
+  if(target.matches('.case-rewrite')){
+    const panel=target.closest('.film-panel');
+    selectFilm(panel.id.slice(5));
+    target.closest('details').open=true;
+  }
+  requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'instant'}));
+}
+addEventListener('hashchange',route);
+route();
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');if('IntersectionObserver'in window){const reveal=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');reveal.unobserve(e.target);}}),{threshold:.08});$$('.section-heading,.principles article,.tool-card').forEach(el=>{el.classList.add('reveal');reveal.observe(el);});const nav=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)$$('.main-nav a').forEach(a=>a.classList.toggle('is-current',a.hash==='#'+e.target.id));}),{rootMargin:'-15% 0px -65% 0px'});$$('main>section').forEach(el=>nav.observe(el));}
 const canvas=$('#pixel-canvas'),ctx=canvas.getContext('2d');let points=[],cw=0,ch=0,raf=0,visible=true,last=0,clock=0;const pointer={x:-999,y:-999};const random=n=>{const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x);};
 function resize(){const b=canvas.getBoundingClientRect();cw=b.width;ch=b.height;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(cw*dpr);canvas.height=Math.round(ch*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);points=[];const size=cw<700?11:14,gap=size+3,cols=Math.ceil(cw/gap),rows=Math.floor((ch-45)/gap);for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){const x=i*gap+gap/2,y=j*gap+13,envelope=Math.exp(-Math.pow((i-cols*.5)/(cols*.25),2));if(random(i*19+j*3)<envelope*.75)points.push({ox:x,oy:y,x,y,vx:0,vy:0,size:size*(.65+random(i*17+j)*.35),tone:Math.floor(random(i*13+j)*5),phase:random(i+j)*6.28});}drawStatic();start();}
