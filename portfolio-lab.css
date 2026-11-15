@@ -49,3 +49,33 @@
 h1 .title-tail,h2 .title-tail{display:inline-block;white-space:nowrap}
 h1 .title-punctuation,h2 .title-punctuation{font-size:.65em;font-weight:400;line-height:0;letter-spacing:0;vertical-align:.05em}
 #method-title .method-phrase{display:inline-block;white-space:nowrap}
+
+.case-proof {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 4vw, 56px);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  padding: clamp(16px, 3vw, 32px);
+}
+.case-proof h5 { font-size: 17px; color: var(--ink); }
+.case-proof .case-proof-note { font-size: 13px; }
+.case-proof dl { margin: 12px 0 0; }
+.case-proof dl > div { border-top: 1px solid var(--line); padding: 10px 0; }
+.case-proof dt { color: var(--ink); font-weight: 600; font-size: 14px; }
+.case-proof dd { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.case-proof figure { margin: 0; }
+.case-proof figure a { display: block; margin-top: 14px; max-width: 460px; }
+.case-proof img { width: 100%; height: auto; border: 1px solid var(--line); }
+.case-proof figcaption { margin-top: 6px; color: var(--muted); font-size: 12px; }
+.film-panels > .film-panel[hidden] .case-breakdown { display: none; }
+
+.comment-example { margin-top: 12px; border-top: 1px solid var(--line); padding: 10px 0 0; }
+.comment-example summary { color: var(--accent); font-size: 14px; font-weight: 600; cursor: pointer; }
+.comment-example ol { margin: 10px 0; padding-left: 20px; color: var(--muted); font-size: 13px; }
+.comment-example li + li { margin-top: 5px; }
+.comment-example li b { color: var(--ink); }
+.comment-example a { margin-left: 5px; text-decoration: underline; }
+.workflow-panel[hidden] .comment-example > :not(summary) { display: none; }
+@media (max-width: 760px) { .case-proof { grid-template-columns: minmax(0, 1fr); } }

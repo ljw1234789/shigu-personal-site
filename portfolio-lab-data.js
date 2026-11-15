@@ -1,26 +1,26 @@
-/* Facts aligned with the Feishu resume shared on 2026-11-09. Team metrics retain their recorded dates. */
+/* Employment and team metrics follow the current resume and recorded platform data. */
 window.LJW_CASES=[
   {
     "id": "yingjun",
     "name": "英俊姐妹日记",
     "field": "科技数码",
     "role": "IP 编导 · 全职",
-    "dates": "2025.12—2026.10",
+    "dates": "2025.08—2026.10",
     "headline": "把产品功能，讲成观众用得上的方法。",
-    "responsibility": "我主要负责选题与脚本，参与剪辑；拍摄由团队其他同事负责。",
-    "context": "科技数码账号，4 人制作团队（另有博主）。任职期间账号发布 74 条视频，围绕手机、平板、智能手表做新品体验、同类对比与操作教程。",
+    "responsibility": "我负责选题、口播脚本与改稿，参与剪辑。拍摄由摄影同事执行。",
+    "context": "科技数码账号，内容包括新品体验、同类对比和操作教程。飞瓜抖音目录去重后计 88 条，其中 74 条有抖音原片留档，留档覆盖 2025.12—2026.10。",
     "output": [
       [
-        "50余",
-        "个策划选题"
+        "88",
+        "条目录记录（去重）"
       ],
       [
-        "30余",
-        "份撰写脚本"
+        "74",
+        "条抖音原片留档"
       ],
       [
-        "40余",
-        "条参与剪辑"
+        "1897.6 万",
+        "三条代表作抖音团队播放"
       ]
     ],
     "films": [
@@ -37,21 +37,44 @@ window.LJW_CASES=[
         "views": "902",
         "angle": "先看样片，再揭晓拍摄方法。",
         "problem": "如何把影像功能讲得有吸引力，又让普通用户知道自己怎么拍？",
-        "judgment": "我从人像样片找到开场反差：看起来像专业器材拍摄，实际用手机配合磁吸小屏也能拍。",
+        "judgment": "先用人像样片回答“能拍成什么样”，再用磁吸小屏的实拍回答“一个人用后摄怎么取景”。",
         "actions": [
           [
             "选题",
-            "用样片效果吸引人，再提出“怎么拍”的问题。"
+            "从一个人用后摄自拍时看不到画面的困扰切入。"
           ],
           [
             "脚本",
-            "先亮样片，再揭晓设备组合，后段安排小屏预览后置镜头的操作演示。"
+            "把人像样片、小屏吸附和实时取景写进同一条演示线。"
           ],
           [
-            "剪辑参与",
-            "参与该片剪辑，配合团队完成成片。"
+            "剪辑",
+            "参与发布版剪辑，并用成片素材做了后续的开头试剪。"
           ]
-        ]
+        ],
+        "evidence": {
+          "auditContext": "按发布成片做的分镜复盘。",
+          "audit": [
+            [
+              "审核问题",
+              "只拍小屏外观，观众会知道它能吸上，却还看不懂怎么用后摄给自己构图。"
+            ],
+            [
+              "镜头要求",
+              "留够吸附动作的近景，再补一镜，让后摄镜头与小屏里的人像预览同时入画。"
+            ],
+            [
+              "对照成片",
+              "00:57 看小屏吸附，01:04 看后摄取景。两镜连起来，能看清从装上配件到用它取景。"
+            ]
+          ],
+          "image": "assets/projects/reno16-recut-comparison.jpg",
+          "width": 684,
+          "height": 596,
+          "alt": "左为发布版约 00:58 的小屏操作画面，右为复盘试剪第 2 秒的小屏取景画面",
+          "caption": "左 · 发布版约 00:58　　右 · 复盘试剪 00:02",
+          "recut": "复盘时把小屏取景提前到第 2 秒，再接吸附和上滑操作。这样开头就交代小屏解决的是一个人用后摄自拍时的构图问题。"
+        }
       },
       {
         "id": "yingjun-a7",
@@ -106,32 +129,59 @@ window.LJW_CASES=[
         "judgmentLabel": "内容切入"
       }
     ],
-    "company": "深圳藏宝阁广告传媒有限公司"
+    "company": "深圳藏宝阁广告传媒有限公司",
+    "filmRole": "负责选题、脚本，参与剪辑。",
+    "metricNote": "抖音团队播放量来自已留存的星图页面。"
   },
   {
     "id": "bidao",
     "name": "毕导",
     "field": "知识科普",
     "role": "IP 助理 · 实习",
-    "dates": "2025.04—2025.10",
+    "dates": "2025.04—2025.07",
     "headline": "从一个问题出发，把知识讲清楚。",
-    "responsibility": "我参与选题、脚本、拍摄和剪辑；作为 IP 助理，配合博主与团队完成制作，并按审稿意见修改。",
-    "context": "知识科普账号。实习期间团队发布 54 条视频，我参与选题、脚本、拍摄及剪辑，初剪按团队反馈修改。",
+    "responsibility": "我参与选题、脚本、资料查证、拍摄及剪辑，并按团队意见核对和修改初剪。",
+    "context": "知识科普账号。作为 IP 助理参与日常制作。下方日期为平台发布日期，实习结束后上线的两条已单独标明。",
     "output": [
       [
         "60",
-        "份参与撰写脚本"
+        "份参与撰写的科普脚本"
       ],
       [
-        "54",
-        "条成片参与剪辑"
+        "32",
+        "份脚本对应已发布视频"
       ],
       [
-        "约27",
-        "条 AI 选题落地成片"
+        "约 27",
+        "条团队选题成片（AI 整理后人工筛选）"
       ]
     ],
     "films": [
+      {
+        "id": "solar-distance",
+        "name": "两小儿辩日",
+        "date": "2025.06.26",
+        "duration": "11:15",
+        "poster": "assets/projects/solar-distance-hd.jpg",
+        "media": "preview-jordan/media/solar-distance.mp4",
+        "source": "https://www.bilibili.com/video/BV1scKDzjEcn/",
+        "platform": "B 站",
+        "views": "648.8",
+        "angle": "太阳究竟早上近，还是中午近？",
+        "problem": "把熟悉的课本问题，转化为可理解的科学解释。",
+        "judgment": "从“早上近还是中午近”的疑问展开，说明观察现象与距离判断的区别。",
+        "actions": [
+          [
+            "选题与脚本",
+            "作为 IP 助理参与选题和脚本工作。"
+          ],
+          [
+            "拍摄与剪辑",
+            "参与团队拍摄及剪辑，按团队反馈修改初剪。"
+          ]
+        ],
+        "judgmentLabel": "内容切入"
+      },
       {
         "id": "earth-flat",
         "name": "地球是平的？",
@@ -141,7 +191,7 @@ window.LJW_CASES=[
         "media": "preview-jordan/media/earth-flat.mp4",
         "source": "https://www.bilibili.com/video/BV1iCpozfE8w/",
         "platform": "B 站",
-        "views": "1290.1",
+        "views": "1290.7",
         "angle": "大家知道地球是圆的，能自己证明吗？",
         "problem": "把看似已有答案的常识，变成观众愿意继续看、也能理解其依据的问题。",
         "judgment": "讨论选题时，我提出从“大家知道地球是圆的，能自己证明吗？”切入，先查资料，再和博主讨论这个角度能否拍出来。",
@@ -158,7 +208,8 @@ window.LJW_CASES=[
             "制作参与",
             "参与拍摄与剪辑，按团队反馈压缩铺垫、调整知识点对应的画面。"
           ]
-        ]
+        ],
+        "releaseNote": "实习结束后发布"
       },
       {
         "id": "sound-candle",
@@ -169,7 +220,7 @@ window.LJW_CASES=[
         "media": "preview-jordan/media/sound-candle.mp4",
         "source": "https://www.bilibili.com/video/BV1Vqe3z4E1n/",
         "platform": "B 站",
-        "views": "842.2",
+        "views": "842.8",
         "angle": "声音真的能让蜡烛熄灭吗？",
         "problem": "从声音与火焰的现象切入，解释现象背后的条件与原理。",
         "judgment": "从声音与火焰的实验现象进入，解释结果成立的条件。",
@@ -183,34 +234,12 @@ window.LJW_CASES=[
             "参与团队拍摄及剪辑，按团队反馈修改初剪。"
           ]
         ],
-        "judgmentLabel": "内容切入"
-      },
-      {
-        "id": "solar-distance",
-        "name": "两小儿辩日",
-        "date": "2025.06.26",
-        "duration": "11:15",
-        "poster": "assets/projects/solar-distance-hd.jpg",
-        "media": "preview-jordan/media/solar-distance.mp4",
-        "source": "https://www.bilibili.com/video/BV1scKDzjEcn/",
-        "platform": "B 站",
-        "views": "648.2",
-        "angle": "太阳究竟早上近，还是中午近？",
-        "problem": "把熟悉的课本问题，转化为可理解的科学解释。",
-        "judgment": "从“早上近还是中午近”的疑问展开，说明观察现象与距离判断的区别。",
-        "actions": [
-          [
-            "选题与脚本",
-            "作为 IP 助理参与选题和脚本工作。"
-          ],
-          [
-            "拍摄与剪辑",
-            "参与团队拍摄及剪辑，按团队反馈修改初剪。"
-          ]
-        ],
-        "judgmentLabel": "内容切入"
+        "judgmentLabel": "内容切入",
+        "releaseNote": "实习结束后发布"
       }
     ],
-    "company": "杭州赛蜂文化传播有限公司"
+    "company": "杭州赛蜂文化传播有限公司",
+    "filmRole": "参与选题、脚本、拍摄和剪辑。",
+    "metricNote": "B 站团队播放量采用当前简历的原片数据留档。"
   }
 ];
