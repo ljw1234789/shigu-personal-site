@@ -115,31 +115,6 @@ function setStep(id){
 workflowTabs.forEach(b=>b.addEventListener('click',()=>setStep(b.dataset.step)));
 setStep('topic');
 $$('[role=tablist]').forEach(list=>list.addEventListener('keydown',e=>{const tabs=$$('[role=tab]',list),at=tabs.indexOf(document.activeElement);if(at<0)return;let next;if(e.key==='ArrowRight')next=(at+1)%tabs.length;else if(e.key==='ArrowLeft')next=(at-1+tabs.length)%tabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=tabs.length-1;else return;e.preventDefault();tabs[next].focus();tabs[next].click();}));
-const theme=$('.theme-toggle');
-function themeLabel(){theme.setAttribute('aria-label',document.documentElement.dataset.theme==='dark'?'切换浅色外观':'切换深色外观');}
-themeLabel();
-theme.addEventListener('click',()=>{
-  const next=document.documentElement.dataset.theme==='dark'?'light':'dark';
-  document.documentElement.dataset.theme=next;
-  try{localStorage.setItem('ljw-lab-theme',next)}catch(e){}
-  themeLabel();
-});
-const menu=$('.menu-toggle'),mobile=$('.mobile-nav');
-function setMenu(open){
-  mobile.hidden=!open;
-  menu.setAttribute('aria-expanded',String(open));
-  menu.setAttribute('aria-label',open?'关闭导航':'打开导航');
-}
-menu.addEventListener('click',()=>setMenu(mobile.hidden));
-mobile.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false);});
-document.addEventListener('pointerdown',e=>{if(!mobile.hidden&&!mobile.contains(e.target)&&!menu.contains(e.target))setMenu(false);});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!mobile.hidden){setMenu(false);menu.focus();}});
-matchMedia('(min-width:761px)').addEventListener('change',e=>{if(e.matches)setMenu(false);});
-$('#copy-wechat').addEventListener('click',async ()=>{
-  const status=$('#copy-status'),wechat=$('#copy-wechat').dataset.wechat;
-  try{await navigator.clipboard.writeText(wechat);status.textContent='微信号已复制。'}
-  catch(e){status.textContent='微信号显示在按钮下方，可手动复制。';}
-});
 const aliases={
   projects:'works', cases:'works', experience:'about', research:'tools',
   'content-research':'tools', practice:'ai', 'yingjun-oppo':'yingjun-reno'
@@ -159,6 +134,7 @@ function route(animate=false){
   const detailAnchor=Object.hasOwn(detailAnchors,id)?detailAnchors[id]:null;
   const openReno16Evidence=Boolean(detailAnchor);
   id=openReno16Evidence?'work-yingjun-reno':(aliases[id]||id).replace(/^project-/,'work-');
+  if(id.startsWith('panel-')&&workflowTabs.some(tab=>tab.dataset.step===id.slice(6)))setStep(id.slice(6));
   if(id.startsWith('work-')) selectFilm(id.slice(5));
   else if(groups.some(group=>group.films.some(film=>film.id===id))){
     selectFilm(id);
@@ -184,16 +160,6 @@ if('IntersectionObserver'in window){
   if(!reduce.matches)$$('.section-heading,.principles article,.tool-card').forEach(el=>{
     el.classList.add('reveal');reveal.observe(el);
   });
-  const nav=new IntersectionObserver(entries=>entries.forEach(e=>{
-    if(!e.isIntersecting)return;
-    const active=e.target.id==='case-notes'?'works':e.target.id;
-    $$('.main-nav a').forEach(a=>{
-      const current=a.hash==='#'+active;
-      a.classList.toggle('is-current',current);
-      if(current)a.setAttribute('aria-current','location');
-      else a.removeAttribute('aria-current');
-    });
-  }),{rootMargin:'-15% 0px -65% 0px'});
-  $$('main>section, main>footer').forEach(el=>nav.observe(el));
+
 }
 })();

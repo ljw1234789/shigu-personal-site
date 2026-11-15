@@ -59,6 +59,8 @@ def main():
         manifest = scratch / "concat.txt"
         manifest.write_text("".join(f"file {clip.name}\n" for clip in cuts))
         run("-f", "concat", "-safe", "0", "-i", manifest, "-c", "copy", "-movflags", "+faststart", OUTPUT / "showreel.mp4")
+        run("-i", OUTPUT / "showreel.mp4", "-t", "12", "-an", "-c:v", "libx264", "-crf", "25",
+            "-preset", "fast", "-movflags", "+faststart", OUTPUT / "reel-preview.mp4")
         run("-ss", "0.45", "-i", OUTPUT / "showreel.mp4", "-frames:v", "1", "-q:v", "3", OUTPUT / "reel-poster.jpg")
 
 if __name__ == "__main__":
