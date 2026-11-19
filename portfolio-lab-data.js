@@ -214,11 +214,15 @@ window.LJW_CASES=[
             "images": [
               {
                 "src": "assets/portfolio/reno16-storyboard.jpg",
+                "width": 1580,
+                "height": 586,
                 "alt": "Reno16 发布成片口播与画面分段",
                 "caption": "按发布成片整理的口播与画面关系。"
               },
               {
                 "src": "assets/portfolio/reno16-published-shots.jpg",
+                "width": 882,
+                "height": 567,
                 "alt": "00:02 样片、00:57 吸附、01:04 后摄取景三个原片画面",
                 "caption": "发布成片截帧。每个关键动作都对应一个看得见的结果。"
               }
@@ -313,6 +317,8 @@ window.LJW_CASES=[
             "images": [
               {
                 "src": "assets/portfolio/reno16-filming-reference.jpg",
+                "width": 1096,
+                "height": 640,
                 "alt": "Reno16 发布原片的台面、户外和室内画面",
                 "caption": "发布版实拍参考。00:27 台面产品、00:59 户外连接、01:44 室内口播。"
               }
@@ -328,6 +334,8 @@ window.LJW_CASES=[
             "images": [
               {
                 "src": "assets/portfolio/reno16-recut.jpg",
+                "width": 684,
+                "height": 596,
                 "alt": "左为发布版约 00:58，右为试剪版 00:02",
                 "caption": "左为发布版操作画面，右为发布后试剪的后摄取景画面。"
               }
@@ -392,6 +400,8 @@ window.LJW_CASES=[
             "images": [
               {
                 "src": "assets/portfolio/a7-operation-evidence.jpg",
+                "width": 1179,
+                "height": 567,
                 "alt": "A7 原片开头和 00:31、00:32、00:33 操作画面",
                 "caption": "发布成片截帧。开场意外之后，给出一次有结果的操作。"
               }
@@ -464,6 +474,8 @@ window.LJW_CASES=[
         "images": [
           {
             "src": "assets/portfolio/yingjun-on-set.jpg",
+                "width": 2000,
+                "height": 515,
             "alt": "英俊姐妹日记外景器材、拍摄协作和室内现场三张照片",
             "caption": "项目现场记录。"
           }
@@ -480,6 +492,8 @@ window.LJW_CASES=[
         "images": [
           {
             "src": "assets/portfolio/yingjun-review-records.jpg",
+                "width": 1165,
+                "height": 338,
             "alt": "英俊作品发布记录和部分星图播放数据",
             "caption": "飞书中的样本留档。74 条是已整理样本，35 条具备该次星图播放记录。"
           }
@@ -545,6 +559,8 @@ window.LJW_CASES=[
             "images": [
               {
                 "src": "assets/portfolio/solar-camera-comparison.jpg",
+                "width": 1083,
+                "height": 610,
                 "alt": "两小儿辩日发布版同一台相机拍摄的两个时段",
                 "caption": "发布版画面。我的角色是 IP 助理，参与选题、脚本、资料查证、拍摄与剪辑。"
               }
@@ -671,6 +687,8 @@ window.LJW_PORTFOLIO={
       "images": [
         {
           "src": "assets/portfolio/comment-topic-cards.jpg",
+                "width": 1420,
+                "height": 412,
           "alt": "四张选题卡及可回查的原评论编号",
           "caption": "选题卡记录的是下一轮拟拍方向。"
         }
@@ -686,6 +704,8 @@ window.LJW_PORTFOLIO={
       "images": [
         {
           "src": "assets/portfolio/moon-source-check.jpg",
+                "width": 575,
+                "height": 421,
           "alt": "工作台中 NASA Moon Facts 原文上下文",
           "caption": "原资料的表述为月球存在极其稀薄的外逸层。"
         }
@@ -798,11 +818,15 @@ window.LJW_PORTFOLIO={
       "images": [
         {
           "src": "assets/portfolio/benchmark-accounts.jpg",
+                "width": 1276,
+                "height": 326,
           "alt": "飞书中按赛道整理的对标账号截图",
           "caption": "数码与科普对标账号整理记录。"
         },
         {
           "src": "assets/portfolio/benchmark-timeline.jpg",
+                "width": 921,
+                "height": 469,
           "alt": "带有时间码、口播、画面与切镜记录的逐句拆解表",
           "caption": "137 个时码单元的拆解记录节选。"
         }

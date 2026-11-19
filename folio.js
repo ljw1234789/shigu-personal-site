@@ -33,9 +33,12 @@
     section.setAttribute('aria-labelledby', record.id + '-title');
     const heading = el('h2', '', record.title);
     heading.id = record.id + '-title';
-    section.append(heading);
-    if (record.note) section.append(el('p', 'proof-note', record.note));
-    (record.paragraphs || []).forEach(text => section.append(el('p', 'proof-copy', text)));
+    const intro = el('header', 'proof-intro');
+    const body = el('div', 'proof-body');
+    intro.append(heading);
+    if (record.note) intro.append(el('p', 'proof-note', record.note));
+    (record.paragraphs || []).forEach(text => intro.append(el('p', 'proof-copy', text)));
+    section.append(intro, body);
     if (record.table) {
       const table = el('table', 'proof-table');
       const head = el('thead');
@@ -46,7 +49,7 @@
         labels.append(cell);
       });
       head.append(labels);
-      const body = el('tbody');
+      const tableBody = el('tbody');
       record.table.rows.forEach(values => {
         const row = el('tr');
         values.forEach((value, index) => {
@@ -54,16 +57,16 @@
           if (!index) cell.scope = 'row';
           row.append(cell);
         });
-        body.append(row);
+        tableBody.append(row);
       });
-      table.append(head, body);
+      table.append(head, tableBody);
       const scroll = el('div', 'proof-table-scroll');
       scroll.tabIndex = 0;
       scroll.setAttribute('role', 'region');
       scroll.setAttribute('aria-label', record.title + '表格');
       scroll.setAttribute('data-native-scroll', '');
       scroll.append(table);
-      section.append(scroll);
+      body.append(scroll);
     }
     (record.images || []).forEach(image => {
       const figure = el('figure', 'proof-figure');
@@ -71,9 +74,11 @@
       full.target = '_blank';
       full.rel = 'noopener';
       full.setAttribute('aria-label', '放大查看' + image.alt);
-      full.append(asset(image.src, image.alt));
+      const picture = asset(image.src, image.alt);
+      if (image.width && image.height) { picture.width=image.width; picture.height=image.height; }
+      full.append(picture);
       figure.append(full, el('figcaption', '', image.caption));
-      section.append(figure);
+      body.append(figure);
     });
     if (record.video) {
       const figure = el('figure', 'proof-figure');
@@ -85,13 +90,13 @@
       video.preload = 'none';
       video.setAttribute('aria-label', record.title + '操作演示');
       figure.append(video, el('figcaption', '', record.video.caption));
-      section.append(figure);
+      body.append(figure);
     }
     (record.links || []).forEach(link => {
       const source = anchor(link.href, link.text, 'proof-source');
       source.target = '_blank';
       source.rel = 'noopener';
-      section.append(source);
+      intro.append(source);
     });
     return section;
   }
@@ -220,6 +225,7 @@
     const cards = films.map(({g, f}) => {
       const a = anchor(projectURL(f.id), '', 'project-card');
       a.dataset.group = g.id;
+      a.dataset.work = f.id;
       a.setAttribute('data-rise','');
       const cover = el('div', 'project-image');
       cover.dataset.cursor = 'arrow';
@@ -259,9 +265,18 @@
     } else {
       const {g, f} = item;
       document.title = f.name + ' · 刘俊威作品集';
+      const headlines = {
+        'yingjun-reno':'一个人，也能用后摄自拍。',
+        'solar-distance':'太阳早上近，还是中午近？',
+        'yingjun-a7':'把耐用，拍成看得见的结果。',
+        'earth-flat':'地球是圆的，你能证明吗？',
+        'yingjun-huawei':'从一支笔，看懂折叠电脑。',
+        'sound-candle':'声音，真的能吹灭蜡烛？'
+      };
       const head = el('header','project-head folio-wide');
-      head.append(el('p','',g.name + ' / ' + g.field),el('h1','',f.name));
+      head.append(el('p','',g.name + ' / ' + f.name),el('h1','',headlines[f.id] || f.name));
       const cover = el('div','project-cover folio-wide' + (f.portrait ? ' portrait':''));
+      cover.dataset.work = f.id;
       const poster = asset(f.poster,f.name + '视频封面',true);
       if (f.portrait) cover.style.setProperty('--cover','url("' + f.poster + '")');
       const player = el('video');
@@ -270,7 +285,14 @@
       player.setAttribute('aria-label', '播放 ' + f.name);
       const play = el('button','project-play','▷ 播放成片 · ' + f.duration);
       play.type = 'button';
+      const ambient = el('video','case-ambient');
+      ambient.muted=true;ambient.loop=true;ambient.playsInline=true;ambient.preload='none';
+      ambient.dataset.src='assets/studio/hover/'+f.id+'.mp4';
+      ambient.setAttribute('aria-hidden','true');ambient.tabIndex=-1;
+      ambient.addEventListener('playing',()=>ambient.classList.add('is-ready'));
+      cover.dataset.cursor='play';
       play.addEventListener('click', () => {
+        ambient.pause();ambient.hidden=true;cover.dataset.cursor='';
         if (!player.getAttribute('src')) player.src = f.media;
         player.hidden = false; poster.hidden = true; play.hidden = true;
         player.play().catch(() => {});
@@ -279,8 +301,9 @@
         player.hidden = true; poster.hidden = false; play.hidden = false;
         play.textContent = '暂时无法载入，可打开平台原片';
       });
-      cover.append(poster,player,play);
-      const notes = el('div','project-notes folio-inner');
+      cover.addEventListener('click',e=>{if(!play.hidden&&e.target!==play&&!e.target.closest('button'))play.click();});
+      cover.append(poster,ambient,player,play);
+      const notes = el('div','project-notes folio-wide');
       function block(title, children) {
         const part = el('section','folio-split');
         part.setAttribute('data-rise','');
@@ -312,9 +335,16 @@
       notes.append(block('团队作品表现',[el('p','',f.platform + ' · ' + f.views + ' 万次播放'),el('p','',g.metricNote),links]));
       const next = films[(current + 1) % films.length].f;
       const nextLink = anchor(projectURL(next.id),'','project-next');
-      nextLink.dataset.cursor = 'arrow';
-      nextLink.append(el('strong','','下一条作品 ↗'),el('span','',next.name));
-      project.append(head,cover,notes,nextLink);
+      nextLink.dataset.cursor = 'video';
+      nextLink.dataset.cursorVideo = 'assets/studio/hover/' + next.id + '.mp4';
+      nextLink.dataset.work = next.id;
+      nextLink.setAttribute('aria-label', '查看下一条作品：' + next.name);
+      nextLink.append(el('strong','','下一条作品'),el('span','',next.name));
+      const chapters = el('nav', 'case-chapters');
+      chapters.setAttribute('aria-label', '案例章节');
+      (f.proof || []).forEach(record => chapters.append(anchor('#'+record.id,record.title)));
+      if (f.proof?.length) project.append(head,cover,chapters,notes,nextLink);
+      else project.append(head,cover,notes,nextLink);
     }
   }
 
@@ -349,7 +379,7 @@
   revealProofAnchor();
   addEventListener('hashchange', revealProofAnchor);
 
-  $$('.nav-contact,.folio-pill').forEach(rollPill);
+  $$('.nav-contact,.folio-pill,.folio-nav > a:not(.nav-contact)').forEach(rollPill);
 
   // Build visual line masks from the rendered line breaks. The intersection
   // observer watches the unmasked parent, so filtered cards still reveal.
@@ -381,6 +411,12 @@
     if(nodes.length)node.replaceChildren(...nodes);
   }
   if(!reduced.matches) {
+    $$('.folio-case-page h1,.folio-list-page h1,.folio-about-page .page-lead h1').forEach(node=>{
+      const text=node.textContent;
+      wrapLines(node,text,true);
+      masks.push({node,text,split:true});
+      node.classList.add('page-heading');
+    });
     $$('.folio-home .folio-split[data-rise], .folio-home h2[data-rise], .folio-home .insights-head[data-rise]').forEach(block=>{
       const parts=block.matches('h2')?[block]:$$('h2, :scope > p',block);
       const plain=parts.filter(p=>!p.children.length&&p.textContent.trim());
@@ -416,9 +452,14 @@
   }
   if (reel) {
     reel.addEventListener('click', () => {
+      const origin = reel.getBoundingClientRect();
       preview.pause();
       dialog.showModal();
       document.body.classList.add('reel-open');
+      if (!reduced.matches) dialog.animate([
+        {clipPath:'inset('+Math.max(0,origin.top)+'px '+Math.max(0,innerWidth-origin.right)+'px '+Math.max(0,innerHeight-origin.bottom)+'px '+Math.max(0,origin.left)+'px round 18px)'},
+        {clipPath:'inset(0px 0px 0px 0px round 0px)'}
+      ],{duration:700,easing:'cubic-bezier(.25,1,.5,1)'});
       if (!full.getAttribute('src')) full.src = full.dataset.src;
       else full.currentTime = 0;
       full.play().catch(() => {});
@@ -446,10 +487,22 @@
     if (reel) new IntersectionObserver(entries => {
       watchPreview = entries[0].isIntersecting; playPreview();
     }).observe(reel);
-    const projectPlayer = $('.project-cover video');
+    const projectPlayer = $('.project-cover video[controls]');
     if (projectPlayer) new IntersectionObserver(entries => {
       if (!entries[0].isIntersecting && document.fullscreenElement !== projectPlayer && document.pictureInPictureElement !== projectPlayer) projectPlayer.pause();
     }).observe(projectPlayer);
+    const ambient = $('.case-ambient');
+    if (ambient) {
+      let near=false;
+      const updateAmbient=()=>{
+        if(!near||ambient.hidden||document.hidden||reduced.matches||navigator.connection?.saveData)return ambient.pause();
+        if(!ambient.getAttribute('src'))ambient.src=ambient.dataset.src;
+        ambient.play().catch(()=>{});
+      };
+      new IntersectionObserver(entries=>{near=entries[0].isIntersecting;updateAmbient();}).observe(ambient);
+      document.addEventListener('visibilitychange',updateAmbient);
+      reduced.addEventListener('change',updateAmbient);
+    }
   } else {
     watchPreview = true;
     playPreview();
@@ -457,6 +510,7 @@
 
   const features = $$('.folio-feature');
   const featureList = $('.feature-list');
+  const outroBackground = $('.outro-shapes');
   let lastY = scrollY, frame = 0;
   function viewport() {
     frame = 0;
@@ -471,14 +525,21 @@
       const t = Math.max(0, Math.min(1,(innerHeight-r.top)/(innerHeight+r.height)));
       reel.style.setProperty('--video-shift', ((t*2 - 1) * r.height * .1).toFixed(2) + 'px');
     } else if (reel) reel.style.setProperty('--video-shift', '0px');
+    if(outroBackground&&!reduced.matches){
+      const r=outroBackground.parentElement.getBoundingClientRect();
+      const p=Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight+r.height)));
+      outroBackground.style.setProperty('--outro-drift',((p-.5)*60).toFixed(2));
+    }
     if (featureList) {
       const listTop = featureList.getBoundingClientRect().top;
       const stride = Math.max(245,Math.min(438,innerWidth * .232)) + Math.max(7,Math.min(12,innerWidth * .0063));
       features.forEach((item, i) => {
         const p = !i || !desktop.matches || reduced.matches ? 1 :
-          Math.max(0,Math.min(1,(innerHeight * .63 - listTop - i * stride) / (innerHeight * .215)));
+          Math.max(0,Math.min(1,(innerHeight * .615 - listTop - i * stride) / (innerHeight * .215)));
         item.style.setProperty('--step-open', p.toFixed(3));
-        item.classList.toggle('is-open',p > .24);
+        item.style.setProperty('--step-fill', (1-Math.pow(1-p,3)).toFixed(3));
+        item.style.setProperty('--step-rows',p.toFixed(3)+'fr');
+        item.classList.toggle('is-open',p > .01);
       });
     }
   }
@@ -491,7 +552,10 @@
 
   const pointer = el('div','folio-cursor');
   const glyph = el('span','cursor-glyph');
-  pointer.append(glyph);
+  const pointerVideo = el('video','cursor-video');
+  pointerVideo.muted=true; pointerVideo.loop=true; pointerVideo.playsInline=true;
+  pointerVideo.preload='none'; pointerVideo.disablePictureInPicture=true;
+  pointer.append(glyph,pointerVideo);
   pointer.setAttribute('aria-hidden','true');
   document.body.append(pointer);
   let px=0,py=0,tx=0,ty=0,entry=false,cursorFrame=0,cursorTime=0,angle=0,stretch=0;
@@ -499,7 +563,8 @@
     entry=false;
     if(cursorFrame)cancelAnimationFrame(cursorFrame);
     cursorFrame=0;
-    pointer.classList.remove('is-visible','is-action','is-link');
+    pointer.classList.remove('is-visible','is-action','is-link','is-video');
+    pointerVideo.pause();
     document.body.classList.remove('has-folio-cursor');
   };
   function pointerMode(target) {
@@ -507,7 +572,15 @@
     const action = active && active.dataset.cursor;
     pointer.classList.toggle('is-action',!!action);
     pointer.classList.toggle('is-link',!action&&!!target?.closest('a,button,summary'));
-    glyph.textContent = action === 'play' ? '▷' : action ? '↗' : '';
+    const videoSource = active?.dataset.cursorVideo;
+    pointer.classList.toggle('is-video',!!videoSource);
+    if (videoSource) {
+      pointerVideo.style.setProperty('--video-left',(Math.max(120,Math.min(innerWidth-120,tx))-tx)+'px');
+      pointerVideo.style.setProperty('--video-top',(Math.max(80,Math.min(innerHeight-80,ty))-ty)+'px');
+      if (pointerVideo.getAttribute('src')!==videoSource) pointerVideo.src=videoSource;
+      if (pointerVideo.paused) pointerVideo.play().catch(()=>{});
+    } else pointerVideo.pause();
+    glyph.textContent = action === 'play' ? '▷' : action === 'expand' ? '+' : action ? '↗' : '';
   }
   function moveCursor(time) {
     cursorFrame=0;
