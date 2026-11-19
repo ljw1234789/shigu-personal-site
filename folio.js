@@ -27,6 +27,75 @@
     return img;
   };
 
+  function proofSection(record) {
+    const section = el('section', 'portfolio-proof');
+    section.id = record.id;
+    section.setAttribute('aria-labelledby', record.id + '-title');
+    const heading = el('h2', '', record.title);
+    heading.id = record.id + '-title';
+    section.append(heading);
+    if (record.note) section.append(el('p', 'proof-note', record.note));
+    (record.paragraphs || []).forEach(text => section.append(el('p', 'proof-copy', text)));
+    if (record.table) {
+      const table = el('table', 'proof-table');
+      const head = el('thead');
+      const labels = el('tr');
+      record.table.headers.forEach(label => {
+        const cell = el('th', '', label);
+        cell.scope = 'col';
+        labels.append(cell);
+      });
+      head.append(labels);
+      const body = el('tbody');
+      record.table.rows.forEach(values => {
+        const row = el('tr');
+        values.forEach((value, index) => {
+          const cell = el(index ? 'td' : 'th', '', value);
+          if (!index) cell.scope = 'row';
+          row.append(cell);
+        });
+        body.append(row);
+      });
+      table.append(head, body);
+      const scroll = el('div', 'proof-table-scroll');
+      scroll.tabIndex = 0;
+      scroll.setAttribute('role', 'region');
+      scroll.setAttribute('aria-label', record.title + '表格');
+      scroll.setAttribute('data-native-scroll', '');
+      scroll.append(table);
+      section.append(scroll);
+    }
+    (record.images || []).forEach(image => {
+      const figure = el('figure', 'proof-figure');
+      const full = anchor(image.src, '');
+      full.target = '_blank';
+      full.rel = 'noopener';
+      full.setAttribute('aria-label', '放大查看' + image.alt);
+      full.append(asset(image.src, image.alt));
+      figure.append(full, el('figcaption', '', image.caption));
+      section.append(figure);
+    });
+    if (record.video) {
+      const figure = el('figure', 'proof-figure');
+      const video = el('video', 'proof-video');
+      video.src = record.video.src;
+      video.poster = record.video.poster;
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = 'none';
+      video.setAttribute('aria-label', record.title + '操作演示');
+      figure.append(video, el('figcaption', '', record.video.caption));
+      section.append(figure);
+    }
+    (record.links || []).forEach(link => {
+      const source = anchor(link.href, link.text, 'proof-source');
+      source.target = '_blank';
+      source.rel = 'noopener';
+      section.append(source);
+    });
+    return section;
+  }
+
   // Preserve native touch, keyboard, zoom and inner scrollers. Wheel input on the
   // desktop page receives a measured, time-based ease rather than per-event jumps.
   let glide = 0, glideTarget = 0, glideY = 0, glideTime = 0;
@@ -228,6 +297,7 @@
         bullets.append(li);
       });
       notes.append(block('我的分工',[el('p','',g.filmRole || g.responsibility),el('p','',f.judgment),bullets]));
+      (f.proof || []).forEach(record => notes.append(proofSection(record)));
       if (f.evidence?.timeline?.overview) {
         const figure = el('figure','project-evidence');
         const evidence = anchor('about.html#reno16-timeline','');
@@ -247,6 +317,37 @@
       project.append(head,cover,notes,nextLink);
     }
   }
+
+  if (document.body.classList.contains('folio-about-page')) {
+    folioGroups.forEach(group => {
+      const caseStudy = document.getElementById(group.id);
+      if (!caseStudy) return;
+      (group.proof || []).forEach(record => caseStudy.append(proofSection(record)));
+      group.films.forEach(film => {
+        const breakdown = $('#work-' + film.id + ' .case-breakdown', caseStudy);
+        if (!breakdown) return;
+        const source = $('.metric-source', breakdown);
+        (film.proof || []).forEach(record => breakdown.insertBefore(proofSection(record), source));
+      });
+    });
+    const expansion = $('#portfolio-expansion');
+    (window.LJW_PORTFOLIO?.sections || []).forEach(record => expansion?.append(proofSection(record)));
+  }
+
+  function revealProofAnchor() {
+    const target = document.getElementById(location.hash.slice(1));
+    if (!target?.classList.contains('portfolio-proof')) return;
+    const film = target.closest('.film-panel');
+    if (film) {
+      $('[data-film="' + film.id.replace(/^work-/, '') + '"]')?.click();
+      const details = target.closest('details');
+      if (details) details.open = true;
+      history.replaceState(null, '', '#' + target.id);
+    }
+    requestAnimationFrame(() => target.scrollIntoView({ block:'start', behavior:'instant' }));
+  }
+  revealProofAnchor();
+  addEventListener('hashchange', revealProofAnchor);
 
   $$('.nav-contact,.folio-pill').forEach(rollPill);
 
