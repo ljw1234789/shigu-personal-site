@@ -166,6 +166,8 @@ window.LJW_CASES=[
           },
           "timeline": {
             "overview": "assets/projects/reno16-timeline-full.jpg",
+              "overviewWidth": 2940,
+              "overviewHeight": 1676,
             "chapters": [
               [
                 "00:00",

@@ -11,6 +11,70 @@
     return node;
   };
 
+  // Match the reference's white cover from the bottom, while keeping real URLs
+  // and the browser's own history/scroll restoration instead of swapping HTML.
+  const routeBase=new URL('./',location.href);
+  const routes=new Set(['','index.html','projects.html','project.html','about.html'].map(name=>new URL(name,routeBase).pathname));
+  const routeKey=url=>{
+    const params=new URLSearchParams(url.search);params.delete('v');params.sort();
+    return url.pathname+'?'+params;
+  };
+  const internalRoute=link=>{
+    if(!link||link.target==='_blank'||link.hasAttribute('download'))return null;
+    const url=new URL(link.href,location.href);
+    return url.origin===location.origin&&routes.has(url.pathname)?url:null;
+  };
+  let routing=false,routeSequence=0;
+  function routeOverlay(covered=false){
+    const overlay=make('div','folio-route-loader');overlay.setAttribute('aria-hidden','true');
+    const backdrop=make('div','route-backdrop'),fill=make('div','route-fill');
+    if(covered){backdrop.style.opacity='1';fill.style.transform='scaleY(1)';}
+    overlay.append(backdrop,fill);document.body.append(overlay);return overlay;
+  }
+  function uncover(overlay){
+    routing=false;document.documentElement.classList.remove('route-entering','route-leaving');
+    if(!overlay)return;
+    if(reduced.matches){overlay.remove();return;}
+    const fade=overlay.animate([{opacity:1},{opacity:0}],{duration:400,easing:'ease',fill:'forwards'});
+    fade.finished.then(()=>overlay.remove(),()=>overlay.remove());
+  }
+  if(document.documentElement.classList.contains('route-entering'))uncover(routeOverlay(true));
+  document.addEventListener('click',async e=>{
+    if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    const link=e.target.closest('a'),destination=internalRoute(link);
+    if(!destination)return;
+    if(destination.hash&&routeKey(destination)===routeKey(new URL(location.href))){
+      link.setAttribute('href',destination.hash);return;
+    }
+    if(reduced.matches)return;
+    e.preventDefault();if(routing)return;
+    routing=true;const sequence=++routeSequence;
+    const overlay=routeOverlay();
+    document.documentElement.classList.add('route-leaving');
+    const backdrop=$('.route-backdrop',overlay),fill=$('.route-fill',overlay);
+    backdrop.animate([{opacity:0},{opacity:1}],{duration:450,fill:'forwards'});
+    const cover=fill.animate([{transform:'scaleY(0)'},{transform:'scaleY(1)'}],{duration:450,easing:'cubic-bezier(.25,1,.5,1)',fill:'forwards'});
+    try{await cover.finished;}catch(_){if(sequence!==routeSequence)return;}
+    if(sequence!==routeSequence)return;
+    try{sessionStorage.setItem('folio:route-entry',JSON.stringify({path:destination.pathname,search:destination.search,time:Date.now()}));}catch(_){}
+    location.assign(destination.href);
+  });
+  addEventListener('pagehide',()=>{routeSequence++;});
+  addEventListener('pageshow',e=>{
+    if(!e.persisted)return;
+    routeSequence++;uncover($('.folio-route-loader'));
+  });
+  const prefetched=new Set();
+  document.addEventListener('pointerover',e=>{
+    if(e.pointerType!=='mouse'||navigator.connection?.saveData)return;
+    const destination=internalRoute(e.target.closest('a'));
+    if(!destination||routeKey(destination)===routeKey(new URL(location.href)))return;
+    destination.hash='';
+    if(prefetched.has(destination.href))return;
+    prefetched.add(destination.href);
+    const hint=document.createElement('link');hint.rel='prefetch';hint.as='document';hint.href=destination.href;document.head.append(hint);
+  },{passive:true});
+
   // The same five evidence cards remain links when scripting or hover is absent.
   const fan=$('.fan-stack');
   if(fan) {
@@ -232,21 +296,9 @@
     lightbox.addEventListener('close',()=>{document.body.classList.remove('evidence-open');opener?.focus({preventScroll:true});});
   }
 
-  // Shared covers and a document crossfade preserve the link/back-button model.
-  document.addEventListener('click',e=>{
-    if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button) return;
-    const link=e.target.closest('a[data-work]');
-    if(!link||link.target==='_blank') return;
-    sessionStorage.setItem('folio:transition-work',link.dataset.work);
-    $$('.project-image,.project-cover').forEach(node=>{node.style.viewTransitionName='';});
-    const cover=$('.project-image',link);
-    if(cover) cover.style.viewTransitionName='selected-work';
-  });
-  const selectedWork=sessionStorage.getItem('folio:transition-work');
-  if(selectedWork) {
-    const cover=$('.project-cover');
-    if(cover?.dataset.work===selectedWork) cover.style.viewTransitionName='selected-work';
-    sessionStorage.removeItem('folio:transition-work');
+  const nextProject=$('.project-next');
+  if(nextProject&&'IntersectionObserver' in window){
+    new IntersectionObserver(entries=>nextProject.classList.toggle('is-running',entries[0].isIntersecting)).observe(nextProject);
   }
 
   const chapters=$('.case-chapters');

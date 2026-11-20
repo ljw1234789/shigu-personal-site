@@ -324,7 +324,12 @@
       if (f.evidence?.timeline?.overview) {
         const figure = el('figure','project-evidence');
         const evidence = anchor('about.html#reno16-timeline','');
-        evidence.append(asset(f.evidence.timeline.overview,'以发布成片重建的 Reno16 剪映时间轴'));
+        const timelineImage=asset(f.evidence.timeline.overview,'以发布成片重建的 Reno16 剪映时间轴');
+        if(f.evidence.timeline.overviewWidth&&f.evidence.timeline.overviewHeight){
+          timelineImage.width=f.evidence.timeline.overviewWidth;
+          timelineImage.height=f.evidence.timeline.overviewHeight;
+        }
+        evidence.append(timelineImage);
         figure.append(evidence,el('figcaption','','Reno16 剪映时间轴 · 依据已发布成片重建。点图查看拆解。'));
         notes.append(figure);
       }
@@ -339,7 +344,12 @@
       nextLink.dataset.cursorVideo = 'assets/studio/hover/' + next.id + '.mp4';
       nextLink.dataset.work = next.id;
       nextLink.setAttribute('aria-label', '查看下一条作品：' + next.name);
-      nextLink.append(el('strong','','下一条作品'),el('span','',next.name));
+      const nextReel=el('span','next-reel');
+      const nextTrack=el('span','next-track');
+      nextTrack.setAttribute('aria-hidden','true');
+      for(let i=0;i<3;i++) nextTrack.append(el('span','next-item','下一条作品'));
+      nextReel.append(nextTrack);
+      nextLink.append(nextReel,el('span','next-name',next.name));
       const chapters = el('nav', 'case-chapters');
       chapters.setAttribute('aria-label', '案例章节');
       (f.proof || []).forEach(record => chapters.append(anchor('#'+record.id,record.title)));
@@ -411,6 +421,12 @@
     if(nodes.length)node.replaceChildren(...nodes);
   }
   if(!reduced.matches) {
+    $$('.portfolio-proof .proof-intro h2,.project-notes>.folio-split h2').forEach(node=>{
+      const text=node.textContent;
+      wrapLines(node,text,true);
+      masks.push({node,text,split:true});
+      node.classList.add('proof-heading-lines');
+    });
     $$('.folio-case-page h1,.folio-list-page h1,.folio-about-page .page-lead h1').forEach(node=>{
       const text=node.textContent;
       wrapLines(node,text,true);
@@ -451,22 +467,40 @@
     preview.play().catch(() => {});
   }
   if (reel) {
+    let closingReel=false,openingReel;
+    dialog.dataset.cursor='close';
+    full.controls=false;full.loop=true;
+    const closeReel=()=>{
+      if(!dialog.open||closingReel)return;
+      closingReel=true;
+      full.pause();
+      if(reduced.matches){dialog.close();return;}
+      const opacity=getComputedStyle(dialog).opacity;
+      openingReel?.cancel();
+      const closing=dialog.animate([{opacity},{opacity:0}],{duration:400,easing:'ease'});
+      closing.finished.then(()=>dialog.close(),()=>dialog.close());
+    };
     reel.addEventListener('click', () => {
-      const origin = reel.getBoundingClientRect();
       preview.pause();
+      dialog.append(pointer);
       dialog.showModal();
+      pointerMode(dialog);
       document.body.classList.add('reel-open');
-      if (!reduced.matches) dialog.animate([
-        {clipPath:'inset('+Math.max(0,origin.top)+'px '+Math.max(0,innerWidth-origin.right)+'px '+Math.max(0,innerHeight-origin.bottom)+'px '+Math.max(0,origin.left)+'px round 18px)'},
-        {clipPath:'inset(0px 0px 0px 0px round 0px)'}
-      ],{duration:700,easing:'cubic-bezier(.25,1,.5,1)'});
+      if (!reduced.matches) openingReel=dialog.animate([
+        {opacity:0,clipPath:'inset(0% 0% 100% 0%)'},
+        {opacity:1,clipPath:'inset(0% 0% 0% 0%)'}
+      ],{duration:400,easing:'ease'});
       if (!full.getAttribute('src')) full.src = full.dataset.src;
       else full.currentTime = 0;
       full.play().catch(() => {});
     });
-    $('.folio-dialog-close',dialog).addEventListener('click', () => dialog.close());
-    dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+    $('.folio-dialog-close',dialog).addEventListener('click',closeReel);
+    dialog.addEventListener('click', e => { if (!e.target.closest('.folio-dialog-close')) closeReel(); });
+    dialog.addEventListener('cancel',e=>{e.preventDefault();closeReel();});
     dialog.addEventListener('close', () => {
+      closingReel=false;
+      document.body.append(pointer);
+      hidePointer();
       document.body.classList.remove('reel-open');
       full.pause();
       playPreview();
@@ -563,7 +597,7 @@
     entry=false;
     if(cursorFrame)cancelAnimationFrame(cursorFrame);
     cursorFrame=0;
-    pointer.classList.remove('is-visible','is-action','is-link','is-video');
+    pointer.classList.remove('is-visible','is-action','is-link','is-video','is-close');
     pointerVideo.pause();
     document.body.classList.remove('has-folio-cursor');
   };
@@ -571,16 +605,18 @@
     const active = target?.closest('[data-cursor]');
     const action = active && active.dataset.cursor;
     pointer.classList.toggle('is-action',!!action);
+    pointer.classList.toggle('is-close',action==='close');
     pointer.classList.toggle('is-link',!action&&!!target?.closest('a,button,summary'));
     const videoSource = active?.dataset.cursorVideo;
     pointer.classList.toggle('is-video',!!videoSource);
     if (videoSource) {
-      pointerVideo.style.setProperty('--video-left',(Math.max(120,Math.min(innerWidth-120,tx))-tx)+'px');
-      pointerVideo.style.setProperty('--video-top',(Math.max(80,Math.min(innerHeight-80,ty))-ty)+'px');
+      const radius=Math.max(80,Math.min(200,innerWidth*.1125))+6;
+      pointerVideo.style.setProperty('--video-left',(Math.max(radius,Math.min(innerWidth-radius,tx))-tx)+'px');
+      pointerVideo.style.setProperty('--video-top',(Math.max(radius,Math.min(innerHeight-radius,ty))-ty)+'px');
       if (pointerVideo.getAttribute('src')!==videoSource) pointerVideo.src=videoSource;
       if (pointerVideo.paused) pointerVideo.play().catch(()=>{});
     } else pointerVideo.pause();
-    glyph.textContent = action === 'play' ? '▷' : action === 'expand' ? '+' : action ? '↗' : '';
+    glyph.textContent = action === 'play' ? '▷' : action === 'close' ? '×' : action === 'expand' ? '+' : action ? '↗' : '';
   }
   function moveCursor(time) {
     cursorFrame=0;
@@ -600,7 +636,7 @@
     if(d>.25||stretch>.002)cursorFrame=requestAnimationFrame(moveCursor);
   }
   function point(e) {
-    if(!precise.matches||reduced.matches||dialog?.open||e.altKey) return hidePointer();
+    if(!precise.matches||reduced.matches||e.altKey) return hidePointer();
     if(e.clientX>document.documentElement.clientWidth||e.clientY<0)return hidePointer();
     tx=e.clientX;ty=e.clientY;
     if(!entry) {px=tx;py=ty;entry=true;}
@@ -618,5 +654,4 @@
   addEventListener('scroll',()=>{if(entry)pointerMode(document.elementFromPoint(tx,ty));},{passive:true});
   reduced.addEventListener('change',hidePointer);
   precise.addEventListener('change',hidePointer);
-  reel?.addEventListener('click',hidePointer);
 })();

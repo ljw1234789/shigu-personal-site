@@ -9,13 +9,29 @@
   <meta property="og:image" content="https://ljw1234789.github.io/shigu-personal-site/assets/studio/reel-poster.jpg">
   <link rel="icon" href="assets/studio/mark.svg" type="image/svg+xml">
 
+  <script>
+(() => {
+  try {
+    const raw = sessionStorage.getItem('folio:route-entry');
+    if (!raw) return;
+    const entry = JSON.parse(raw);
+    if (entry.path === location.pathname && entry.search === location.search) {
+      sessionStorage.removeItem('folio:route-entry');
+      if (Date.now() - entry.time < 10000 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('route-entering');
+        document.documentElement.style.setProperty('--route-delay', '.3s');
+      }
+    } else if (Date.now() - entry.time > 10000) sessionStorage.removeItem('folio:route-entry');
+  } catch (_) {}
+})();
+</script>
   <link rel="stylesheet" href="portfolio-lab.css?v=studio-1">
-  <link rel="stylesheet" href="folio.css?v=experience-20261119-1">
-  <link rel="stylesheet" href="folio-experience.css?v=experience-20261119-1">
-  <script defer src="portfolio-lab-data.js?v=experience-20261119-1"></script>
-  <script defer src="portfolio-lab.js?v=experience-20261119-1"></script>
-  <script defer src="folio.js?v=experience-20261119-1"></script>
-  <script defer src="folio-experience.js?v=experience-20261119-1"></script>
+  <link rel="stylesheet" href="folio.css?v=audit-20261119-3">
+  <link rel="stylesheet" href="folio-experience.css?v=audit-20261119-3">
+  <script defer src="portfolio-lab-data.js?v=audit-20261119-3"></script>
+  <script defer src="portfolio-lab.js?v=audit-20261119-3"></script>
+  <script defer src="folio.js?v=audit-20261119-3"></script>
+  <script defer src="folio-experience.js?v=audit-20261119-3"></script>
 </head>
 <body class="folio folio-about-page">
 <a class="skip-link" href="#main">跳到正文</a>

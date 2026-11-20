@@ -1,13 +1,17 @@
 /* Cuberto interaction study: native links, scroll scrub, fan-to-grid and proof scenes. */
-@view-transition{navigation:auto}
-::view-transition-old(root){animation:document-out .32s both}
-::view-transition-new(root){animation:document-in .65s cubic-bezier(.25,1,.5,1) both}
-::view-transition-group(selected-work){animation-duration:.72s;animation-timing-function:cubic-bezier(.25,1,.5,1)}
-@keyframes document-out{to{opacity:0;transform:translateY(-12px)}}
-@keyframes document-in{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.folio-header{view-transition-name:site-navigation}
+@view-transition{navigation:none}
+:root{--route-delay:0s}
+.folio-route-loader{position:fixed;z-index:90000;inset:0;pointer-events:auto}
+.route-backdrop,.route-fill{position:absolute;inset:0}
+.route-backdrop{background:#0003;opacity:0}
+.route-fill{background:#fff;transform:scaleY(0);transform-origin:100% 100%}
+html.route-entering::before{content:"";position:fixed;z-index:90001;inset:0;background:#fff;animation:route-failsafe 0s 6s forwards}
+@keyframes route-failsafe{to{visibility:hidden;pointer-events:none}}
 .folio .roll-pill,.folio-more>span{transition:translate .5s cubic-bezier(.25,1,.5,1),transform .55s cubic-bezier(.22,1,.36,1),color .34s,border-color .34s}
-.page-heading .rise-ink{animation:word-rise .91s calc(.25s + var(--line-i,0)*.1s) cubic-bezier(.38,.05,.30,1) both}
+.folio-header{z-index:60}
+.folio-cursor:not(.is-video){z-index:70}
+.page-heading .rise-ink{animation:word-rise .91s calc(.25s + var(--line-i,0)*.1s + var(--route-delay)) cubic-bezier(.38,.05,.30,1) both}
+.folio-home .hero-line>span{animation-delay:calc(var(--line-delay,.385s) + var(--word-delay,0s) + var(--route-delay))}
 .folio-nav>a.roll-pill{isolation:auto;overflow:clip;min-width:0!important}
 .folio-nav>a.roll-pill:not(.nav-contact)::before{display:none}
 .folio-nav>a.roll-pill:not(.nav-contact):is(:hover,:focus-visible){transform:none}
@@ -76,6 +80,7 @@
 .project-notes>.folio-split{width:min(82.35%,1360px);margin-inline:auto;gap:20px}
 .project-notes .folio-split>div{font-size:clamp(18px,1.7vw,29px)}
 .project-notes .portfolio-proof{padding:65px 0 100px;border-top:1px solid #dedee3}
+.project-evidence img{height:auto}
 .folio-case-page .portfolio-proof{scroll-margin-top:65px}
 .folio-case-page .proof-intro{top:150px}
 .folio-case-page:has(.folio-header.is-hidden:not(:focus-within)) .proof-intro{top:100px}
@@ -130,13 +135,26 @@
 .case-breakdown .folio .proof-statement{font-size:28px}
 .project-next{padding:80px 0 100px;background:#fff;transition:color .3s}
 .project-next:hover{background:#fff}
-.project-next strong{font-size:clamp(50px,10.5vw,180px);font-weight:420;line-height:1.15;letter-spacing:-.055em}
-.project-next span{font-size:18px;color:#5c5c64}
-.cursor-video{position:absolute;left:var(--video-left,0px);top:var(--video-top,0px);width:230px!important;height:150px;object-fit:cover;border-radius:12px;translate:-50% -50%;transform:scale(.65);opacity:0;transition:transform .45s cubic-bezier(.25,1,.5,1),opacity .2s}
+.project-next .next-reel{display:block;position:relative;z-index:52;overflow:hidden;margin:0;color:#000;font-size:clamp(60px,10vw,190px);font-weight:420;line-height:1.15;letter-spacing:-.055em;pointer-events:none}
+.project-next .next-track{display:flex;width:max-content;margin:0;color:inherit;font:inherit;letter-spacing:inherit;animation:next-marquee 12s linear infinite;animation-play-state:paused;will-change:transform}
+.project-next .next-item{display:block;flex:none;margin:0;padding:.1em .5625em;white-space:nowrap;font:inherit;color:inherit;letter-spacing:inherit}
+.project-next .next-name{position:relative;z-index:52;display:block;margin-top:22px;font-size:18px;color:#5c5c64}
+.project-next.is-running .next-track{animation-play-state:running}
+.project-next:focus-visible .next-track{animation-play-state:paused}
+@keyframes next-marquee{to{transform:translateX(calc(-100% / 3))}}
+.cursor-video{position:absolute;left:var(--video-left,0px);top:var(--video-top,0px);width:clamp(160px,22.5vw,400px)!important;height:auto;aspect-ratio:1;object-fit:cover;border-radius:50%;translate:-50% -50%;transform:scale(.65);opacity:0;transition:transform .45s cubic-bezier(.25,1,.5,1),opacity .2s}
 .folio-cursor.is-video{mix-blend-mode:normal}
 .folio-cursor.is-video::before,.folio-cursor.is-video .cursor-glyph{opacity:0}
 .folio-cursor.is-video .cursor-video{opacity:1;transform:scale(1)}
 .folio-cursor.is-video{z-index:50}
+.folio-dialog::backdrop{background:transparent}
+.folio.has-folio-cursor .folio-dialog,.folio.has-folio-cursor .folio-dialog *{cursor:none}
+.folio-cursor.is-close .cursor-glyph{font-size:26px}
+.proof-heading-lines .rise-ink{transition:transform .85s cubic-bezier(.25,1,.5,1);transition-delay:calc(var(--line-i,0)*.06s)}
+.proof-intro.motion-reveal{opacity:1!important;translate:none!important}
+.proof-intro.motion-reveal:not(.is-seen) .proof-heading-lines .rise-ink,.folio-split.will-rise:not(.has-risen) .proof-heading-lines .rise-ink{transform:translateY(120%)}
+.proof-intro.motion-reveal>p,.proof-intro.motion-reveal>.proof-source{transition:opacity .7s .12s,translate .85s .12s cubic-bezier(.25,1,.5,1)}
+.proof-intro.motion-reveal:not(.is-seen)>p,.proof-intro.motion-reveal:not(.is-seen)>.proof-source{opacity:0;translate:0 16px}
 .folio-about-page .workflow-tabs{scroll-margin-top:100px}
 .folio-about-page .studio-eyebrow{font-size:14px}
 .folio-about-page .method-section,.folio-about-page .ai-section{padding-block:clamp(60px,7vw,120px)}
@@ -165,6 +183,8 @@
 .motion-reveal:focus-within{opacity:1;translate:none}
 
 @media(min-width:761px){
+  .folio.has-folio-cursor .folio-dialog-close{opacity:0;pointer-events:none}
+  .folio.has-folio-cursor .folio-dialog-close:focus-visible{opacity:1;pointer-events:auto}
   .portfolio-proof:has(.proof-body:empty){grid-template-columns:1fr}
   .portfolio-proof:has(.proof-body:empty) .proof-intro{position:static;max-width:75%;margin-left:28%}
   .portfolio-proof:has(.proof-body:empty) h2{max-width:24ch}
@@ -181,11 +201,11 @@
   .feature-fold p{font-size:16px}
   .folio-fan .folio-inner{width:calc(100% - 30px)}
   .fan-unfold{margin-top:20px}
-  .fan-stack{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:10px;height:auto;margin:40px auto 70px}
-  .fan-card{grid-column:auto!important;position:relative;width:100%;min-height:250px;padding:20px 15px;border:1px solid #fff!important;transform:none!important;z-index:auto!important}
+  .fan-stack{display:grid;grid-template-columns:1fr;width:100%;gap:12px;height:auto;margin:40px auto 70px}
+  .fan-card{grid-column:auto!important;position:relative;width:100%;min-height:0;padding:27px 24px;border:1px solid #fff!important;transform:none!important;z-index:auto!important}
   .fan-card:nth-child(5){grid-column:1/-1!important;min-height:0}
   .fan-card>span{font-size:17px}
-  .fan-card p{font-size:15px;line-height:1.6;margin:16px 0 18px}
+  .fan-card p{font-size:16px;line-height:1.65;margin:16px 0 22px}
   .fan-card b{font-size:13px}
   .fan-unfold{display:none}
   .folio-fan .folio-display{text-align:left}
@@ -215,8 +235,8 @@
   .proof-body .proof-figure:first-child{margin-top:0}
   .portfolio-integration .portfolio-proof{padding:40px 0 50px}
   .project-next{padding:60px 15px 70px}
-  .project-next strong{font-size:15vw}
-  .project-next span{font-size:16px}
+  .project-next .next-reel{font-size:15vw}
+  .project-next .next-name{font-size:16px}
   .evidence-lightbox{padding:85px 15px 80px}
   .evidence-toolbar{left:15px;right:15px;gap:9px}
   .evidence-toolbar button{padding:10px 13px}
@@ -227,7 +247,11 @@
 }
 @media(max-width:360px){.fan-stack{grid-template-columns:1fr}.fan-card{min-height:0}}
 @media(prefers-reduced-motion:reduce){
-  ::view-transition-old(root),::view-transition-new(root),::view-transition-group(selected-work){animation:none}
   .motion-reveal{opacity:1!important;translate:none!important}
   .fan-card,.folio-cursor,.proof-active-content{transition:none!important;animation:none!important}
+  .proof-heading-lines .rise-ink{transform:none!important;transition:none!important}
+  .proof-intro.motion-reveal>p,.proof-intro.motion-reveal>.proof-source{opacity:1!important;translate:none!important}
+  .project-next .next-track{animation:none;transform:none;width:100%}
+  .project-next .next-item{width:100%;text-align:center}
+  .project-next .next-item:not(:first-child){display:none}
 }
