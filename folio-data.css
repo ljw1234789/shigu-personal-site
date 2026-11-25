@@ -43,10 +43,8 @@
 .inspect-number {display:inline;padding:0;border:0;color:inherit;background:transparent;text-align:inherit;font:inherit;line-height:inherit;letter-spacing:inherit;text-decoration:underline dotted #777;text-underline-offset:.19em}
 .inspect-number:is(:hover,:focus-visible) {text-decoration-style:solid}
 @media(prefers-reduced-motion:no-preference){
- .fact-copy,.fact-tile svg,.project-readout span {transition:translate .24s var(--curved)}
- .fact-tile:is(:hover,:focus-visible) .fact-copy {translate:0 -3px}
+ .project-readout span {transition:translate .24s var(--curved)}
  .project-card:is(:hover,:focus-visible) .project-readout span {translate:3px -2px}
- .number-dialog[open] {animation:record-open .2s ease-out}
  @keyframes record-open {from{opacity:0;translate:0 6px}to{opacity:1;translate:0}}
 }
 @media(max-width:767px){
@@ -63,10 +61,51 @@
 .fact-detail-row summary {display:grid;grid-template-columns:1fr auto 12px;align-items:center;gap:12px;padding:13px 1px;text-align:left;font-size:15px;cursor:pointer;list-style:none}
 .fact-detail-row summary::-webkit-details-marker {display:none}
 .fact-detail-row summary:after {content:"+";font-size:18px;color:#555}
-.fact-detail-row[open]>summary:after {content:"−"}
+.fact-detail-row[open]>summary:after {transform:rotate(45deg)}
 .fact-detail-row summary strong {display:block;font-weight:550;font-variant-numeric:tabular-nums}
 .number-record .fact-detail-row p {margin:0;padding:0 0 14px;line-height:1.6}
 .number-record a {color:#19191b;text-decoration:underline}
 @media(prefers-reduced-motion:no-preference){
  .fact-detail-row[open]>p {animation:record-open .22s ease-out}
+}
+
+/* The ink enters at the pointer. Difference blending keeps the labels readable on both surfaces. */
+.fact-tile {isolation:isolate;overflow:hidden;--entry-x:85%;--entry-y:15%}
+.fact-tile::before {content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:#161619;clip-path:circle(0% at var(--entry-x) var(--entry-y))}
+.fact-tile:is(.is-pointed,:focus-visible,:active)::before {clip-path:circle(150% at var(--entry-x) var(--entry-y))}
+.fact-tile>.fact-copy,.fact-tile>svg,.fact-open-cue {position:relative;z-index:1;color:white;mix-blend-mode:difference}
+.fact-open-cue {position:absolute;top:calc(4 * var(--fact-unit));right:calc(4 * var(--fact-unit));display:flex;align-items:center;gap:8px;line-height:1}
+.fact-arrow {display:grid;place-items:center;border-radius:50%;border:1px solid currentColor;width:29px;height:29px;font-size:18px}
+.fact-open-label {font-size:13px;opacity:0}
+.fact-tile:is(.is-pointed,:focus-visible,:active) .fact-open-label {opacity:1}
+.fact-tile:focus-visible {outline:3px solid #26262c;outline-offset:3px}
+.fact-detail-row summary {border-radius:6px}
+.fact-detail-row summary:after {display:grid;place-items:center;height:20px}
+.fact-detail-row[open]>summary {padding-inline:9px;background:#edf5f4}
+.fact-detail-row[open]>summary strong {text-decoration:underline;text-underline-offset:3px}
+.number-dialog::backdrop {animation:none}
+@media(prefers-reduced-motion:no-preference){
+ .fact-tile::before {transition:clip-path .48s cubic-bezier(.22,.78,.18,1)}
+ .fact-tile .fact-copy,.fact-tile svg,.fact-arrow,.fact-open-label {transition:transform .42s var(--curved),opacity .23s}
+ .fact-open-label {transform:translateX(8px)}
+ .fact-tile:is(.is-pointed,:focus-visible,:active) .fact-open-label {transform:none}
+ .fact-tile:is(.is-pointed,:focus-visible,:active) .fact-copy {transform:translateY(-8px)}
+ .fact-tile:is(.is-pointed,:focus-visible,:active) .fact-arrow {transform:rotate(45deg)}
+ .fact-tile:is(.is-pointed,:focus-visible,:active) svg {transform:rotate(-8deg) scale(1.1)}
+ .fact-detail-row summary,.fact-detail-row summary:after {transition:transform .25s,padding .25s,background-color .25s}
+ @supports (interpolate-size:allow-keywords) {
+   .fact-detail-row {interpolate-size:allow-keywords}
+   .fact-detail-row::details-content {block-size:0;overflow:hidden;transition:block-size .32s var(--curved),content-visibility .32s allow-discrete}
+   .fact-detail-row[open]::details-content {block-size:auto}
+ }
+}
+@media(max-width:767px){
+ .fact-open-cue {top:calc(3 * var(--fact-unit));right:calc(3 * var(--fact-unit))}
+ .fact-open-label {opacity:1;transform:none}
+}
+.inspect-number {border-radius:3px;background-image:linear-gradient(#17171b,#17171b);background-repeat:no-repeat;background-position:left center;background-size:0 100%}
+.inspect-number:is(:hover,:focus-visible,:active) {color:white;background-size:100% 100%;text-decoration-color:transparent}
+.project-card:is(:hover,:focus-visible) .project-readout {border-color:currentColor}
+@media(prefers-reduced-motion:no-preference){
+ .inspect-number {transition:background-size .19s var(--curved),color .15s}
 }

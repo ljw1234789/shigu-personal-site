@@ -103,10 +103,44 @@
   const title=element('h2'); title.id='number-title';
   const detailList=element('dl'), annotation=element('p','number-note');
   dialog.append(close,title,detailList,annotation); document.body.append(dialog);
-  close.addEventListener('click',()=>dialog.close());
+  let opener, sheetMotion, closing=false;
+  function openSheet(trigger) {
+    if(dialog.open) return;
+    opener=trigger;
+    dialog.showModal();
+    close.focus({preventScroll:true});
+    if(reduce.matches) return;
+    const from=trigger.getBoundingClientRect(), to=dialog.getBoundingClientRect();
+    const dx=from.left+from.width/2-to.left-to.width/2;
+    const dy=from.top+from.height/2-to.top-to.height/2;
+    const startScale=Math.min(.78,Math.max(.28,from.width/to.width));
+    dialog.style.setProperty('--sheet-start','translate('+dx+'px,'+dy+'px) scale('+startScale+')');
+    sheetMotion=dialog.animate([
+      {transform:'var(--sheet-start)',opacity:.4,borderRadius:'30px'},
+      {transform:'none',opacity:1,borderRadius:'18px'}
+    ],{duration:400,easing:'cubic-bezier(.18,.78,.18,1)'});
+  }
+  function closeSheet() {
+    if(!dialog.open || closing) return;
+    if(reduce.matches || !opener?.isConnected){dialog.close();return;}
+    closing=true;
+    const current=getComputedStyle(dialog).transform;
+    sheetMotion?.cancel();
+    const motion=dialog.animate([
+      {transform:current,opacity:1},
+      {transform:'var(--sheet-start)',opacity:0}
+    ],{duration:230,easing:'cubic-bezier(.5,0,.85,.45)',fill:'forwards'});
+    sheetMotion=motion;
+    motion.onfinish=()=>dialog.close();
+  }
+  close.addEventListener('click',closeSheet);
+  dialog.addEventListener('cancel',e=>{e.preventDefault();closeSheet();});
+  dialog.addEventListener('close',()=>{
+    sheetMotion?.cancel(); sheetMotion=null; closing=false; opener=null;
+  });
   dialog.addEventListener('close',()=>cue(420,265));
   dialog.addEventListener('click',e=>{if(e.target===dialog && !e.target.closest('button')) {
-    const r=dialog.getBoundingClientRect(); if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();
+    const r=dialog.getBoundingClientRect(); if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeSheet();
   }});
   function inspect(node, heading, fields, note) {
     if(!node || node.querySelector('a,button,video')) return;
@@ -117,7 +151,7 @@
       title.textContent=heading; detailList.replaceChildren();
       fields.forEach(([k,v])=>detailList.append(element('dt','',k),element('dd','',v)));
       annotation.textContent=note || ''; annotation.hidden=!note;
-      dialog.showModal(); close.focus();
+      openSheet(b);
     });
     node.replaceChildren(b);
   }
@@ -135,16 +169,45 @@
   }
 
   const homeFacts = all('.account-tiles a[href^="#"]');
+  if (homeFacts.length) {
+    const entrance = !reduce.matches && 'IntersectionObserver' in window
+      ? new IntersectionObserver(entries=>{
+          const visible=entries.filter(entry=>entry.isIntersecting);
+          visible.forEach(({target},i)=>{
+            entrance.unobserve(target);
+            if(reduce.matches) return;
+            target.animate([
+              {opacity:.22,transform:'translateY(34px)'},
+              {opacity:1,transform:'none'}
+            ],{duration:630,delay:Math.min(i,2)*70,easing:'cubic-bezier(.16,1,.3,1)',fill:'backwards'});
+          });
+        },{threshold:.13})
+      : null;
+    for(const tile of homeFacts) {
+      const hint=element('span','fact-open-cue');
+      hint.setAttribute('aria-hidden','true');
+      hint.append(element('span','fact-open-label','查看明细'),element('span','fact-arrow','↗'));
+      tile.append(hint);
+      tile.addEventListener('pointerenter',e=>{
+        if(e.pointerType !== 'mouse') return;
+        const rect=tile.getBoundingClientRect();
+        tile.style.setProperty('--entry-x', 100*(e.clientX-rect.left)/rect.width+'%');
+        tile.style.setProperty('--entry-y', 100*(e.clientY-rect.top)/rect.height+'%');
+        tile.classList.add('is-pointed');
+      });
+      tile.addEventListener('pointerleave',()=>tile.classList.remove('is-pointed'));
+      entrance?.observe(tile);
+    }
+  }
   if (homeFacts.length && typeof dialog.showModal === 'function') {
     const recordBody = element('div','number-record');
     dialog.append(recordBody);
-    function showRecord(record) {
+    function showRecord(record,trigger) {
       recordBody.replaceChildren(...[...record.children].slice(1).map(n=>n.cloneNode(true)));
       title.textContent = $('h3',record).textContent;
       detailList.hidden = true;
       annotation.hidden = true;
-      dialog.showModal();
-      close.focus();
+      openSheet(trigger);
     }
     dialog.addEventListener('close',()=>{
       recordBody.replaceChildren();
@@ -157,11 +220,11 @@
       link.addEventListener('click',e=>{
         if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)return;
         e.preventDefault();
-        showRecord(record);
+        showRecord(record,link);
       });
       if(location.hash===link.hash) {
         link.focus();
-        showRecord(record);
+        showRecord(record,link);
       }
     });
   }
