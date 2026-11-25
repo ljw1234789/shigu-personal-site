@@ -13,13 +13,15 @@
   const caseUrl = film => 'project.html?work=' + encodeURIComponent(film.id);
 
   // Audio is synthesized on demand and unlocked only by a gesture.
-  const sound = $('.sound-control');
+  const soundControls = all('.sound-control');
   const AudioEngine = window.AudioContext || window.webkitAudioContext;
   let enabled = false, context, volume;
   try { enabled = localStorage.getItem('folio:interaction-audio') === 'on'; } catch {}
   function showSound() {
-    sound.setAttribute('aria-pressed', String(enabled));
-    $('.sound-label', sound).textContent = enabled ? '音效开' : '音效关';
+    for (const sound of soundControls) {
+      sound.setAttribute('aria-pressed', String(enabled));
+      $('.sound-label', sound).textContent = enabled ? '音效开' : '音效关';
+    }
   }
   async function cue(frequency, end = frequency * 1.3, level = 0.42) {
     if (!enabled || !AudioEngine) return;
@@ -45,25 +47,26 @@
       osc.start(now); osc.stop(now + 0.125);
     } catch { /* Audio may be unavailable while the page is in the background. */ }
   }
-  if (sound && AudioEngine) {
+  if (soundControls.length && AudioEngine) {
     showSound();
-    sound.addEventListener('click', () => {
+    soundControls.forEach(sound => sound.addEventListener('click', () => {
       enabled = !enabled;
       showSound();
       try { localStorage.setItem('folio:interaction-audio', enabled ? 'on' : 'off'); } catch {}
       if (enabled) cue(550);
       else if (volume) volume.gain.value = 0;
-    });
+    }));
+    document.addEventListener('folio-fact-sound', e => cue(e.detail, e.detail * 1.2, .24));
     document.addEventListener('click', e => {
       const control = e.target.closest('a, button, summary');
-      if (!control || control === sound || control.matches('.number-close')) return;
+      if (!control || soundControls.includes(control) || control.matches('.number-close') || (control.closest('.fact-cell') && !control.closest('a'))) return;
       if (control.matches('.fact-tile,.inspect-number')) cue(360,610);
       else if (control.matches('.fact-detail-row summary')) {
         if (control.parentElement.open) cue(420,320);
         else cue(460,540);
       } else cue(460);
     });
-  } else if (sound) sound.hidden = true;
+  } else soundControls.forEach(sound => { sound.hidden = true; });
 
   // A short mask reveals the printed value without counting through fictional data.
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
@@ -196,7 +199,7 @@
         tile.classList.add('is-pointed');
       });
       tile.addEventListener('pointerleave',()=>tile.classList.remove('is-pointed'));
-      entrance?.observe(tile);
+      entrance?.observe(tile.closest('.fact-cell') || tile);
     }
   }
   if (homeFacts.length && typeof dialog.showModal === 'function') {
