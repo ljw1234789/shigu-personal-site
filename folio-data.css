@@ -15,6 +15,9 @@
 .project-readout span {font-size:13px}
 .ledger-return,.number-record a,.fact-record a {display:inline-block;margin-block:10px;text-decoration:underline;text-underline-offset:4px;font-size:14px}
 
+/* Direct links open at the data cards so their first reveal is in view. */
+html:has(#account-data:target) {scroll-behavior:auto}
+
 /* Why Cuberto uses a three-plus-two tile grid on desktop and a single column on mobile. */
 #account-data {--fact-unit:clamp(5.4px,.625vw,12px);width:min(69.2vw,1360px);scroll-margin-top:76px;overflow:visible}
 #account-data .folio-split {align-items:start}
