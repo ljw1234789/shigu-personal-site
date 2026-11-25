@@ -182,7 +182,7 @@
     all('.case-output strong',section).forEach((n,i)=>inspect(n,group.name+' · 工作记录',[[group.output[i][1],group.output[i][0]],['统计背景',group.context]],null));
     group.films.forEach(film=>inspect($('#work-'+film.id+' .film-number strong',section),film.name,[['平台',film.platform],['团队作品播放量',film.views+' 万'],['个人分工',group.filmRole]],group.metricNote));
     if(group.id==='yingjun'){
-      const link=element('a','ledger-return','看英俊账号粉丝变化 ↗'); link.href='./#account-data';
+      const link=element('a','ledger-return','看英俊账号规模与样本 ↗'); link.href='./#account-data';
       $('.case-output',section)?.after(link);
     }
   });
