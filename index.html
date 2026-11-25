@@ -47,12 +47,15 @@
 
   <script defer src="folio.js?v=audit-20261119-3"></script>
   <script defer src="folio-experience.js?v=audit-20261119-3"></script>
+  <link rel="stylesheet" href="folio-data.css?v=ledger-1">
+  <script defer src="folio-data.js?v=ledger-1"></script>
 </head>
 <body class="folio folio-home">
 <a class="skip-link" href="#main">跳到正文</a>
 <header class="folio-header">
   <div class="folio-wide nav-row">
     <a class="folio-wordmark" href="./" aria-label="刘俊威，返回首页">刘俊威<span>.</span></a>
+    <button class="sound-control" type="button" aria-label="交互音效" aria-pressed="false"><span aria-hidden="true" class="sound-bars"><i></i><i></i><i></i><i></i></span><span class="sound-label">音效关</span></button>
     <button class="folio-toggle" type="button" aria-controls="folio-nav" aria-expanded="false" aria-label="打开导航"><i></i><i></i></button>
     <nav id="folio-nav" class="folio-nav" aria-label="主导航">
       <span class="menu-label">菜单</span>
@@ -66,31 +69,42 @@
       </details>
       <a href="projects.html" data-nav="projects">作品</a>
       <a href="about.html" data-nav="about">关于</a>
+      <a href="./#account-data">数据</a>
       <a href="./#tools">工具</a>
       <a href="./#contact" class="nav-contact">联系我</a>
     </nav>
   </div>
 </header>
 <main id="main" tabindex="-1">
-<section class="folio-lead" id="about">
-  <div class="folio-wide">
-    <h1>
-      <span class="lead-desktop hero-line"><span>把好奇，</span><span>做成内容。</span></span>
-      <span class="lead-desktop hero-line"><span>把想法，</span><span>做成工具。</span></span>
-      <span class="lead-mobile hero-line"><span>把好奇做成内容</span></span>
-      <span class="lead-mobile hero-line"><span>把想法做成工具</span></span>
-      <span class="lead-mobile hero-line"><span>刘俊威</span></span>
-    </h1>
-    <p>我是刘俊威，IP 编导，在英俊姐妹日记和毕导团队做过约一年半内容制作。<br class="wide-only">主要做选题和脚本，参与剪辑，也把 AI 用进制作流程。</p>
+<section class="cut-desk folio-wide" id="about" aria-labelledby="desk-title">
+  <div class="desk-copy">
+    <p class="desk-name">刘俊威 <span>/</span> IP 编导</p>
+    <h1 id="desk-title">从一个问题<br>到一条成片<span>。</span></h1>
+    <p class="desk-intro">一个人怎么用后摄自拍？怎么在地面上判断地球的形状？我在英俊姐妹日记和毕导团队做选题、写脚本，参与剪辑。</p>
+    <div class="desk-jumps"><a href="#works">选一部作品 <span aria-hidden="true">↘</span></a><a href="#account-data">看账号数据 ↓</a></div>
   </div>
+  <figure class="desk-monitor"><button class="folio-reel" type="button" aria-haspopup="dialog" aria-label="播放作品速览" data-cursor="play">
+    <video muted loop playsinline preload="none" poster="assets/studio/reel-poster.jpg" data-src="assets/studio/reel-preview.mp4" aria-hidden="true"></video>
+    <span class="desk-play" aria-hidden="true">▶</span>
+  </button><figcaption><strong>作品速览</strong><span>英俊姐妹日记 / 毕导</span></figcaption></figure>
 </section>
 
-<div class="folio-preview folio-wide">
-  <button class="folio-reel" type="button" aria-haspopup="dialog" aria-label="播放作品速览" data-cursor="play">
-    <video muted loop playsinline preload="none" poster="assets/studio/reel-poster.jpg" data-src="assets/studio/reel-preview.mp4" aria-hidden="true"></video>
-    <span class="focus-play" aria-hidden="true">▷</span>
-  </button>
-</div>
+<section class="account-lab" id="account-data" aria-labelledby="ledger-title">
+ <div class="folio-wide">
+  <header class="ledger-head"><h2 id="ledger-title">作品背后的数据</h2><div class="ledger-modes" role="group" aria-label="选择数据主题"><button type="button" data-mode="fans" aria-pressed="true">粉丝变化</button><button type="button" data-mode="plays" aria-pressed="false">作品播放</button><button type="button" data-mode="comments" aria-pressed="false">评论选题</button></div></header>
+  <div class="ledger-workspace"><div class="ledger-summary"><p id="ledger-kind">英俊姐妹日记 · 抖音账号</p><h3 id="ledger-total">约 +1.97 万</h3><p id="ledger-caption">团队账号净增粉丝，覆盖 2025.12.01—2026.10.31。入职后的 8—11 月缺记录。</p><a id="ledger-source" href="assets/portfolio/yingjun-followers.csv" download>下载飞瓜区间明细 ↓</a></div>
+  <div><div id="ledger-chart" role="group" aria-label="选择数据查看明细"></div><p id="ledger-detail" aria-live="polite"></p><noscript>2025.12—2026.03 约增 2.7 万，2026.04—07 减少 1,683，2026.08—10 减少 5,582。</noscript></div></div>
+ </div>
+</section>
+
+<section class="folio-selected" id="works" aria-labelledby="works-title">
+  <div class="folio-inner">
+    <h2 class="folio-display" id="works-title" data-rise>精选作品</h2>
+    <div class="desk-filters" role="group" aria-label="按账号筛选作品"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="yingjun" aria-pressed="false">英俊姐妹日记</button><button data-filter="bidao" aria-pressed="false">毕导</button></div><span class="visually-hidden" role="status" id="filter-status"></span>
+    <div class="folio-grid" id="project-grid" data-gallery="selected"></div>
+    <div class="folio-center"><a class="folio-pill" href="projects.html">查看全部作品</a></div>
+  </div>
+</section>
 
 <section class="folio-services" id="services" aria-labelledby="services-title">
   <div class="folio-inner">
@@ -140,23 +154,7 @@
   </div>
 </section>
 
-<section class="folio-teams folio-inner" aria-labelledby="teams-title">
-  <h2 id="teams-title" data-rise>参与过的账号与工作方向</h2>
-  <div class="team-grid" data-rise>
-    <a href="about.html#yingjun"><b>英俊姐妹日记</b></a><a href="about.html#bidao"><b>毕导</b></a>
-    <a href="projects.html?filter=yingjun"><span>科技数码</span></a><a href="projects.html?filter=bidao"><span>知识科普</span></a>
-    <a href="#topic"><span>选题策划</span></a><a href="#script"><span>口播脚本</span></a>
-    <a href="#edit"><span>视频剪辑</span></a><a href="about.html#ai"><span>AI 实践</span></a>
-  </div>
-</section>
 
-<section class="folio-selected" id="works" aria-labelledby="works-title">
-  <div class="folio-inner">
-    <h2 class="folio-display" id="works-title" data-rise>精选作品</h2>
-    <div class="folio-grid" id="project-grid" data-gallery="selected"></div>
-    <div class="folio-center"><a class="folio-pill" href="projects.html">查看全部作品</a></div>
-  </div>
-</section>
 
 <section class="folio-fan" aria-labelledby="fan-title">
   <div class="folio-inner">
@@ -171,16 +169,7 @@
   </div>
 </section>
 
-<section class="folio-facts folio-inner" aria-labelledby="facts-title">
-  <div class="folio-split" data-rise><h2 id="facts-title">关于我</h2><p>这份作品集记录了我在两个 IP 团队做过的工作。每条作品都注明个人分工和平台来源，也保留了能看到制作过程的证据。</p></div>
-  <div class="facts-grid">
-    <div data-rise><span>✳</span><strong>约一年半</strong><small>内容制作经历</small></div>
-    <div data-rise><span>✧</span><p>两段 IP 团队经历</p></div>
-    <div data-rise><span>◉</span><strong>06</strong><small>代表作品</small></div>
-    <div data-rise><span>↗</span><p>负责选题和脚本，参与剪辑</p></div>
-    <div data-rise><span>◎</span><p>把 AI 用进制作，保留人工判断</p></div>
-  </div>
-</section>
+
 
 <div class="folio-inverse">
   <section class="folio-insights folio-inner" id="tools" aria-labelledby="tools-title">
