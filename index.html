@@ -47,8 +47,8 @@
 
   <script defer src="folio.js?v=audit-20261119-3"></script>
   <script defer src="folio-experience.js?v=audit-20261119-3"></script>
-  <link rel="stylesheet" href="folio-data.css?v=ledger-1">
-  <script defer src="folio-data.js?v=ledger-1"></script>
+  <link rel="stylesheet" href="folio-data.css?v=cuberto-facts-1">
+  <script defer src="folio-data.js?v=cuberto-facts-1"></script>
 </head>
 <body class="folio folio-home">
 <a class="skip-link" href="#main">跳到正文</a>
@@ -76,35 +76,25 @@
   </div>
 </header>
 <main id="main" tabindex="-1">
-<section class="cut-desk folio-wide" id="about" aria-labelledby="desk-title">
-  <div class="desk-copy">
-    <p class="desk-name">刘俊威 <span>/</span> IP 编导</p>
-    <h1 id="desk-title">从一个问题<br>到一条成片<span>。</span></h1>
-    <p class="desk-intro">一个人怎么用后摄自拍？怎么在地面上判断地球的形状？我在英俊姐妹日记和毕导团队做选题、写脚本，参与剪辑。</p>
-    <div class="desk-jumps"><a href="#works">选一部作品 <span aria-hidden="true">↘</span></a><a href="#account-data">看账号数据 ↓</a></div>
+<section class="folio-lead" id="about">
+  <div class="folio-wide">
+    <h1>
+      <span class="lead-desktop hero-line"><span>把好奇，</span><span>做成内容。</span></span>
+      <span class="lead-desktop hero-line"><span>把想法，</span><span>做成工具。</span></span>
+      <span class="lead-mobile hero-line"><span>把好奇做成内容</span></span>
+      <span class="lead-mobile hero-line"><span>把想法做成工具</span></span>
+      <span class="lead-mobile hero-line"><span>刘俊威</span></span>
+    </h1>
+    <p>我是刘俊威，IP 编导，在英俊姐妹日记和毕导团队做过约一年半内容制作。<br class="wide-only">主要做选题和脚本，参与剪辑，也把 AI 用进制作流程。</p>
   </div>
-  <figure class="desk-monitor"><button class="folio-reel" type="button" aria-haspopup="dialog" aria-label="播放作品速览" data-cursor="play">
+</section>
+
+<div class="folio-preview folio-wide">
+  <button class="folio-reel" type="button" aria-haspopup="dialog" aria-label="播放作品速览" data-cursor="play">
     <video muted loop playsinline preload="none" poster="assets/studio/reel-poster.jpg" data-src="assets/studio/reel-preview.mp4" aria-hidden="true"></video>
-    <span class="desk-play" aria-hidden="true">▶</span>
-  </button><figcaption><strong>作品速览</strong><span>英俊姐妹日记 / 毕导</span></figcaption></figure>
-</section>
-
-<section class="account-lab" id="account-data" aria-labelledby="ledger-title">
- <div class="folio-wide">
-  <header class="ledger-head"><h2 id="ledger-title">作品背后的数据</h2><div class="ledger-modes" role="group" aria-label="选择数据主题"><button type="button" data-mode="fans" aria-pressed="true">粉丝变化</button><button type="button" data-mode="plays" aria-pressed="false">作品播放</button><button type="button" data-mode="comments" aria-pressed="false">评论选题</button></div></header>
-  <div class="ledger-workspace"><div class="ledger-summary"><p id="ledger-kind">英俊姐妹日记 · 抖音账号</p><h3 id="ledger-total">约 +1.97 万</h3><p id="ledger-caption">团队账号净增粉丝，覆盖 2025.12.01—2026.10.31。入职后的 8—11 月缺记录。</p><a id="ledger-source" href="assets/portfolio/yingjun-followers.csv" download>下载飞瓜区间明细 ↓</a></div>
-  <div><div id="ledger-chart" role="group" aria-label="选择数据查看明细"></div><p id="ledger-detail" aria-live="polite"></p><noscript>2025.12—2026.03 约增 2.7 万，2026.04—07 减少 1,683，2026.08—10 减少 5,582。</noscript></div></div>
- </div>
-</section>
-
-<section class="folio-selected" id="works" aria-labelledby="works-title">
-  <div class="folio-inner">
-    <h2 class="folio-display" id="works-title" data-rise>精选作品</h2>
-    <div class="desk-filters" role="group" aria-label="按账号筛选作品"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="yingjun" aria-pressed="false">英俊姐妹日记</button><button data-filter="bidao" aria-pressed="false">毕导</button></div><span class="visually-hidden" role="status" id="filter-status"></span>
-    <div class="folio-grid" id="project-grid" data-gallery="selected"></div>
-    <div class="folio-center"><a class="folio-pill" href="projects.html">查看全部作品</a></div>
-  </div>
-</section>
+    <span class="focus-play" aria-hidden="true">▷</span>
+  </button>
+</div>
 
 <section class="folio-services" id="services" aria-labelledby="services-title">
   <div class="folio-inner">
@@ -154,7 +144,24 @@
   </div>
 </section>
 
+<section class="folio-teams folio-inner" aria-labelledby="teams-title">
+  <h2 id="teams-title" data-rise>参与过的账号与工作方向</h2>
+  <div class="team-grid" data-rise>
+    <a href="about.html#yingjun"><b>英俊姐妹日记</b></a><a href="about.html#bidao"><b>毕导</b></a>
+    <a href="projects.html?filter=yingjun"><span>科技数码</span></a><a href="projects.html?filter=bidao"><span>知识科普</span></a>
+    <a href="#topic"><span>选题策划</span></a><a href="#script"><span>口播脚本</span></a>
+    <a href="#edit"><span>视频剪辑</span></a><a href="about.html#ai"><span>AI 实践</span></a>
+  </div>
+</section>
 
+<section class="folio-selected" id="works" aria-labelledby="works-title">
+  <div class="folio-inner">
+    <h2 class="folio-display" id="works-title" data-rise>精选作品</h2>
+    <div class="collection-filters" role="group" aria-label="按账号筛选作品"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="yingjun" aria-pressed="false">英俊姐妹日记</button><button data-filter="bidao" aria-pressed="false">毕导</button></div><span class="sr-only" role="status" id="filter-status"></span>
+    <div class="folio-grid" id="project-grid" data-gallery="selected"></div>
+    <div class="folio-center"><a class="folio-pill" href="projects.html">查看全部作品</a></div>
+  </div>
+</section>
 
 <section class="folio-fan" aria-labelledby="fan-title">
   <div class="folio-inner">
@@ -169,7 +176,45 @@
   </div>
 </section>
 
-
+<section class="folio-facts folio-inner" id="account-data" aria-labelledby="facts-title">
+  <div class="folio-split" data-rise><h2 id="facts-title">作品背后的数据</h2><p>在英俊姐妹日记，我负责选题和脚本，参与剪辑。点开数字，可以查看任职起止、平台记录，以及我在每部作品里做的事。</p></div>
+  <div class="account-tiles">
+    <a class="fact-tile fact-highlight" href="#tenure-record"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="m12 2.5 3 6.1 6.6.9-4.8 4.7 1.1 6.6-5.9-3.1-5.9 3.1 1.1-6.6-4.8-4.7 6.6-.9z"/></svg><span class="fact-copy"><strong>80<em>多万</em></strong><small>离职时的团队账号粉丝数<br>入职时 0 粉 · 本人回忆</small></span></a>
+    <a class="fact-tile" href="#reno-record"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg><span class="fact-copy">Reno16 系列上手体验<br>抖音团队播放 902 万</span></a>
+    <a class="fact-tile fact-highlight" href="#interval-record"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.5 12h17M12 3c-5 5-5 13 0 18 5-5 5-13 0-18Z"/></svg><span class="fact-copy"><strong>+1.97<em>万</em></strong><small>飞瓜三个区间合计净增 · 约数<br>2025.12—2026.10</small></span></a>
+    <a class="fact-tile" href="#films-record"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12.5h18"/></svg><span class="fact-copy">两个 IP 团队，六部代表作。<br>查看原片与我的分工。</span></a>
+    <a class="fact-tile" href="#questions-record"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H8l-5 3 1-6a8 8 0 1 1 17-5Z"/><path d="M8 11h8m-8 3h5"/></svg><span class="fact-copy">从 214 条评论里，<br>选出 4 个可拍问题。</span></a>
+  </div>
+  <section class="fact-record" id="tenure-record"><h3>英俊姐妹日记 · 任职期粉丝规模</h3>
+    <details class="fact-detail-row"><summary><span>2025 年 8 月入职</span><strong>0 粉丝</strong></summary><p>我回忆入职时为 0 粉。飞瓜在同一抖音号下列有 2018 年的涨粉里程碑，入职当天的基数待同期后台记录核对。</p></details>
+    <details class="fact-detail-row"><summary><span>2026 年 10 月离职</span><strong>80 多万粉丝</strong></summary><p>这是我对离职时团队账号规模的回忆。离职当天的精确粉丝数待同期后台记录核对。</p></details>
+    <p>我在团队负责选题和脚本，参与剪辑。</p>
+  </section>
+  <section class="fact-record" id="interval-record"><h3>英俊姐妹日记 · 飞瓜区间净增</h3>
+    <details class="fact-detail-row"><summary><span>2025.08—11</span><strong>缺区间记录</strong></summary><p>没有这段时间的区间留档，因此合计从 2025 年 12 月 1 日起算。</p></details>
+    <details class="fact-detail-row"><summary><span>2025.12.01—2026.03.31</span><strong>约 +2.7 万</strong></summary><p>飞瓜将原值显示为 2.7w。计算区间合计时以 27,000 估算。</p></details>
+    <details class="fact-detail-row"><summary><span>2026.04.01—07.31</span><strong>−1,683</strong></summary><p>飞瓜记录这四个月的团队账号净减少 1,683 粉丝。</p></details>
+    <details class="fact-detail-row"><summary><span>2026.08.01—10.31</span><strong>−5,582</strong></summary><p>飞瓜记录这三个月的团队账号净减少 5,582 粉丝。</p></details>
+    <p>三个有记录的区间合计约净增 1.97 万。</p>
+    <a href="assets/portfolio/yingjun-followers.csv" download>下载飞瓜区间明细 ↓</a>
+  </section>
+  <section class="fact-record" id="reno-record"><h3>Reno16 · 发布后的播放记录</h3>
+    <details class="fact-detail-row"><summary><span>抖音播放</span><strong>902 万次</strong></summary><p>来源为已留存的星图页面，指标归属英俊姐妹日记的团队成片。</p></details>
+    <p>我的分工是选题、口播脚本、改稿与剪辑。</p>
+    <a href="project.html?work=yingjun-reno#reno16-interaction-record">查看这条作品的留档 ↗</a>
+  </section>
+  <section class="fact-record" id="films-record"><h3>六部代表作 · 团队播放记录</h3>
+    <div data-films-record></div>
+    <p>点开片名看平台与播放量。</p>
+    <a href="projects.html">打开作品目录 ↗</a>
+  </section>
+  <section class="fact-record" id="questions-record"><h3>评论选题 · 个人工作台实测</h3>
+    <details class="fact-detail-row"><summary><span>原始样本</span><strong>214 条评论</strong></summary><p>从 A7 Pro Max、Reno16、Find X9 三条作品整理去重后的顶层评论。</p></details>
+    <details class="fact-detail-row"><summary><span>规则初筛</span><strong>31 条候选疑问</strong></summary><p>工具保留候选提问，我回看语境，排除玩笑与无关讨论。</p></details>
+    <details class="fact-detail-row"><summary><span>人工选题</span><strong>4 个可拍问题</strong></summary><p>结合账号方向和能拍到的证据，补回规则漏掉的需求。每张选题卡保留原评论编号。</p></details>
+    <a href="about.html#comment-topic-proof">查看四张选题卡 ↗</a>
+  </section>
+</section>
 
 <div class="folio-inverse">
   <section class="folio-insights folio-inner" id="tools" aria-labelledby="tools-title">
